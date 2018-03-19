@@ -7,7 +7,7 @@
 ## 版本管理部分
 
 - [实验 git 操作的好网站 : Learning Git Branch](https://learngitbranching.js.org/?NODEMO)
-- [git 的远程命令](https://foolishflyfox.github.io/KaggleTutorial/GitTutorial/git%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4.html)
+- [git 的远程命令](https://foolishflyfox.github.io/CsLearnNote/GitTutorial/git%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4.html)
 
 ## LeetCode
 
