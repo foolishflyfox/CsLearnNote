@@ -18,4 +18,6 @@
 
 LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。下面是题目的一些解答:
 
-[Asteroid Collision 2018-03-20](https://foolishflyfox.github.io/CsLearnNote/LeetCode/375_AsteroidCollision.html)
+[2018-03-19 : 375. Asteroid Collision](https://foolishflyfox.github.io/CsLearnNote/LeetCode/375_AsteroidCollision.html)
+
+[2018-03-20 : 547. Friend Circles](https://foolishflyfox.github.io/CsLearnNote/LeetCode/547_FriendCircles.html)
