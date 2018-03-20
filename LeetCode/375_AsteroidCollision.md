@@ -1,3 +1,8 @@
+---
+export_on_save:
+ html: true
+---
+
 # 735. Asteroid Collision
 
 We are given an array `asteroids` of integers representing asteroids in a row.

@@ -12,7 +12,7 @@
 
 ## 文档编写
 
-- 编辑神器 ：VsCode/Atom + [Markdown Preview Enhance](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/code-chunk)
+- 编辑神器 ：VsCode/Atom + [Markdown Preview Enhance](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/code-chunk)
 
 ## LeetCode
 
