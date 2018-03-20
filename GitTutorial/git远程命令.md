@@ -4,9 +4,12 @@ export_on_save:
 ---
 # git的远程命令
 
-> 推荐一个实验git操作的好网站：[Learning Git Branch](https://learngitbranching.js.org/?NODEMO)
+> #### 作者：[foolishflyfox](https://foolishflyfox.github.io/CsLearnNote/) &nbsp;&nbsp;&nbsp;&nbsp; 日期：2018年3月19日
 
-> 参考：阮一峰先生的 [Git远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
+<br>
+
+> 推荐：实验git操作的好网站 [Learning Git Branch](https://learngitbranching.js.org/?NODEMO)
+参考：阮一峰先生的 [Git远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
 
 ## 通俗理解
 
