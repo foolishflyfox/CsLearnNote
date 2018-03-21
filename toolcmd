@@ -1,0 +1,16 @@
+#!/Users/fenghuabin/anaconda3/bin/python
+
+import os
+pre_url = "https://foolishflyfox.github.io/CsLearnNote/"
+with open("./README_work.md") as readme_md:
+    origin_content = readme_md.read()+"\n"
+
+with open("./README.md", "w") as readme_md:
+    readme_md.write(origin_content)
+    anyfile = os.listdir("anyfile")
+    for fname in anyfile:
+        if os.path.splitext(fname)[1] == ".html":
+            readme_md.write("- [" + fname + "](" +
+                            pre_url + "anyfile/" + fname + ")\n")
+
+
