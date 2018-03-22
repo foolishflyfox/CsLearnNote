@@ -7,7 +7,7 @@
 ## 版本管理部分
 
 - [实验 git 操作的好网站 : Learning Git Branch](https://learngitbranching.js.org/?NODEMO)
-- [git 的远程命令](https://foolishflyfox.github.io/CsLearnNote/GitTutorial/git%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4.html)
+- [git 的远程命令](/GitTutorial/git远程命令.html)
 
 
 ## 文档编写
@@ -18,13 +18,12 @@
 
 LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。下面是题目的一些解答:
 
-- [2018-03-19 : 375. Asteroid Collision](https://foolishflyfox.github.io/CsLearnNote/LeetCode/375_AsteroidCollision.html)
+- [2018-03-19 : 375. Asteroid Collision](/LeetCode/375_AsteroidCollision.html)
 
-- [2018-03-20 : 547. Friend Circles](https://foolishflyfox.github.io/CsLearnNote/LeetCode/547_FriendCircles.html)
+- [2018-03-20 : 547. Friend Circles](/LeetCode/547_FriendCircles.html)
 
-- [2018-03-21 : 345. Reverse Vowels of a String](https://foolishflyfox.github.io/CsLearnNote/LeetCode/345_ReverseVowels.html)
+- [2018-03-21 : 345. Reverse Vowels of a String](/LeetCode/345_ReverseVowels.html)
 
 ## 正在编写
-
 
 - [note01.html](/anyfile/note01.html)
