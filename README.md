@@ -25,6 +25,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-21 : 345. Reverse Vowels of a String](/LeetCode/345_ReverseVowels.html)
 
+- [2018-03-22 : 491. Increasing Subsequences](/LeetCode/491_IncreasingSubsequences.html)
+
 ## 正在编写
 
 - [note01.html](/anyfile/note01.html)
