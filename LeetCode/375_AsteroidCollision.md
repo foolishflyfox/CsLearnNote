@@ -2,7 +2,7 @@
 export_on_save:
  html: true
 ---
-
+@import "/blog_head.md"
 # 735. Asteroid Collision
 
 **Website** : https://leetcode.com/problems/asteroid-collision/

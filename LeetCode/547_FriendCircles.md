@@ -2,6 +2,8 @@
 export_on_save:
  html: true
 ---
+@import "/blog_head.md"
+
 # 547. Friend Circles
 
 **Website** : https://leetcode.com/problems/friend-circles/

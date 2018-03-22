@@ -1,5 +1,5 @@
 # 计算机科学技术--资料汇总
-> 本项目的博客地址为：https://foolishflyfox.github.io/CsLearnNote/
+> 本项目的博客地址为：<https://foolishflyfox.github.io/CsLearnNote/>
 
 ## Kaggle Tutorial
 

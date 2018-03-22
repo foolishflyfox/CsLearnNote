@@ -2,6 +2,7 @@
 export_on_save:
  html: true
 ---
+@import "/blog_head.md"
 
 # git的远程命令
 

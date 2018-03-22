@@ -213,12 +213,33 @@ code.language-yaml {
   background-color: #f8f2f4;
   color: #d40a32;
 }
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
  
       </style>
     </head>
     <body for="html-export">
       <div class="mume markdown-preview   ">
-      <h1 class="mume-header" id="python-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98-%E7%AC%94%E8%AE%B0">Python 数据挖掘 (笔记)</h1>
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="python-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98-%E7%AC%94%E8%AE%B0">Python 数据挖掘 (笔记)</h1>
 
 <blockquote>
 <p>参考：《Python数据分析与挖掘实战》</p>
@@ -312,12 +333,48 @@ code.language-yaml {
 
 <p>Python 是一门编程语言，这意味着原则上来说，它能够完成Matlab所能做的所有事情，而且在大多数情况下，同样的功能，同样功能的Python代码会比Matlab代码更加简洁易懂。</p>
 <p>Python 以开发效率著称，即其致力于以最短的代码完成任务。Python通常为人诟病的是其运行效率，而 Python 还被称为“胶水语言”，它允许我们把耗时的核心部分用 C/C++ 等高效率的语言编写，然后由它进行“粘合”，这很大程度上解决了Python的运行效率问题。事实上，在<strong>大多数数据任务</strong>上，Python 的运行效率已经可以媲美 C/C++ 语言了。</p>
-<p><strong>函数式编程</strong>：称为函数程序设计或泛函编程，是一种编程范式，它将计算机运算视为数学上的函数计算，并且避免使用程序状态以及易变对象。简单来讲，函数式编程是一种 “广播式” 的编程，一般结合 lambda 定义函数，用于科学计算中会显得特别简洁方便。</p>
+<h3 class="mume-header" id="%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</h3>
+
+<h4 class="mume-header" id="%E5%88%97%E8%A1%A8%E5%85%83%E7%BB%84">列表/元组</h4>
+
+<p>列表(<code>list</code>)和元组(<code>tuple</code>)都是序列结构，它们本身很相似，但有有点不同。</p>
+<p>从外形上看，列表用方括号标记，如 <code>a=[1,2,3]</code>，而元组是用圆括号标记的，如 <code>b=(4,5,6)</code>，访问列表和元组中的方式相同，容器中的元素类型没有限制。</p>
+<p>列表/元组相关函数：</p>
+<ul>
+<li><code>len(a)</code> : 列表/元组元素的个数</li>
+<li><code>max(a)</code> : 列表/元组元素最大值</li>
+<li><code>min(a)</code> : 列表/元组元素最小值</li>
+<li><code>sum(a)</code> : 列表/元组元素求和</li>
+<li><code>sorted(a)</code> : 对序列进行排序</li>
+<li><code>reversed(a)</code> : 获得序列的反向遍历迭代器</li>
+</ul>
+<p>此外，作为对象，列表本身自带了很多实用的方法（元组不允许修改，因此方法很少）：</p>
+<ul>
+<li><code>a.append(1)</code> : 将 1 添加到列表<code>a</code>末尾</li>
+<li><code>a.insert(2,1)</code> : 在索引2处插入元素1</li>
+<li><code>a.pop(1)</code> : 移除列表<code>a</code>中索引为1的元素，并将该元素返回</li>
+<li><code>del a[1]</code> : 移除列表<code>a</code>中索引为1的元素</li>
+<li><code>a.count(1)</code> : 统计列表<code>a</code>中元素1出现的次数</li>
+<li><code>a.index(1)</code> : 从列表中找到第一个1的索引位置</li>
+<li><code>a.extend([1,2])</code> : 将列表 <code>[1,2]</code> 追加到列表<code>a</code>的末尾</li>
+<li><code>a+b</code> : 将 <code>a</code> 和 <code>b</code> 合并后返回，其本身不变</li>
+</ul>
+<p>最后，不得不提的是“列表解析”这一功能，它能够简化我们对列表内元素逐一进行操作的代码，如下面的代码：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">
+</pre><h3 class="mume-header" id="%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B">函数式编程</h3>
+
+<p><strong>函数式编程</strong>称为函数程序设计或泛函编程，是一种编程范式，它将计算机运算视为数学上的函数计算，并且避免使用程序状态以及易变对象。简单来讲，函数式编程是一种 “广播式” 的编程，一般结合 lambda 定义函数，用于科学计算中会显得特别简洁方便。</p>
 <p>在Python中，函数式编程主要由几个函数的使用构成：<code>lambda()</code>、 <code>map()</code>、 <code>reduce()</code>、 <code>filter()</code>。</p>
+<h4 class="mume-header" id="lambda">lambda</h4>
+
 <p><code>lambda</code> 用于定义行内函数，有点类似于 Matlab 中的“匿名函数”。</p>
 <pre data-role="codeBlock" data-info="python" class="language-python">f <span class="token operator">=</span> <span class="token keyword">lambda</span> x <span class="token punctuation">:</span> x <span class="token operator">+</span> <span class="token number">2</span>   <span class="token comment" spellcheck="true"># 定义函数 f(x)=x+2</span>
 g <span class="token operator">=</span> <span class="token keyword">lambda</span> x<span class="token punctuation">,</span> y<span class="token punctuation">:</span> x <span class="token operator">+</span> y <span class="token comment" spellcheck="true"># 定义函数 g(x,y)=x+y</span>
-</pre>
+</pre><h4 class="mume-header" id="map">map</h4>
+
+<p><code>map</code> 函数将函数逐一应用到（map）列表中的每个元素，最后返回一个数组。</p>
+<p>例如：假设有一个列表 <code>a = [1,2,3]</code>，要给列表中的每个元素都加上2得到一个新列表</p>
+
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#python-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98-%E7%AC%94%E8%AE%B0">Python 数据挖掘 (笔记)</a>
@@ -339,7 +396,21 @@ g <span class="token operator">=</span> <span class="token keyword">lambda</span
 <li><a href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BB%B7">模型评价</a></li>
 </ul>
 </li>
-<li><a href="#python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AE%80%E4%BB%8B">Python 数据分析简介</a></li>
+<li><a href="#python-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%AE%80%E4%BB%8B">Python 数据分析简介</a>
+<ul>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+<ul>
+<li><a href="#%E5%88%97%E8%A1%A8%E5%85%83%E7%BB%84">列表/元组</a></li>
+</ul>
+</li>
+<li><a href="#%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B">函数式编程</a>
+<ul>
+<li><a href="#lambda">lambda</a></li>
+<li><a href="#map">map</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
