@@ -27,4 +27,4 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 ## 正在编写
 
 
-- [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
+- [note01.html](/anyfile/note01.html)
