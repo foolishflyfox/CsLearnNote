@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>AIDefine</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%88%86%E7%B1%BB">人工智能的定义与分类</h1>
+
+<p>目前对人工智能的定义有4种：</p>
+<ol>
+<li>像人一样进行思考的系统</li>
+<li>能够理性地思考的系统</li>
+<li>像人一样行动的系统</li>
+<li>能够理性地行动的系统</li>
+</ol>
+<p>其中，1和2强调思维过程和推理，行为强调行为及其结果。</p>
+<h2 class="mume-header" id="%E5%BC%BAai-vs-%E5%BC%B1ai">强AI vs 弱AI</h2>
+
+<ul>
+<li><strong>强人工智能</strong>：对任何的环境或条件都能给出 “最正确的/最佳的” 决策，通常用 <em>Intelligence</em> 形容强人工智能。其目标是研制出达到甚至超越人类智慧水平的人造物，具有心智和意识、能根据自己的意图开展行动，类似终结者、机器人总动员中的瓦利。</li>
+<li><strong>弱人工智能</strong>：对给定的环境或条件能给出 “最正确的/最佳的” 应对，通常用 <em>Smart</em> 形容弱人工智能。其目标是借鉴人类的智能行为，研制出更好的工具以减轻人类智力劳动，如智能家电、智能插座、自动驾驶等。</li>
+</ul>
+<p>首先，技术上来说，主流人工智能学界的努力从来就不是朝向强人工智能，现有技术的发展也不会自动地使强人工智能成为可能；第二，即便想研究强人工智能，也不知道路在何方；最后，<strong>即便强人工智能是可能的，也不应该去研究它</strong>。</p>
+<p>所以，目前很多媒体都危言耸听地说人工智能已经威胁到人类的生存了，其实在强人工智能方面我们毫无作为。</p>
+<blockquote>
+<p>参考 <a href="https://www.leiphone.com/news/201801/i3y36GjA4SdwpGuC.html">雷锋网：周志华-关于强人工智能</a></p>
+</blockquote>
+<h2 class="mume-header" id="agent-%E6%99%BA%E8%83%BD%E4%BD%93">Agent 智能体</h2>
+
+<p>人工智能的研究主要致力于创造一个 Agent，从数学上看，所谓的 Agent 其实是一个函数 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>:</mo><mi>E</mi><mo>→</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">f: E\rightarrow A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord mathit" style="margin-right:0.05764em;">E</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">→</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord mathit">A</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.05764em;">E</span></span></span></span> 时环境或条件的所有可能取值，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base"><span class="mord mathit">A</span></span></span></span> 是所有可能的行动，我们要做的是找到一个 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.05764em;">E</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.68333em;vertical-align:0em;"></span><span class="base"><span class="mord mathit">A</span></span></span></span> 的映射，使得对任意一个给定的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi><mo>∈</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">x\in E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.68333em;"></span><span class="strut bottom" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="base"><span class="mord mathit">x</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord mathit" style="margin-right:0.05764em;">E</span></span></span></span>，得到的 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mclose">)</span></span></span></span> 都是最佳的。根据 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span></span></span></span> 寻找方式的不同，可以有很多的人工智能算法。</p>
+<h2 class="mume-header" id="%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E5%8F%91%E5%B1%95">人工智能的发展</h2>
+
+<blockquote>
+<p><strong>这部分参考《科学的极致：漫谈人工智能》第一章：人工智能之梦</strong></p>
+</blockquote>
+<p>人工智能最开始是20世纪初期在数学家群体中萌芽的。<br>
+1900年，希尔伯特宣布的23个未解决的难题中，第二个问题与第十个问题就与人工智能有关：</p>
+<ul>
+<li>Problem 2：运用公理化的方法统一整个数学，并运用严格的数学推理证明数学自身的正确性；</li>
+<li>Problem 10：证明数学系统同时具有一致性(数学真理间不存在冲突)和完备性(任意真理都可以描述为数学定理)。</li>
+</ul>
+<p>其中，问题10被<strong>哥德尔不完备定理</strong>证明是错误的，数学系统的完备性和一致性不可能同时具备。通常来说，一个命题如果能够判断真假，而该命题定义的内容与命题的真假相反，通常就会产生罗素悖论，如 “这句话是假的”，“一个理发师只给不为自己理发的人理发”。</p>
+<p>那第10个问题和人工智能有什么关系呢？我们说过一个智能体可以抽象为一个函数，如果我们把它作为一个机械化运作的数学公理体系，那么根据哥德尔不完备定理，必然存在这某种与智能体自身相关的使用人工智能不能解决，而人可以解决的问题。</p>
+<p>由第2个问题问题，图灵设想除了一个图灵机（可以参考 <a href="http://www.swarma.net/vm/articles/turing.pdf">张江：图灵机与计算问题</a>)，并提出了如何判断一台机器是否具有人工智能的测试--图灵测试。</p>
+<p>之后，冯.诺依曼提出了冯.诺依曼体系结构，为计算机的构建提供了理论上的指导。</p>
+<p>1956年的达特茅斯会议后，人工智能概念正式提出，1956年也称为人工智能元年。</p>
+<h3 class="mume-header" id="%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B51956~1980">第一阶段（1956~1980）</h3>
+
+<h4 class="mume-header" id="%E5%89%8D%E6%9C%9F"> 前期</h4>
+
+<p>达特茅斯会议后，人工智能获得井喷式发展，主要的应用领域是：用计算机程序替代人类进行自动推理来证明数学定理——<strong>机器证明</strong>。</p>
+<p>这一阶段的成就有：</p>
+<ul>
+<li>1956年，Arthur Samuel开始研制一个具有自学习能力的跳棋程序；1959年该跳棋程序通过学习可以打败Arthur Samuel本人；1962年，该程序可以击败美国一个州的跳棋冠军；</li>
+<li>1956年，Oliver Selfridge 研制了第一个字符识别程序；</li>
+<li>1957年，Simon 和 Newell 创建了一个通用问题求解器(GPS, General Problem Solver)；</li>
+<li>1976年，Kenneth Appel 和 Wolfgang Haken 利用人工和计算机混合的方式证明了四色定理；</li>
+</ul>
+<p>之后，遇到的困难：</p>
+<ul>
+<li>Samuel的程序停留在州冠军的层次，无法战胜世界冠军；</li>
+<li>在机器翻译领域，翻译的结果非常差劲；</li>
+<li>机器证明在推了十万步后也不能证明两个连续函数之和仍是连续函数；</li>
+</ul>
+<h4 class="mume-header" id="%E5%90%8E%E6%9C%9F">后期</h4>
+
+<p>费根鲍姆提出：<strong>传统的人工智能过于强调通用求解的方法，忽略了具体的知识，提出人工智能必须引入知识</strong>，所以有了 <strong>专家系统</strong>；</p>
+<p>问题：知识的获取、表示需要人工完成，构造这样的智能系统效率低；</p>
+<h3 class="mume-header" id="%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-1980~now">第二阶段 (1980~Now)</h3>
+
+<p>专家系统中智能体的知识是自上而下地设计，如果能够让知识自下而上地涌现，那么智能体构造效率低的问题就能够得以解决。</p>
+<p>感觉自动获取知识的方式不同，可以分为以下几个学派：</p>
+<h4 class="mume-header" id="%E7%AC%A6%E5%8F%B7%E5%AD%A6%E6%B4%BE">符号学派</h4>
+
+<p>该学派继承自传统人工智能学派，强调如果能够将一些输入符号通过转换产生一些输出符号，而这一过程中表现出一定智能的过程就是人工智能的研究方向，而并不一定要模拟生物智能行为；</p>
+<h4 class="mume-header" id="%E8%BF%9E%E6%8E%A5%E5%AD%A6%E6%B4%BE">连接学派</h4>
+
+<p>该学派强调模仿人的大脑，通过计算机模拟神经元组成一个庞大的神经网络以使其具备一定的智能；</p>
+<h4 class="mume-header" id="%E8%A1%8C%E4%B8%BA%E5%AD%A6%E6%B4%BE">行为学派</h4>
+
+<p>该学派模拟低级智能生物，通过与环境的互动与反馈获得智能；</p>
+<h3 class="mume-header" id="%E6%80%BB%E7%BB%93">总结</h3>
+
+<ul>
+<li>
+<p>通用型人工智能 (v1.1); <code class="green">机器证明,自学习</code> <code>存在性能瓶颈</code><br><br></p>
+</li>
+<li>
+<p>专家系统 (v1.2); <code class="green">引入领域内的知识</code> <code>人工成本大</code> <br><br></p>
+</li>
+<li>
+<p>自动学得领域内的知识(v2.x)<code class="green">知识从下而上涌现</code></p>
+<ul>
+<li>符号学派(v2.a.1)
+<ul>
+<li>优点：<code class="green">擅长复杂推理/规划/逻辑运算/判断</code></li>
+<li>缺点：<code>知识获取没有统一模型</code></li>
+</ul>
+</li>
+<li>连接学派(v2.b.1)
+<ul>
+<li>优点：<code class="green">知识获取的模型得到统一，擅长模式识别、聚类、联想</code></li>
+<li>缺点：<code>获取知识不能被人类理解</code></li>
+</ul>
+</li>
+<li>行为学派(v2.c.1)
+<ul>
+<li>优点：<code class="green">擅长适应性、学习、快速反应</code></li>
+<li>缺点：<code>对高级智能，如问题求解、逻辑演算效果不好</code><br>
+<br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>深度学习(v2.b.2)<code class="green">性能好</code> <code>计算量大，需要资源多</code></p>
+</li>
+</ul>
+<p>其中 v1.1 版本打算构建的是强人工智能； v1.1 之后的版本都是针对弱人工智能的发展。</p>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%88%86%E7%B1%BB">人工智能的定义与分类</a>
+<ul>
+<li><a href="#%E5%BC%BAai-vs-%E5%BC%B1ai">强AI vs 弱AI</a></li>
+<li><a href="#agent-%E6%99%BA%E8%83%BD%E4%BD%93">Agent 智能体</a></li>
+<li><a href="#%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E7%9A%84%E5%8F%91%E5%B1%95">人工智能的发展</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B51956~1980">第一阶段（1956~1980）</a>
+<ul>
+<li><a href="#%E5%89%8D%E6%9C%9F"> 前期</a></li>
+<li><a href="#%E5%90%8E%E6%9C%9F">后期</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5-1980~now">第二阶段 (1980~Now)</a>
+<ul>
+<li><a href="#%E7%AC%A6%E5%8F%B7%E5%AD%A6%E6%B4%BE">符号学派</a></li>
+<li><a href="#%E8%BF%9E%E6%8E%A5%E5%AD%A6%E6%B4%BE">连接学派</a></li>
+<li><a href="#%E8%A1%8C%E4%B8%BA%E5%AD%A6%E6%B4%BE">行为学派</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    <script>
+(function bindTaskListEvent() {
+  var taskListItemCheckboxes = document.body.getElementsByClassName('task-list-item-checkbox')
+  for (var i = 0; i < taskListItemCheckboxes.length; i++) {
+    var checkbox = taskListItemCheckboxes[i]
+    var li = checkbox.parentElement
+    if (li.tagName !== 'LI') li = li.parentElement
+    if (li.tagName === 'LI') {
+      li.classList.add('task-list-item')
+    }
+  }
+}())    
+</script>
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>

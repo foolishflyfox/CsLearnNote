@@ -229,6 +229,10 @@ code.language-yaml {
   /* Firefox... */
   box-shadow: 0 0 10px 1px deepskyblue;
 }
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
  
       </style>
     </head>
@@ -256,6 +260,29 @@ code.language-yaml {
 </ul>
 <hr>
 <p>My solution:</p>
+<p>先创建两个变量，<code>storage</code> 用于存放产生的非递减 <em>list</em> 的 <em>list</em>（其中包含单元素的<em>list</em>，最后会去掉）。</p>
+<p>主要思路是：从 <code>nums</code> 中取出元素，并与 <code>storage</code> 中的元素合并后重新放入到 <code>storage</code> 中，其中的关键是在重新合并后如何判定是否应该放入到 <code>storage</code> 中。</p>
+<p><strong>其实很多算法的框架原理都比较简单，其中的选择策略不同就会产生很大的不同，最经典的是搜索和最优化时，后继节点的不同选择产生了一大堆的算法：BFS、DFS、深度受限优先搜索、迭代深入搜索等等。</strong></p>
+<p>该算法基于规律：当检测到<code>storage</code>中的元素的最后一个元素与待组合的元素相同，并且与上一次的的组合个数不同时，就应该停止组合，例如：传入的数组为 <code>[4, 6, 7, 7]</code>，则根据下面的代码可得：<br>
+第一次迭代，当前元素7：<br>
+<code>storage=[[4]]</code><br>
+第二次迭代，当前元素6：<br>
+<code>storage=[[4],[4,6]]</code><br>
+<code>storage=[[4],[4,6],[6]]</code><br>
+第三次迭代，当前元素7：<br>
+<code>storage=[[4],[4,6],[6],[6,7]]</code><br>
+<code>storage=[[4],[4,6],[6],[6,7],[4,6,7]]</code><br>
+<code>storage=[[4],[4,6],[6],[6,7],[4,6,7],[4,7]]</code><br>
+<code>storage=[[4],[4,6],[6],[6,7],[4,6,7],[4,7],[7]]</code><br>
+第四次迭代，当前元素7：<br>
+<code>storage=[[4],[4,6],[6],[6,7],[4,6,7],[4,7],[7],[7,7]]</code><br>
+此时记录了最后一个元素与当前元素相同，原来共有1个7<br>
+<code>storage=[[4],[4,6],[6],[6,7],[4,6,7],[4,7],[7],[7,7],[4,7,7]]</code><br>
+<code>storage=[[4],[4,6],[6],[6,7],[4,6,7],[4,7],[7],[7,7],[4,7,7],[4,6,7,7]]</code><br>
+<code>storage=[[4],[4,6],[6],[6,7],[4,6,7],[4,7],[7],[7,7],[4,7,7],[4,6,7,7],[6,7,7]]</code><br>
+之后要组合的元素是<code>[6]</code>，其中7的个数有原来的1变为0，所以停止组合；</p>
+<p>最后删除所有单元素数组得到：<br>
+<code>[[4,6],[6,7],[4,6,7],[4,7],[7,7],[4,7,7],[4,6,7,7],[6,7,7]]</code></p>
 <pre data-role="codeBlock" data-info="python {.line-numbers}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">findSubsequences</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> nums<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">"""
@@ -302,11 +329,49 @@ code.language-yaml {
                      <span class="token keyword">for</span> sub <span class="token keyword">in</span> subs
                      <span class="token keyword">if</span> <span class="token operator">not</span> sub <span class="token operator">or</span> sub<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&lt;=</span> num<span class="token punctuation">}</span>
         <span class="token keyword">return</span> <span class="token punctuation">[</span>sub <span class="token keyword">for</span> sub <span class="token keyword">in</span> subs <span class="token keyword">if</span> len<span class="token punctuation">(</span>sub<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">2</span><span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>Analysis:</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><h2 class="mume-header" id="analysis">Analysis</h2>
+
+<p>该算法主要是思想和前面的思路完全相同，之所以程序能够这么短，是因为它使用了Python的语法糖：</p>
+<ul>
+<li>使用 <code>set</code> 类型解决冲突问题，其中 <code>set</code> 中的元素必须是可散列的(hashable)，其中 <code>tuple</code> 类型是可散列的，而 <code>list</code> 是不可散列的；</li>
+</ul>
+<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">a <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">{(2, 3), (1,)}
+</pre></div></div><ul>
+<li>两个 <code>set</code> 类型变量连接使用操作符 <code>|</code>，<code>tuple</code> 和 <code>list</code> 类型变量的连接使用操作符 <code>+</code>：</li>
+</ul>
+<div class="code-chunk" data-id="code-chunk-id-1" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">a <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+b <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a <span class="token operator">|</span> b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">{(3, 4), (2, 3), (1,)}
+(1, 2, 2, 3)
+</pre></div></div><ul>
+<li>如果 <code>tuple</code> 或 <code>list</code> 实例的长度为0，则 <code>not</code> 该实例后返回True：</li>
+</ul>
+<div class="code-chunk" data-id="code-chunk-id-2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token operator">not</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">True
+</pre></div></div><h2 class="mume-header" id="%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95">性能测试</h2>
+
+<p>使用我自己定义的函数进行 %timeit 测试，随机产生一个长度为50的<code>nums</code>，测试结果为：</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">7.78 ms ± 67 µs per loop <span class="token punctuation">(</span>mean ± std. dev. of 7 runs, 100 loops each<span class="token punctuation">)</span>
+</pre><p>使用短代码的算法，测试结果为：</p>
+<pre data-role="codeBlock" data-info="bash" class="language-bash">14.5 ms ± 244 µs per loop <span class="token punctuation">(</span>mean ± std. dev. of 7 runs, 100 loops each<span class="token punctuation">)</span>
+</pre><p>可以看到，在50个元素时，时间少了一半，所以代码虽然长度较长，但是时间复杂度比下面的要高，说明力气没有白费 ^_^ ，另外很多编程语言都没有Python类似的语法糖，所以第一个算法修改为其他语言也更加方便。</p>
+<h2 class="mume-header" id="%E5%90%90%E6%A7%BD%E6%97%B6%E9%97%B4">吐槽时间</h2>
+
+<p>最后吐槽一下 LeeteCode 的 Judge 系统，明明是正确的结果，却判我错误，随机测了100多组随机数都是正确的，后台能不能用心点 😔</p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#491-increasing-subsequences">491. Increasing Subsequences</a></li>
+<li><a href="#491-increasing-subsequences">491. Increasing Subsequences</a>
+<ul>
+<li><a href="#analysis">Analysis</a></li>
+<li><a href="#%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95">性能测试</a></li>
+<li><a href="#%E5%90%90%E6%A7%BD%E6%97%B6%E9%97%B4">吐槽时间</a></li>
+</ul>
+</li>
 </ul>
 </div>
       <a id="sidebar-toc-btn">≡</a>

@@ -19,3 +19,28 @@ st->A->B
 B(no)->C(right)->A
 B(yes)->end
 ```
+
+
+```puml
+@startuml
+A -> B
+B -> C
+@enduml
+```
+
+```viz {engine="twopi"}
+digraph G{
+    A->B
+    A->C
+    A->D
+}
+@enddot
+```
+
+```viz {engine="circo"}
+graph G{
+    {中科大}--B [label=f]
+    A--{中科大}
+}
+```
+

@@ -5,6 +5,15 @@
 
 本部分是在学习通过实践学习人工智能过程中的笔记。主要是通过参与 kaggle 大赛的形式对机器学习、数据挖掘等内容进行深入理解。
 
+## 高级人工智能
+
+这部分内容是根据 **李金龙** 老师的 “高级人工智能” 课程的总结，李金龙老师的课真的是干货满满，在一个更高的层次对人工智能与算法进行了剖析，在有了一个宏观的格局后，相信在学具体的机器学习算法、优化算法等内容时候，都能够更容易地接受。
+
+- [学习人工智能的路线图](/AdvancedAI/AISummary.html) （ [pdf](/assets/AISummary.pdf) ）
+- [人工智能的定义与分类](/AdvancedAI/AIDefine.html)
+
+
+
 ## 版本管理部分
 
 - [实验 git 操作的好网站 : Learning Git Branch](https://learngitbranching.js.org/?NODEMO)
@@ -14,6 +23,7 @@
 ## 文档编写
 
 - 编辑神器 ：VsCode/Atom + [Markdown Preview Enhance](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/code-chunk)
+- [Huoty's Blog : Linux 下 grep 命令的正则表达式规范](http://kuanghy.github.io/2015/10/26/grep-regex)
 
 ## LeetCode
 
@@ -26,6 +36,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-03-21 : 345. Reverse Vowels of a String](/LeetCode/345_ReverseVowels.html)
 
 - [2018-03-22 : 491. Increasing Subsequences](/LeetCode/491_IncreasingSubsequences.html)
+
+- [2018-03-23 : 793. Preimage Size of Factorial Zeroes Function](/LeetCode/793_PreimageSizeofFactorialZeroesFunction.html)
 
 ## 正在编写
 

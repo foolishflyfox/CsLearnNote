@@ -229,6 +229,10 @@ code.language-yaml {
   /* Firefox... */
   box-shadow: 0 0 10px 1px deepskyblue;
 }
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
  
       </style>
     </head>
@@ -360,8 +364,15 @@ code.language-yaml {
 <li><code>a+b</code> : 将 <code>a</code> 和 <code>b</code> 合并后返回，其本身不变</li>
 </ul>
 <p>最后，不得不提的是“列表解析”这一功能，它能够简化我们对列表内元素逐一进行操作的代码，如下面的代码：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python">
-</pre><h3 class="mume-header" id="%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B">函数式编程</h3>
+<pre data-role="codeBlock" data-info="python" class="language-python">a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span>
+b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> a<span class="token punctuation">:</span>
+    b<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 上面的代码等价为:</span>
+b <span class="token operator">=</span> <span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token number">2</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> a<span class="token punctuation">]</span>
+</pre><p>这正体现了Python以最短的代码完成任务的口号！</p>
+<h3 class="mume-header" id="%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B">函数式编程</h3>
 
 <p><strong>函数式编程</strong>称为函数程序设计或泛函编程，是一种编程范式，它将计算机运算视为数学上的函数计算，并且避免使用程序状态以及易变对象。简单来讲，函数式编程是一种 “广播式” 的编程，一般结合 lambda 定义函数，用于科学计算中会显得特别简洁方便。</p>
 <p>在Python中，函数式编程主要由几个函数的使用构成：<code>lambda()</code>、 <code>map()</code>、 <code>reduce()</code>、 <code>filter()</code>。</p>
@@ -373,8 +384,28 @@ g <span class="token operator">=</span> <span class="token keyword">lambda</span
 </pre><h4 class="mume-header" id="map">map</h4>
 
 <p><code>map</code> 函数将函数逐一应用到（map）列表中的每个元素，最后返回一个数组。</p>
-<p>例如：假设有一个列表 <code>a = [1,2,3]</code>，要给列表中的每个元素都加上2得到一个新列表</p>
+<p>之前，我们用列表解析完成了将 <code>a</code> 中每个元素加2的操作，下面我们用map实现同样的功能：</p>
+<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span>
+b <span class="token operator">=</span> map<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>x<span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>tuple<span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">(3, 4, 5)
+</pre></div></div><p><code>map</code>函数创建了一个待运行的命令容器，在其他函数调用它时返回结果。</p>
+<blockquote>
+<p>为什么相同功能的实现可以使用两种不同的语法？<br>
+使用列表解析本质上还是要使用<code>for</code>循环，而Python的<code>for</code>循环命令的效率低，而<code>map()</code>函数实现了相同的，并且效率更高，原则上来说，它的循环速度相当于C语言。</p>
+</blockquote>
+<p><strong>上面的说法值得商榷，通过测试发现，使用列表解析所用的CPU时间稍小于<code>map</code>,而使用的系统时间多于<code>map</code>,两者之和其实相差非常小，所以建议还是使用列表解析吧。<a href="https://stackoverflow.com/questions/1247486/python-list-comprehension-vs-map">https://stackoverflow.com/questions/1247486/python-list-comprehension-vs-map</a> 这个高票答案也说明了map效率并不能提高反而有时会降低，所以还是多用列表解析吧，效率高还可读性好。</strong></p>
+<h4 class="mume-header" id="filter">filter</h4>
 
+<p><code>filter()</code>函数顾名思义就是用于筛选出列表中符合条件的元素，如筛选出数组中所有的偶数：</p>
+<div class="code-chunk" data-id="code-chunk-id-1" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">b <span class="token operator">=</span> filter<span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">:</span>x<span class="token operator">%</span><span class="token number">2</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">,</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>list<span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[4, 10, 16]
+</pre></div></div><p>注意：<code>filter()</code>函数传入的第一个函数参数返回值必须是<code>bool</code>类型。</p>
+<p>上面的代码也可以用列表解析实现：</p>
+<div class="code-chunk" data-id="code-chunk-id-2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">[</span>x <span class="token keyword">for</span> x <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token keyword">if</span> x<span class="token operator">%</span><span class="token number">2</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[4, 10, 16]
+</pre></div></div>
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#python-%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98-%E7%AC%94%E8%AE%B0">Python 数据挖掘 (笔记)</a>
@@ -407,6 +438,7 @@ g <span class="token operator">=</span> <span class="token keyword">lambda</span
 <ul>
 <li><a href="#lambda">lambda</a></li>
 <li><a href="#map">map</a></li>
+<li><a href="#filter">filter</a></li>
 </ul>
 </li>
 </ul>
