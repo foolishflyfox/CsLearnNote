@@ -263,6 +263,12 @@ code.language-yaml {
 <ul>
 <li><code>K</code> will be an integer in the range <code>[0, 10^9]</code>.</li>
 </ul>
+<hr>
+<p>如果存在<code>f(x)</code>使得<code>f(x)=K</code>,如<code>f(0)=0</code>，则必有<code>f(1) = f(2) = f(3) = f(4) = 0</code>，因为连续的5个数中，必定只有一个是5的倍数，而确定<code>x!</code>结果最后0的个数，只需要计算其中因子5的个数即可。</p>
+<p>该题目原来的思路得到一个数组<code>[0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 12, 13, ...]</code>，其中的每个元素都是可能的<code>K</code>值，根据得到的数组总结出一个关于<code>K</code>的规律，然后根据该规律计算任意给定的<code>K</code>值是否在该数组中，如果在该数组中返回 5，否则返回 0。</p>
+<p>其中找规律就非常麻烦，已经是一个数学问题了。需要有元素个数足够的数组，这样才能找到正确的规律，如果数组中的元素错误，那么根本不可能找到其中的规律或者是找到错误的规律；并且可能中间过程中有点错误就可能导致规律不正确。</p>
+<p>上面的思路类似于人工智能前期的专家系统，通过人工找到一定的规律并创建一个智能体，将人工找到的“知识”输入到智能体中。而这样一个小题目找规律就比较麻烦了，更何况是复杂的系统呢。因此，专家系统的模型构建非常困难也是情有可原的。</p>
+<p>另一种思路是寻找一个<code>n</code>，使得<code>f(n)=K</code>，如果能找到，就返回5，找不到就返回0。如果取<code>n</code>从0开始，而<code>K</code>的值如果是非常大，可以想象如果n每次都加1，直到<code>f(n)&gt;=K</code>结束，这一过程的时间复杂度非常高，所以刚开始我就把这种思路给否定了。不过，如果能够将寻找的效率提高（如使用二分查找），那么时间复杂度能够大大降低。所以有了下面的代码：</p>
 <p>Solution:</p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">preimageSizeFZF</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> K<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -270,6 +276,7 @@ code.language-yaml {
         :type K: int
         :rtype: int
         """</span>
+        <span class="token comment" spellcheck="true"># 该函数判断 n! 后面有多少个0</span>
         <span class="token keyword">def</span> <span class="token function">nzero</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
             cnt <span class="token operator">=</span> <span class="token number">0</span>
             x <span class="token operator">=</span> <span class="token number">5</span>
@@ -277,9 +284,10 @@ code.language-yaml {
                 cnt <span class="token operator">+=</span> n<span class="token operator">//</span>x
                 x <span class="token operator">*=</span> <span class="token number">5</span>
             <span class="token keyword">return</span> cnt
-        
-        <span class="token keyword">if</span> K<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token keyword">return</span> <span class="token number">5</span>
-        min_v <span class="token operator">=</span> <span class="token number">1</span>
+        <span class="token comment" spellcheck="true"># f(0) &lt;= K &lt;= f(5*K)</span>
+        <span class="token comment" spellcheck="true"># 用二分查找在 0 ~ 5*K 之间的一个值n，使得</span>
+        <span class="token comment" spellcheck="true"># f(n) = K，如果找到就可返回5，否则返回0</span>
+        min_v <span class="token operator">=</span> <span class="token number">0</span>
         max_v <span class="token operator">=</span> <span class="token number">5</span><span class="token operator">*</span>K
         <span class="token keyword">while</span> min_v <span class="token operator">&lt;=</span> max_v<span class="token punctuation">:</span>
             mid_v <span class="token operator">=</span> <span class="token punctuation">(</span>min_v<span class="token operator">+</span>max_v<span class="token punctuation">)</span><span class="token operator">//</span><span class="token number">2</span>
@@ -291,10 +299,18 @@ code.language-yaml {
             <span class="token keyword">else</span><span class="token punctuation">:</span>
                 <span class="token keyword">return</span> <span class="token number">5</span>
         <span class="token keyword">return</span> <span class="token number">0</span>
-</pre>
+</pre><h2 class="mume-header" id="%E6%80%BB%E7%BB%93">总结</h2>
+
+<p>计算机擅长枚举，主要我们缩小可能的取之空间，选择合适的查找算法，能够将一些复杂的搜索/优化问题变得简单。</p>
+<p>另外，不要把题目变成数学问题，将规律总结出来的确能够大大减小算法的时间复杂度，甚至可能是降到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>，但这种方式通常非常费时。</p>
+
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#793-preimage-size-of-factorial-zeroes-function">793. Preimage Size of Factorial Zeroes Function</a></li>
+<li><a href="#793-preimage-size-of-factorial-zeroes-function">793. Preimage Size of Factorial Zeroes Function</a>
+<ul>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
 </ul>
 </div>
       <a id="sidebar-toc-btn">≡</a>
