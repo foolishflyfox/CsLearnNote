@@ -24,6 +24,7 @@
 
 - 编辑神器 ：VsCode/Atom + [Markdown Preview Enhance](https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/code-chunk)
 - [Huoty's Blog : Linux 下 grep 命令的正则表达式规范](http://kuanghy.github.io/2015/10/26/grep-regex)
+- [Dot 语言总结](/Editor/DotLanguage.html)
 
 ## LeetCode
 

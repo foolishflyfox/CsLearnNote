@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>793_PreimageSizeofFactorialZeroesFunction</title>
+      <title>Search</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -243,72 +243,60 @@ code.language-yaml {
 <span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
 <hr class="title_separator">
 <br>
-<h1 class="mume-header" id="793-preimage-size-of-factorial-zeroes-function">793. Preimage Size of Factorial Zeroes Function</h1>
+<h1 class="mume-header" id="%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98">人工智能——搜索问题</h1>
 
-<p>Let <code>f(x)</code> be the number of zeroes at the end of <code>x!</code>. (Recall that <code>x! = 1 * 2 * 3 * ... * x</code>, and by convention, <code>0! = 1</code>.)</p>
-<p>For example, <code>f(3) = 0</code> because 3! = 6 has no zeroes at the end, while <code>f(11) = 2</code> because 11! = 39916800 has 2 zeroes at the end. Given <code>K</code>, find how many non-negative integers <code>x</code>have the property that <code>f(x) = K</code>.</p>
 <blockquote>
-<p><strong>Example 1:</strong><br>
-<strong>Input:</strong> K = 0<br>
-<strong>Output:</strong> 5<br>
-<strong>Explanation:</strong> 0!, 1!, 2!, 3!, and 4! end with K = 0 zeroes.</p>
+<p>在本篇文章中将要讲解所有的图搜索问题，并附上相关的代码，文章较长，请耐心阅读，最好配合代码进行试验。</p>
 </blockquote>
-<blockquote>
-<p><strong>Example 2:</strong><br>
-<strong>Input:</strong> K = 5<br>
-<strong>Output:</strong> 0<br>
-<strong>Explanation:</strong> There is no x such that x! ends in K = 5 zeroes.</p>
-</blockquote>
-<p><strong>Note:</strong></p>
-<ul>
-<li><code>K</code> will be an integer in the range <code>[0, 10^9]</code>.</li>
-</ul>
-<hr>
-<p>如果存在<code>f(x)</code>使得<code>f(x)=K</code>,如<code>f(0)=0</code>，则必有<code>f(1) = f(2) = f(3) = f(4) = 0</code>，因为连续的5个数中，必定只有一个是5的倍数，而确定<code>x!</code>结果最后0的个数，只需要计算其中因子5的个数即可。因此输出的结果只有两种，0或者5。</p>
-<p>该题目原来的思路得到一个数组<code>[0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 12, 13, ...]</code>，其中的每个元素都是可能的<code>K</code>值，根据得到的数组总结出一个关于<code>K</code>的规律，然后根据该规律计算任意给定的<code>K</code>值是否在该数组中，如果在该数组中返回 5，否则返回 0。</p>
-<p>其中找规律就非常麻烦，这已经是一个数学问题了。需要有元素个数足够的数组，这样才能找到正确的规律，如果数组中的元素错误，那么根本不可能找到其中的规律或者是找到错误的规律；并且中间过程中有点错误就可能导致规律不正确。</p>
-<p>上面的思路类似于人工智能前期的专家系统，通过人工找到一定的规律（“知识”）并创建一个智能体，将人工找到的“知识”输入到智能体中。而这样一个小题目找规律就比较麻烦了，更何况是复杂的系统呢。因此，专家系统的模型构建非常困难也是情有可原的。</p>
-<p>另一种思路是寻找一个<code>n</code>，使得<code>f(n)=K</code>，如果能找到，就返回5，找不到就返回0。如果取<code>n</code>从0开始，而<code>K</code>的值如果是非常大，可以想象如果n每次都加1，直到<code>f(n)&gt;=K</code>结束，这一过程的时间复杂度非常高，所以刚开始我就把这种思路给否定了。不过，如果能够将寻找的效率提高（如使用二分查找），而且就算<code>f(n)</code>时并不一定要计算出<code>n!</code>，通过算法加快<code>f(n)</code>的计算，那么时间复杂度能够大大降低。所以有了下面的代码：</p>
-<p>Solution:</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">preimageSizeFZF</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> K<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token triple-quoted-string string">"""
-        :type K: int
-        :rtype: int
-        """</span>
-        <span class="token comment" spellcheck="true"># 该函数判断 n! 后面有多少个0，不用计算 n!</span>
-        <span class="token keyword">def</span> <span class="token function">nzero</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
-            cnt <span class="token operator">=</span> <span class="token number">0</span>
-            x <span class="token operator">=</span> <span class="token number">5</span>
-            <span class="token keyword">while</span> x <span class="token operator">&lt;=</span> n<span class="token punctuation">:</span>
-                cnt <span class="token operator">+=</span> n<span class="token operator">//</span>x
-                x <span class="token operator">*=</span> <span class="token number">5</span>
-            <span class="token keyword">return</span> cnt
-        <span class="token comment" spellcheck="true"># f(0) &lt;= K &lt;= f(5*K)</span>
-        <span class="token comment" spellcheck="true"># 用二分查找在 0 ~ 5*K 之间的一个值n，使得</span>
-        <span class="token comment" spellcheck="true"># f(n) = K，如果找到就可返回5，否则返回0</span>
-        min_v <span class="token operator">=</span> <span class="token number">0</span>
-        max_v <span class="token operator">=</span> <span class="token number">5</span><span class="token operator">*</span>K
-        <span class="token keyword">while</span> min_v <span class="token operator">&lt;=</span> max_v<span class="token punctuation">:</span>
-            mid_v <span class="token operator">=</span> <span class="token punctuation">(</span>min_v<span class="token operator">+</span>max_v<span class="token punctuation">)</span><span class="token operator">//</span><span class="token number">2</span>
-            mid_zeros <span class="token operator">=</span> nzero<span class="token punctuation">(</span>mid_v<span class="token punctuation">)</span>
-            <span class="token keyword">if</span> mid_zeros <span class="token operator">&lt;</span> K<span class="token punctuation">:</span>
-                min_v <span class="token operator">=</span> mid_v <span class="token operator">+</span> <span class="token number">1</span>
-            <span class="token keyword">elif</span> mid_zeros <span class="token operator">></span> K<span class="token punctuation">:</span>
-                max_v <span class="token operator">=</span> mid_v <span class="token operator">-</span> <span class="token number">1</span>
-            <span class="token keyword">else</span><span class="token punctuation">:</span>
-                <span class="token keyword">return</span> <span class="token number">5</span>
-        <span class="token keyword">return</span> <span class="token number">0</span>
-</pre><h2 class="mume-header" id="%E6%80%BB%E7%BB%93">总结</h2>
+<p>搜索问题通常出现在图相关的算法中，我们需要对图进行搜索，实现需要知道图有几种，它们在计算机中如何表示。</p>
+<h2 class="mume-header" id="%E5%9B%BE">图</h2>
 
-<p>计算机擅长枚举，只要我们缩小可能的取值空间，选择合适的查找算法，就能够将一些复杂的搜索/优化问题变得简单。</p>
-<p>另外，不要把题目变成数学问题，将规律总结出来的确能够大大减小算法的时间复杂度，甚至可能是降到 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span>，但这种方式通常非常费时。</p>
-
+<p>图根据节点之间的边是否有方向可以分为有向图和无向图。而边也可以设置一个数值，表示节点之间的“距离”，称为权值。</p>
+<p>如下图是一个有向图，其边上带权值：</p>
+<p engine="circo"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="188pt" height="49pt" viewBox="0.00 0.00 188.00 48.67" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 44.6682)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-44.6682 184,-44.6682 184,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="153" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="153" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M52.802,-23.5708C71.3179,-24.9104 96.5125,-25.1086 117.0051,-24.1655"></path>
+<polygon fill="#000000" stroke="#000000" points="117.4535,-27.6454 127.2325,-23.5683 117.0454,-20.6573 117.4535,-27.6454"></polygon>
+<text text-anchor="middle" x="77.9035" y="-28.0682" font-family="Times,serif" font-size="14.00" fill="#000000">10</text>
+</g>
+<!-- B&#45;&gt;A -->
+<g id="edge2" class="edge">
+<title>B&#45;&gt;A</title>
+<path fill="none" stroke="#000000" d="M127.198,-12.4292C108.6821,-11.0896 83.4875,-10.8914 62.9949,-11.8345"></path>
+<polygon fill="#000000" stroke="#000000" points="62.5465,-8.3546 52.7675,-12.4317 62.9546,-15.3427 62.5465,-8.3546"></polygon>
+<text text-anchor="middle" x="91.5965" y="-16.3318" font-family="Times,serif" font-size="14.00" fill="#000000">7</text>
+</g>
+</g>
+</svg>
+</p>
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#793-preimage-size-of-factorial-zeroes-function">793. Preimage Size of Factorial Zeroes Function</a>
+<li><a href="#%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98">人工智能——搜索问题</a>
 <ul>
-<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+<li><a href="#%E5%9B%BE">图</a></li>
 </ul>
 </li>
 </ul>

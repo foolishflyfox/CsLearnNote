@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>DotLanguage</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="dot-%E8%AF%AD%E8%A8%80%E6%80%BB%E7%BB%93">Dot 语言总结</h1>
+
+<p><small>本篇博客可能是图最多的一篇吧。</small></p>
+<blockquote>
+<p><strong>参考：</strong></p>
+<ul>
+<li><a href="https://github.com/uolcano/blog/issues/13">DOT语言学习笔记</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/DOT%E8%AF%AD%E8%A8%80">DOT语言-维基百科</a></li>
+<li><a href="http://www.graphviz.org/pdf/dotguide.pdf">dotguide.pdf</a></li>
+<li><a href="https://frapples.github.io/2016/11/16/dot-language/">dot绘图语言</a></li>
+</ul>
+</blockquote>
+<p>可以通过 <a href="https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/diagrams?id=graphviz">vscode/atom + markdown preview enhance</a>构建能够识别Dot语言的编辑器，具体方法请自行Google。本内容摘要讲解 Dot 语言的语法。</p>
+<h2 class="mume-header" id="5%E7%A7%8D%E5%BC%95%E6%93%8E">5种引擎</h2>
+
+<p>Markdown Preview Enhanced 使用 Viz.js 来渲染 dot语言 图形。其支持的引擎有：<code>dot</code>(默认)、<code>circo</code>、<code>neato</code>、<code>twopi</code> 和 <code>osage</code>；</p>
+<p>5中引擎有各自的特点：</p>
+<ul>
+<li><strong>dot</strong> : 节点自上而下进行绘制；</li>
+<li><strong>circo</strong> : 圆环布局</li>
+<li><strong>neato</strong> : 基于 spring-model算法，基于斥力+张力的布局</li>
+<li><strong>twopi</strong> : 径向布局</li>
+<li><strong>osage</strong> : 紧凑型布局</li>
+</ul>
+<p>如代码：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>digraph G{
+    A-&gt;B
+    B-&gt;C
+    B-&gt;D
+    B-&gt;E
+    D-&gt;F
+    A-&gt;F
+}
+</code></pre><p>下面是5种引擎下的显示：</p>
+<h3 class="mume-header" id="dot-%E5%BC%95%E6%93%8E">dot 引擎</h3>
+
+<p>dot 引擎主要用于绘制有向图，也可以绘制无向图。</p>
+<p engine="dot"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="229pt" height="285pt" viewBox="0.00 0.00 229.00 284.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 280.8)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-280.8 225,-280.8 225,4 -4,4"></polygon>
+<text text-anchor="middle" x="110.5" y="-8.2" font-family="Times,serif" font-size="14.00" fill="#000000">dot engine</text>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="194" cy="-258.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="194" y="-254.6" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="131" cy="-186.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="131" y="-182.6" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M180.3299,-243.1771C171.8266,-233.459 160.7387,-220.787 151.2292,-209.9191"></path>
+<polygon fill="#000000" stroke="#000000" points="153.8625,-207.6135 144.6434,-202.3924 148.5944,-212.223 153.8625,-207.6135"></polygon>
+</g>
+<!-- F -->
+<g id="node6" class="node">
+<title>F</title>
+<ellipse fill="none" stroke="#000000" cx="162" cy="-42.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="162" y="-38.6" font-family="Times,serif" font-size="14.00" fill="#000000">F</text>
+</g>
+<!-- A&#45;&gt;F -->
+<g id="edge6" class="edge">
+<title>A&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M200.0867,-241.1391C209.5822,-210.6647 225.0578,-146.6767 207,-96.8 202.6301,-84.7301 194.254,-73.4622 185.9016,-64.375"></path>
+<polygon fill="#000000" stroke="#000000" points="188.1651,-61.6838 178.669,-56.9852 183.1624,-66.5801 188.1651,-61.6838"></polygon>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-114.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-110.6" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>B&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M111.9248,-173.5941C95.7987,-162.4298 72.4959,-146.2971 54.3779,-133.7539"></path>
+<polygon fill="#000000" stroke="#000000" points="56.1685,-130.7367 45.9543,-127.9222 52.184,-136.492 56.1685,-130.7367"></polygon>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="none" stroke="#000000" cx="99" cy="-114.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="99" y="-110.6" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
+</g>
+<!-- B&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>B&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M123.2537,-169.3708C119.5196,-160.9691 114.9596,-150.7091 110.8055,-141.3623"></path>
+<polygon fill="#000000" stroke="#000000" points="113.9348,-139.7853 106.675,-132.0687 107.5381,-142.6283 113.9348,-139.7853"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<ellipse fill="none" stroke="#000000" cx="171" cy="-114.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="171" y="-110.6" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+</g>
+<!-- B&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>B&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M140.4794,-169.737C145.3115,-161.0393 151.2889,-150.2799 156.6696,-140.5948"></path>
+<polygon fill="#000000" stroke="#000000" points="159.7917,-142.1819 161.5886,-131.7405 153.6726,-138.7823 159.7917,-142.1819"></polygon>
+</g>
+<!-- D&#45;&gt;F -->
+<g id="edge5" class="edge">
+<title>D&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M112.6701,-99.1771C121.1734,-89.459 132.2613,-76.787 141.7708,-65.9191"></path>
+<polygon fill="#000000" stroke="#000000" points="144.4056,-68.223 148.3566,-58.3924 139.1375,-63.6135 144.4056,-68.223"></polygon>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="circo-%E5%BC%95%E6%93%8E">circo 引擎</h3>
+
+<p engine="circo"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="310pt" height="229pt" viewBox="0.00 0.00 310.47 229.23" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 225.2282)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-225.2282 306.4684,-225.2282 306.4684,4 -4,4"></polygon>
+<text text-anchor="middle" x="151.2342" y="-8.2" font-family="Times,serif" font-size="14.00" fill="#000000">circo engine</text>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="107.2141" cy="-203.2282" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="107.2141" y="-199.0282" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="187.4282" cy="-123.0141" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="187.4282" y="-118.8141" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M122.3017,-188.1405C134.402,-176.0403 151.5609,-158.8814 165.2285,-145.2137"></path>
+<polygon fill="#000000" stroke="#000000" points="167.812,-147.5801 172.4082,-138.0341 162.8622,-142.6303 167.812,-147.5801"></polygon>
+</g>
+<!-- F -->
+<g id="node6" class="node">
+<title>F</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-123.0141" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-118.8141" font-family="Times,serif" font-size="14.00" fill="#000000">F</text>
+</g>
+<!-- A&#45;&gt;F -->
+<g id="edge6" class="edge">
+<title>A&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M92.1264,-188.1405C80.0262,-176.0403 62.8673,-158.8814 49.1996,-145.2137"></path>
+<polygon fill="#000000" stroke="#000000" points="51.566,-142.6303 42.02,-138.0341 46.6162,-147.5801 51.566,-142.6303"></polygon>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="275.4684" cy="-61.3037" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="275.4684" y="-57.1037" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>B&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M206.0992,-109.9269C218.3553,-101.3362 234.5882,-89.958 248.2696,-80.3683"></path>
+<polygon fill="#000000" stroke="#000000" points="250.6444,-82.9778 256.8242,-74.372 246.6266,-77.2457 250.6444,-82.9778"></polygon>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="none" stroke="#000000" cx="107.2141" cy="-42.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="107.2141" y="-38.6" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
+</g>
+<!-- B&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>B&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M172.3405,-107.9264C160.2403,-95.8262 143.0814,-78.6673 129.4137,-64.9996"></path>
+<polygon fill="#000000" stroke="#000000" points="131.7801,-62.4162 122.2341,-57.82 126.8303,-67.366 131.7801,-62.4162"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<ellipse fill="none" stroke="#000000" cx="275.4684" cy="-184.7245" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="275.4684" y="-180.5245" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+</g>
+<!-- B&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>B&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M206.0992,-136.1013C218.3553,-144.692 234.5882,-156.0702 248.2696,-165.6599"></path>
+<polygon fill="#000000" stroke="#000000" points="246.6266,-168.7825 256.8242,-171.6562 250.6444,-163.0503 246.6266,-168.7825"></polygon>
+</g>
+<!-- D&#45;&gt;F -->
+<g id="edge5" class="edge">
+<title>D&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M92.1264,-57.8877C80.0262,-69.9879 62.8673,-87.1468 49.1996,-100.8145"></path>
+<polygon fill="#000000" stroke="#000000" points="46.6162,-98.4481 42.02,-107.9941 51.566,-103.3979 46.6162,-98.4481"></polygon>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="neato-%E5%BC%95%E6%93%8E">neato 引擎</h3>
+
+<p engine="neato"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="250pt" height="217pt" viewBox="0.00 0.00 250.39 217.45" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 213.452)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-213.452 246.3924,-213.452 246.3924,4 -4,4"></polygon>
+<text text-anchor="middle" x="121.1962" y="-8.2" font-family="Times,serif" font-size="14.00" fill="#000000">neato engine</text>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="60.3652" cy="-106.6613" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="60.3652" y="-102.4613" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="140.5495" cy="-119.2008" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="140.5495" y="-115.0008" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M87.0654,-110.8368C92.5323,-111.6917 98.3746,-112.6054 104.116,-113.5032"></path>
+<polygon fill="#000000" stroke="#000000" points="103.8179,-116.9991 114.2386,-115.0862 104.8995,-110.0831 103.8179,-116.9991"></polygon>
+</g>
+<!-- F -->
+<g id="node6" class="node">
+<title>F</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-177.1228" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-172.9228" font-family="Times,serif" font-size="14.00" fill="#000000">F</text>
+</g>
+<!-- A&#45;&gt;F -->
+<g id="edge6" class="edge">
+<title>A&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M52.1176,-124.0787C48.3196,-132.0995 43.73,-141.7918 39.5187,-150.6855"></path>
+<polygon fill="#000000" stroke="#000000" points="36.2692,-149.3698 35.1527,-159.9057 42.5957,-152.3656 36.2692,-149.3698"></polygon>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="163.269" cy="-42.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="163.269" y="-38.6" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>B&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M145.8189,-101.4809C148.552,-92.29 151.953,-80.8534 155.0246,-70.5242"></path>
+<polygon fill="#000000" stroke="#000000" points="158.4538,-71.2713 157.9495,-60.6885 151.7442,-69.276 158.4538,-71.2713"></polygon>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="none" stroke="#000000" cx="103.5629" cy="-191.452" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="103.5629" y="-187.252" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
+</g>
+<!-- B&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>B&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M131.7842,-136.3233C127.4263,-144.8362 122.0609,-155.3172 117.1827,-164.8465"></path>
+<polygon fill="#000000" stroke="#000000" points="113.9636,-163.4541 112.5222,-173.9505 120.1946,-166.6439 113.9636,-163.4541"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<ellipse fill="none" stroke="#000000" cx="215.3924" cy="-146.9894" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="215.3924" y="-142.7894" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+</g>
+<!-- B&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>B&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M164.2303,-127.9933C169.827,-130.0713 175.9,-132.3261 181.8414,-134.5321"></path>
+<polygon fill="#000000" stroke="#000000" points="181.0159,-137.959 191.6088,-138.1587 183.4524,-131.3968 181.0159,-137.959"></polygon>
+</g>
+<!-- D&#45;&gt;F -->
+<g id="edge5" class="edge">
+<title>D&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M77.2143,-186.5207C72.713,-185.6783 67.9671,-184.79 63.2621,-183.9095"></path>
+<polygon fill="#000000" stroke="#000000" points="63.611,-180.4141 53.1378,-182.0146 62.3233,-187.2946 63.611,-180.4141"></polygon>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="twopi-%E5%BC%95%E6%93%8E">twopi 引擎</h3>
+
+<p engine="twopi"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="386pt" height="318pt" viewBox="0.00 0.00 386.00 318.22" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 314.2153)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-314.2153 382,-314.2153 382,4 -4,4"></polygon>
+<text text-anchor="middle" x="189" y="-8.2" font-family="Times,serif" font-size="14.00" fill="#000000">twopi engine</text>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="207" cy="-167.5077" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="207" y="-163.3077" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="171" cy="-229.8615" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="171" y="-225.6615" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M197.1628,-184.5461C193.6706,-190.5949 189.6582,-197.5445 185.8415,-204.1553"></path>
+<polygon fill="#000000" stroke="#000000" points="182.7942,-202.4333 180.8253,-212.8436 188.8564,-205.9334 182.7942,-202.4333"></polygon>
+</g>
+<!-- F -->
+<g id="node6" class="node">
+<title>F</title>
+<ellipse fill="none" stroke="#000000" cx="243" cy="-105.1538" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="243" y="-100.9538" font-family="Times,serif" font-size="14.00" fill="#000000">F</text>
+</g>
+<!-- A&#45;&gt;F -->
+<g id="edge6" class="edge">
+<title>A&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M216.8372,-150.4692C220.3294,-144.4204 224.3418,-137.4708 228.1585,-130.86"></path>
+<polygon fill="#000000" stroke="#000000" points="231.2058,-132.582 233.1747,-122.1717 225.1436,-129.0819 231.2058,-132.582"></polygon>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="351" cy="-292.2153" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="351" y="-288.0153" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>B&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M195.2756,-238.2708C226.7652,-249.1791 281.8577,-268.2637 317.3632,-280.5632"></path>
+<polygon fill="#000000" stroke="#000000" points="316.2274,-283.8737 326.8222,-283.8399 318.5188,-277.2594 316.2274,-283.8737"></polygon>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="none" stroke="#000000" cx="279" cy="-42.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="279" y="-38.6" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
+</g>
+<!-- B&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>B&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M180.7748,-212.9311C199.6825,-180.182 241.3799,-107.9598 263.8865,-68.9773"></path>
+<polygon fill="#000000" stroke="#000000" points="267.2006,-70.2372 269.1695,-59.8269 261.1384,-66.7372 267.2006,-70.2372"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-105.1538" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-100.9538" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+</g>
+<!-- B&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>B&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M154.4814,-215.5559C129.2264,-193.6845 80.8635,-151.801 51.5097,-126.3799"></path>
+<polygon fill="#000000" stroke="#000000" points="53.6202,-123.5775 43.7695,-119.6767 49.0376,-128.869 53.6202,-123.5775"></polygon>
+</g>
+<!-- D&#45;&gt;F -->
+<g id="edge5" class="edge">
+<title>D&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M269.1628,-59.8385C265.6706,-65.8872 261.6582,-72.8368 257.8415,-79.4476"></path>
+<polygon fill="#000000" stroke="#000000" points="254.7942,-77.7257 252.8253,-88.136 260.8564,-81.2257 254.7942,-77.7257"></polygon>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="osage-%E5%BC%95%E6%93%8E">osage 引擎</h3>
+
+<p engine="osage"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="178pt" height="109pt" viewBox="0.00 0.00 178.00 108.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 104.8)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-104.8 174,-104.8 174,4 -4,4"></polygon>
+<text text-anchor="middle" x="85" y="-8.2" font-family="Times,serif" font-size="14.00" fill="#000000">osage engine</text>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-82.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-78.6" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="85" cy="-82.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="85" y="-78.6" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M54.3016,-82.8C54.4486,-82.8 54.5955,-82.8 54.7425,-82.8"></path>
+<polygon fill="#000000" stroke="#000000" points="47.831,-86.3003 57.8309,-82.8 47.8308,-79.3003 47.831,-86.3003"></polygon>
+</g>
+<!-- F -->
+<g id="node6" class="node">
+<title>F</title>
+<ellipse fill="none" stroke="#000000" cx="143" cy="-42.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="143" y="-38.6" font-family="Times,serif" font-size="14.00" fill="#000000">F</text>
+</g>
+<!-- A&#45;&gt;F -->
+<g id="edge6" class="edge">
+<title>A&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M51.0353,-74.512C67.9108,-68.6928 90.7094,-60.8313 109.3844,-54.3916"></path>
+<polygon fill="#000000" stroke="#000000" points="110.6828,-57.6462 118.9955,-51.0774 108.4008,-51.0286 110.6828,-57.6462"></polygon>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="143" cy="-82.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="143" y="-78.6" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>B&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M112.3016,-82.8C112.4486,-82.8 112.5955,-82.8 112.7425,-82.8"></path>
+<polygon fill="#000000" stroke="#000000" points="105.831,-86.3003 115.8309,-82.8 105.8308,-79.3003 105.831,-86.3003"></polygon>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-42.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-38.6" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
+</g>
+<!-- B&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>B&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M66.0086,-69.7025C62.2651,-67.1207 58.2679,-64.364 54.3127,-61.6363"></path>
+<polygon fill="#000000" stroke="#000000" points="56.0552,-58.5864 45.8359,-55.7903 52.081,-64.3489 56.0552,-58.5864"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<ellipse fill="none" stroke="#000000" cx="85" cy="-42.8" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="85" y="-38.6" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+</g>
+<!-- B&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>B&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M85,-64.6726C85,-64.5279 85,-64.383 85,-64.2381"></path>
+<polygon fill="#000000" stroke="#000000" points="88.5003,-71.1901 85,-61.1902 81.5003,-71.1903 88.5003,-71.1901"></polygon>
+</g>
+<!-- D&#45;&gt;F -->
+<g id="edge5" class="edge">
+<title>D&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M54.1968,-42.8C69.6135,-42.8 89.1204,-42.8 105.9223,-42.8"></path>
+<polygon fill="#000000" stroke="#000000" points="105.9736,-46.3001 115.9735,-42.8 105.9735,-39.3001 105.9736,-46.3001"></polygon>
+</g>
+</g>
+</svg>
+</p><p>下面的语法使用默认的 <code>dot</code> 引擎；</p>
+<h2 class="mume-header" id="dot%E8%AF%AD%E8%A8%80%E8%AF%AD%E6%B3%95">dot语言语法</h2>
+
+<h3 class="mume-header" id="%E7%BB%98%E5%88%B6%E6%9C%89%E5%90%91%E5%9B%BE">绘制有向图</h3>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    A-&gt;B
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-112 58,-112 58,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-90" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-85.8" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M27,-71.8314C27,-64.131 27,-54.9743 27,-46.4166"></path>
+<polygon fill="#000000" stroke="#000000" points="30.5001,-46.4132 27,-36.4133 23.5001,-46.4133 30.5001,-46.4132"></polygon>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="%E7%BB%98%E5%88%B6%E6%97%A0%E5%90%91%E5%9B%BE">绘制无向图</h3>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>graph G{
+    A--B
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="62pt" height="116pt" viewBox="0.00 0.00 62.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-112 58,-112 58,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-90" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-85.8" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&#45;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&#45;B</title>
+<path fill="none" stroke="#000000" d="M27,-71.8314C27,-61 27,-47.2876 27,-36.4133"></path>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E5%88%B0%E5%A4%9A%E4%B8%AA%E8%8A%82%E7%82%B9">一个节点到多个节点</h3>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>graph G{
+    A--{B, C}
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="134pt" height="116pt" viewBox="0.00 0.00 134.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-112 130,-112 130,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="63" cy="-90" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="63" y="-85.8" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- A&#45;&#45;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&#45;B</title>
+<path fill="none" stroke="#000000" d="M54.2854,-72.5708C48.6253,-61.2506 41.2784,-46.5568 35.6343,-35.2687"></path>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="99" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="99" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- A&#45;&#45;C -->
+<g id="edge2" class="edge">
+<title>A&#45;&#45;C</title>
+<path fill="none" stroke="#000000" d="M71.7146,-72.5708C77.3747,-61.2506 84.7216,-46.5568 90.3657,-35.2687"></path>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="%E5%A4%9A%E4%B8%AA%E8%8A%82%E7%82%B9%E5%88%B0%E5%A4%9A%E4%B8%AA%E8%8A%82%E7%82%B9">多个节点到多个节点</h3>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    {A,B}-&gt;{A,C,D,E}
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="222pt" height="188pt" viewBox="0.00 0.00 222.00 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-184 218,-184 218,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="79" cy="-90" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="79" y="-85.8" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- A&#45;&gt;A -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;A</title>
+<path fill="none" stroke="#000000" d="M98.895,-102.4321C111.688,-105.6753 124,-101.5313 124,-90 124,-81.6218 117.5006,-77.1433 109.0395,-76.5644"></path>
+<polygon fill="#000000" stroke="#000000" points="108.5019,-73.1004 98.895,-77.5679 109.191,-80.0665 108.5019,-73.1004"></polygon>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- A&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>A&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M67.2004,-73.6621C60.5519,-64.4564 52.1163,-52.7764 44.6911,-42.4953"></path>
+<polygon fill="#000000" stroke="#000000" points="47.4452,-40.3308 38.7529,-34.2733 41.7705,-44.4293 47.4452,-40.3308"></polygon>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="none" stroke="#000000" cx="104" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="104" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
+</g>
+<!-- A&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>A&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M85.1798,-72.2022C87.9953,-64.0936 91.3913,-54.3129 94.5191,-45.3049"></path>
+<polygon fill="#000000" stroke="#000000" points="97.9175,-46.1878 97.8913,-35.593 91.3048,-43.8917 97.9175,-46.1878"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<ellipse fill="none" stroke="#000000" cx="187" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="187" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+</g>
+<!-- A&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>A&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M98.3082,-77.1278C115.3555,-65.763 140.4019,-49.0654 159.5344,-36.3104"></path>
+<polygon fill="#000000" stroke="#000000" points="161.4799,-39.2199 167.8589,-30.7607 157.5969,-33.3956 161.4799,-39.2199"></polygon>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="115" cy="-162" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="115" y="-157.8" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- B&#45;&gt;A -->
+<g id="edge5" class="edge">
+<title>B&#45;&gt;A</title>
+<path fill="none" stroke="#000000" d="M106.2854,-144.5708C102.0403,-136.0807 96.8464,-125.6929 92.1337,-116.2674"></path>
+<polygon fill="#000000" stroke="#000000" points="95.237,-114.6477 87.6343,-107.2687 88.976,-117.7782 95.237,-114.6477"></polygon>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge6" class="edge">
+<title>B&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M92.8264,-151.2303C76.3952,-142.0572 54.8734,-127.2958 43,-108 31.6146,-89.4972 27.8305,-65.0473 26.7739,-46.3015"></path>
+<polygon fill="#000000" stroke="#000000" points="30.2711,-46.1556 26.4332,-36.2803 23.2751,-46.3935 30.2711,-46.1556"></polygon>
+</g>
+<!-- B&#45;&gt;D -->
+<g id="edge7" class="edge">
+<title>B&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M123.0453,-144.6338C130.4161,-126.425 139.2968,-97.034 133,-72 130.5218,-62.1477 125.8589,-52.1338 120.9854,-43.449"></path>
+<polygon fill="#000000" stroke="#000000" points="123.8419,-41.406 115.7078,-34.6173 117.833,-44.9968 123.8419,-41.406"></polygon>
+</g>
+<!-- B&#45;&gt;E -->
+<g id="edge8" class="edge">
+<title>B&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M126.0245,-145.3256C132.7543,-134.8271 141.3193,-120.8724 148,-108 158.7223,-87.3403 169.113,-63.0846 176.4694,-44.9629"></path>
+<polygon fill="#000000" stroke="#000000" points="179.7552,-46.1724 180.2269,-35.5881 173.2577,-43.5681 179.7552,-46.1724"></polygon>
+</g>
+</g>
+</svg>
+</p><h3 class="mume-header" id="%E9%93%BE">链</h3>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    {A,B}-&gt;C-&gt;{D,E}
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="134pt" height="188pt" viewBox="0.00 0.00 134.00 188.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 184)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-184 130,-184 130,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-162" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-157.8" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<ellipse fill="none" stroke="#000000" cx="63" cy="-90" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="63" y="-85.8" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+</g>
+<!-- A&#45;&gt;C -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M35.7146,-144.5708C39.9597,-136.0807 45.1536,-125.6929 49.8663,-116.2674"></path>
+<polygon fill="#000000" stroke="#000000" points="53.024,-117.7782 54.3657,-107.2687 46.763,-114.6477 53.024,-117.7782"></polygon>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="99" cy="-162" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="99" y="-157.8" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+</g>
+<!-- B&#45;&gt;C -->
+<g id="edge2" class="edge">
+<title>B&#45;&gt;C</title>
+<path fill="none" stroke="#000000" d="M90.2854,-144.5708C86.0403,-136.0807 80.8464,-125.6929 76.1337,-116.2674"></path>
+<polygon fill="#000000" stroke="#000000" points="79.237,-114.6477 71.6343,-107.2687 72.976,-117.7782 79.237,-114.6477"></polygon>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<ellipse fill="none" stroke="#000000" cx="27" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="27" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">D</text>
+</g>
+<!-- C&#45;&gt;D -->
+<g id="edge3" class="edge">
+<title>C&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M54.2854,-72.5708C50.0403,-64.0807 44.8464,-53.6929 40.1337,-44.2674"></path>
+<polygon fill="#000000" stroke="#000000" points="43.237,-42.6477 35.6343,-35.2687 36.976,-45.7782 43.237,-42.6477"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<ellipse fill="none" stroke="#000000" cx="99" cy="-18" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="99" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+</g>
+<!-- C&#45;&gt;E -->
+<g id="edge4" class="edge">
+<title>C&#45;&gt;E</title>
+<path fill="none" stroke="#000000" d="M71.7146,-72.5708C75.9597,-64.0807 81.1536,-53.6929 85.8663,-44.2674"></path>
+<polygon fill="#000000" stroke="#000000" points="89.024,-45.7782 90.3657,-35.2687 82.763,-42.6477 89.024,-45.7782"></polygon>
+</g>
+</g>
+</svg>
+</p><h2 class="mume-header" id="%E5%AF%B9%E5%9B%BE%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0%E8%BF%9B%E8%A1%8C%E8%AE%BE%E7%BD%AE">对图中的元素进行设置</h2>
+
+<h3 class="mume-header" id="%E8%8A%82%E7%82%B9%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE">节点属性设置</h3>
+
+<h4 class="mume-header" id="%E8%AE%BE%E7%BD%AE%E8%8A%82%E7%82%B9%E6%A0%87%E7%AD%BE">设置节点标签</h4>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    A [label=&quot;&#x5BDD;&#x5BA4;&quot;]
+    B [label=&quot;&#x6559;&#x5BA4;&quot;]
+    A-&gt;B
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="69pt" height="116pt" viewBox="0.00 0.00 69.26 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-112 65.2551,-112 65.2551,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="30.6276" cy="-90" rx="30.7556" ry="18"></ellipse>
+<text text-anchor="middle" x="30.6276" y="-85.8" font-family="Times,serif" font-size="14.00" fill="#000000">寝室</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="30.6276" cy="-18" rx="27.8481" ry="18"></ellipse>
+<text text-anchor="middle" x="30.6276" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">教室</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M30.6276,-71.8314C30.6276,-64.131 30.6276,-54.9743 30.6276,-46.4166"></path>
+<polygon fill="#000000" stroke="#000000" points="34.1277,-46.4132 30.6276,-36.4133 27.1277,-46.4133 34.1277,-46.4132"></polygon>
+</g>
+</g>
+</svg>
+</p><h4 class="mume-header" id="%E8%AE%BE%E7%BD%AE%E8%8A%82%E7%82%B9%E5%BD%A2%E7%8A%B6">设置节点形状</h4>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    A [label=&quot;&#x5BDD;&#x5BA4;&quot;, shape=circle]
+    B [label=&quot;&#x6559;&#x5BA4;&quot;, shape=box]
+    A-&gt;B
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="69pt" height="141pt" viewBox="0.00 0.00 69.26 141.26" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 137.2551)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-137.2551 65.2551,-137.2551 65.2551,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="30.6276" cy="-102.6276" rx="30.7556" ry="30.7556"></ellipse>
+<text text-anchor="middle" x="30.6276" y="-98.4276" font-family="Times,serif" font-size="14.00" fill="#000000">寝室</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<polygon fill="none" stroke="#000000" points="57.6276,-36 3.6276,-36 3.6276,0 57.6276,0 57.6276,-36"></polygon>
+<text text-anchor="middle" x="30.6276" y="-13.8" font-family="Times,serif" font-size="14.00" fill="#000000">教室</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M30.6276,-71.5959C30.6276,-63.3303 30.6276,-54.445 30.6276,-46.3323"></path>
+<polygon fill="#000000" stroke="#000000" points="34.1277,-46.2294 30.6276,-36.2295 27.1277,-46.2295 34.1277,-46.2294"></polygon>
+</g>
+</g>
+</svg>
+</p><p>形状有很多种，总结如下：</p>
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    A [label=&quot;&#x692D;&#x5706;(&#x9ED8;&#x8BA4;)&quot;]
+    B [label=&quot;&#x5706;&quot;, shape=circle]
+    C [label=&quot;&#x77E9;&#x5F62;&quot;, shape=box]
+    D [label=&quot;7&#x8FB9;&#x5F62;&quot;, sides=7, shape=polygon]
+    E [label=&quot;&#x83F1;&#x5F62;&quot;, shape=diamond]
+    F [label=&quot;&#x65E0;&#x8FB9;&#x6846;&quot;, shape=none]
+    G [label=&quot;&#x53CC;&#x73AF;&quot;, shape=doublecircle]
+    H [label=&quot;&#x6587;&#x4EF6;&#x5939;&quot;,shape=folder]
+    A-&gt;B
+    C-&gt;D
+    E-&gt;F
+    G-&gt;H
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="416pt" height="146pt" viewBox="0.00 0.00 415.52 145.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 141.5104)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-141.5104 411.5191,-141.5104 411.5191,4 -4,4"></polygon>
+<!-- A -->
+<g id="node1" class="node">
+<title>A</title>
+<ellipse fill="none" stroke="#000000" cx="59.0431" cy="-105.0344" rx="59.0863" ry="18"></ellipse>
+<text text-anchor="middle" x="59.0431" y="-100.8344" font-family="Times,serif" font-size="14.00" fill="#000000">椭圆(默认)</text>
+</g>
+<!-- B -->
+<g id="node2" class="node">
+<title>B</title>
+<ellipse fill="none" stroke="#000000" cx="59.0431" cy="-18.2792" rx="18.0611" ry="18.0611"></ellipse>
+<text text-anchor="middle" x="59.0431" y="-14.0792" font-family="Times,serif" font-size="14.00" fill="#000000">圆</text>
+</g>
+<!-- A&#45;&gt;B -->
+<g id="edge1" class="edge">
+<title>A&#45;&gt;B</title>
+<path fill="none" stroke="#000000" d="M59.0431,-86.6359C59.0431,-75.1338 59.0431,-60.0772 59.0431,-47.0234"></path>
+<polygon fill="#000000" stroke="#000000" points="62.5432,-46.6512 59.0431,-36.6512 55.5432,-46.6513 62.5432,-46.6512"></polygon>
+</g>
+<!-- C -->
+<g id="node3" class="node">
+<title>C</title>
+<polygon fill="none" stroke="#000000" points="190.0431,-123.0344 136.0431,-123.0344 136.0431,-87.0344 190.0431,-87.0344 190.0431,-123.0344"></polygon>
+<text text-anchor="middle" x="163.0431" y="-100.8344" font-family="Times,serif" font-size="14.00" fill="#000000">矩形</text>
+</g>
+<!-- D -->
+<g id="node4" class="node">
+<title>D</title>
+<polygon fill="none" stroke="#000000" points="213.2463,-14.2738 203.3029,-29.502 163.0431,-36.2792 122.7833,-29.502 112.8399,-14.2738 140.7006,-2.0618 185.3856,-2.0618 213.2463,-14.2738"></polygon>
+<text text-anchor="middle" x="163.0431" y="-14.0792" font-family="Times,serif" font-size="14.00" fill="#000000">7边形</text>
+</g>
+<!-- C&#45;&gt;D -->
+<g id="edge2" class="edge">
+<title>C&#45;&gt;D</title>
+<path fill="none" stroke="#000000" d="M163.0431,-86.6359C163.0431,-74.9403 163.0431,-59.5696 163.0431,-46.3663"></path>
+<polygon fill="#000000" stroke="#000000" points="166.5432,-46.3537 163.0431,-36.3538 159.5432,-46.3538 166.5432,-46.3537"></polygon>
+</g>
+<!-- E -->
+<g id="node5" class="node">
+<title>E</title>
+<polygon fill="none" stroke="#000000" points="266.0431,-123.0344 207.856,-105.0344 266.0431,-87.0344 324.2302,-105.0344 266.0431,-123.0344"></polygon>
+<text text-anchor="middle" x="266.0431" y="-100.8344" font-family="Times,serif" font-size="14.00" fill="#000000">菱形</text>
+</g>
+<!-- F -->
+<g id="node6" class="node">
+<title>F</title>
+<text text-anchor="middle" x="266.0431" y="-14.0792" font-family="Times,serif" font-size="14.00" fill="#000000">无边框</text>
+</g>
+<!-- E&#45;&gt;F -->
+<g id="edge3" class="edge">
+<title>E&#45;&gt;F</title>
+<path fill="none" stroke="#000000" d="M266.0431,-86.6359C266.0431,-74.9403 266.0431,-59.5696 266.0431,-46.3663"></path>
+<polygon fill="#000000" stroke="#000000" points="269.5432,-46.3537 266.0431,-36.3538 262.5432,-46.3538 269.5432,-46.3537"></polygon>
+</g>
+<!-- G -->
+<g id="node7" class="node">
+<title>G</title>
+<ellipse fill="none" stroke="#000000" cx="375.0431" cy="-105.0344" rx="28.4549" ry="28.4549"></ellipse>
+<ellipse fill="none" stroke="#000000" cx="375.0431" cy="-105.0344" rx="32.452" ry="32.452"></ellipse>
+<text text-anchor="middle" x="375.0431" y="-100.8344" font-family="Times,serif" font-size="14.00" fill="#000000">双环</text>
+</g>
+<!-- H -->
+<g id="node8" class="node">
+<title>H</title>
+<polygon fill="none" stroke="#000000" points="402.9363,-36.2792 399.9363,-40.2792 378.9363,-40.2792 375.9363,-36.2792 347.1499,-36.2792 347.1499,-.2792 402.9363,-.2792 402.9363,-36.2792"></polygon>
+<text text-anchor="middle" x="375.0431" y="-14.0792" font-family="Times,serif" font-size="14.00" fill="#000000">文件夹</text>
+</g>
+<!-- G&#45;&gt;H -->
+<g id="edge4" class="edge">
+<title>G&#45;&gt;H</title>
+<path fill="none" stroke="#000000" d="M375.0431,-72.236C375.0431,-63.8284 375.0431,-54.8561 375.0431,-46.6902"></path>
+<polygon fill="#000000" stroke="#000000" points="378.5432,-46.5353 375.0431,-36.5354 371.5432,-46.5354 378.5432,-46.5353"></polygon>
+</g>
+</g>
+</svg>
+</p><p>实在太多了，你想要的所有形状，包括颜色、大小、背景色等等，都可以设置，详情请移步：<a href="https://www.graphviz.org/doc/info/shapes.html">https://www.graphviz.org/doc/info/shapes.html</a> ；</p>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#dot-%E8%AF%AD%E8%A8%80%E6%80%BB%E7%BB%93">Dot 语言总结</a>
+<ul>
+<li><a href="#5%E7%A7%8D%E5%BC%95%E6%93%8E">5种引擎</a>
+<ul>
+<li><a href="#dot-%E5%BC%95%E6%93%8E">dot 引擎</a></li>
+<li><a href="#circo-%E5%BC%95%E6%93%8E">circo 引擎</a></li>
+<li><a href="#neato-%E5%BC%95%E6%93%8E">neato 引擎</a></li>
+<li><a href="#twopi-%E5%BC%95%E6%93%8E">twopi 引擎</a></li>
+<li><a href="#osage-%E5%BC%95%E6%93%8E">osage 引擎</a></li>
+</ul>
+</li>
+<li><a href="#dot%E8%AF%AD%E8%A8%80%E8%AF%AD%E6%B3%95">dot语言语法</a>
+<ul>
+<li><a href="#%E7%BB%98%E5%88%B6%E6%9C%89%E5%90%91%E5%9B%BE">绘制有向图</a></li>
+<li><a href="#%E7%BB%98%E5%88%B6%E6%97%A0%E5%90%91%E5%9B%BE">绘制无向图</a></li>
+<li><a href="#%E4%B8%80%E4%B8%AA%E8%8A%82%E7%82%B9%E5%88%B0%E5%A4%9A%E4%B8%AA%E8%8A%82%E7%82%B9">一个节点到多个节点</a></li>
+<li><a href="#%E5%A4%9A%E4%B8%AA%E8%8A%82%E7%82%B9%E5%88%B0%E5%A4%9A%E4%B8%AA%E8%8A%82%E7%82%B9">多个节点到多个节点</a></li>
+<li><a href="#%E9%93%BE">链</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AF%B9%E5%9B%BE%E4%B8%AD%E7%9A%84%E5%85%83%E7%B4%A0%E8%BF%9B%E8%A1%8C%E8%AE%BE%E7%BD%AE">对图中的元素进行设置</a>
+<ul>
+<li><a href="#%E8%8A%82%E7%82%B9%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE">节点属性设置</a>
+<ul>
+<li><a href="#%E8%AE%BE%E7%BD%AE%E8%8A%82%E7%82%B9%E6%A0%87%E7%AD%BE">设置节点标签</a></li>
+<li><a href="#%E8%AE%BE%E7%BD%AE%E8%8A%82%E7%82%B9%E5%BD%A2%E7%8A%B6">设置节点形状</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    <script>
+(function bindTaskListEvent() {
+  var taskListItemCheckboxes = document.body.getElementsByClassName('task-list-item-checkbox')
+  for (var i = 0; i < taskListItemCheckboxes.length; i++) {
+    var checkbox = taskListItemCheckboxes[i]
+    var li = checkbox.parentElement
+    if (li.tagName !== 'LI') li = li.parentElement
+    if (li.tagName === 'LI') {
+      li.classList.add('task-list-item')
+    }
+  }
+}())    
+</script>
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>

@@ -44,3 +44,14 @@ graph G{
 }
 ```
 
+```viz {engine="dot"}
+digraph G{
+    A->B
+    B->C
+    B->D
+    B->E
+    D->F
+    A->F
+}
+```
+
