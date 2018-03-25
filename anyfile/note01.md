@@ -32,6 +32,20 @@ graph LR
     model_evaluate==>model_release("模型发布<br>○ 模型部署<br>○ 模型重构")
 ```
 
+```viz
+digraph G{
+    rankdir=LR
+    node [shape=box,fontsize=12]
+    A [label="定义挖掘目标\n○ 任务了解\n○ 指标确定"]
+    B [label="数据采集\n○ 建模抽样\n○ 质量把控\n○ 实时采集"]
+    C [label="数据整理\n○ 数据探索\n○ 数据清洗\n○ 数据变换"]
+    D [label="构建模型\n○ 模式发现\n○ 构建模型\n○ 验证模型"]
+    E [label="模型评价\n○ 设定评价标准\n○ 多模型对比\n○ 模型优化"]
+    F [label="模型发布\n○ 模型部署\n○ 模型重构"]
+    A->B->C->D->E->F
+}
+```
+
 ### 定义挖掘目标
 
 需要考虑以下几个问题：
