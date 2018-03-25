@@ -290,8 +290,9 @@ diagraph G{
 
 ```viz {hide=false}
 digraph G{
-    rankdir=LR
-    graph [label="graph set", bgcolor="#00bfff", fontsize=10, rankdir="LR"]
+    graph [label="graph set",
+    bgcolor="#00bfff", 
+    fontsize=10, rankdir="LR"]
     A->B->C
 }
 ```
@@ -313,6 +314,10 @@ digraph G{
 }
 ```
 
-## 与编程相关的绘图
+## 应用
+
+实际应用请看 [各种常用图的绘制](https://foolishflyfox.github.io/CsLearnNote/Editor/CommonGraph.html)
+
+
 
 
