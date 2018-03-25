@@ -30,7 +30,7 @@ sentence = "the cattle was rattled by the battery"
 
 ## Solutions
 
-My solution:
+My solution :
 ```python {.line-numbers}
 class Solution:
     def replaceWords(self, dict, sentence):
@@ -85,6 +85,9 @@ class Solution:
 ```
 
 Other's more elegent solution:
+
+- solution 1:
+
 ```python {.line-numbers}
 def replaceWords(self, roots, sentence):
     _trie = lambda: collections.defaultdict(_trie)
@@ -108,5 +111,49 @@ def replaceWords(self, roots, sentence):
     return " ".join(map(replace, sentence.split()))
 ```
 
+- solution 2:
+```python
+class Solution(object):
+    def replaceWords(self, dict, sentence):
+        """
+        :type dict: List[str]
+        :type sentence: str
+        :rtype: str
+        """
+        setenceAsList = sentence.split(" ")
+        for i in range(len(setenceAsList)):
+            for j in dict:
+                if setenceAsList[i].startswith(j):
+                    setenceAsList[i] = j
+        return " ".join(setenceAsList)
+```
+
 ## Analysis
+
+我自己的算法的效率测试为：
+```
+286µs ± 9.8µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+```
+
+solution 1 的效率测试为：
+```
+116µs ± 2.43µs per loop(mean ± std. dev. of 7 runs, 10000 loops each)
+```
+
+solution 2 的效率测试为：
+```
+1.06ms ± 20.5µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+```
+
+可以看出 solution 2 的算法代码最简单，但是效率非常低。
+
+solution 1 的效率最高，代码也较为简洁，应该是3个中最好的算法，但是需要引入额外的 `collection` 库。
+
+该程序中使用了 `collection` 库的 `defaultdict` 类。
+
+我的程序虽然效率不如 solution 2，长度也较长，但是其适应性更好，能够保留多个空格以及非小写字母 。
+
+## Conclusion
+
+`str`类型的元素有一个函数：`startswith`，用于判断元素是否以特定字符串开始；
 

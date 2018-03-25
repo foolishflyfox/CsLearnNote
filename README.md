@@ -43,6 +43,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-24 : 648. Replace Words](/LeetCode/648_ReplaceWords.html)
 
+- [2018-03-25 : 二分搜索]()
+
 ## 正在编写
 
 - [note01.html](/anyfile/note01.html)

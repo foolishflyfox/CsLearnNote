@@ -263,7 +263,7 @@ sentence = &quot;the cattle was rattled by the battery&quot;<br>
 <hr>
 <h2 class="mume-header" id="solutions">Solutions</h2>
 
-<p>My solution:</p>
+<p>My solution :</p>
 <pre data-role="codeBlock" data-info="python {.line-numbers}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">replaceWords</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dict<span class="token punctuation">,</span> sentence<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">"""
@@ -315,6 +315,9 @@ sentence = &quot;the cattle was rattled by the battery&quot;<br>
                 r_sentence <span class="token operator">+=</span> tmp_word
         <span class="token keyword">return</span> r_sentence
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>Other's more elegent solution:</p>
+<ul>
+<li>solution 1:</li>
+</ul>
 <pre data-role="codeBlock" data-info="python {.line-numbers}" class="language-python line-numbers"><span class="token keyword">def</span> <span class="token function">replaceWords</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> roots<span class="token punctuation">,</span> sentence<span class="token punctuation">)</span><span class="token punctuation">:</span>
     _trie <span class="token operator">=</span> <span class="token keyword">lambda</span><span class="token punctuation">:</span> collections<span class="token punctuation">.</span>defaultdict<span class="token punctuation">(</span>_trie<span class="token punctuation">)</span>
     trie <span class="token operator">=</span> _trie<span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -335,8 +338,37 @@ sentence = &quot;the cattle was rattled by the battery&quot;<br>
         <span class="token keyword">return</span> word
 
     <span class="token keyword">return</span> <span class="token string">" "</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>map<span class="token punctuation">(</span>replace<span class="token punctuation">,</span> sentence<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><h2 class="mume-header" id="analysis">Analysis</h2>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><ul>
+<li>solution 2:</li>
+</ul>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span>object<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">replaceWords</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> dict<span class="token punctuation">,</span> sentence<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type dict: List[str]
+        :type sentence: str
+        :rtype: str
+        """</span>
+        setenceAsList <span class="token operator">=</span> sentence<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>setenceAsList<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> j <span class="token keyword">in</span> dict<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> setenceAsList<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>startswith<span class="token punctuation">(</span>j<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    setenceAsList<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> j
+        <span class="token keyword">return</span> <span class="token string">" "</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>setenceAsList<span class="token punctuation">)</span>
+</pre><h2 class="mume-header" id="analysis">Analysis</h2>
 
+<p>我自己的算法的效率测试为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>286&#xB5;s &#xB1; 9.8&#xB5;s per loop (mean &#xB1; std. dev. of 7 runs, 1000 loops each)
+</code></pre><p>solution 1 的效率测试为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>116&#xB5;s &#xB1; 2.43&#xB5;s per loop(mean &#xB1; std. dev. of 7 runs, 10000 loops each)
+</code></pre><p>solution 2 的效率测试为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>1.06ms &#xB1; 20.5&#xB5;s per loop (mean &#xB1; std. dev. of 7 runs, 1000 loops each)
+</code></pre><p>可以看出 solution 2 的算法代码最简单，但是效率非常低。</p>
+<p>solution 1 的效率最高，代码也较为简洁，应该是3个中最好的算法，但是需要引入额外的 <code>collection</code> 库。</p>
+<p>该程序中使用了 <code>collection</code> 库的 <code>defaultdict</code> 类。</p>
+<p>我的程序虽然效率不如 solution 2，长度也较长，但是其适应性更好，能够保留多个空格以及非小写字母 。</p>
+<h2 class="mume-header" id="conclusion">Conclusion</h2>
+
+<p><code>str</code>类型的元素有一个函数：<code>startswith</code>，用于判断元素是否以特定字符串开始；</p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -345,6 +377,7 @@ sentence = &quot;the cattle was rattled by the battery&quot;<br>
 <li><a href="#problem-description">Problem description</a></li>
 <li><a href="#solutions">Solutions</a></li>
 <li><a href="#analysis">Analysis</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
 </ul>
 </li>
 </ul>
