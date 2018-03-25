@@ -260,11 +260,11 @@ code.language-yaml {
 <h3 class="mume-header" id="%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E7%9A%84%E5%BB%BA%E6%A8%A1%E8%BF%87%E7%A8%8B">数据挖掘的建模过程</h3>
 
 <div class="mermaid">graph LR
-    def_aim("定义挖掘目标<br>○ 任务了解<br>○ 指标确定")==>data_collect("数据采集<br>○ 建模抽样<br>○ 质量把控<br>○ 实时采集")
-    data_collect==>reorganize("数据整理<br>○ 数据探索<br>○ 数据清洗<br>○ 数据变换")
-    reorganize==>construct_model("构建模型<br>○ 模式发现<br>○ 构建模型<br>○ 验证模型")
-    construct_model==>model_evaluate("模型评价<br>○ 设定评价标准<br>○ 多模型对比<br>○ 模型优化")
-    model_evaluate==>model_release("模型发布<br>○ 模型部署<br>○ 模型重构")
+    def_aim("定义挖掘目标<br>○ 任务了解<br>○ 指标确定")-->data_collect("数据采集<br>○ 建模抽样<br>○ 质量把控<br>○ 实时采集")
+    data_collect-->reorganize("数据整理<br>○ 数据探索<br>○ 数据清洗<br>○ 数据变换")
+    reorganize-->construct_model("构建模型<br>○ 模式发现<br>○ 构建模型<br>○ 验证模型")
+    construct_model-->model_evaluate("模型评价<br>○ 设定评价标准<br>○ 多模型对比<br>○ 模型优化")
+    model_evaluate-->model_release("模型发布<br>○ 模型部署<br>○ 模型重构")
 </div><p><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
