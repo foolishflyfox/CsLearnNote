@@ -1,4 +1,17 @@
 
+
+```viz {}
+digraph G{
+    a->b
+    subgraph cluster_ab{
+        bgcolor=green
+        label="a&b"
+        a
+        b
+    }
+}
+```
+
 ```mermaid
 graph LR
     def_aim("定义挖掘目标<br>○ 任务了解<br>○ 指标确定")==>data_collect("数据采集<br>○ 建模抽样<br>○ 质量把控<br>○ 实时采集")

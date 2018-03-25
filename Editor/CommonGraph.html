@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>CommonGraph</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.7.0/flowchart.min.js"></script>
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="%E5%90%84%E7%A7%8D%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6">各种常用图的绘制</h1>
+
+<p>在实际工作中，写文档时，我们经常要绘制各种图，下面对各种常见图的绘制都给出一个实例。</p>
+<p>首先，需要装好 vscode/atom + markdown preview enhance，并在本地装好各种渲染引擎。如要渲染 vscode/atom 中的<code>viz</code>代码块，需要使用 <code>graphviz</code> 软件，安装方法非常简单，在 Linux 执行 <code>sudo apt install graphviz</code>，在 mac os 下执行 <code>brew install graphviz</code>。</p>
+<p>另外，使用 <code>brew</code> 时国外的源通常较慢，可以使用国内的源，如中科大或者清华的镜像，方法：<a href="https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git">替换及重置Homebrew默认源</a>。</p>
+<p>如果 Linux 的安装较慢，也可以修改<code>/etc/apt/sources.list</code>，具体方法参见 : <a href="http://wiki.ubuntu.org.cn/%E6%BA%90%E5%88%97%E8%A1%A8">http://wiki.ubuntu.org.cn/源列表</a> 。</p>
+<p>在 vscode/atom 绘图方法：<a href="https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/diagrams">https://shd101wyy.github.io/markdown-preview-enhanced/#/zh-cn/diagrams</a></p>
+<h2 class="mume-header" id="%E6%B5%81%E7%A8%8B%E5%9B%BE">流程图</h2>
+
+<p>使用 flow charts 进行绘制，下面的例子是使用递归方法求解阶乘的函数：</p>
+<pre data-role="codeBlock" data-info="c" class="language-c"><span class="token keyword">int</span> <span class="token function">factorial</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"错误:n小于0"</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>n<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">factorial</span><span class="token punctuation">(</span>n<span class="token number">-1</span><span class="token punctuation">)</span><span class="token operator">*</span>n<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</pre><p>其流程图为：</p>
+<pre data-role="codeBlock" data-info="flow {hide=false}" class="language-flow"><code>st=&gt;start: &#x5F00;&#x59CB;:fractial(n)&#x6267;&#x884C;
+lt_0=&gt;condition: n&#x5C0F;&#x4E8E;0?
+output_lt0=&gt;inputoutput: &#x6253;&#x5370;&#x9519;&#x8BEF;
+rt_neg1=&gt;operation: &#x8FD4;&#x56DE;-1
+eq_0=&gt;condition: n&#x7B49;&#x4E8E;0?
+rt_1=&gt;operation: &#x8FD4;&#x56DE;1
+calc_sub=&gt;subroutine: &#x8FD4;&#x56DE;n&#xD7;fractial(n-1)
+
+end=&gt;end: &#x7ED3;&#x675F;
+
+st-&gt;lt_0
+lt_0(yes)-&gt;output_lt0-&gt;rt_neg1-&gt;end
+lt_0(no)-&gt;eq_0(yes)-&gt;rt_1-&gt;end
+eq_0(no)-&gt;calc_sub-&gt;end
+</code></pre><div hide="false" class="flow">st=>start: 开始:fractial(n)执行
+lt_0=>condition: n小于0?
+output_lt0=>inputoutput: 打印错误
+rt_neg1=>operation: 返回-1
+eq_0=>condition: n等于0?
+rt_1=>operation: 返回1
+calc_sub=>subroutine: 返回n×fractial(n-1)
+
+end=>end: 结束
+
+st->lt_0
+lt_0(yes)->output_lt0->rt_neg1->end
+lt_0(no)->eq_0(yes)->rt_1->end
+eq_0(no)->calc_sub->end
+</div><p><strong>注意：</strong></p>
+<ul>
+<li>关键字<code>start</code>、<code>operation</code>、<code>conditions</code>、<code>subroutine</code>、<code>inputoutput</code>、<code>end</code>和冒号之间不能有空格</li>
+<li>冒号和之后的标签名之间必须有空格</li>
+</ul>
+<h2 class="mume-header" id="%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%93%E6%9E%84">数据的结构</h2>
+
+<p>下面是网购中的一条消费记录的数据结构：</p>
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    node [shape=record]
+    consume [label=&quot;&lt;customer&gt;&#x6D88;&#x8D39;&#x8005;|&lt;goods&gt;&#x5546;&#x54C1;|&lt;prince&gt;&#x4EF7;&#x683C;|&#x8D2D;&#x4E70;&#x65E5;&#x671F;&quot;]
+    customer [label=&quot;id&#x53F7;|VIP?|&#x751F;&#x65E5;&quot;]
+    goods [label=&quot;&lt;productor&gt;&#x751F;&#x4EA7;&#x5546;|
+    {&#x751F;&#x6210;&#x5730;|&#x751F;&#x4EA7;&#x65E5;&#x671F;|&lt;price&gt;&#x5EFA;&#x8BAE;&#x4EF7;&#x683C;|&#x4FDD;&#x8D28;&#x671F;}&quot;]
+    productor [label=&quot;{&#x5382;&#x5546;&#x7F16;&#x53F7;|&#x6CD5;&#x4EBA;&#x4EE3;&#x8868;}&quot;]
+
+    consume:customer-&gt;customer
+    consume:goods-&gt;goods
+    goods:productor-&gt;productor
+    consume:price-&gt;goods:price
+    // &#x5B50;&#x56FE;&#x4E00;&#x5B9A;&#x8981;&#x4EE5;cluster&#x4E3A;&#x524D;&#x7F00;
+    subgraph cluster_gr{
+        bgcolor=green
+        label=&quot;goods relative&quot;
+        goods
+        productor
+    }
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="362pt" height="289pt" viewBox="0.00 0.00 361.52 288.60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 284.6)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-284.6 357.5202,-284.6 357.5202,4 -4,4"></polygon>
+<g id="clust1" class="cluster">
+<title>cluster_gr</title>
+<polygon fill="#00ff00" stroke="#000000" points="134.0268,-8 134.0268,-235.6 296.0268,-235.6 296.0268,-8 134.0268,-8"></polygon>
+<text text-anchor="middle" x="215.0268" y="-219" font-family="Times,serif" font-size="14.00" fill="#000000">goods relative</text>
+</g>
+<!-- consume -->
+<g id="node1" class="node">
+<title>consume</title>
+<polygon fill="none" stroke="#000000" points="130.5334,-244.1 130.5334,-280.1 353.5202,-280.1 353.5202,-244.1 130.5334,-244.1"></polygon>
+<text text-anchor="middle" x="162.1136" y="-257.9" font-family="Times,serif" font-size="14.00" fill="#000000">消费者</text>
+<polyline fill="none" stroke="#000000" points="193.6938,-244.1 193.6938,-280.1 "></polyline>
+<text text-anchor="middle" x="212.1938" y="-257.9" font-family="Times,serif" font-size="14.00" fill="#000000">商品</text>
+<polyline fill="none" stroke="#000000" points="230.6938,-244.1 230.6938,-280.1 "></polyline>
+<text text-anchor="middle" x="256.8931" y="-257.9" font-family="Times,serif" font-size="14.00" fill="#000000">价格</text>
+<polyline fill="none" stroke="#000000" points="283.0924,-244.1 283.0924,-280.1 "></polyline>
+<text text-anchor="middle" x="318.3063" y="-257.9" font-family="Times,serif" font-size="14.00" fill="#000000">购买日期</text>
+</g>
+<!-- customer -->
+<g id="node2" class="node">
+<title>customer</title>
+<polygon fill="none" stroke="#000000" points="0,-134.7 0,-170.7 124.0536,-170.7 124.0536,-134.7 0,-134.7"></polygon>
+<text text-anchor="middle" x="19.3946" y="-148.5" font-family="Times,serif" font-size="14.00" fill="#000000">id号</text>
+<polyline fill="none" stroke="#000000" points="38.7892,-134.7 38.7892,-170.7 "></polyline>
+<text text-anchor="middle" x="61.1714" y="-148.5" font-family="Times,serif" font-size="14.00" fill="#000000">VIP?</text>
+<polyline fill="none" stroke="#000000" points="83.5536,-134.7 83.5536,-170.7 "></polyline>
+<text text-anchor="middle" x="103.8036" y="-148.5" font-family="Times,serif" font-size="14.00" fill="#000000">生日</text>
+</g>
+<!-- consume&#45;&gt;customer -->
+<g id="edge1" class="edge">
+<title>consume:customer&#45;&gt;customer</title>
+<path fill="none" stroke="#000000" d="M131.0268,-262.1C92.5284,-262.1 74.6483,-213.0331 67.0368,-180.6203"></path>
+<polygon fill="#000000" stroke="#000000" points="70.4412,-179.8036 64.9133,-170.7652 63.5983,-181.2781 70.4412,-179.8036"></polygon>
+</g>
+<!-- goods -->
+<g id="node3" class="node">
+<title>goods</title>
+<polygon fill="none" stroke="#000000" points="141.554,-103.1 141.554,-202.3 288.4996,-202.3 288.4996,-103.1 141.554,-103.1"></polygon>
+<text text-anchor="middle" x="168.4113" y="-148.5" font-family="Times,serif" font-size="14.00" fill="#000000">生产商</text>
+<polyline fill="none" stroke="#000000" points="195.2686,-103.1 195.2686,-202.3 "></polyline>
+<text text-anchor="middle" x="241.8841" y="-185.7" font-family="Times,serif" font-size="14.00" fill="#000000">生成地</text>
+<polyline fill="none" stroke="#000000" points="195.2686,-177.5 288.4996,-177.5 "></polyline>
+<text text-anchor="middle" x="241.8841" y="-160.9" font-family="Times,serif" font-size="14.00" fill="#000000">生产日期</text>
+<polyline fill="none" stroke="#000000" points="195.2686,-152.7 288.4996,-152.7 "></polyline>
+<text text-anchor="middle" x="241.8841" y="-136.1" font-family="Times,serif" font-size="14.00" fill="#000000">建议价格</text>
+<polyline fill="none" stroke="#000000" points="195.2686,-127.9 288.4996,-127.9 "></polyline>
+<text text-anchor="middle" x="241.8841" y="-111.3" font-family="Times,serif" font-size="14.00" fill="#000000">保质期</text>
+</g>
+<!-- consume&#45;&gt;goods -->
+<g id="edge2" class="edge">
+<title>consume:goods&#45;&gt;goods</title>
+<path fill="none" stroke="#000000" d="M212.0268,-244.1C212.0268,-233.9787 212.2128,-223.2303 212.4923,-212.7948"></path>
+<polygon fill="#000000" stroke="#000000" points="215.9996,-212.5983 212.7994,-202.4984 209.0027,-212.3896 215.9996,-212.5983"></polygon>
+</g>
+<!-- consume&#45;&gt;goods -->
+<g id="edge4" class="edge">
+<title>consume:price&#45;&gt;goods:price</title>
+<path fill="none" stroke="#000000" d="M261.2131,-244.0282C271.3037,-233.1718 282.6666,-218.4553 288.0268,-202.8 295.5703,-180.7681 310.033,-151.7052 297.7897,-143.1609"></path>
+<polygon fill="#000000" stroke="#000000" points="298.579,-139.7504 288.0268,-140.7 296.868,-146.5381 298.579,-139.7504"></polygon>
+</g>
+<!-- productor -->
+<g id="node4" class="node">
+<title>productor</title>
+<polygon fill="none" stroke="#000000" points="142.2056,-16.5 142.2056,-66.1 225.848,-66.1 225.848,-16.5 142.2056,-16.5"></polygon>
+<text text-anchor="middle" x="184.0268" y="-49.5" font-family="Times,serif" font-size="14.00" fill="#000000">厂商编号</text>
+<polyline fill="none" stroke="#000000" points="142.2056,-41.3 225.848,-41.3 "></polyline>
+<text text-anchor="middle" x="184.0268" y="-24.7" font-family="Times,serif" font-size="14.00" fill="#000000">法人代表</text>
+</g>
+<!-- goods&#45;&gt;productor -->
+<g id="edge3" class="edge">
+<title>goods:productor&#45;&gt;productor</title>
+<path fill="none" stroke="#000000" d="M168.0268,-102.7C168.0268,-93.9115 169.5808,-84.6375 171.7201,-76.0341"></path>
+<polygon fill="#000000" stroke="#000000" points="175.1164,-76.8852 174.4424,-66.3118 168.3756,-74.9977 175.1164,-76.8852"></polygon>
+</g>
+</g>
+</svg>
+</p><h2 class="mume-header" id="%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8">函数的调用</h2>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    makestring [label=&quot;make a \nstring&quot;]
+    compare [style=filled, fillcolor=gray, 
+    shape=box]
+
+    main [shape=box]
+    main-&gt;parse
+    main-&gt;init [style=dotted]
+    main-&gt;printf [style=bold, color=red,
+    label=&quot;100 times&quot;]
+    main-&gt;cleanup
+    parse-&gt;execute
+    execute-&gt;{printf, makestring}
+    init-&gt;makestring
+    execute-&gt;compare [color=red]
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="321pt" height="321pt" viewBox="0.00 0.00 321.16 320.83" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 316.8313)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-316.8313 317.1629,-316.8313 317.1629,4 -4,4"></polygon>
+<!-- makestring -->
+<g id="node1" class="node">
+<title>makestring</title>
+<ellipse fill="none" stroke="#000000" cx="42.0972" cy="-29.4156" rx="42.1946" ry="29.3315"></ellipse>
+<text text-anchor="middle" x="42.0972" y="-33.6156" font-family="Times,serif" font-size="14.00" fill="#000000">make a </text>
+<text text-anchor="middle" x="42.0972" y="-16.8156" font-family="Times,serif" font-size="14.00" fill="#000000">string</text>
+</g>
+<!-- compare -->
+<g id="node2" class="node">
+<title>compare</title>
+<polygon fill="#c0c0c0" stroke="#000000" points="166.2925,-47.4156 101.9019,-47.4156 101.9019,-11.4156 166.2925,-11.4156 166.2925,-47.4156"></polygon>
+<text text-anchor="middle" x="134.0972" y="-25.2156" font-family="Times,serif" font-size="14.00" fill="#000000">compare</text>
+</g>
+<!-- main -->
+<g id="node3" class="node">
+<title>main</title>
+<polygon fill="none" stroke="#000000" points="217.0972,-312.8313 163.0972,-312.8313 163.0972,-276.8313 217.0972,-276.8313 217.0972,-312.8313"></polygon>
+<text text-anchor="middle" x="190.0972" y="-290.6313" font-family="Times,serif" font-size="14.00" fill="#000000">main</text>
+</g>
+<!-- parse -->
+<g id="node4" class="node">
+<title>parse</title>
+<ellipse fill="none" stroke="#000000" cx="141.0972" cy="-221.8313" rx="31.3179" ry="18"></ellipse>
+<text text-anchor="middle" x="141.0972" y="-217.6313" font-family="Times,serif" font-size="14.00" fill="#000000">parse</text>
+</g>
+<!-- main&#45;&gt;parse -->
+<g id="edge1" class="edge">
+<title>main&#45;&gt;parse</title>
+<path fill="none" stroke="#000000" d="M177.9848,-276.7863C171.9961,-267.8644 164.6674,-256.9461 158.1248,-247.199"></path>
+<polygon fill="#000000" stroke="#000000" points="160.8777,-245.0201 152.3984,-238.6678 155.0656,-248.9214 160.8777,-245.0201"></polygon>
+</g>
+<!-- init -->
+<g id="node5" class="node">
+<title>init</title>
+<ellipse fill="none" stroke="#000000" cx="75.0972" cy="-167.8313" rx="27" ry="18"></ellipse>
+<text text-anchor="middle" x="75.0972" y="-163.6313" font-family="Times,serif" font-size="14.00" fill="#000000">init</text>
+</g>
+<!-- main&#45;&gt;init -->
+<g id="edge2" class="edge">
+<title>main&#45;&gt;init</title>
+<path fill="none" stroke="#000000" stroke-dasharray="1,5" d="M162.9526,-283.9304C143.3199,-274.7953 117.4679,-259.997 101.0972,-239.8313 90.7845,-227.128 84.3776,-209.9905 80.5048,-195.622"></path>
+<polygon fill="#000000" stroke="#000000" points="83.8698,-194.6463 78.1131,-185.7519 77.0667,-196.2949 83.8698,-194.6463"></polygon>
+</g>
+<!-- printf -->
+<g id="node6" class="node">
+<title>printf</title>
+<ellipse fill="none" stroke="#000000" cx="217.0972" cy="-29.4156" rx="32.4808" ry="18"></ellipse>
+<text text-anchor="middle" x="217.0972" y="-25.2156" font-family="Times,serif" font-size="14.00" fill="#000000">printf</text>
+</g>
+<!-- main&#45;&gt;printf -->
+<g id="edge3" class="edge">
+<title>main&#45;&gt;printf</title>
+<path fill="none" stroke="#ff0000" stroke-width="2" d="M191.953,-276.5882C196.5884,-231.0216 208.698,-111.9813 214.2461,-57.4423"></path>
+<polygon fill="#ff0000" stroke="#ff0000" stroke-width="2" points="217.734,-57.7383 215.2641,-47.4354 210.7699,-57.0298 217.734,-57.7383"></polygon>
+<text text-anchor="middle" x="232.5127" y="-163.6313" font-family="Times,serif" font-size="14.00" fill="#000000">100 times</text>
+</g>
+<!-- cleanup -->
+<g id="node7" class="node">
+<title>cleanup</title>
+<ellipse fill="none" stroke="#000000" cx="272.0972" cy="-221.8313" rx="41.1316" ry="18"></ellipse>
+<text text-anchor="middle" x="272.0972" y="-217.6313" font-family="Times,serif" font-size="14.00" fill="#000000">cleanup</text>
+</g>
+<!-- main&#45;&gt;cleanup -->
+<g id="edge4" class="edge">
+<title>main&#45;&gt;cleanup</title>
+<path fill="none" stroke="#000000" d="M210.3668,-276.7863C221.1565,-267.181 234.5453,-255.2616 246.0933,-244.981"></path>
+<polygon fill="#000000" stroke="#000000" points="248.5976,-247.4376 253.7395,-238.1741 243.9431,-242.2093 248.5976,-247.4376"></polygon>
+</g>
+<!-- execute -->
+<g id="node8" class="node">
+<title>execute</title>
+<ellipse fill="none" stroke="#000000" cx="134.0972" cy="-113.8313" rx="40.548" ry="18"></ellipse>
+<text text-anchor="middle" x="134.0972" y="-109.6313" font-family="Times,serif" font-size="14.00" fill="#000000">execute</text>
+</g>
+<!-- parse&#45;&gt;execute -->
+<g id="edge5" class="edge">
+<title>parse&#45;&gt;execute</title>
+<path fill="none" stroke="#000000" d="M139.9097,-203.5106C138.8171,-186.6522 137.1801,-161.3964 135.9215,-141.9783"></path>
+<polygon fill="#000000" stroke="#000000" points="139.4067,-141.6341 135.2671,-131.8814 132.4213,-142.0869 139.4067,-141.6341"></polygon>
+</g>
+<!-- init&#45;&gt;makestring -->
+<g id="edge8" class="edge">
+<title>init&#45;&gt;makestring</title>
+<path fill="none" stroke="#000000" d="M70.8506,-150.0192C65.9574,-129.4954 57.7706,-95.1563 51.3813,-68.3573"></path>
+<polygon fill="#000000" stroke="#000000" points="54.755,-67.4156 49.0312,-58.5 47.9459,-69.0391 54.755,-67.4156"></polygon>
+</g>
+<!-- execute&#45;&gt;makestring -->
+<g id="edge6" class="edge">
+<title>execute&#45;&gt;makestring</title>
+<path fill="none" stroke="#000000" d="M116.3587,-97.5551C104.7277,-86.883 89.1612,-72.5997 75.2849,-59.8674"></path>
+<polygon fill="#000000" stroke="#000000" points="77.52,-57.1682 67.7855,-52.9862 72.7874,-62.326 77.52,-57.1682"></polygon>
+</g>
+<!-- execute&#45;&gt;compare -->
+<g id="edge9" class="edge">
+<title>execute&#45;&gt;compare</title>
+<path fill="none" stroke="#ff0000" d="M134.0972,-95.5143C134.0972,-84.563 134.0972,-70.4121 134.0972,-58.0151"></path>
+<polygon fill="#ff0000" stroke="#ff0000" points="137.5973,-57.6968 134.0972,-47.6968 130.5973,-57.6969 137.5973,-57.6968"></polygon>
+</g>
+<!-- execute&#45;&gt;printf -->
+<g id="edge7" class="edge">
+<title>execute&#45;&gt;printf</title>
+<path fill="none" stroke="#000000" d="M150.4953,-97.1535C162.9322,-84.5045 180.1869,-66.9555 194.0173,-52.8891"></path>
+<polygon fill="#000000" stroke="#000000" points="196.7809,-55.0706 201.2963,-45.4861 191.7895,-50.1628 196.7809,-55.0706"></polygon>
+</g>
+</g>
+</svg>
+</p><h2 class="mume-header" id="%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</h2>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    node [shape=record, height=.1]
+    l1 [label=&quot;&lt;left&gt;|&lt;f1&gt;G|&lt;right&gt;&quot;]
+    l2_1 [label=&quot;&lt;left&gt;|&lt;f1&gt;E|&lt;right&gt;&quot;]
+    l2_2 [label=&quot;&lt;left&gt;|&lt;f1&gt;R|&lt;right&gt;&quot;]
+    l3_1 [label=&quot;&lt;left&gt;|&lt;f1&gt;B|&lt;right&gt;&quot;]
+    l3_2 [label=&quot;&lt;left&gt;|&lt;f1&gt;F|&lt;right&gt;&quot;]
+    l3_3 [label=&quot;&lt;left&gt;|&lt;f1&gt;H|&lt;right&gt;&quot;]
+    l3_4 [label=&quot;&lt;left&gt;|&lt;f1&gt;Y|&lt;right&gt;&quot;]
+    l4_1 [label=&quot;&lt;left&gt;|&lt;f1&gt;A|&lt;right&gt;&quot;]
+    l4_2 [label=&quot;&lt;left&gt;|&lt;f1&gt;C|&lt;right&gt;&quot;]    
+    l1:left-&gt;l2_1:f1
+    l1:right-&gt;l2_2:f1
+    l2_1:left-&gt;l3_1:f1
+    l2_1:right-&gt;l3_2:f1
+    l2_2:left-&gt;l3_3:f1
+    l2_2:right-&gt;l3_4:f1
+    l3_1:left-&gt;l4_1:f1
+    l3_1:right-&gt;l4_2:f1
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="361pt" height="219pt" viewBox="0.00 0.00 361.11 219.20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 215.2)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-215.2 357.1066,-215.2 357.1066,4 -4,4"></polygon>
+<!-- l1 -->
+<g id="node1" class="node">
+<title>l1</title>
+<polygon fill="none" stroke="#000000" points="164,-185.9 164,-210.7 229.1066,-210.7 229.1066,-185.9 164,-185.9"></polygon>
+<text text-anchor="middle" x="173.75" y="-194.1" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="183.5,-185.9 183.5,-210.7 "></polyline>
+<text text-anchor="middle" x="196.5533" y="-194.1" font-family="Times,serif" font-size="14.00" fill="#000000">G</text>
+<polyline fill="none" stroke="#000000" points="209.6066,-185.9 209.6066,-210.7 "></polyline>
+<text text-anchor="middle" x="219.3566" y="-194.1" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l2_1 -->
+<g id="node2" class="node">
+<title>l2_1</title>
+<polygon fill="none" stroke="#000000" points="101.777,-124.1 101.777,-148.9 165.3296,-148.9 165.3296,-124.1 101.777,-124.1"></polygon>
+<text text-anchor="middle" x="111.527" y="-132.3" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="121.277,-124.1 121.277,-148.9 "></polyline>
+<text text-anchor="middle" x="133.5533" y="-132.3" font-family="Times,serif" font-size="14.00" fill="#000000">E</text>
+<polyline fill="none" stroke="#000000" points="145.8296,-124.1 145.8296,-148.9 "></polyline>
+<text text-anchor="middle" x="155.5796" y="-132.3" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l1&#45;&gt;l2_1 -->
+<g id="edge1" class="edge">
+<title>l1:left&#45;&gt;l2_1:f1</title>
+<path fill="none" stroke="#000000" d="M173.5533,-186.3C173.5533,-166.0441 146.1217,-170.1886 136.692,-158.3203"></path>
+<polygon fill="#000000" stroke="#000000" points="139.9317,-156.9597 133.5533,-148.5 133.264,-159.0909 139.9317,-156.9597"></polygon>
+</g>
+<!-- l2_2 -->
+<g id="node3" class="node">
+<title>l2_2</title>
+<polygon fill="none" stroke="#000000" points="227.385,-124.1 227.385,-148.9 291.7216,-148.9 291.7216,-124.1 227.385,-124.1"></polygon>
+<text text-anchor="middle" x="237.135" y="-132.3" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="246.885,-124.1 246.885,-148.9 "></polyline>
+<text text-anchor="middle" x="259.5533" y="-132.3" font-family="Times,serif" font-size="14.00" fill="#000000">R</text>
+<polyline fill="none" stroke="#000000" points="272.2216,-124.1 272.2216,-148.9 "></polyline>
+<text text-anchor="middle" x="281.9716" y="-132.3" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l1&#45;&gt;l2_2 -->
+<g id="edge2" class="edge">
+<title>l1:right&#45;&gt;l2_2:f1</title>
+<path fill="none" stroke="#000000" d="M219.5533,-186.3C219.5533,-166.0441 246.9849,-170.1886 256.4146,-158.3203"></path>
+<polygon fill="#000000" stroke="#000000" points="259.8426,-159.0909 259.5533,-148.5 253.1749,-156.9597 259.8426,-159.0909"></polygon>
+</g>
+<!-- l3_1 -->
+<g id="node4" class="node">
+<title>l3_1</title>
+<polygon fill="none" stroke="#000000" points="41.385,-62.3 41.385,-87.1 105.7216,-87.1 105.7216,-62.3 41.385,-62.3"></polygon>
+<text text-anchor="middle" x="51.135" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="60.885,-62.3 60.885,-87.1 "></polyline>
+<text text-anchor="middle" x="73.5533" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000">B</text>
+<polyline fill="none" stroke="#000000" points="86.2216,-62.3 86.2216,-87.1 "></polyline>
+<text text-anchor="middle" x="95.9716" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l2_1&#45;&gt;l3_1 -->
+<g id="edge3" class="edge">
+<title>l2_1:left&#45;&gt;l3_1:f1</title>
+<path fill="none" stroke="#000000" d="M111.5533,-124.5C111.5533,-104.7726 85.4932,-108.1325 76.5351,-96.3414"></path>
+<polygon fill="#000000" stroke="#000000" points="79.8517,-95.2194 73.5533,-86.7 73.1642,-97.2877 79.8517,-95.2194"></polygon>
+</g>
+<!-- l3_2 -->
+<g id="node5" class="node">
+<title>l3_2</title>
+<polygon fill="none" stroke="#000000" points="124.162,-62.3 124.162,-87.1 186.9446,-87.1 186.9446,-62.3 124.162,-62.3"></polygon>
+<text text-anchor="middle" x="133.912" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="143.662,-62.3 143.662,-87.1 "></polyline>
+<text text-anchor="middle" x="155.5533" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000">F</text>
+<polyline fill="none" stroke="#000000" points="167.4446,-62.3 167.4446,-87.1 "></polyline>
+<text text-anchor="middle" x="177.1946" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l2_1&#45;&gt;l3_2 -->
+<g id="edge4" class="edge">
+<title>l2_1:right&#45;&gt;l3_2:f1</title>
+<path fill="none" stroke="#000000" d="M155.5533,-124.5C155.5533,-111.6375 155.5533,-106.1609 155.5533,-96.7605"></path>
+<polygon fill="#000000" stroke="#000000" points="159.0534,-96.7 155.5533,-86.7 152.0534,-96.7 159.0534,-96.7"></polygon>
+</g>
+<!-- l3_3 -->
+<g id="node6" class="node">
+<title>l3_3</title>
+<polygon fill="none" stroke="#000000" points="205,-62.3 205,-87.1 270.1066,-87.1 270.1066,-62.3 205,-62.3"></polygon>
+<text text-anchor="middle" x="214.75" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="224.5,-62.3 224.5,-87.1 "></polyline>
+<text text-anchor="middle" x="237.5533" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000">H</text>
+<polyline fill="none" stroke="#000000" points="250.6066,-62.3 250.6066,-87.1 "></polyline>
+<text text-anchor="middle" x="260.3566" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l2_2&#45;&gt;l3_3 -->
+<g id="edge5" class="edge">
+<title>l2_2:left&#45;&gt;l3_3:f1</title>
+<path fill="none" stroke="#000000" d="M237.5533,-124.5C237.5533,-111.6375 237.5533,-106.1609 237.5533,-96.7605"></path>
+<polygon fill="#000000" stroke="#000000" points="241.0534,-96.7 237.5533,-86.7 234.0534,-96.7 241.0534,-96.7"></polygon>
+</g>
+<!-- l3_4 -->
+<g id="node7" class="node">
+<title>l3_4</title>
+<polygon fill="none" stroke="#000000" points="288,-62.3 288,-87.1 353.1066,-87.1 353.1066,-62.3 288,-62.3"></polygon>
+<text text-anchor="middle" x="297.75" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="307.5,-62.3 307.5,-87.1 "></polyline>
+<text text-anchor="middle" x="320.5533" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000">Y</text>
+<polyline fill="none" stroke="#000000" points="333.6066,-62.3 333.6066,-87.1 "></polyline>
+<text text-anchor="middle" x="343.3566" y="-70.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l2_2&#45;&gt;l3_4 -->
+<g id="edge6" class="edge">
+<title>l2_2:right&#45;&gt;l3_4:f1</title>
+<path fill="none" stroke="#000000" d="M281.5533,-124.5C281.5533,-104.51 308.2991,-108.2598 317.493,-96.4303"></path>
+<polygon fill="#000000" stroke="#000000" points="320.8918,-97.2894 320.5533,-86.7 314.2143,-95.1892 320.8918,-97.2894"></polygon>
+</g>
+<!-- l4_1 -->
+<g id="node8" class="node">
+<title>l4_1</title>
+<polygon fill="none" stroke="#000000" points="0,-.5 0,-25.3 65.1066,-25.3 65.1066,-.5 0,-.5"></polygon>
+<text text-anchor="middle" x="9.75" y="-8.7" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="19.5,-.5 19.5,-25.3 "></polyline>
+<text text-anchor="middle" x="32.5533" y="-8.7" font-family="Times,serif" font-size="14.00" fill="#000000">A</text>
+<polyline fill="none" stroke="#000000" points="45.6066,-.5 45.6066,-25.3 "></polyline>
+<text text-anchor="middle" x="55.3566" y="-8.7" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l3_1&#45;&gt;l4_1 -->
+<g id="edge7" class="edge">
+<title>l3_1:left&#45;&gt;l4_1:f1</title>
+<path fill="none" stroke="#000000" d="M51.5533,-62.7C51.5533,-47.8633 39.7235,-44.6128 34.7328,-34.6641"></path>
+<polygon fill="#000000" stroke="#000000" points="38.1479,-33.8973 32.5533,-24.9 31.316,-35.4223 38.1479,-33.8973"></polygon>
+</g>
+<!-- l4_2 -->
+<g id="node9" class="node">
+<title>l4_2</title>
+<polygon fill="none" stroke="#000000" points="83.385,-.5 83.385,-25.3 147.7216,-25.3 147.7216,-.5 83.385,-.5"></polygon>
+<text text-anchor="middle" x="93.135" y="-8.7" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="102.885,-.5 102.885,-25.3 "></polyline>
+<text text-anchor="middle" x="115.5533" y="-8.7" font-family="Times,serif" font-size="14.00" fill="#000000">C</text>
+<polyline fill="none" stroke="#000000" points="128.2216,-.5 128.2216,-25.3 "></polyline>
+<text text-anchor="middle" x="137.9716" y="-8.7" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- l3_1&#45;&gt;l4_2 -->
+<g id="edge8" class="edge">
+<title>l3_1:right&#45;&gt;l4_2:f1</title>
+<path fill="none" stroke="#000000" d="M95.5533,-62.7C95.5533,-47.7026 108.0057,-44.6718 113.259,-34.7229"></path>
+<polygon fill="#000000" stroke="#000000" points="116.6871,-35.434 115.5533,-24.9 109.8705,-33.8418 116.6871,-35.434"></polygon>
+</g>
+</g>
+</svg>
+</p><h2 class="mume-header" id="%E5%93%88%E5%B8%8C%E8%A1%A8">哈希表</h2>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    graph [rankdir=LR, nodesep=.05]
+    node [shape=record]
+    hash [label=&quot;&lt;1&gt;|&lt;2&gt;|&lt;3&gt;|&lt;4&gt;|&lt;5&gt;|&lt;6&gt;|&lt;7&gt;|&lt;8&gt;&quot;, width=0.1]
+    node [width=1.5,height=0.1]
+    node1 [label=&quot;{&lt;head&gt;n14|719|}&quot;]
+    node2_1 [label=&quot;{&lt;head&gt;a1|805|&lt;tail&gt;}&quot;]
+    node2_2 [label=&quot;{&lt;head&gt;o15|794|}&quot;]
+    node3 [label=&quot;{&lt;head&gt;i9|718|}&quot;]
+    node6_1 [label=&quot;{&lt;head&gt;e5|989|&lt;tail&gt;}&quot;]
+    node6_2 [label=&quot;{&lt;head&gt;s19|659|}&quot;]
+    node7 [label=&quot;{&lt;head&gt;t20|959|}&quot;]
+    hash:1-&gt;node1:head
+    hash:2-&gt;node2_1:head
+    node2_1:tail-&gt;node2_2:head
+    hash:3-&gt;node3:head
+    hash:6-&gt;node6_1:head
+    node6_1:tail-&gt;node6_2:head
+    hash:7-&gt;node7:head
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="316pt" height="213pt" viewBox="0.00 0.00 315.50 212.60" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 208.6)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-208.6 311.5,-208.6 311.5,4 -4,4"></polygon>
+<!-- hash -->
+<g id="node1" class="node">
+<title>hash</title>
+<polygon fill="none" stroke="#000000" points="0,-.5 0,-198.9 19.5,-198.9 19.5,-.5 0,-.5"></polygon>
+<text text-anchor="middle" x="9.75" y="-182.3" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="0,-174.1 19.5,-174.1 "></polyline>
+<text text-anchor="middle" x="9.75" y="-157.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="0,-149.3 19.5,-149.3 "></polyline>
+<text text-anchor="middle" x="9.75" y="-132.7" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="0,-124.5 19.5,-124.5 "></polyline>
+<text text-anchor="middle" x="9.75" y="-107.9" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="0,-99.7 19.5,-99.7 "></polyline>
+<text text-anchor="middle" x="9.75" y="-83.1" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="0,-74.9 19.5,-74.9 "></polyline>
+<text text-anchor="middle" x="9.75" y="-58.3" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="0,-50.1 19.5,-50.1 "></polyline>
+<text text-anchor="middle" x="9.75" y="-33.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+<polyline fill="none" stroke="#000000" points="0,-25.3 19.5,-25.3 "></polyline>
+<text text-anchor="middle" x="9.75" y="-8.7" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- node1 -->
+<g id="node2" class="node">
+<title>node1</title>
+<polygon fill="none" stroke="#000000" points="55.5,-179.3 55.5,-204.1 163.5,-204.1 163.5,-179.3 55.5,-179.3"></polygon>
+<text text-anchor="middle" x="76" y="-187.5" font-family="Times,serif" font-size="14.00" fill="#000000">n14</text>
+<polyline fill="none" stroke="#000000" points="96.5,-179.3 96.5,-204.1 "></polyline>
+<text text-anchor="middle" x="117.5" y="-187.5" font-family="Times,serif" font-size="14.00" fill="#000000">719</text>
+<polyline fill="none" stroke="#000000" points="138.5,-179.3 138.5,-204.1 "></polyline>
+<text text-anchor="middle" x="150.75" y="-187.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- hash&#45;&gt;node1 -->
+<g id="edge1" class="edge">
+<title>hash:1&#45;&gt;node1:head</title>
+<path fill="none" stroke="#000000" d="M19.5,-186.7C31.6152,-186.7 36.7212,-189.5125 45.3318,-190.9188"></path>
+<polygon fill="#000000" stroke="#000000" points="45.2612,-194.4236 55.5,-191.7 45.7975,-187.4441 45.2612,-194.4236"></polygon>
+</g>
+<!-- node2_1 -->
+<g id="node3" class="node">
+<title>node2_1</title>
+<polygon fill="none" stroke="#000000" points="55.5,-149.3 55.5,-174.1 163.5,-174.1 163.5,-149.3 55.5,-149.3"></polygon>
+<text text-anchor="middle" x="73.6073" y="-157.5" font-family="Times,serif" font-size="14.00" fill="#000000">a1</text>
+<polyline fill="none" stroke="#000000" points="91.7146,-149.3 91.7146,-174.1 "></polyline>
+<text text-anchor="middle" x="113.7146" y="-157.5" font-family="Times,serif" font-size="14.00" fill="#000000">805</text>
+<polyline fill="none" stroke="#000000" points="135.7146,-149.3 135.7146,-174.1 "></polyline>
+<text text-anchor="middle" x="149.4646" y="-157.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- hash&#45;&gt;node2_1 -->
+<g id="edge2" class="edge">
+<title>hash:2&#45;&gt;node2_1:head</title>
+<path fill="none" stroke="#000000" d="M19.5,-161.7C31.5,-161.7 36.75,-161.7 45.375,-161.7"></path>
+<polygon fill="#000000" stroke="#000000" points="45.5,-165.2001 55.5,-161.7 45.5,-158.2001 45.5,-165.2001"></polygon>
+</g>
+<!-- node3 -->
+<g id="node5" class="node">
+<title>node3</title>
+<polygon fill="none" stroke="#000000" points="55.5,-119.3 55.5,-144.1 163.5,-144.1 163.5,-119.3 55.5,-119.3"></polygon>
+<text text-anchor="middle" x="72.9453" y="-127.5" font-family="Times,serif" font-size="14.00" fill="#000000">i9</text>
+<polyline fill="none" stroke="#000000" points="90.3906,-119.3 90.3906,-144.1 "></polyline>
+<text text-anchor="middle" x="112.8906" y="-127.5" font-family="Times,serif" font-size="14.00" fill="#000000">718</text>
+<polyline fill="none" stroke="#000000" points="135.3906,-119.3 135.3906,-144.1 "></polyline>
+<text text-anchor="middle" x="149.1406" y="-127.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- hash&#45;&gt;node3 -->
+<g id="edge4" class="edge">
+<title>hash:3&#45;&gt;node3:head</title>
+<path fill="none" stroke="#000000" d="M19.5,-136.7C31.6152,-136.7 36.7212,-133.8875 45.3318,-132.4813"></path>
+<polygon fill="#000000" stroke="#000000" points="45.7975,-135.9559 55.5,-131.7 45.2612,-128.9764 45.7975,-135.9559"></polygon>
+</g>
+<!-- node6_1 -->
+<g id="node6" class="node">
+<title>node6_1</title>
+<polygon fill="none" stroke="#000000" points="55.5,-53.3 55.5,-78.1 163.5,-78.1 163.5,-53.3 55.5,-53.3"></polygon>
+<text text-anchor="middle" x="73.6073" y="-61.5" font-family="Times,serif" font-size="14.00" fill="#000000">e5</text>
+<polyline fill="none" stroke="#000000" points="91.7146,-53.3 91.7146,-78.1 "></polyline>
+<text text-anchor="middle" x="113.7146" y="-61.5" font-family="Times,serif" font-size="14.00" fill="#000000">989</text>
+<polyline fill="none" stroke="#000000" points="135.7146,-53.3 135.7146,-78.1 "></polyline>
+<text text-anchor="middle" x="149.4646" y="-61.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- hash&#45;&gt;node6_1 -->
+<g id="edge5" class="edge">
+<title>hash:6&#45;&gt;node6_1:head</title>
+<path fill="none" stroke="#000000" d="M19.5,-62.7C31.5416,-62.7 36.7396,-64.3875 45.3594,-65.2313"></path>
+<polygon fill="#000000" stroke="#000000" points="45.349,-68.7344 55.5,-65.7 45.6723,-61.7419 45.349,-68.7344"></polygon>
+</g>
+<!-- node7 -->
+<g id="node8" class="node">
+<title>node7</title>
+<polygon fill="none" stroke="#000000" points="55.5,-23.3 55.5,-48.1 163.5,-48.1 163.5,-23.3 55.5,-23.3"></polygon>
+<text text-anchor="middle" x="74.9453" y="-31.5" font-family="Times,serif" font-size="14.00" fill="#000000">t20</text>
+<polyline fill="none" stroke="#000000" points="94.3906,-23.3 94.3906,-48.1 "></polyline>
+<text text-anchor="middle" x="115.8906" y="-31.5" font-family="Times,serif" font-size="14.00" fill="#000000">959</text>
+<polyline fill="none" stroke="#000000" points="137.3906,-23.3 137.3906,-48.1 "></polyline>
+<text text-anchor="middle" x="150.1406" y="-31.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- hash&#45;&gt;node7 -->
+<g id="edge7" class="edge">
+<title>hash:7&#45;&gt;node7:head</title>
+<path fill="none" stroke="#000000" d="M19.5,-37.7C31.5185,-37.7 36.7454,-36.575 45.3681,-36.0125"></path>
+<polygon fill="#000000" stroke="#000000" points="45.6127,-39.5067 55.5,-35.7 45.3968,-32.51 45.6127,-39.5067"></polygon>
+</g>
+<!-- node2_2 -->
+<g id="node4" class="node">
+<title>node2_2</title>
+<polygon fill="none" stroke="#000000" points="199.5,-149.3 199.5,-174.1 307.5,-174.1 307.5,-149.3 199.5,-149.3"></polygon>
+<text text-anchor="middle" x="220" y="-157.5" font-family="Times,serif" font-size="14.00" fill="#000000">o15</text>
+<polyline fill="none" stroke="#000000" points="240.5,-149.3 240.5,-174.1 "></polyline>
+<text text-anchor="middle" x="261.5" y="-157.5" font-family="Times,serif" font-size="14.00" fill="#000000">794</text>
+<polyline fill="none" stroke="#000000" points="282.5,-149.3 282.5,-174.1 "></polyline>
+<text text-anchor="middle" x="294.75" y="-157.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- node2_1&#45;&gt;node2_2 -->
+<g id="edge3" class="edge">
+<title>node2_1:tail&#45;&gt;node2_2:head</title>
+<path fill="none" stroke="#000000" d="M163.5,-161.7C175.5,-161.7 180.75,-161.7 189.375,-161.7"></path>
+<polygon fill="#000000" stroke="#000000" points="189.5,-165.2001 199.5,-161.7 189.5,-158.2001 189.5,-165.2001"></polygon>
+</g>
+<!-- node6_2 -->
+<g id="node7" class="node">
+<title>node6_2</title>
+<polygon fill="none" stroke="#000000" points="199.5,-53.3 199.5,-78.1 307.5,-78.1 307.5,-53.3 199.5,-53.3"></polygon>
+<text text-anchor="middle" x="219.7223" y="-61.5" font-family="Times,serif" font-size="14.00" fill="#000000">s19</text>
+<polyline fill="none" stroke="#000000" points="239.9446,-53.3 239.9446,-78.1 "></polyline>
+<text text-anchor="middle" x="260.9446" y="-61.5" font-family="Times,serif" font-size="14.00" fill="#000000">659</text>
+<polyline fill="none" stroke="#000000" points="281.9446,-53.3 281.9446,-78.1 "></polyline>
+<text text-anchor="middle" x="294.6946" y="-61.5" font-family="Times,serif" font-size="14.00" fill="#000000"> </text>
+</g>
+<!-- node6_1&#45;&gt;node6_2 -->
+<g id="edge6" class="edge">
+<title>node6_1:tail&#45;&gt;node6_2:head</title>
+<path fill="none" stroke="#000000" d="M163.5,-65.7C175.5,-65.7 180.75,-65.7 189.375,-65.7"></path>
+<polygon fill="#000000" stroke="#000000" points="189.5,-69.2001 199.5,-65.7 189.5,-62.2001 189.5,-69.2001"></polygon>
+</g>
+</g>
+</svg>
+</p><h2 class="mume-header" id="%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE">思维导图</h2>
+
+<pre data-role="codeBlock" data-info="viz {hide=false}" class="language-dot"><code>digraph G{
+    label=&quot;Dot language learning map&quot;
+    rankdir=LR
+    node [shape=Mrecord, fontsize=12]
+    edge [arrowhead=dot,color=&quot;#afd275&quot;]
+    dot_language [label=&quot;DOT\n&#x8BED;&#x8A00;&quot;, style=filled, fillcolor=&quot;#00bfff&quot;]
+
+    grammar_string [label=&quot;&#x5B57;&#x7B26;&#x4E32;&quot;]
+
+    id_char [label=&quot;&#x5B57;&#x7B26;&quot;]
+    id_string [label=&quot;&#x5B57;&#x7B26;&#x4E32;&quot;]
+
+    dot_language-&gt;{&quot;&#x5E03;&#x5C40;&#x5668;&quot;, &quot;&#x8BED;&#x6CD5;&quot;}
+    &quot;&#x5E03;&#x5C40;&#x5668;&quot;-&gt;{dot, circo, neato, twopi, osage}
+
+    &#x8BED;&#x6CD5;-&gt;{ID, &quot;&#x5173;&#x952E;&#x5B57;&quot;, grammar_string,
+    &quot;&#x5206;&#x7EC4;&#x7B26;&#x53F7;&quot;, &quot;&#x5C5E;&#x6027;&quot;}
+
+    ID-&gt;id_char-&gt;&quot;&#x5B57;&#x6BCD;\n&#x6570;&#x5B57;\n&#x4E0B;&#x5212;&#x7EBF;&quot;
+    ID-&gt;id_string-&gt;{&quot;&#x53CC;&#x5F15;&#x53F7;&#x5305;&#x88F9;&quot;, &lt;&#x5C16;&#x62EC;&#x53F7;&#x5305;&#x88F9;&gt;}
+
+    &quot;&#x5173;&#x952E;&#x5B57;&quot;-&gt;{&quot;graph&quot;,&quot;digraph&quot;,&quot;subgraph&quot;,
+    &quot;edge&quot;,&quot;node&quot;,&quot;strict&quot;}
+    &quot;subgraph&quot;-&gt;&quot;cluster&quot;
+
+    grammar_string-&gt;{&quot;&#x6362;&#x884C;:\\n&quot;, &quot;&#x62FC;&#x63A5;:+&quot;, &quot;&#x8F6C;&#x4E49;&quot;,&quot;&#x5B9E;&#x4F53;&#x5B57;&#x7B26;&quot;}
+    &quot;&#x8F6C;&#x4E49;&quot;-&gt;{&quot;\\*&quot;, &quot;\\\\&quot;}
+
+    &quot;&#x5206;&#x7EC4;&#x7B26;&#x53F7;&quot;-&gt;{&quot;&#x4E2D;&#x62EC;&#x53F7;:&#x5C5E;&#x6027;&quot;,&quot;&#x5927;&#x62EC;&#x53F7;:&#x8282;&#x70B9;&quot;}
+
+    &quot;&#x5C5E;&#x6027;&quot;-&gt;{&quot;label&quot;,&quot;shape&quot;,&quot;style&quot;,&quot;fillcolor&quot;,&quot;bgcolor&quot;,
+    &quot;color&quot;,&quot;fontcolor&quot;,&quot;fontname&quot;,&quot;fontsize&quot;,&quot;rankdir&quot;,
+    &quot;dir&quot;,&quot;arrowhead&quot;,&quot;arrowtail&quot;,&quot;arrowsize&quot;}
+}
+</code></pre><p hide="false"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: G Pages: 1 -->
+<svg width="476pt" height="1692pt" viewBox="0.00 0.00 476.24 1691.80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1687.8)">
+<title>G</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-1687.8 472.2388,-1687.8 472.2388,4 -4,4"></polygon>
+<text text-anchor="middle" x="234.1194" y="-8.2" font-family="Times,serif" font-size="14.00" fill="#000000">Dot language learning map</text>
+<!-- dot_language -->
+<g id="node1" class="node">
+<title>dot_language</title>
+<path fill="#00bfff" stroke="#000000" d="M12,-1262.9C12,-1262.9 42,-1262.9 42,-1262.9 48,-1262.9 54,-1268.9 54,-1274.9 54,-1274.9 54,-1287.7 54,-1287.7 54,-1293.7 48,-1299.7 42,-1299.7 42,-1299.7 12,-1299.7 12,-1299.7 6,-1299.7 0,-1293.7 0,-1287.7 0,-1287.7 0,-1274.9 0,-1274.9 0,-1268.9 6,-1262.9 12,-1262.9"></path>
+<text text-anchor="middle" x="27" y="-1284.9" font-family="Times,serif" font-size="12.00" fill="#000000">DOT</text>
+<text text-anchor="middle" x="27" y="-1270.5" font-family="Times,serif" font-size="12.00" fill="#000000">语言</text>
+</g>
+<!-- 布局器 -->
+<g id="node5" class="node">
+<title>布局器</title>
+<path fill="none" stroke="#000000" d="M102,-1509.3C102,-1509.3 132,-1509.3 132,-1509.3 138,-1509.3 144,-1515.3 144,-1521.3 144,-1521.3 144,-1533.3 144,-1533.3 144,-1539.3 138,-1545.3 132,-1545.3 132,-1545.3 102,-1545.3 102,-1545.3 96,-1545.3 90,-1539.3 90,-1533.3 90,-1533.3 90,-1521.3 90,-1521.3 90,-1515.3 96,-1509.3 102,-1509.3"></path>
+<text text-anchor="middle" x="117" y="-1524" font-family="Times,serif" font-size="12.00" fill="#000000">布局器</text>
+</g>
+<!-- dot_language&#45;&gt;布局器 -->
+<g id="edge1" class="edge">
+<title>dot_language&#45;&gt;布局器</title>
+<path fill="none" stroke="#afd275" d="M33.7646,-1299.79C49.6415,-1343.1869 89.3253,-1451.6558 107.5628,-1501.505"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="109.0271" cy="-1505.5075" rx="4" ry="4"></ellipse>
+</g>
+<!-- 语法 -->
+<g id="node6" class="node">
+<title>语法</title>
+<path fill="none" stroke="#000000" d="M102,-1153.3C102,-1153.3 132,-1153.3 132,-1153.3 138,-1153.3 144,-1159.3 144,-1165.3 144,-1165.3 144,-1177.3 144,-1177.3 144,-1183.3 138,-1189.3 132,-1189.3 132,-1189.3 102,-1189.3 102,-1189.3 96,-1189.3 90,-1183.3 90,-1177.3 90,-1177.3 90,-1165.3 90,-1165.3 90,-1159.3 96,-1153.3 102,-1153.3"></path>
+<text text-anchor="middle" x="117" y="-1168" font-family="Times,serif" font-size="12.00" fill="#000000">语法</text>
+</g>
+<!-- dot_language&#45;&gt;语法 -->
+<g id="edge2" class="edge">
+<title>dot_language&#45;&gt;语法</title>
+<path fill="none" stroke="#afd275" d="M42.2673,-1262.64C57.382,-1244.1665 80.597,-1215.7925 97.1389,-1195.5747"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="99.7234" cy="-1192.4158" rx="4" ry="4"></ellipse>
+</g>
+<!-- grammar_string -->
+<g id="node2" class="node">
+<title>grammar_string</title>
+<path fill="none" stroke="#000000" d="M195.0968,-1372.3C195.0968,-1372.3 225.0968,-1372.3 225.0968,-1372.3 231.0968,-1372.3 237.0968,-1378.3 237.0968,-1384.3 237.0968,-1384.3 237.0968,-1396.3 237.0968,-1396.3 237.0968,-1402.3 231.0968,-1408.3 225.0968,-1408.3 225.0968,-1408.3 195.0968,-1408.3 195.0968,-1408.3 189.0968,-1408.3 183.0968,-1402.3 183.0968,-1396.3 183.0968,-1396.3 183.0968,-1384.3 183.0968,-1384.3 183.0968,-1378.3 189.0968,-1372.3 195.0968,-1372.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1387" font-family="Times,serif" font-size="12.00" fill="#000000">字符串</text>
+</g>
+<!-- 换行:\\n -->
+<g id="node26" class="node">
+<title>换行:\\n</title>
+<path fill="none" stroke="#000000" d="M298.2904,-1510.3C298.2904,-1510.3 329.2856,-1510.3 329.2856,-1510.3 335.2856,-1510.3 341.2856,-1516.3 341.2856,-1522.3 341.2856,-1522.3 341.2856,-1534.3 341.2856,-1534.3 341.2856,-1540.3 335.2856,-1546.3 329.2856,-1546.3 329.2856,-1546.3 298.2904,-1546.3 298.2904,-1546.3 292.2904,-1546.3 286.2904,-1540.3 286.2904,-1534.3 286.2904,-1534.3 286.2904,-1522.3 286.2904,-1522.3 286.2904,-1516.3 292.2904,-1510.3 298.2904,-1510.3"></path>
+<text text-anchor="middle" x="313.788" y="-1525" font-family="Times,serif" font-size="12.00" fill="#000000">换行:\n</text>
+</g>
+<!-- grammar_string&#45;&gt;换行:\\n -->
+<g id="edge25" class="edge">
+<title>grammar_string&#45;&gt;换行:\\n</title>
+<path fill="none" stroke="#afd275" d="M231.9709,-1408.5737C234.9526,-1411.6343 237.8042,-1414.92 240.1936,-1418.3 263.4045,-1451.1336 250.9539,-1469.9991 276.1936,-1501.3 277.3411,-1502.7231 278.5816,-1504.1065 279.8894,-1505.446"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.0269" cy="-1508.322" rx="4" ry="4"></ellipse>
+</g>
+<!-- 拼接:+ -->
+<g id="node27" class="node">
+<title>拼接:+</title>
+<path fill="none" stroke="#000000" d="M297.7372,-1455.3C297.7372,-1455.3 329.8388,-1455.3 329.8388,-1455.3 335.8388,-1455.3 341.8388,-1461.3 341.8388,-1467.3 341.8388,-1467.3 341.8388,-1479.3 341.8388,-1479.3 341.8388,-1485.3 335.8388,-1491.3 329.8388,-1491.3 329.8388,-1491.3 297.7372,-1491.3 297.7372,-1491.3 291.7372,-1491.3 285.7372,-1485.3 285.7372,-1479.3 285.7372,-1479.3 285.7372,-1467.3 285.7372,-1467.3 285.7372,-1461.3 291.7372,-1455.3 297.7372,-1455.3"></path>
+<text text-anchor="middle" x="313.788" y="-1470" font-family="Times,serif" font-size="12.00" fill="#000000">拼接:+</text>
+</g>
+<!-- grammar_string&#45;&gt;拼接:+ -->
+<g id="edge26" class="edge">
+<title>grammar_string&#45;&gt;拼接:+</title>
+<path fill="none" stroke="#afd275" d="M230.5822,-1408.389C243.4609,-1419.5762 260.545,-1434.0831 276.1936,-1446.3 277.8563,-1447.598 279.5732,-1448.9138 281.3159,-1450.2299"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="284.8929" cy="-1452.8867" rx="4" ry="4"></ellipse>
+</g>
+<!-- 转义 -->
+<g id="node28" class="node">
+<title>转义</title>
+<path fill="none" stroke="#000000" d="M298.788,-1400.3C298.788,-1400.3 328.788,-1400.3 328.788,-1400.3 334.788,-1400.3 340.788,-1406.3 340.788,-1412.3 340.788,-1412.3 340.788,-1424.3 340.788,-1424.3 340.788,-1430.3 334.788,-1436.3 328.788,-1436.3 328.788,-1436.3 298.788,-1436.3 298.788,-1436.3 292.788,-1436.3 286.788,-1430.3 286.788,-1424.3 286.788,-1424.3 286.788,-1412.3 286.788,-1412.3 286.788,-1406.3 292.788,-1400.3 298.788,-1400.3"></path>
+<text text-anchor="middle" x="313.788" y="-1415" font-family="Times,serif" font-size="12.00" fill="#000000">转义</text>
+</g>
+<!-- grammar_string&#45;&gt;转义 -->
+<g id="edge27" class="edge">
+<title>grammar_string&#45;&gt;转义</title>
+<path fill="none" stroke="#afd275" d="M237.3404,-1397.6567C250.0809,-1401.097 265.4017,-1405.2341 278.9716,-1408.8984"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="282.8646" cy="-1409.9496" rx="4" ry="4"></ellipse>
+</g>
+<!-- 实体字符 -->
+<g id="node29" class="node">
+<title>实体字符</title>
+<path fill="none" stroke="#000000" d="M290.9578,-1345.3C290.9578,-1345.3 336.6182,-1345.3 336.6182,-1345.3 342.6182,-1345.3 348.6182,-1351.3 348.6182,-1357.3 348.6182,-1357.3 348.6182,-1369.3 348.6182,-1369.3 348.6182,-1375.3 342.6182,-1381.3 336.6182,-1381.3 336.6182,-1381.3 290.9578,-1381.3 290.9578,-1381.3 284.9578,-1381.3 278.9578,-1375.3 278.9578,-1369.3 278.9578,-1369.3 278.9578,-1357.3 278.9578,-1357.3 278.9578,-1351.3 284.9578,-1345.3 290.9578,-1345.3"></path>
+<text text-anchor="middle" x="313.788" y="-1360" font-family="Times,serif" font-size="12.00" fill="#000000">实体字符</text>
+</g>
+<!-- grammar_string&#45;&gt;实体字符 -->
+<g id="edge28" class="edge">
+<title>grammar_string&#45;&gt;实体字符</title>
+<path fill="none" stroke="#afd275" d="M237.3404,-1383.2061C247.6761,-1380.5148 259.7099,-1377.3813 271.1294,-1374.4078"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="275.0378" cy="-1373.3902" rx="4" ry="4"></ellipse>
+</g>
+<!-- id_char -->
+<g id="node3" class="node">
+<title>id_char</title>
+<path fill="none" stroke="#000000" d="M298.788,-1290.3C298.788,-1290.3 328.788,-1290.3 328.788,-1290.3 334.788,-1290.3 340.788,-1296.3 340.788,-1302.3 340.788,-1302.3 340.788,-1314.3 340.788,-1314.3 340.788,-1320.3 334.788,-1326.3 328.788,-1326.3 328.788,-1326.3 298.788,-1326.3 298.788,-1326.3 292.788,-1326.3 286.788,-1320.3 286.788,-1314.3 286.788,-1314.3 286.788,-1302.3 286.788,-1302.3 286.788,-1296.3 292.788,-1290.3 298.788,-1290.3"></path>
+<text text-anchor="middle" x="313.788" y="-1305" font-family="Times,serif" font-size="12.00" fill="#000000">字符</text>
+</g>
+<!-- 字母\n数字\n下划线 -->
+<g id="node16" class="node">
+<title>字母\n数字\n下划线</title>
+<path fill="none" stroke="#000000" d="M412.8106,-1290.7C412.8106,-1290.7 442.8106,-1290.7 442.8106,-1290.7 448.8106,-1290.7 454.8106,-1296.7 454.8106,-1302.7 454.8106,-1302.7 454.8106,-1329.9 454.8106,-1329.9 454.8106,-1335.9 448.8106,-1341.9 442.8106,-1341.9 442.8106,-1341.9 412.8106,-1341.9 412.8106,-1341.9 406.8106,-1341.9 400.8106,-1335.9 400.8106,-1329.9 400.8106,-1329.9 400.8106,-1302.7 400.8106,-1302.7 400.8106,-1296.7 406.8106,-1290.7 412.8106,-1290.7"></path>
+<text text-anchor="middle" x="427.8106" y="-1327.1" font-family="Times,serif" font-size="12.00" fill="#000000">字母</text>
+<text text-anchor="middle" x="427.8106" y="-1312.7" font-family="Times,serif" font-size="12.00" fill="#000000">数字</text>
+<text text-anchor="middle" x="427.8106" y="-1298.3" font-family="Times,serif" font-size="12.00" fill="#000000">下划线</text>
+</g>
+<!-- id_char&#45;&gt;字母\n数字\n下划线 -->
+<g id="edge14" class="edge">
+<title>id_char&#45;&gt;字母\n数字\n下划线</title>
+<path fill="none" stroke="#afd275" d="M340.8098,-1310.1959C356.1757,-1311.274 375.6049,-1312.6372 392.2027,-1313.8017"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="396.5975" cy="-1314.11" rx="4" ry="4"></ellipse>
+</g>
+<!-- id_string -->
+<g id="node4" class="node">
+<title>id_string</title>
+<path fill="none" stroke="#000000" d="M298.788,-1235.3C298.788,-1235.3 328.788,-1235.3 328.788,-1235.3 334.788,-1235.3 340.788,-1241.3 340.788,-1247.3 340.788,-1247.3 340.788,-1259.3 340.788,-1259.3 340.788,-1265.3 334.788,-1271.3 328.788,-1271.3 328.788,-1271.3 298.788,-1271.3 298.788,-1271.3 292.788,-1271.3 286.788,-1265.3 286.788,-1259.3 286.788,-1259.3 286.788,-1247.3 286.788,-1247.3 286.788,-1241.3 292.788,-1235.3 298.788,-1235.3"></path>
+<text text-anchor="middle" x="313.788" y="-1250" font-family="Times,serif" font-size="12.00" fill="#000000">字符串</text>
+</g>
+<!-- 双引号包裹 -->
+<g id="node17" class="node">
+<title>双引号包裹</title>
+<path fill="none" stroke="#000000" d="M399.3824,-1235.3C399.3824,-1235.3 456.2388,-1235.3 456.2388,-1235.3 462.2388,-1235.3 468.2388,-1241.3 468.2388,-1247.3 468.2388,-1247.3 468.2388,-1259.3 468.2388,-1259.3 468.2388,-1265.3 462.2388,-1271.3 456.2388,-1271.3 456.2388,-1271.3 399.3824,-1271.3 399.3824,-1271.3 393.3824,-1271.3 387.3824,-1265.3 387.3824,-1259.3 387.3824,-1259.3 387.3824,-1247.3 387.3824,-1247.3 387.3824,-1241.3 393.3824,-1235.3 399.3824,-1235.3"></path>
+<text text-anchor="middle" x="427.8106" y="-1250" font-family="Times,serif" font-size="12.00" fill="#000000">双引号包裹</text>
+</g>
+<!-- id_string&#45;&gt;双引号包裹 -->
+<g id="edge16" class="edge">
+<title>id_string&#45;&gt;双引号包裹</title>
+<path fill="none" stroke="#afd275" d="M340.8098,-1253.3C352.2625,-1253.3 365.9723,-1253.3 379.0847,-1253.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="383.1463" cy="-1253.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- 尖括号包裹 -->
+<g id="node18" class="node">
+<title>尖括号包裹</title>
+<path fill="none" stroke="#000000" d="M403.385,-1180.3C403.385,-1180.3 452.2362,-1180.3 452.2362,-1180.3 458.2362,-1180.3 464.2362,-1186.3 464.2362,-1192.3 464.2362,-1192.3 464.2362,-1204.3 464.2362,-1204.3 464.2362,-1210.3 458.2362,-1216.3 452.2362,-1216.3 452.2362,-1216.3 403.385,-1216.3 403.385,-1216.3 397.385,-1216.3 391.385,-1210.3 391.385,-1204.3 391.385,-1204.3 391.385,-1192.3 391.385,-1192.3 391.385,-1186.3 397.385,-1180.3 403.385,-1180.3"></path>
+<text text-anchor="middle" x="427.8106" y="-1195" font-family="Times,serif" font-size="12.00" fill="#000000">尖括号包裹</text>
+</g>
+<!-- id_string&#45;&gt;尖括号包裹 -->
+<g id="edge17" class="edge">
+<title>id_string&#45;&gt;尖括号包裹</title>
+<path fill="none" stroke="#afd275" d="M340.8098,-1240.2658C353.596,-1234.0982 369.1957,-1226.5735 383.6364,-1219.6079"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="387.4585" cy="-1217.7643" rx="4" ry="4"></ellipse>
+</g>
+<!-- dot -->
+<g id="node7" class="node">
+<title>dot</title>
+<path fill="none" stroke="#000000" d="M195.0968,-1647.3C195.0968,-1647.3 225.0968,-1647.3 225.0968,-1647.3 231.0968,-1647.3 237.0968,-1653.3 237.0968,-1659.3 237.0968,-1659.3 237.0968,-1671.3 237.0968,-1671.3 237.0968,-1677.3 231.0968,-1683.3 225.0968,-1683.3 225.0968,-1683.3 195.0968,-1683.3 195.0968,-1683.3 189.0968,-1683.3 183.0968,-1677.3 183.0968,-1671.3 183.0968,-1671.3 183.0968,-1659.3 183.0968,-1659.3 183.0968,-1653.3 189.0968,-1647.3 195.0968,-1647.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1662" font-family="Times,serif" font-size="12.00" fill="#000000">dot</text>
+</g>
+<!-- 布局器&#45;&gt;dot -->
+<g id="edge3" class="edge">
+<title>布局器&#45;&gt;dot</title>
+<path fill="none" stroke="#afd275" d="M124.9914,-1545.3224C135.6396,-1568.2475 155.9583,-1608.4421 180,-1638.3 180.8475,-1639.3525 181.7377,-1640.3994 182.6594,-1641.4355"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="185.4358" cy="-1644.3302" rx="4" ry="4"></ellipse>
+</g>
+<!-- circo -->
+<g id="node8" class="node">
+<title>circo</title>
+<path fill="none" stroke="#000000" d="M195.0968,-1592.3C195.0968,-1592.3 225.0968,-1592.3 225.0968,-1592.3 231.0968,-1592.3 237.0968,-1598.3 237.0968,-1604.3 237.0968,-1604.3 237.0968,-1616.3 237.0968,-1616.3 237.0968,-1622.3 231.0968,-1628.3 225.0968,-1628.3 225.0968,-1628.3 195.0968,-1628.3 195.0968,-1628.3 189.0968,-1628.3 183.0968,-1622.3 183.0968,-1616.3 183.0968,-1616.3 183.0968,-1604.3 183.0968,-1604.3 183.0968,-1598.3 189.0968,-1592.3 195.0968,-1592.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1607" font-family="Times,serif" font-size="12.00" fill="#000000">circo</text>
+</g>
+<!-- 布局器&#45;&gt;circo -->
+<g id="edge4" class="edge">
+<title>布局器&#45;&gt;circo</title>
+<path fill="none" stroke="#afd275" d="M137.2006,-1545.3098C150.7706,-1557.408 168.7949,-1573.4775 183.5253,-1586.6103"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="186.6284" cy="-1589.3769" rx="4" ry="4"></ellipse>
+</g>
+<!-- neato -->
+<g id="node9" class="node">
+<title>neato</title>
+<path fill="none" stroke="#000000" d="M195.0968,-1537.3C195.0968,-1537.3 225.0968,-1537.3 225.0968,-1537.3 231.0968,-1537.3 237.0968,-1543.3 237.0968,-1549.3 237.0968,-1549.3 237.0968,-1561.3 237.0968,-1561.3 237.0968,-1567.3 231.0968,-1573.3 225.0968,-1573.3 225.0968,-1573.3 195.0968,-1573.3 195.0968,-1573.3 189.0968,-1573.3 183.0968,-1567.3 183.0968,-1561.3 183.0968,-1561.3 183.0968,-1549.3 183.0968,-1549.3 183.0968,-1543.3 189.0968,-1537.3 195.0968,-1537.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1552" font-family="Times,serif" font-size="12.00" fill="#000000">neato</text>
+</g>
+<!-- 布局器&#45;&gt;neato -->
+<g id="edge5" class="edge">
+<title>布局器&#45;&gt;neato</title>
+<path fill="none" stroke="#afd275" d="M144.4286,-1535.5495C153.9933,-1538.4262 164.8615,-1541.6949 174.965,-1544.7337"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="179.0338" cy="-1545.9574" rx="4" ry="4"></ellipse>
+</g>
+<!-- twopi -->
+<g id="node10" class="node">
+<title>twopi</title>
+<path fill="none" stroke="#000000" d="M195.0968,-1482.3C195.0968,-1482.3 225.0968,-1482.3 225.0968,-1482.3 231.0968,-1482.3 237.0968,-1488.3 237.0968,-1494.3 237.0968,-1494.3 237.0968,-1506.3 237.0968,-1506.3 237.0968,-1512.3 231.0968,-1518.3 225.0968,-1518.3 225.0968,-1518.3 195.0968,-1518.3 195.0968,-1518.3 189.0968,-1518.3 183.0968,-1512.3 183.0968,-1506.3 183.0968,-1506.3 183.0968,-1494.3 183.0968,-1494.3 183.0968,-1488.3 189.0968,-1482.3 195.0968,-1482.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1497" font-family="Times,serif" font-size="12.00" fill="#000000">twopi</text>
+</g>
+<!-- 布局器&#45;&gt;twopi -->
+<g id="edge6" class="edge">
+<title>布局器&#45;&gt;twopi</title>
+<path fill="none" stroke="#afd275" d="M144.4286,-1519.3451C153.9933,-1516.5712 164.8615,-1513.4192 174.965,-1510.489"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="179.0226" cy="-1509.3122" rx="4" ry="4"></ellipse>
+</g>
+<!-- osage -->
+<g id="node11" class="node">
+<title>osage</title>
+<path fill="none" stroke="#000000" d="M195.0968,-1427.3C195.0968,-1427.3 225.0968,-1427.3 225.0968,-1427.3 231.0968,-1427.3 237.0968,-1433.3 237.0968,-1439.3 237.0968,-1439.3 237.0968,-1451.3 237.0968,-1451.3 237.0968,-1457.3 231.0968,-1463.3 225.0968,-1463.3 225.0968,-1463.3 195.0968,-1463.3 195.0968,-1463.3 189.0968,-1463.3 183.0968,-1457.3 183.0968,-1451.3 183.0968,-1451.3 183.0968,-1439.3 183.0968,-1439.3 183.0968,-1433.3 189.0968,-1427.3 195.0968,-1427.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1442" font-family="Times,serif" font-size="12.00" fill="#000000">osage</text>
+</g>
+<!-- 布局器&#45;&gt;osage -->
+<g id="edge7" class="edge">
+<title>布局器&#45;&gt;osage</title>
+<path fill="none" stroke="#afd275" d="M137.6612,-1509.1015C151.1605,-1497.2113 168.9188,-1481.5697 183.4735,-1468.7499"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="186.4917" cy="-1466.0915" rx="4" ry="4"></ellipse>
+</g>
+<!-- 语法&#45;&gt;grammar_string -->
+<g id="edge8" class="edge">
+<title>语法&#45;&gt;grammar_string</title>
+<path fill="none" stroke="#afd275" d="M124.7773,-1189.5951C141.35,-1228.5806 180.1798,-1319.9236 199.2038,-1364.6754"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="200.8423" cy="-1368.5298" rx="4" ry="4"></ellipse>
+</g>
+<!-- ID -->
+<g id="node12" class="node">
+<title>ID</title>
+<path fill="none" stroke="#000000" d="M195.0968,-1235.3C195.0968,-1235.3 225.0968,-1235.3 225.0968,-1235.3 231.0968,-1235.3 237.0968,-1241.3 237.0968,-1247.3 237.0968,-1247.3 237.0968,-1259.3 237.0968,-1259.3 237.0968,-1265.3 231.0968,-1271.3 225.0968,-1271.3 225.0968,-1271.3 195.0968,-1271.3 195.0968,-1271.3 189.0968,-1271.3 183.0968,-1265.3 183.0968,-1259.3 183.0968,-1259.3 183.0968,-1247.3 183.0968,-1247.3 183.0968,-1241.3 189.0968,-1235.3 195.0968,-1235.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1250" font-family="Times,serif" font-size="12.00" fill="#000000">ID</text>
+</g>
+<!-- 语法&#45;&gt;ID -->
+<g id="edge9" class="edge">
+<title>语法&#45;&gt;ID</title>
+<path fill="none" stroke="#afd275" d="M137.6612,-1189.4985C151.1605,-1201.3887 168.9188,-1217.0303 183.4735,-1229.8501"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="186.4917" cy="-1232.5085" rx="4" ry="4"></ellipse>
+</g>
+<!-- 关键字 -->
+<g id="node13" class="node">
+<title>关键字</title>
+<path fill="none" stroke="#000000" d="M193.9326,-1070.3C193.9326,-1070.3 226.261,-1070.3 226.261,-1070.3 232.261,-1070.3 238.261,-1076.3 238.261,-1082.3 238.261,-1082.3 238.261,-1094.3 238.261,-1094.3 238.261,-1100.3 232.261,-1106.3 226.261,-1106.3 226.261,-1106.3 193.9326,-1106.3 193.9326,-1106.3 187.9326,-1106.3 181.9326,-1100.3 181.9326,-1094.3 181.9326,-1094.3 181.9326,-1082.3 181.9326,-1082.3 181.9326,-1076.3 187.9326,-1070.3 193.9326,-1070.3"></path>
+<text text-anchor="middle" x="210.0968" y="-1085" font-family="Times,serif" font-size="12.00" fill="#000000">关键字</text>
+</g>
+<!-- 语法&#45;&gt;关键字 -->
+<g id="edge10" class="edge">
+<title>语法&#45;&gt;关键字</title>
+<path fill="none" stroke="#afd275" d="M137.2006,-1153.2902C150.7706,-1141.192 168.7949,-1125.1225 183.5253,-1111.9897"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="186.6284" cy="-1109.2231" rx="4" ry="4"></ellipse>
+</g>
+<!-- 分组符号 -->
+<g id="node14" class="node">
+<title>分组符号</title>
+<path fill="none" stroke="#000000" d="M192,-850.3C192,-850.3 228.1936,-850.3 228.1936,-850.3 234.1936,-850.3 240.1936,-856.3 240.1936,-862.3 240.1936,-862.3 240.1936,-874.3 240.1936,-874.3 240.1936,-880.3 234.1936,-886.3 228.1936,-886.3 228.1936,-886.3 192,-886.3 192,-886.3 186,-886.3 180,-880.3 180,-874.3 180,-874.3 180,-862.3 180,-862.3 180,-856.3 186,-850.3 192,-850.3"></path>
+<text text-anchor="middle" x="210.0968" y="-865" font-family="Times,serif" font-size="12.00" fill="#000000">分组符号</text>
+</g>
+<!-- 语法&#45;&gt;分组符号 -->
+<g id="edge11" class="edge">
+<title>语法&#45;&gt;分组符号</title>
+<path fill="none" stroke="#afd275" d="M122.5448,-1153.2534C138.3218,-1101.9045 183.5133,-954.8206 202.033,-894.5452"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="203.2885" cy="-890.4588" rx="4" ry="4"></ellipse>
+</g>
+<!-- 属性 -->
+<g id="node15" class="node">
+<title>属性</title>
+<path fill="none" stroke="#000000" d="M195.0968,-410.3C195.0968,-410.3 225.0968,-410.3 225.0968,-410.3 231.0968,-410.3 237.0968,-416.3 237.0968,-422.3 237.0968,-422.3 237.0968,-434.3 237.0968,-434.3 237.0968,-440.3 231.0968,-446.3 225.0968,-446.3 225.0968,-446.3 195.0968,-446.3 195.0968,-446.3 189.0968,-446.3 183.0968,-440.3 183.0968,-434.3 183.0968,-434.3 183.0968,-422.3 183.0968,-422.3 183.0968,-416.3 189.0968,-410.3 195.0968,-410.3"></path>
+<text text-anchor="middle" x="210.0968" y="-425" font-family="Times,serif" font-size="12.00" fill="#000000">属性</text>
+</g>
+<!-- 语法&#45;&gt;属性 -->
+<g id="edge12" class="edge">
+<title>语法&#45;&gt;属性</title>
+<path fill="none" stroke="#afd275" d="M119.3013,-1152.9336C131.8533,-1052.7568 192.0282,-572.504 206.8114,-454.5209"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="207.3371" cy="-450.3245" rx="4" ry="4"></ellipse>
+</g>
+<!-- ID&#45;&gt;id_char -->
+<g id="edge13" class="edge">
+<title>ID&#45;&gt;id_char</title>
+<path fill="none" stroke="#afd275" d="M237.3404,-1267.7506C250.2,-1274.5716 265.6883,-1282.7869 279.3516,-1290.0342"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.1926" cy="-1292.0715" rx="4" ry="4"></ellipse>
+</g>
+<!-- ID&#45;&gt;id_string -->
+<g id="edge15" class="edge">
+<title>ID&#45;&gt;id_string</title>
+<path fill="none" stroke="#afd275" d="M237.3404,-1253.3C249.9619,-1253.3 265.1156,-1253.3 278.5907,-1253.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="282.7263" cy="-1253.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- graph -->
+<g id="node19" class="node">
+<title>graph</title>
+<path fill="none" stroke="#000000" d="M298.788,-1180.3C298.788,-1180.3 328.788,-1180.3 328.788,-1180.3 334.788,-1180.3 340.788,-1186.3 340.788,-1192.3 340.788,-1192.3 340.788,-1204.3 340.788,-1204.3 340.788,-1210.3 334.788,-1216.3 328.788,-1216.3 328.788,-1216.3 298.788,-1216.3 298.788,-1216.3 292.788,-1216.3 286.788,-1210.3 286.788,-1204.3 286.788,-1204.3 286.788,-1192.3 286.788,-1192.3 286.788,-1186.3 292.788,-1180.3 298.788,-1180.3"></path>
+<text text-anchor="middle" x="313.788" y="-1195" font-family="Times,serif" font-size="12.00" fill="#000000">graph</text>
+</g>
+<!-- 关键字&#45;&gt;graph -->
+<g id="edge18" class="edge">
+<title>关键字&#45;&gt;graph</title>
+<path fill="none" stroke="#afd275" d="M222.2352,-1106.3228C234.6168,-1123.9823 254.9753,-1151.1105 276.1936,-1171.3 277.518,-1172.5602 278.9039,-1173.8096 280.3299,-1175.0402"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.6719" cy="-1177.7637" rx="4" ry="4"></ellipse>
+</g>
+<!-- digraph -->
+<g id="node20" class="node">
+<title>digraph</title>
+<path fill="none" stroke="#000000" d="M298.788,-1125.3C298.788,-1125.3 328.788,-1125.3 328.788,-1125.3 334.788,-1125.3 340.788,-1131.3 340.788,-1137.3 340.788,-1137.3 340.788,-1149.3 340.788,-1149.3 340.788,-1155.3 334.788,-1161.3 328.788,-1161.3 328.788,-1161.3 298.788,-1161.3 298.788,-1161.3 292.788,-1161.3 286.788,-1155.3 286.788,-1149.3 286.788,-1149.3 286.788,-1137.3 286.788,-1137.3 286.788,-1131.3 292.788,-1125.3 298.788,-1125.3"></path>
+<text text-anchor="middle" x="313.788" y="-1140" font-family="Times,serif" font-size="12.00" fill="#000000">digraph</text>
+</g>
+<!-- 关键字&#45;&gt;digraph -->
+<g id="edge19" class="edge">
+<title>关键字&#45;&gt;digraph</title>
+<path fill="none" stroke="#afd275" d="M238.4309,-1103.329C251.0793,-1110.038 266.0964,-1118.0034 279.3836,-1125.0512"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.0276" cy="-1126.984" rx="4" ry="4"></ellipse>
+</g>
+<!-- subgraph -->
+<g id="node21" class="node">
+<title>subgraph</title>
+<path fill="none" stroke="#000000" d="M295.7938,-1070.3C295.7938,-1070.3 331.7822,-1070.3 331.7822,-1070.3 337.7822,-1070.3 343.7822,-1076.3 343.7822,-1082.3 343.7822,-1082.3 343.7822,-1094.3 343.7822,-1094.3 343.7822,-1100.3 337.7822,-1106.3 331.7822,-1106.3 331.7822,-1106.3 295.7938,-1106.3 295.7938,-1106.3 289.7938,-1106.3 283.7938,-1100.3 283.7938,-1094.3 283.7938,-1094.3 283.7938,-1082.3 283.7938,-1082.3 283.7938,-1076.3 289.7938,-1070.3 295.7938,-1070.3"></path>
+<text text-anchor="middle" x="313.788" y="-1085" font-family="Times,serif" font-size="12.00" fill="#000000">subgraph</text>
+</g>
+<!-- 关键字&#45;&gt;subgraph -->
+<g id="edge20" class="edge">
+<title>关键字&#45;&gt;subgraph</title>
+<path fill="none" stroke="#afd275" d="M238.4309,-1088.3C249.8313,-1088.3 263.1561,-1088.3 275.404,-1088.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="279.6743" cy="-1088.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- edge -->
+<g id="node22" class="node">
+<title>edge</title>
+<path fill="none" stroke="#000000" d="M298.788,-1015.3C298.788,-1015.3 328.788,-1015.3 328.788,-1015.3 334.788,-1015.3 340.788,-1021.3 340.788,-1027.3 340.788,-1027.3 340.788,-1039.3 340.788,-1039.3 340.788,-1045.3 334.788,-1051.3 328.788,-1051.3 328.788,-1051.3 298.788,-1051.3 298.788,-1051.3 292.788,-1051.3 286.788,-1045.3 286.788,-1039.3 286.788,-1039.3 286.788,-1027.3 286.788,-1027.3 286.788,-1021.3 292.788,-1015.3 298.788,-1015.3"></path>
+<text text-anchor="middle" x="313.788" y="-1030" font-family="Times,serif" font-size="12.00" fill="#000000">edge</text>
+</g>
+<!-- 关键字&#45;&gt;edge -->
+<g id="edge21" class="edge">
+<title>关键字&#45;&gt;edge</title>
+<path fill="none" stroke="#afd275" d="M238.4309,-1073.271C251.0793,-1066.562 266.0964,-1058.5966 279.3836,-1051.5488"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.0276" cy="-1049.616" rx="4" ry="4"></ellipse>
+</g>
+<!-- node -->
+<g id="node23" class="node">
+<title>node</title>
+<path fill="none" stroke="#000000" d="M298.788,-960.3C298.788,-960.3 328.788,-960.3 328.788,-960.3 334.788,-960.3 340.788,-966.3 340.788,-972.3 340.788,-972.3 340.788,-984.3 340.788,-984.3 340.788,-990.3 334.788,-996.3 328.788,-996.3 328.788,-996.3 298.788,-996.3 298.788,-996.3 292.788,-996.3 286.788,-990.3 286.788,-984.3 286.788,-984.3 286.788,-972.3 286.788,-972.3 286.788,-966.3 292.788,-960.3 298.788,-960.3"></path>
+<text text-anchor="middle" x="313.788" y="-975" font-family="Times,serif" font-size="12.00" fill="#000000">node</text>
+</g>
+<!-- 关键字&#45;&gt;node -->
+<g id="edge22" class="edge">
+<title>关键字&#45;&gt;node</title>
+<path fill="none" stroke="#afd275" d="M222.588,-1070.2578C235.0789,-1052.8741 255.3779,-1026.3341 276.1936,-1006.3 277.8427,-1004.7128 279.5833,-1003.1364 281.3752,-1001.5875"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="284.5207" cy="-998.9958" rx="4" ry="4"></ellipse>
+</g>
+<!-- strict -->
+<g id="node24" class="node">
+<title>strict</title>
+<path fill="none" stroke="#000000" d="M298.788,-905.3C298.788,-905.3 328.788,-905.3 328.788,-905.3 334.788,-905.3 340.788,-911.3 340.788,-917.3 340.788,-917.3 340.788,-929.3 340.788,-929.3 340.788,-935.3 334.788,-941.3 328.788,-941.3 328.788,-941.3 298.788,-941.3 298.788,-941.3 292.788,-941.3 286.788,-935.3 286.788,-929.3 286.788,-929.3 286.788,-917.3 286.788,-917.3 286.788,-911.3 292.788,-905.3 298.788,-905.3"></path>
+<text text-anchor="middle" x="313.788" y="-920" font-family="Times,serif" font-size="12.00" fill="#000000">strict</text>
+</g>
+<!-- 关键字&#45;&gt;strict -->
+<g id="edge23" class="edge">
+<title>关键字&#45;&gt;strict</title>
+<path fill="none" stroke="#afd275" d="M215.8028,-1069.8674C225.0975,-1041.973 245.597,-988.366 276.1936,-951.3 277.5082,-949.7074 278.9316,-948.1555 280.4292,-946.6517"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.5472" cy="-943.8042" rx="4" ry="4"></ellipse>
+</g>
+<!-- 中括号:属性 -->
+<g id="node32" class="node">
+<title>中括号:属性</title>
+<path fill="none" stroke="#000000" d="M288.529,-850.3C288.529,-850.3 339.047,-850.3 339.047,-850.3 345.047,-850.3 351.047,-856.3 351.047,-862.3 351.047,-862.3 351.047,-874.3 351.047,-874.3 351.047,-880.3 345.047,-886.3 339.047,-886.3 339.047,-886.3 288.529,-886.3 288.529,-886.3 282.529,-886.3 276.529,-880.3 276.529,-874.3 276.529,-874.3 276.529,-862.3 276.529,-862.3 276.529,-856.3 282.529,-850.3 288.529,-850.3"></path>
+<text text-anchor="middle" x="313.788" y="-865" font-family="Times,serif" font-size="12.00" fill="#000000">中括号:属性</text>
+</g>
+<!-- 分组符号&#45;&gt;中括号:属性 -->
+<g id="edge31" class="edge">
+<title>分组符号&#45;&gt;中括号:属性</title>
+<path fill="none" stroke="#afd275" d="M240.3673,-868.3C249.0593,-868.3 258.736,-868.3 268.137,-868.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="272.2958" cy="-868.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- 大括号:节点 -->
+<g id="node33" class="node">
+<title>大括号:节点</title>
+<path fill="none" stroke="#000000" d="M288.1936,-795.3C288.1936,-795.3 339.3824,-795.3 339.3824,-795.3 345.3824,-795.3 351.3824,-801.3 351.3824,-807.3 351.3824,-807.3 351.3824,-819.3 351.3824,-819.3 351.3824,-825.3 345.3824,-831.3 339.3824,-831.3 339.3824,-831.3 288.1936,-831.3 288.1936,-831.3 282.1936,-831.3 276.1936,-825.3 276.1936,-819.3 276.1936,-819.3 276.1936,-807.3 276.1936,-807.3 276.1936,-801.3 282.1936,-795.3 288.1936,-795.3"></path>
+<text text-anchor="middle" x="313.788" y="-810" font-family="Times,serif" font-size="12.00" fill="#000000">大括号:节点</text>
+</g>
+<!-- 分组符号&#45;&gt;大括号:节点 -->
+<g id="edge32" class="edge">
+<title>分组符号&#45;&gt;大括号:节点</title>
+<path fill="none" stroke="#afd275" d="M240.3673,-852.2439C250.3725,-846.9369 261.6824,-840.9379 272.3748,-835.2664"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="276.1213" cy="-833.2792" rx="4" ry="4"></ellipse>
+</g>
+<!-- label -->
+<g id="node34" class="node">
+<title>label</title>
+<path fill="none" stroke="#000000" d="M298.788,-740.3C298.788,-740.3 328.788,-740.3 328.788,-740.3 334.788,-740.3 340.788,-746.3 340.788,-752.3 340.788,-752.3 340.788,-764.3 340.788,-764.3 340.788,-770.3 334.788,-776.3 328.788,-776.3 328.788,-776.3 298.788,-776.3 298.788,-776.3 292.788,-776.3 286.788,-770.3 286.788,-764.3 286.788,-764.3 286.788,-752.3 286.788,-752.3 286.788,-746.3 292.788,-740.3 298.788,-740.3"></path>
+<text text-anchor="middle" x="313.788" y="-755" font-family="Times,serif" font-size="12.00" fill="#000000">label</text>
+</g>
+<!-- 属性&#45;&gt;label -->
+<g id="edge33" class="edge">
+<title>属性&#45;&gt;label</title>
+<path fill="none" stroke="#afd275" d="M212.3472,-446.6088C219.7411,-504.606 244.6298,-683.2671 276.1936,-731.3 277.4761,-733.2517 278.9519,-735.1082 280.5607,-736.866"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.5525" cy="-739.7042" rx="4" ry="4"></ellipse>
+</g>
+<!-- shape -->
+<g id="node35" class="node">
+<title>shape</title>
+<path fill="none" stroke="#000000" d="M298.788,-685.3C298.788,-685.3 328.788,-685.3 328.788,-685.3 334.788,-685.3 340.788,-691.3 340.788,-697.3 340.788,-697.3 340.788,-709.3 340.788,-709.3 340.788,-715.3 334.788,-721.3 328.788,-721.3 328.788,-721.3 298.788,-721.3 298.788,-721.3 292.788,-721.3 286.788,-715.3 286.788,-709.3 286.788,-709.3 286.788,-697.3 286.788,-697.3 286.788,-691.3 292.788,-685.3 298.788,-685.3"></path>
+<text text-anchor="middle" x="313.788" y="-700" font-family="Times,serif" font-size="12.00" fill="#000000">shape</text>
+</g>
+<!-- 属性&#45;&gt;shape -->
+<g id="edge34" class="edge">
+<title>属性&#45;&gt;shape</title>
+<path fill="none" stroke="#afd275" d="M210.834,-446.5375C213.4107,-490.0885 224.9319,-602.0446 276.1936,-676.3 277.5204,-678.2219 279.0304,-680.0554 280.665,-681.7958"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.692" cy="-684.6192" rx="4" ry="4"></ellipse>
+</g>
+<!-- style -->
+<g id="node36" class="node">
+<title>style</title>
+<path fill="none" stroke="#000000" d="M298.788,-630.3C298.788,-630.3 328.788,-630.3 328.788,-630.3 334.788,-630.3 340.788,-636.3 340.788,-642.3 340.788,-642.3 340.788,-654.3 340.788,-654.3 340.788,-660.3 334.788,-666.3 328.788,-666.3 328.788,-666.3 298.788,-666.3 298.788,-666.3 292.788,-666.3 286.788,-660.3 286.788,-654.3 286.788,-654.3 286.788,-642.3 286.788,-642.3 286.788,-636.3 292.788,-630.3 298.788,-630.3"></path>
+<text text-anchor="middle" x="313.788" y="-645" font-family="Times,serif" font-size="12.00" fill="#000000">style</text>
+</g>
+<!-- 属性&#45;&gt;style -->
+<g id="edge35" class="edge">
+<title>属性&#45;&gt;style</title>
+<path fill="none" stroke="#afd275" d="M212.5513,-446.5091C218.2151,-482.8983 235.0066,-565.8611 276.1936,-621.3 277.4515,-622.9932 278.8468,-624.6231 280.3379,-626.1848"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.54" cy="-629.1449" rx="4" ry="4"></ellipse>
+</g>
+<!-- fillcolor -->
+<g id="node37" class="node">
+<title>fillcolor</title>
+<path fill="none" stroke="#000000" d="M298.4602,-575.3C298.4602,-575.3 329.1158,-575.3 329.1158,-575.3 335.1158,-575.3 341.1158,-581.3 341.1158,-587.3 341.1158,-587.3 341.1158,-599.3 341.1158,-599.3 341.1158,-605.3 335.1158,-611.3 329.1158,-611.3 329.1158,-611.3 298.4602,-611.3 298.4602,-611.3 292.4602,-611.3 286.4602,-605.3 286.4602,-599.3 286.4602,-599.3 286.4602,-587.3 286.4602,-587.3 286.4602,-581.3 292.4602,-575.3 298.4602,-575.3"></path>
+<text text-anchor="middle" x="313.788" y="-590" font-family="Times,serif" font-size="12.00" fill="#000000">fillcolor</text>
+</g>
+<!-- 属性&#45;&gt;fillcolor -->
+<g id="edge36" class="edge">
+<title>属性&#45;&gt;fillcolor</title>
+<path fill="none" stroke="#afd275" d="M215.5401,-446.4738C224.6141,-474.5289 244.9758,-529.0347 276.1936,-566.3 277.3676,-567.7014 278.6297,-569.0669 279.9552,-570.3919"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.1238" cy="-573.2485" rx="4" ry="4"></ellipse>
+</g>
+<!-- bgcolor -->
+<g id="node38" class="node">
+<title>bgcolor</title>
+<path fill="none" stroke="#000000" d="M298.788,-520.3C298.788,-520.3 328.788,-520.3 328.788,-520.3 334.788,-520.3 340.788,-526.3 340.788,-532.3 340.788,-532.3 340.788,-544.3 340.788,-544.3 340.788,-550.3 334.788,-556.3 328.788,-556.3 328.788,-556.3 298.788,-556.3 298.788,-556.3 292.788,-556.3 286.788,-550.3 286.788,-544.3 286.788,-544.3 286.788,-532.3 286.788,-532.3 286.788,-526.3 292.788,-520.3 298.788,-520.3"></path>
+<text text-anchor="middle" x="313.788" y="-535" font-family="Times,serif" font-size="12.00" fill="#000000">bgcolor</text>
+</g>
+<!-- 属性&#45;&gt;bgcolor -->
+<g id="edge37" class="edge">
+<title>属性&#45;&gt;bgcolor</title>
+<path fill="none" stroke="#afd275" d="M222.2352,-446.3228C234.6168,-463.9823 254.9753,-491.1105 276.1936,-511.3 277.518,-512.5602 278.9039,-513.8096 280.3299,-515.0402"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.6719" cy="-517.7637" rx="4" ry="4"></ellipse>
+</g>
+<!-- color -->
+<g id="node39" class="node">
+<title>color</title>
+<path fill="none" stroke="#000000" d="M298.788,-465.3C298.788,-465.3 328.788,-465.3 328.788,-465.3 334.788,-465.3 340.788,-471.3 340.788,-477.3 340.788,-477.3 340.788,-489.3 340.788,-489.3 340.788,-495.3 334.788,-501.3 328.788,-501.3 328.788,-501.3 298.788,-501.3 298.788,-501.3 292.788,-501.3 286.788,-495.3 286.788,-489.3 286.788,-489.3 286.788,-477.3 286.788,-477.3 286.788,-471.3 292.788,-465.3 298.788,-465.3"></path>
+<text text-anchor="middle" x="313.788" y="-480" font-family="Times,serif" font-size="12.00" fill="#000000">color</text>
+</g>
+<!-- 属性&#45;&gt;color -->
+<g id="edge38" class="edge">
+<title>属性&#45;&gt;color</title>
+<path fill="none" stroke="#afd275" d="M237.3404,-442.7506C250.2,-449.5716 265.6883,-457.7869 279.3516,-465.0342"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.1926" cy="-467.0715" rx="4" ry="4"></ellipse>
+</g>
+<!-- fontcolor -->
+<g id="node40" class="node">
+<title>fontcolor</title>
+<path fill="none" stroke="#000000" d="M295.795,-410.3C295.795,-410.3 331.781,-410.3 331.781,-410.3 337.781,-410.3 343.781,-416.3 343.781,-422.3 343.781,-422.3 343.781,-434.3 343.781,-434.3 343.781,-440.3 337.781,-446.3 331.781,-446.3 331.781,-446.3 295.795,-446.3 295.795,-446.3 289.795,-446.3 283.795,-440.3 283.795,-434.3 283.795,-434.3 283.795,-422.3 283.795,-422.3 283.795,-416.3 289.795,-410.3 295.795,-410.3"></path>
+<text text-anchor="middle" x="313.788" y="-425" font-family="Times,serif" font-size="12.00" fill="#000000">fontcolor</text>
+</g>
+<!-- 属性&#45;&gt;fontcolor -->
+<g id="edge39" class="edge">
+<title>属性&#45;&gt;fontcolor</title>
+<path fill="none" stroke="#afd275" d="M237.3404,-428.3C248.9568,-428.3 262.7182,-428.3 275.3418,-428.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="279.4389" cy="-428.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- fontname -->
+<g id="node41" class="node">
+<title>fontname</title>
+<path fill="none" stroke="#000000" d="M295.129,-355.3C295.129,-355.3 332.447,-355.3 332.447,-355.3 338.447,-355.3 344.447,-361.3 344.447,-367.3 344.447,-367.3 344.447,-379.3 344.447,-379.3 344.447,-385.3 338.447,-391.3 332.447,-391.3 332.447,-391.3 295.129,-391.3 295.129,-391.3 289.129,-391.3 283.129,-385.3 283.129,-379.3 283.129,-379.3 283.129,-367.3 283.129,-367.3 283.129,-361.3 289.129,-355.3 295.129,-355.3"></path>
+<text text-anchor="middle" x="313.788" y="-370" font-family="Times,serif" font-size="12.00" fill="#000000">fontname</text>
+</g>
+<!-- 属性&#45;&gt;fontname -->
+<g id="edge40" class="edge">
+<title>属性&#45;&gt;fontname</title>
+<path fill="none" stroke="#afd275" d="M237.3404,-413.8494C249.0777,-407.6237 263.005,-400.2364 275.7357,-393.4837"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="279.5338" cy="-391.4692" rx="4" ry="4"></ellipse>
+</g>
+<!-- fontsize -->
+<g id="node42" class="node">
+<title>fontsize</title>
+<path fill="none" stroke="#000000" d="M298.788,-300.3C298.788,-300.3 328.788,-300.3 328.788,-300.3 334.788,-300.3 340.788,-306.3 340.788,-312.3 340.788,-312.3 340.788,-324.3 340.788,-324.3 340.788,-330.3 334.788,-336.3 328.788,-336.3 328.788,-336.3 298.788,-336.3 298.788,-336.3 292.788,-336.3 286.788,-330.3 286.788,-324.3 286.788,-324.3 286.788,-312.3 286.788,-312.3 286.788,-306.3 292.788,-300.3 298.788,-300.3"></path>
+<text text-anchor="middle" x="313.788" y="-315" font-family="Times,serif" font-size="12.00" fill="#000000">fontsize</text>
+</g>
+<!-- 属性&#45;&gt;fontsize -->
+<g id="edge41" class="edge">
+<title>属性&#45;&gt;fontsize</title>
+<path fill="none" stroke="#afd275" d="M222.588,-410.2578C235.0789,-392.8741 255.3779,-366.3341 276.1936,-346.3 277.8427,-344.7128 279.5833,-343.1364 281.3752,-341.5875"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="284.5207" cy="-338.9958" rx="4" ry="4"></ellipse>
+</g>
+<!-- rankdir -->
+<g id="node43" class="node">
+<title>rankdir</title>
+<path fill="none" stroke="#000000" d="M298.788,-245.3C298.788,-245.3 328.788,-245.3 328.788,-245.3 334.788,-245.3 340.788,-251.3 340.788,-257.3 340.788,-257.3 340.788,-269.3 340.788,-269.3 340.788,-275.3 334.788,-281.3 328.788,-281.3 328.788,-281.3 298.788,-281.3 298.788,-281.3 292.788,-281.3 286.788,-275.3 286.788,-269.3 286.788,-269.3 286.788,-257.3 286.788,-257.3 286.788,-251.3 292.788,-245.3 298.788,-245.3"></path>
+<text text-anchor="middle" x="313.788" y="-260" font-family="Times,serif" font-size="12.00" fill="#000000">rankdir</text>
+</g>
+<!-- 属性&#45;&gt;rankdir -->
+<g id="edge42" class="edge">
+<title>属性&#45;&gt;rankdir</title>
+<path fill="none" stroke="#afd275" d="M215.8028,-409.8674C225.0975,-381.973 245.597,-328.366 276.1936,-291.3 277.5082,-289.7074 278.9316,-288.1555 280.4292,-286.6517"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.5472" cy="-283.8042" rx="4" ry="4"></ellipse>
+</g>
+<!-- dir -->
+<g id="node44" class="node">
+<title>dir</title>
+<path fill="none" stroke="#000000" d="M298.788,-190.3C298.788,-190.3 328.788,-190.3 328.788,-190.3 334.788,-190.3 340.788,-196.3 340.788,-202.3 340.788,-202.3 340.788,-214.3 340.788,-214.3 340.788,-220.3 334.788,-226.3 328.788,-226.3 328.788,-226.3 298.788,-226.3 298.788,-226.3 292.788,-226.3 286.788,-220.3 286.788,-214.3 286.788,-214.3 286.788,-202.3 286.788,-202.3 286.788,-196.3 292.788,-190.3 298.788,-190.3"></path>
+<text text-anchor="middle" x="313.788" y="-205" font-family="Times,serif" font-size="12.00" fill="#000000">dir</text>
+</g>
+<!-- 属性&#45;&gt;dir -->
+<g id="edge43" class="edge">
+<title>属性&#45;&gt;dir</title>
+<path fill="none" stroke="#afd275" d="M212.658,-410.2451C218.5135,-374.1518 235.6329,-291.8026 276.1936,-236.3 277.5441,-234.452 279.0516,-232.6721 280.6653,-230.9677"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="283.5781" cy="-228.2191" rx="4" ry="4"></ellipse>
+</g>
+<!-- arrowhead -->
+<g id="node45" class="node">
+<title>arrowhead</title>
+<path fill="none" stroke="#000000" d="M292.4716,-135.3C292.4716,-135.3 335.1044,-135.3 335.1044,-135.3 341.1044,-135.3 347.1044,-141.3 347.1044,-147.3 347.1044,-147.3 347.1044,-159.3 347.1044,-159.3 347.1044,-165.3 341.1044,-171.3 335.1044,-171.3 335.1044,-171.3 292.4716,-171.3 292.4716,-171.3 286.4716,-171.3 280.4716,-165.3 280.4716,-159.3 280.4716,-159.3 280.4716,-147.3 280.4716,-147.3 280.4716,-141.3 286.4716,-135.3 292.4716,-135.3"></path>
+<text text-anchor="middle" x="313.788" y="-150" font-family="Times,serif" font-size="12.00" fill="#000000">arrowhead</text>
+</g>
+<!-- 属性&#45;&gt;arrowhead -->
+<g id="edge44" class="edge">
+<title>属性&#45;&gt;arrowhead</title>
+<path fill="none" stroke="#afd275" d="M210.9386,-410.1929C213.7444,-366.9421 225.7303,-255.6902 276.1936,-181.3 277.0845,-179.9867 278.0578,-178.711 279.0957,-177.4749"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="281.9628" cy="-174.5082" rx="4" ry="4"></ellipse>
+</g>
+<!-- arrowtail -->
+<g id="node46" class="node">
+<title>arrowtail</title>
+<path fill="none" stroke="#000000" d="M296.1328,-80.3C296.1328,-80.3 331.4432,-80.3 331.4432,-80.3 337.4432,-80.3 343.4432,-86.3 343.4432,-92.3 343.4432,-92.3 343.4432,-104.3 343.4432,-104.3 343.4432,-110.3 337.4432,-116.3 331.4432,-116.3 331.4432,-116.3 296.1328,-116.3 296.1328,-116.3 290.1328,-116.3 284.1328,-110.3 284.1328,-104.3 284.1328,-104.3 284.1328,-92.3 284.1328,-92.3 284.1328,-86.3 290.1328,-80.3 296.1328,-80.3"></path>
+<text text-anchor="middle" x="313.788" y="-95" font-family="Times,serif" font-size="12.00" fill="#000000">arrowtail</text>
+</g>
+<!-- 属性&#45;&gt;arrowtail -->
+<g id="edge45" class="edge">
+<title>属性&#45;&gt;arrowtail</title>
+<path fill="none" stroke="#afd275" d="M212.3885,-410.0737C219.9068,-352.3346 245.1286,-174.4417 276.1936,-126.3 277.054,-124.9666 278.0015,-123.6738 279.0178,-122.4233"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="281.8404" cy="-119.4367" rx="4" ry="4"></ellipse>
+</g>
+<!-- arrowsize -->
+<g id="node47" class="node">
+<title>arrowsize</title>
+<path fill="none" stroke="#000000" d="M294.4708,-25.3C294.4708,-25.3 333.1052,-25.3 333.1052,-25.3 339.1052,-25.3 345.1052,-31.3 345.1052,-37.3 345.1052,-37.3 345.1052,-49.3 345.1052,-49.3 345.1052,-55.3 339.1052,-61.3 333.1052,-61.3 333.1052,-61.3 294.4708,-61.3 294.4708,-61.3 288.4708,-61.3 282.4708,-55.3 282.4708,-49.3 282.4708,-49.3 282.4708,-37.3 282.4708,-37.3 282.4708,-31.3 288.4708,-25.3 294.4708,-25.3"></path>
+<text text-anchor="middle" x="313.788" y="-40" font-family="Times,serif" font-size="12.00" fill="#000000">arrowsize</text>
+</g>
+<!-- 属性&#45;&gt;arrowsize -->
+<g id="edge46" class="edge">
+<title>属性&#45;&gt;arrowsize</title>
+<path fill="none" stroke="#afd275" d="M211.674,-409.9374C217.5099,-345.1745 239.4616,-128.2082 276.1936,-70.3 276.8392,-69.2821 277.5383,-68.2909 278.2823,-67.3266"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="281.0516" cy="-64.3061" rx="4" ry="4"></ellipse>
+</g>
+<!-- cluster -->
+<g id="node25" class="node">
+<title>cluster</title>
+<path fill="none" stroke="#000000" d="M412.8106,-1070.3C412.8106,-1070.3 442.8106,-1070.3 442.8106,-1070.3 448.8106,-1070.3 454.8106,-1076.3 454.8106,-1082.3 454.8106,-1082.3 454.8106,-1094.3 454.8106,-1094.3 454.8106,-1100.3 448.8106,-1106.3 442.8106,-1106.3 442.8106,-1106.3 412.8106,-1106.3 412.8106,-1106.3 406.8106,-1106.3 400.8106,-1100.3 400.8106,-1094.3 400.8106,-1094.3 400.8106,-1082.3 400.8106,-1082.3 400.8106,-1076.3 406.8106,-1070.3 412.8106,-1070.3"></path>
+<text text-anchor="middle" x="427.8106" y="-1085" font-family="Times,serif" font-size="12.00" fill="#000000">cluster</text>
+</g>
+<!-- subgraph&#45;&gt;cluster -->
+<g id="edge24" class="edge">
+<title>subgraph&#45;&gt;cluster</title>
+<path fill="none" stroke="#afd275" d="M344.0446,-1088.3C358.8521,-1088.3 376.7738,-1088.3 392.234,-1088.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="396.5345" cy="-1088.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- \\* -->
+<g id="node30" class="node">
+<title>\\*</title>
+<path fill="none" stroke="#000000" d="M412.8106,-1435.3C412.8106,-1435.3 442.8106,-1435.3 442.8106,-1435.3 448.8106,-1435.3 454.8106,-1441.3 454.8106,-1447.3 454.8106,-1447.3 454.8106,-1459.3 454.8106,-1459.3 454.8106,-1465.3 448.8106,-1471.3 442.8106,-1471.3 442.8106,-1471.3 412.8106,-1471.3 412.8106,-1471.3 406.8106,-1471.3 400.8106,-1465.3 400.8106,-1459.3 400.8106,-1459.3 400.8106,-1447.3 400.8106,-1447.3 400.8106,-1441.3 406.8106,-1435.3 412.8106,-1435.3"></path>
+<text text-anchor="middle" x="427.8106" y="-1450" font-family="Times,serif" font-size="12.00" fill="#000000">\*</text>
+</g>
+<!-- 转义&#45;&gt;\\* -->
+<g id="edge29" class="edge">
+<title>转义&#45;&gt;\\*</title>
+<path fill="none" stroke="#afd275" d="M340.8098,-1426.5945C356.3167,-1431.3545 375.9617,-1437.3846 392.6588,-1442.5099"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="396.7637" cy="-1443.7699" rx="4" ry="4"></ellipse>
+</g>
+<!-- \\\\ -->
+<g id="node31" class="node">
+<title>\\\\</title>
+<path fill="none" stroke="#000000" d="M412.8106,-1380.3C412.8106,-1380.3 442.8106,-1380.3 442.8106,-1380.3 448.8106,-1380.3 454.8106,-1386.3 454.8106,-1392.3 454.8106,-1392.3 454.8106,-1404.3 454.8106,-1404.3 454.8106,-1410.3 448.8106,-1416.3 442.8106,-1416.3 442.8106,-1416.3 412.8106,-1416.3 412.8106,-1416.3 406.8106,-1416.3 400.8106,-1410.3 400.8106,-1404.3 400.8106,-1404.3 400.8106,-1392.3 400.8106,-1392.3 400.8106,-1386.3 406.8106,-1380.3 412.8106,-1380.3"></path>
+<text text-anchor="middle" x="427.8106" y="-1395" font-family="Times,serif" font-size="12.00" fill="#000000">\\</text>
+</g>
+<!-- 转义&#45;&gt;\\\\ -->
+<g id="edge30" class="edge">
+<title>转义&#45;&gt;\\\\</title>
+<path fill="none" stroke="#afd275" d="M340.8098,-1413.5603C356.3167,-1410.8403 375.9617,-1407.3945 392.6588,-1404.4658"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="396.6478" cy="-1403.7661" rx="4" ry="4"></ellipse>
+</g>
+</g>
+</svg>
+</p><h2 class="mume-header" id="%E5%A4%87%E6%B3%A8">备注</h2>
+
+<p>还有UML之类的图，由于接触比较少，以后用到再进行补充...</p>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E5%90%84%E7%A7%8D%E5%B8%B8%E7%94%A8%E5%9B%BE%E7%9A%84%E7%BB%98%E5%88%B6">各种常用图的绘制</a>
+<ul>
+<li><a href="#%E6%B5%81%E7%A8%8B%E5%9B%BE">流程图</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%93%E6%9E%84">数据的结构</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8">函数的调用</a></li>
+<li><a href="#%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a></li>
+<li><a href="#%E5%93%88%E5%B8%8C%E8%A1%A8">哈希表</a></li>
+<li><a href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE">思维导图</a></li>
+<li><a href="#%E5%A4%87%E6%B3%A8">备注</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    <script>
+var flowcharts = document.getElementsByClassName('flow')
+for (var i = 0; i < flowcharts.length; i++) {
+  var flow = flowcharts[i]
+  try {
+    var diagram = flowchart.parse(flow.textContent)
+    flow.id = 'flow_' + i
+    flow.innerHTML = ''
+    diagram.drawSVG(flow.id)
+  } catch (error) {
+    flow.innerHTML = '<pre class="language-text">' + error.toString() + '</pre>'
+  }
+}
+</script>
+    
+    <script>
+(function bindTaskListEvent() {
+  var taskListItemCheckboxes = document.body.getElementsByClassName('task-list-item-checkbox')
+  for (var i = 0; i < taskListItemCheckboxes.length; i++) {
+    var checkbox = taskListItemCheckboxes[i]
+    var li = checkbox.parentElement
+    if (li.tagName !== 'LI') li = li.parentElement
+    if (li.tagName === 'LI') {
+      li.classList.add('task-list-item')
+    }
+  }
+}())    
+</script>
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>

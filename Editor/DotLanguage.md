@@ -314,6 +314,23 @@ digraph G{
 }
 ```
 
+### strict
+
+用于防止两个节点重复练习：
+```viz {hide=false}
+graph {
+    A -- B [label="10"]
+    A -- B [label="20"]
+}
+```
+
+```viz {hide=false}
+strict graph {
+    A -- B [label="10"]
+    A -- B [label="20"]
+}
+```
+
 ## 应用
 
 实际应用请看 [各种常用图的绘制](https://foolishflyfox.github.io/CsLearnNote/Editor/CommonGraph.html)
