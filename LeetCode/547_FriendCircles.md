@@ -37,7 +37,7 @@ so the 0th and 2nd students are indirect friends. All of them are in the same fr
 
 ---
 
-这个是判断某个图共有多少个连通块的问题，可以用静态数组解决实现低的空间复杂度，代码如下：
+这个是判断某个图共有多少个**连通块**的问题，可以用 **静态链表** 实现低的空间复杂度，代码如下：
 ```python {.line-numbers}
 class Solution:
     def findCircleNum(self, M):

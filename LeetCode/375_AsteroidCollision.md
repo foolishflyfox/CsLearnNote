@@ -5,7 +5,8 @@ export_on_save:
 @import "/blog_head.md"
 # 735. Asteroid Collision
 
-**Website** : https://leetcode.com/problems/asteroid-collision/
+> <https://leetcode.com/problems/asteroid-collision/>
+该题涉及队列的使用
 
 We are given an array `asteroids` of integers representing asteroids in a row.
 
@@ -89,3 +90,5 @@ class Solution:
             i += 1
         return remains + cur_ps
 ```
+
+其中的 `cur_ps` 的使用类似于堆栈，数据先进后出。

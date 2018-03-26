@@ -6,6 +6,8 @@ export_on_save:
 
 # 345. Reverse Vowels of a String
 
+> <https://leetcode.com/problems/reverse-vowels-of-a-string/description/>
+
 Write a function that takes a string as input and reverse only the vowels of a string.
 
 **Example 1:**
@@ -21,7 +23,7 @@ The vowels does not include the letter "y".
 
 My solution:
 
-```python {.line-numbers}
+```python 
 class Solution:
     def reverseVowels(self, s):
         """
@@ -34,9 +36,9 @@ class Solution:
         p_right = s_len-1
         vowels = list("aeiouAEIOU")
         while p_left < p_right:
-            while (p_left < p_right) and (s[p_left] not in vowels):
+            while p_left<p_right and s[p_left] not in vowels:
                 p_left += 1
-            while (p_left < p_right) and (s[p_right] not in vowels):
+            while p_left<p_right and s[p_right] not in vowels:
                 p_right -= 1
             if p_left < p_right:
                 s[p_left], s[p_right] = s[p_right], s[p_left]

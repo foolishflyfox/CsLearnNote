@@ -31,19 +31,19 @@
 
 LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。下面是题目的一些解答:
 
-- [2018-03-19 : 375. Asteroid Collision](/LeetCode/375_AsteroidCollision.html)
+- [2018-03-19 : 375. Asteroid Collision 堆栈使用](/LeetCode/375_AsteroidCollision.html)<code class='green'>easy</code>
 
-- [2018-03-20 : 547. Friend Circles](/LeetCode/547_FriendCircles.html)
+- [2018-03-20 : 547. Friend Circles 静态链表/无向图连通性](/LeetCode/547_FriendCircles.html)
 
-- [2018-03-21 : 345. Reverse Vowels of a String](/LeetCode/345_ReverseVowels.html)
+- [2018-03-21 : 345. Reverse Vowels of a String](/LeetCode/345_ReverseVowels.html) <code class="green">easy</code>
 
-- [2018-03-22 : 491. Increasing Subsequences](/LeetCode/491_IncreasingSubsequences.html)
+- [2018-03-22 : 491. Increasing Subsequences 数据组合](/LeetCode/491_IncreasingSubsequences.html)
 
-- [2018-03-23 : 793. Preimage Size of Factorial Zeroes Function](/LeetCode/793_PreimageSizeofFactorialZeroesFunction.html)
+- [2018-03-23 : 793. Preimage Size of Factorial Zeroes Function 二分搜索存在性/搜索空间设计](/LeetCode/793_PreimageSizeofFactorialZeroesFunction.html) <code class='red'>hard<code>
 
-- [2018-03-24 : 648. Replace Words](/LeetCode/648_ReplaceWords.html)
+- [2018-03-24 : 648. Replace Words 字典搜索](/LeetCode/648_ReplaceWords.html)
 
-- [2018-03-25 : 二分搜索]()
+- [2018-03-25 : 378. Kth Smallest二分搜索--查找插入位置](/LeetCode/378_KthSmallestElementinaSortedMatrix.html)
 
 ## 正在编写
 

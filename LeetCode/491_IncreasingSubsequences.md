@@ -5,6 +5,9 @@ export_on_save:
 @import "/blog_head.md"
 
 # 491. Increasing Subsequences
+> <https://leetcode.com/problems/increasing-subsequences/>
+> 该问题是与数据的组合相关的问题
+
 
 Given an integer array, your task is to find all the different possible increasing subsequences of the given array, and the length of an increasing subsequence should be at least 2 .
 
