@@ -55,7 +55,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-24 : 648. Replace Words 字典搜索](/LeetCode/648_ReplaceWords.html)
 
-- [2018-03-25 : 378. Kth Smallest二分搜索--查找插入位置](/LeetCode/378_KthSmallestElementinaSortedMatrix.html)
+- [2018-03-25 : 378. Kth Smallest 二分搜索--查找插入位置](/LeetCode/378_KthSmallestElementinaSortedMatrix.html)
+
+- [2018-03-26 : 679. 24 Game 全排列/指数全排列/除0处理/小数比较/itertools](/LeetCode/679_24Game.html)
 
 ## 正在编写
 
