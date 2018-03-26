@@ -28,7 +28,7 @@ export_on_save:
 
 
 下面，我们用Python语言实现一个具有上述方法的图：
-```python {.line-numbers}
+```python {cmd .line-numbers id="GraphDefine"}
 class Graph:
     # directed 指定是否为有向图
     def __init__(self, directed=True):
@@ -38,7 +38,7 @@ class Graph:
         # 存放出边
         self.out_edges = {}
         #存放所有的边信息
-        self.edges_info = {}
+        self.edges = {}
 
         self.nodes = {}
             
@@ -52,13 +52,13 @@ class Graph:
     def insert_edge(self, n1, n2, e_info={}):
         self.in_edges.setdefault(n2, []).append(n1)
         self.out_edges.setdefault(n1, []).append(n2)
-        self.edges_info[n1+"-"+n2] = e_info.copy()
+        self.edges[n1+"-"+n2] = e_info.copy()
         if not self.directed:
             self.in_edges.setdefault(n1, []).append(n2)
             self.out_edges.setdefault(n2, []).append(n1)
-            self.edges_info[n2+"-"+n1] = e_info.copy()
+            self.edges[n2+"-"+n1] = e_info.copy()
     def get_edge_info(self, n1, n2, info_name):
-        return self.edges_info[n1+"-"+n2][info_name]
+        return self.edges[n1+"-"+n2][info_name]
     def get_in_edges(self, n_name):
         return self.in_edges[n_name]
     def get_out_edges(self, n_name):
@@ -66,24 +66,24 @@ class Graph:
     def delete_edge(self, n1, n2):
         self.in_edges[n2].remove(n1)
         self.out_edges[n1].remove(n2)
-        del self.edges_info[n1+"-"+n2]
+        del self.edges[n1+"-"+n2]
         if not self.directed:
             self.in_edges[n1].remove(n2)
             self.out_edges[n2].remove(n1)
-            del self.edges_info[n2+"-"+n1]
+            del self.edges[n2+"-"+n1]
     def delete_node(self, n_name):
         del self.nodes[n_name]
         if n_name in self.in_edges:
             for n1_name in self.in_edges[n_name]:
-                del self.edges_info[n1_name+"-"+n_name]
+                del self.edges[n1_name+"-"+n_name]
             del self.in_edges[n_name]
         if n_name in self.out_edges:
             for n2_name in self.out_edges[n_name]:
-                del self.edges_info[n_name+"-"+n2_name]
+                del self.edges[n_name+"-"+n2_name]
             del self.out_edges
     # 自动按照 dot language 输出图的格式
     # 复制后通过dot language进行渲染即可实现可视化
-    def to_dot(self):
+    def to_dot(self, n_info_names=["label"], e_info_names=["label"]):
         str_prefix = '    '
         if self.directed:
             print("digraph G{")
@@ -92,17 +92,69 @@ class Graph:
             print("strict graph G{")
             link_str = "--"
         for n in self.nodes:
-            print(str_prefix + n)
-        for e in self.edges_info:
-            print(str_prefix+link_str.join(e.split("-")))
+            str_info = ""
+            for iname in n_info_names:
+                if iname in self.nodes[n]:
+                    str_info += str(self.nodes[n][iname])+";"
+            if len(str_info):
+                str_info = "label=\""+str_info[:-1]+"\""
+            print("{0}{1} [{2}]".format(str_prefix, n, str_info))
+        for e in self.edges:
+            str_info = ""
+            for ename in e_info_names:
+                if ename in self.edges[e]:
+                    str_info += str(self.edges[e][ename])+";"
+            if len(str_info):
+                str_info = "label=\""+str_info[:-1]+"\""
+            print("{0}{1}[{2}]".format(str_prefix, 
+                    link_str.join(e.split("-")), str_info))
         print("}")
 ```
 
-如下图是一个有向图，其边上带权值：
-```viz {engine="twopi"}
-strict graph G{
-    A--B [label=10]
-    B--A [label=7]
+下面我们用上面的类构建一个有向图：
+```python {cmd continue="GraphDefine"}
+digraph = Graph()
+digraph.insert_node('D',{"label":"Dunwich"})
+digraph.insert_node('B',{"label":"Blaxhall"})
+digraph.insert_node("H",{"label":"Harwich"})
+digraph.insert_node("F",{"label":"Feering"})
+digraph.insert_node("T",{"label":"Tiptree"})
+digraph.insert_node("C",{"label":"Clacton"})
+digraph.insert_node("M",{"label":"Maldon"})
+
+digraph.insert_edge('D','B', {'v':15})
+digraph.insert_edge('D','H', {'v':35})
+digraph.insert_edge('B','H', {'v':22})
+digraph.insert_edge('B','F', {'v':37})
+digraph.insert_edge('F','T', {'v':6})
+digraph.insert_edge('H','T', {'v':27})
+digraph.insert_edge('C','T', {'v':66})
+digraph.insert_edge('T','M', {'v':28})
+digraph.insert_edge('M','C', {'v':1})
+
+digraph.to_dot(n_info_names=['label'],
+               e_info_names=['v'])
+```
+通过 `circo` 引擎进行渲染后的图形为：
+
+```viz {engine="circo"}
+digraph G{
+    D [label="Dunwich"]
+    B [label="Blaxhall"]
+    H [label="Harwich"]
+    F [label="Feering"]
+    T [label="Tiptree"]
+    C [label="Clacton"]
+    M [label="Maldon"]
+    D->B[label="15"]
+    D->H[label="35"]
+    B->H[label="22"]
+    B->F[label="37"]
+    F->T[label="6"]
+    H->T[label="27"]
+    C->T[label="66"]
+    T->M[label="28"]
+    M->C[label="1"]
 }
 ```
 

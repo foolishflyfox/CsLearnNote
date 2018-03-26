@@ -22,6 +22,7 @@
 
 - [学习人工智能的路线图](/AdvancedAI/AISummary.html) （ [pdf](/assets/AISummary.pdf) ）
 - [人工智能的定义与分类](/AdvancedAI/AIDefine.html)
+- [搜索问题](/AdvancedAI/Search.html)
 
 
 
