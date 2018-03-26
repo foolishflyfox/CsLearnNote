@@ -11,6 +11,16 @@ export_on_save:
 
 首先，需要装好 vscode/atom + markdown preview enhance，并在本地装好各种渲染引擎。如要渲染 vscode/atom 中的`viz`代码块，需要使用 `graphviz` 软件，安装方法非常简单，在 Linux 执行 `sudo apt install graphviz`，在 mac os 下执行 `brew install graphviz`。
 
+如果想要将用dot语法编写的文件转换成 png/jpg/svg/pdf 等，使用方法为：
+```
+<cmd> <input-file> -T <format> -o output
+```
+如下例：
+```
+circo xxx.gv -T png -o xxx.png
+```
+用 circo 引擎绘制，输出png格式的文件。`<cmd>` 还可以用 *dot*、*osage*、*neato*、*twopi*。
+
 另外，使用 `brew` 时国外的源通常较慢，可以使用国内的源，如中科大或者清华的镜像，方法：[替换及重置Homebrew默认源](https://lug.ustc.edu.cn/wiki/mirrors/help/brew.git)。
 
 如果 Linux 的安装较慢，也可以修改`/etc/apt/sources.list`，具体方法参见 : <http://wiki.ubuntu.org.cn/%E6%BA%90%E5%88%97%E8%A1%A8> 。
