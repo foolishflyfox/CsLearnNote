@@ -1,4 +1,11 @@
-
+```python {cmd matplotlib=true}
+from matplotlib_venn import venn2
+from matplotlib_venn import venn3
+import matplotlib.pyplot as plt
+plt.figure(figsize=(4,3))
+venn3((1,1,1,1,1,1,1,1))
+plt.show()
+```
 
 ```viz {}
 digraph G{
