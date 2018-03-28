@@ -303,7 +303,7 @@ digraph G{
 
 迪杰斯特拉算法是从终点开始倒着寻找起点。
 
-```python
+```python {.line-numbers}
 def dijkstra(g, n_start, n_end):
     path = {n_name:{"next_node":"", "distance":float("inf"), 
                     "selected":False} for n_name in g.nodes}
@@ -349,7 +349,7 @@ dijkstra(graph, 'D', 'T')
 ```
 #### Floyd 算法
 
-```python
+```python {.line-numbers}
 def floyd(g):
     path_matrix = {n1:{
             n2:{'next':'','d':float('inf')} 

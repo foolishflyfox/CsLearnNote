@@ -18,7 +18,7 @@
 
 ## 高级人工智能
 
-这部分内容是根据 **李金龙** 老师的 “高级人工智能” 课程的总结，李金龙老师的课真的是干货满满，在一个更高的层次对人工智能与算法进行了剖析，在有了一个宏观的格局后，相信在学具体的机器学习算法、优化算法等内容时候，都能够更容易地接受。
+这部分内容是根据 **李金龙** 老师的 “高级人工智能” 课程的总结，李金龙老师的课真的是干货满满，在一个更高的层次对人工智能与算法进行了剖析，在有了一个宏观的格局后，相信在学具体的机器学习算法、优化算法等内容时候，都能够更容易地接受。
 
 - [学习人工智能的路线图](/AdvancedAI/AISummary.html) （ [pdf](/assets/AISummary.pdf) ）
 - [人工智能的定义与分类](/AdvancedAI/AIDefine.html)
@@ -55,11 +55,13 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-24 : 648. Replace Words 字典搜索](/LeetCode/648_ReplaceWords.html)
 
-- [2018-03-25 : 378. Kth Smallest 二分搜索--查找插入位置](/LeetCode/378_KthSmallestElementinaSortedMatrix.html)
+- [2018-03-25 : 378. Kth Smallest 二分搜索--查找插入位置](/LeetCode/378_KthSmallestElementinaSortedMatrix.html)
 
 - [2018-03-26 : 679. 24 Game 全排列/指数全排列/除0处理/小数比较/itertools](/LeetCode/679_24Game.html)
 
 - [2018-03-27 : 442. Find All Duplicates in an Array 算法技巧](/LeetCode/442_FindAllDuplicatesinanArray.md)
+
+- [2018-03-28 : 27. Remove Element 原地算法](/LeetCode/27_RemoveElement.html)<code class="green">easy</code>
 
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
