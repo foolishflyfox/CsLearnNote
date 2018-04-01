@@ -47,31 +47,11 @@ A -> B
 B -> C
 @enduml
 ```
-
-```viz {engine="twopi"}
-digraph G{
-    A->B
-    A->C
-    A->D
-}
-@enddot
-```
-
-```viz {engine="circo"}
+
+```viz
 graph G{
-    {中科大}--B [label=f]
-    A--{中科大}
-}
-```
-
-```viz {engine="dot"}
-digraph G{
-    A->B
-    B->C
-    B->D
-    B->E
-    D->F
-    A->F
+    node [shape=Mrecord]
+    A [label="X"]
 }
 ```
 

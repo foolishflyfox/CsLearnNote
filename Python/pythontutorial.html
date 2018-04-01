@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>pythontutorial</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <h1 class="mume-header" id="python-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B">Python 基础教程</h1>
+
+<h2 class="mume-header" id="%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8">开箱即用</h2>
+
+<h3 class="mume-header" id="%E6%A0%87%E5%87%86%E5%BA%93">标准库</h3>
+
+<h4 class="mume-header" id="re">re</h4>
+
+<p>需要指出的是，要掌握正则表达式有点难，关键是每次学习一点点：只考虑完成特定任务所需要的知识。<strong>预先将所有的知识牢记在心里毫无意义！</strong></p>
+<h5 class="mume-header" id="%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">什么是正则表达式</h5>
+
+<p>正则表达式是可以匹配文本片段的模式。最简单的正则表达式为普通字符串，与它自己匹配。换而言之，正则表达式'python'与字符串'python'匹配。</p>
+<p>你可以使用这种匹配行为来完成如下工作：</p>
+<ul>
+<li>查找：在文本中查找模式</li>
+<li>替换：将特定的模式替换为计算得到的值</li>
+<li>分割：将文本分割成片段</li>
+</ul>
+<p><strong>通配符</strong></p>
+<p>正则表达式可以与多个字符串匹配，你可以使用特殊字符来创建这种正则表达式。例如：'.' 与一个除换行符之外的其他字符匹配，因此正则表达式'.ython'和字符串'python'、'jython'都可以匹配。</p>
+<p>句点与除换行符之外的任何字符都匹配，因此被称为通配符(wildcard)。</p>
+<p><strong>字符集</strong></p>
+<p>匹配任何字符还有用，但有时候你需要更细致地控制。为此，可以用方括号将一个子串括起来，创建一个字符集。如 <code>[pj]ython</code>匹配<code>python</code>和<code>jython</code>，但不匹配<code>kython</code>。</p>
+<ul>
+<li><code>[a-zA-Z]</code>: 与字母匹配</li>
+<li><code>[0-9]</code>: 与数字匹配</li>
+<li><code>[^abc]</code>: 与除a,b,c外的任一字符匹配</li>
+</ul>
+<p><strong>二选一和子模式</strong></p>
+<ul>
+<li><code>python|perl</code>: 选择 python 或 perl</li>
+<li><code>p(ython|erl)</code>: 将选择模式应用于模式的一部分，称为子模式；单个字符也可称为子模式</li>
+</ul>
+<p><strong>可选模式和重复模式</strong></p>
+<ul>
+<li><code>?</code>: 在子模式后面加 <code>?</code>，可将其指定为可选的，即可包含可不包含，即子模式可以出现1次或0次</li>
+<li><code>*</code>: 在子模式后面加 <code>*</code>，指定子模式可以出现0次或多次</li>
+<li><code>+</code>: 在子模式后面加 <code>+</code>，指定子模式可以出现1次或多次</li>
+<li><code>{m,n}</code>: <code>m</code>和<code>n</code>为数字，表示子模式重复至少m次，最多n次，<code>?</code>等价于<code>{0,1}</code>，<code>*</code>等价于<code>{0,}</code>，<code>+</code>等价于<code>{1,}</code></li>
+</ul>
+<p><strong>字符串的开头和末尾</strong></p>
+<p>前面讨论的都是模式是否和整个字符串匹配，但也可以查找与模式匹配的子串，如字符串<code>www.python.org</code>中的子串<code>www</code>与模式<code>w+</code>匹配。像这样查找字符串时，有时在整个字符串开头或末尾查找很有用。例如，你可能像确定字符串的开头是否与模式<code>ht+p</code>匹配，为此可以使用脱字符(<code>^</code>)来指出这一点。</p>
+<p>例如，<code>ht+p</code>与<code>http://python.org</code>和<code>htttttp://python.org</code>匹配，当与<code>www.http.org</code>不匹配，同样，要指定字符串末尾，可以使用美元符号(<code>$</code>)。</p>
+<h5 class="mume-header" id="%E6%A8%A1%E5%9D%97re%E7%9A%84%E5%86%85%E5%AE%B9">模块re的内容</h5>
+
+<p>如果没有用武之地，知道如何书写正则表达式也没有多大意义。模块re包含多个使用正则表达式的函数：<br>
+<em>表10-9 模块re中一些重要的函数</em></p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>complie(pattern[, flags])</td>
+<td>根据包含正则表达式的字符串创建模式对象</td>
+</tr>
+<tr>
+<td>search(pattern,string[, flags])</td>
+<td>在字符串中查找模式</td>
+</tr>
+<tr>
+<td>match(pattern,string[,flags])</td>
+<td>在字符串开头匹配模式</td>
+</tr>
+<tr>
+<td>split(pattern,string[, maxsplit=0])</td>
+<td>根据模式分割字符串</td>
+</tr>
+<tr>
+<td>findall(pattern, string)</td>
+<td>返回一个列表，其中包含字符串中所有与模式匹配的子串</td>
+</tr>
+<tr>
+<td>sub(pat, repl, string[, count=0])</td>
+<td>将字符串中与模式<code>pat</code>匹配的子串都替换为<code>repl</code></td>
+</tr>
+<tr>
+<td>escape(string)</td>
+<td>对字符串中所有的正则表达式特殊字符都进行转义</td>
+</tr>
+</tbody>
+</table>
+<h6 class="mume-header" id="recompile">re.compile</h6>
+
+<p>函数<code>re.complie</code>将用字符串表示的正则表达式转换为模式对象，以提高匹配效率。调用<code>search</code>、<code>match</code>函数时，如果提供的是用字符串表示的正则表达式，都必须在内部将它们转换为模式对象。通过使用函数<code>compile</code>对正则表达式进行转换后，每次使用它时，都无需再进行转换。模式对象也有搜索/匹配方法，因此<code>re.search(pat, string)</code>(其中<code>pat</code>是一个用字符串表示的正则表达式)等价于<code>pat.search(string)</code>(其中<code>pat</code>是使用compile创建的模式对象)。编译后的正则表达式对象也可用于模块<code>re</code>的普通函数中。</p>
+<h6 class="mume-header" id="research">re.search</h6>
+
+<p>函数<code>re.search</code>在给定字符串中寻找第一个与指定正则表达式匹配的子串，如果找到这样的子串，将返回<code>MatchObject</code>，否则返回 None。监狱返回值的这种特征，在条件语句中使用这个函数，如下所示：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">if</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Found it!'</span><span class="token punctuation">)</span>
+</pre><p>然而，如果需要获悉有关匹配的子串的详细详细，可查看返回的<code>MatchObject</code>。</p>
+<h6 class="mume-header" id="rematch">re.match</h6>
+
+<p>函数<code>re.match</code>尝试在给定字符串开头查找与正则表达式匹配的子串，因此<code>re.match('p', 'python')</code>返回真(<code>MatchObject</code>)，而<code>re.match('p','www.python.org')</code>返回 None。</p>
+<p>**注意：**函数 <code>match</code>在模式与字符串开头匹配时就返回True，而不要求与整个字符串匹配。如果要求与整个字符串匹配，需要在末尾加上一个美元符号。</p>
+<h6 class="mume-header" id="resplit">re.split</h6>
+
+<p>函数<code>re.split</code>根据与模式匹配的子串来分割字符串。这类似于字符串方法<code>split</code>，但使用正则表达式来指定分隔符，而不是指定固定的分隔符。例如，使用字符串方法<code>split</code>时，可以用字符串<code>,</code>为分隔符来分割字符串，但使用<code>re.split</code>时，可以用逗号和空格为分隔符来分割字符串。</p>
+<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+some_text <span class="token operator">=</span> <span class="token string">'alpha, beta,,, , gamma  delta'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> re<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"[, ]+"</span><span class="token punctuation">,</span> some_text<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['alpha', 'beta', 'gamma', 'delta']
+</pre></div></div><p><strong>注意</strong>：如果没事包含圆括号，将分割时匹配的子串用括号中的内容替代，如：</p>
+<div class="code-chunk" data-id="code-chunk-id-1" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"o(ob)a"</span><span class="token punctuation">,</span><span class="token string">"foobar"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['f', 'ob', 'r']
+</pre></div></div><p><code>re.split</code>的<code>maxsplit</code>指定最多分割多少次：</p>
+<div class="code-chunk" data-id="code-chunk-id-2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+some_text <span class="token operator">=</span> <span class="token string">'alpha, beta,,, , gamma  delta'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> re<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"[, ]+"</span><span class="token punctuation">,</span> some_text<span class="token punctuation">,</span> maxsplit<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['alpha', 'beta', 'gamma  delta']
+</pre></div></div><h6 class="mume-header" id="refindall">re.findall</h6>
+
+<p>函数<code>re.findall</code>返回一个列表，其中包含所有与给定模式匹配的子串，例如要找出字符串包含的所有单词：</p>
+<div class="code-chunk" data-id="code-chunk-id-3" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+text <span class="token operator">=</span> <span class="token string">'"Hm... Err -- you are sure?" he said, sounding insecure'</span>
+pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"[a-zA-Z]+"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> text<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['Hm', 'Err', 'you', 'are', 'sure', 'he', 'said', 'sounding', 'insecure']
+</pre></div></div><p>要找出字符串中包含的所有标点符号：</p>
+<div class="code-chunk" data-id="code-chunk-id-4" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+text <span class="token operator">=</span> <span class="token string">'"Hm... Err -- you are sure?" he said, sounding insecure'</span>
+pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"[^a-zA-Z\s]+"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> text<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['"', '...', '--', '?"', ',']
+</pre></div></div><h6 class="mume-header" id="resub">re.sub</h6>
+
+<p>函数 <code>re.sub</code> 从左往右将模式匹配字符串替换为指定内容：</p>
+<div class="code-chunk" data-id="code-chunk-id-5" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+pat <span class="token operator">=</span> <span class="token string">'\{name\}'</span>
+text <span class="token operator">=</span> <span class="token string">'Dear {name} ...'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> <span class="token string">'Mr. Gumby'</span><span class="token punctuation">,</span> text<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Dear Mr. Gumby ...
+</pre></div></div><h6 class="mume-header" id="reescape">re.escape</h6>
+
+<p><code>re.escape</code>是一个工具函数，用于对字符串中所有可能被视为正则表达式运算符的字符串进行转义。使用这个函数的情况有：字符串很长，其中包含大量特殊字符，而你不想输入大量的反斜杠；你从用户那里获取了一个字符串（如通过函数<code>input</code>），想将其用于正则表达式中。如：</p>
+<div class="code-chunk" data-id="code-chunk-id-6" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>escape<span class="token punctuation">(</span><span class="token string">'www.python.org'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>escape<span class="token punctuation">(</span><span class="token string">'But where is the ambiguity?'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">www\.python\.org
+But\ where\ is\ the\ ambiguity\?
+</pre></div></div><h5 class="mume-header" id="%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BC%96%E7%BB%84">匹配对象和编组</h5>
+
+<p>在模块中，查找与模式匹配的子串的函数都在找到时返回MatchObject对象。这种对象包含于模式匹配的子串信息，还包含模式的哪部分与子串的哪部分匹配的信息。这些子串部分称为<strong>编组(group)</strong>。<br>
+编组就是放在圆括号内的子模式，它们是根据 <em>左边的括号</em> 数编号的，其中编组 0 指的是这个模式，因此在下面的模式中：<br>
+<code>There (was a (wee) (cooper)) who (lived in Fyfe)</code><br>
+包含如下编组：<br>
+0 There was a wee cooper who lived in Fyfe<br>
+1 was a wee cooper<br>
+2 wee<br>
+3 cooper<br>
+4 lived in Fyfe</p>
+<p>通常，编组包含租入通配符和重复运算符等特殊字符，因此你可能想知道与给定编组匹配的内容，例如，在下面的模式中：<br>
+<code>r'www\.(.+)\.com'</code><br>
+编组 0 包含整个字符串，而编组 1 包含<code>www.</code>和<code>.com</code>之间的内容。通过创建类似于这样的模式，可以提取字符串中你感兴趣的部分。<br>
+下表描述了<code>re</code>匹配对象的一些重要方法：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>group([group1, ...])</code></td>
+<td>获取与给定子模式(编组)匹配的子串</td>
+</tr>
+<tr>
+<td><code>start([group])</code></td>
+<td>返回与给定编组匹配的起始位置</td>
+</tr>
+<tr>
+<td><code>end([group])</code></td>
+<td>返回与给定编组匹配的子串的终止位置(与切片一样，不包含终止位置)</td>
+</tr>
+<tr>
+<td><code>span([group])</code></td>
+<td>返回与给定编组匹配的子串的起始和终止位置</td>
+</tr>
+</tbody>
+</table>
+<p><code>match_object.group([group1, ...])</code>:<br>
+方法<code>group</code>返回与模式中给定编组匹配的子串，如果没有指定编组好，则默认为0。如果只指定了一个编组号(或使用默认值0)，将只返回一个字符串；否则返回一个元组，其中包含与给定编组匹配的子串。</p>
+<p><strong>注意：除了这个模式(编组0)外，最多还可以有99个编组，编号为1~99。</strong></p>
+<p><code>match_object.start</code>: 返回与给定编组(默认为0，即整个模式)匹配的子串的起始索引</p>
+<p><code>match_object.end</code>: 与<code>start</code>类似，不过返回终止索引+1</p>
+<p><code>match_object.span</code>: 返回一个<code>tuple</code>,其中包含给定编组(默认为0，即整个模式)匹配的子串的起始索引和终止索引</p>
+<div class="code-chunk" data-id="code-chunk-id-7" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+m <span class="token operator">=</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span>r<span class="token string">'www\.(.*)\..{3}'</span><span class="token punctuation">,</span><span class="token string">'www.python.org'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>end<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>span<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">python
+4
+10
+(4, 10)
+</pre></div></div><h5 class="mume-header" id="%E6%9B%BF%E6%8D%A2%E4%B8%AD%E7%9A%84%E7%BB%84%E5%8F%B7%E5%92%8C%E5%87%BD%E6%95%B0">替换中的组号和函数</h5>
+
+<p>在第一个<code>re.sub</code>使用示例中，我们只是将一个子串替换为另一个。这也可使用字符串方法<code>replace</code>完成。当然，正则表达式非常有用，因为它们可以让你能够以更灵活的方式进行搜索，还能让你能够执行更复杂的替换。</p>
+<p>为了利用<code>re.sub</code>的强大功能，最简单的方式是在替代字符串中使用组号。在替换字符串中，如何类似于<code>\\n</code>的转义字符都将被替换为与模式中编组n匹配的字符串。</p>
+<p>例如，假设要将<code>*something*</code>替换为<code>&lt;em&gt;something&lt;/em&gt;</code>，其中前者是 markdown 的写法，而后者是对应的 html 代码，下面先来创建一个正则表达式。</p>
+<div class="code-chunk" data-id="0401_1" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;0401_1&amp;amp;quot;}" class="language-python"><span class="token keyword">import</span> re
+emphasis_pattern <span class="token operator">=</span> r<span class="token string">'\*([^\*]+)\*'</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>注意，正则表达式容易变得难以理解，因此为了方便其他人以后阅读，使用有意义的变量名非常重要。</p>
+<p><strong>提示：</strong> 要让正则表达式更容易理解，一种方法是在调用模块<code>re</code>中的函数时，使用标志 VERBOSE。这让你能够在模式中添加空白（空格、制表符、换行符等），而 re 将忽略它们--除非将它放在字符类中或使用反斜杠对其进行转义。在这样的正则表达式中，你还可以添加注释，下面代码创建的模式对象与 emphasis_pattern 等价，但使用了 VERBOSE 标志：</p>
+<div class="code-chunk" data-id="0401_2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;0401_2&amp;amp;quot;}" class="language-python"><span class="token keyword">import</span> re
+emphasis_pattern <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span>r<span class="token triple-quoted-string string">'''
+    \*     # 起始突出标志--一个星号
+    (      # 与要突出的内容匹配的编组的起始位置
+    [^\*]+ # 与除星号以外的其他字符都匹配
+    )      # 编组到此结束
+    \*     # 结束突出符号
+'''</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>VERBOSE<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>创建模式后，就可以使用 <code>re.sub</code> 来完成所需的替换了：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>emphasis_pattern<span class="token punctuation">,</span> r<span class="token string">'&lt;em>\1&lt;/em>'</span><span class="token punctuation">,</span><span class="token string">'Hello,*world*'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info="" class="language-"><code>&apos;Hello,&lt;em&gt;world&lt;/em&gt;&apos;
+</code></pre><p>如你所见，成功地将纯文本转换成了HTML代码。然而，通过将函数用作替换内容，可执行更复杂的替换。这个函数将MatchObject作为唯一的参数，它返回的字符串将用作替换内容。换而言之，你可以对匹配的字符串做如何处理，并通过细致的处理来生成替换内容。</p>
+<h5 class="mume-header" id="%E6%89%BE%E5%87%BA%E5%8F%91%E4%BB%B6%E4%BA%BA">找出发件人</h5>
+
+<h5 class="mume-header" id="%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D%E7%9A%842%E7%A7%8D%E6%96%B9%E5%BC%8F">正则表达式匹配的2种方式</h5>
+
+<p><strong>贪婪匹配</strong></p>
+<ul>
+<li><code>{n}</code>: 表达式固定重复 n 次，比如<code>\w{2}</code>相当于<code>\w\w</code></li>
+<li><code>{m,n}</code>: 表达式尽可能重复 n 次，至少重复 m 次，比如<code>ba{1,3}</code>可以匹配<code>baaa</code>、<code>baa</code>、<code>ba</code></li>
+<li><code>{m,}</code>: 尽可能多地匹配，至少为 m 次，<code>\w\d{2,}</code>可以匹配<code>a12</code>、<code>b324</code>、<code>d3214</code>...</li>
+<li><code>{,m}</code>: 尽可能多地匹配，但最多匹配 m 次，等价于<code>{0,m}</code></li>
+<li><code>?</code>: 尽可能匹配一次，也可以不匹配，等价于<code>{0,1}</code></li>
+<li><code>+</code>: 尽可能多地匹配，至少匹配一次，等价于<code>{1,}</code></li>
+<li><code>*</code>: 尽可能多地匹配，也可以不匹配，等价于<code>{0,}</code></li>
+</ul>
+<p><strong>懒惰匹配</strong></p>
+<p>懒惰匹配又称为非贪婪匹配，勉强匹配；</p>
+<ul>
+<li><code>{m,n}?</code>: 表达式尽量只匹配 m 次，最多重复 n 次</li>
+<li><code>{m,}?</code>: 表达式尽量只匹配 m 次，最多可匹配任意次</li>
+<li><code>{,n}</code>: 表达式尽量不匹配，最多可匹配 n 次</li>
+<li><code>??</code>: 表达式尽量不匹配，最多匹配 1 次，等价于<code>{0,1}?</code></li>
+<li><code>+?</code>: 表达式尽量只匹配 1 次，最多可匹配任意次，等价于<code>{1,}?</code></li>
+<li><code>*?</code>: 表达式尽量不匹配，最多可匹配任意次，等价于<code>{0,}</code></li>
+</ul>
+<h5 class="mume-header" id="%E6%B3%A8%E6%84%8F%E7%82%B9">注意点</h5>
+
+<p>想使用<code>[.\n]</code>匹配所有字符是错误的，<code>[.\r\n]</code>，<code>[\n.]</code>，<code>[\r\n.]</code>，<code>[.\s]</code>，<code>[\s.]</code>都是错误的：</p>
+<div class="code-chunk" data-id="code-chunk-id-10" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+s <span class="token operator">=</span> <span class="token string">"python"</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"1:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[.\n]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"2:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[.\r\n]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"3:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[\n.]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"4:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[\r\n.]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"5:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[.\s]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"6:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[\s.]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"7:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[\s\S]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"8:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p(\n|.)*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Hello,<em>world</em>
+</pre></div></div>
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#python-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B">Python 基础教程</a>
+<ul>
+<li><a href="#%E5%BC%80%E7%AE%B1%E5%8D%B3%E7%94%A8">开箱即用</a>
+<ul>
+<li><a href="#%E6%A0%87%E5%87%86%E5%BA%93">标准库</a>
+<ul>
+<li><a href="#re">re</a>
+<ul>
+<li><a href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">什么是正则表达式</a></li>
+<li><a href="#%E6%A8%A1%E5%9D%97re%E7%9A%84%E5%86%85%E5%AE%B9">模块re的内容</a>
+<ul>
+<li><a href="#recompile">re.compile</a></li>
+<li><a href="#research">re.search</a></li>
+<li><a href="#rematch">re.match</a></li>
+<li><a href="#resplit">re.split</a></li>
+<li><a href="#refindall">re.findall</a></li>
+<li><a href="#resub">re.sub</a></li>
+<li><a href="#reescape">re.escape</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BC%96%E7%BB%84">匹配对象和编组</a></li>
+<li><a href="#%E6%9B%BF%E6%8D%A2%E4%B8%AD%E7%9A%84%E7%BB%84%E5%8F%B7%E5%92%8C%E5%87%BD%E6%95%B0">替换中的组号和函数</a></li>
+<li><a href="#%E6%89%BE%E5%87%BA%E5%8F%91%E4%BB%B6%E4%BA%BA">找出发件人</a></li>
+<li><a href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D%E7%9A%842%E7%A7%8D%E6%96%B9%E5%BC%8F">正则表达式匹配的2种方式</a></li>
+<li><a href="#%E6%B3%A8%E6%84%8F%E7%82%B9">注意点</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    <script>
+(function bindTaskListEvent() {
+  var taskListItemCheckboxes = document.body.getElementsByClassName('task-list-item-checkbox')
+  for (var i = 0; i < taskListItemCheckboxes.length; i++) {
+    var checkbox = taskListItemCheckboxes[i]
+    var li = checkbox.parentElement
+    if (li.tagName !== 'LI') li = li.parentElement
+    if (li.tagName === 'LI') {
+      li.classList.add('task-list-item')
+    }
+  }
+}())    
+</script>
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>

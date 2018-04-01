@@ -31,6 +31,9 @@
 - [实验 git 操作的好网站 : Learning Git Branch](https://learngitbranching.js.org/?NODEMO)
 - [git 的远程命令](/GitTutorial/git远程命令.html)
 
+## Python 编程语言
+
+- [Python cookbook](/Python/PythonUsage.html)
 
 ## 文档编写
 
@@ -62,6 +65,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-03-27 : 442. Find All Duplicates in an Array 算法技巧](/LeetCode/442_FindAllDuplicatesinanArray.md)
 
 - [2018-03-28 : 27. Remove Element 原地算法](/LeetCode/27_RemoveElement.html)<code class="green">easy</code>
+
+- [2018-03-29 : 770. Basic Calculator IV](/LeetCode/770_BasicCalculatorIV.html)<code class="red">hard hard</code>
 
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
