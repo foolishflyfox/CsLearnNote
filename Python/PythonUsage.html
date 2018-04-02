@@ -574,7 +574,7 @@ e <span class="token operator">=</span> <span class="token punctuation">{</span>
     <span class="token string">'a'</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
     <span class="token string">'b'</span><span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-</pre><h4 class="mume-header" id="%E4%BD%BF%E7%94%A8-collectionsdefaultdict">使用 <code>collections.defaultdict</code></h4>
+</pre><h4 class="mume-header" id="%E4%BD%BF%E7%94%A8-collectionsdefaultdict">使用 collections.defaultdict</h4>
 
 <div class="code-chunk" data-id="code-chunk-id-12" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> collections <span class="token keyword">import</span> defaultdict
 d <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span>list<span class="token punctuation">)</span>
@@ -777,7 +777,7 @@ b <span class="token operator">=</span> <span class="token number">9</span>
 height <span class="token operator">=</span> <span class="token number">176.23</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"My name is %s, height is %.1f cm"</span> <span class="token operator">%</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> height<span class="token punctuation">)</span><span class="token punctuation">)</span>
 </pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">My name is Fred, height is 176.2 cm
-</pre></div></div><h4 class="mume-header" id="%E4%BD%BF%E7%94%A8stringformat">使用<code>string.format</code></h4>
+</pre></div></div><h4 class="mume-header" id="%E4%BD%BF%E7%94%A8stringformat">使用string.format</h4>
 
 <p>从版本2.6开始引入：</p>
 <div class="code-chunk" data-id="code-chunk-id-28" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">name <span class="token operator">=</span> <span class="token string">'Fred'</span>
@@ -803,7 +803,7 @@ height <span class="token operator">=</span> <span class="token number">176.23</
 <p><strong>Python</strong> 中并不存在真正私有的方法。</p>
 <h3 class="mume-header" id="python%E7%B1%BB%E4%B8%AD%E5%B1%9E%E6%80%A7%E6%96%B9%E6%B3%95%E5%91%BD%E5%90%8D">Python类中属性/方法命名</h3>
 
-<h4 class="mume-header" id="%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E5%BC%80%E5%A4%B4-_foo">以一个下划线开头 <code>_foo</code></h4>
+<h4 class="mume-header" id="%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E5%BC%80%E5%A4%B4-_foo">以一个下划线开头 _foo</h4>
 
 <p>使用这种命名的原因：</p>
 <ul>
@@ -832,7 +832,7 @@ NameError: name '_private_func' is not defined
 _private_func<span class="token punctuation">(</span><span class="token punctuation">)</span>
 </pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">I am not aviliable
 </pre></div></div><p>但可以通过 <code>from modele_name import _foo</code> 的方式使用<code>_foo</code>函数；</p>
-<h4 class="mume-header" id="%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E7%BB%93%E5%B0%BE-foo_">以一个下划线结尾 <code>foo_</code></h4>
+<h4 class="mume-header" id="%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E7%BB%93%E5%B0%BE-foo_">以一个下划线结尾 foo_</h4>
 
 <p>如<code>foo_</code>，这种方式主要是为了避免与Python的 <strong>built-in keywords</strong> 和 <strong>built-in functions</strong> 取一样的名字。</p>
 <ol>
@@ -864,10 +864,10 @@ SyntaxError: invalid syntax
 <ul>
 <li>双下划线开头：在类成员中表示名字改编，这是为了使其避免与子类中的名字冲突</li>
 </ul>
-<h4 class="mume-header" id="__foo__"><code>__foo__</code></h4>
+<h4 class="mume-header" id="__foo__">__foo__</h4>
 
 <p>不要使用，除非你是 Python 的核心开发人员。</p>
-<h4 class="mume-header" id="__foo"><code>__foo</code></h4>
+<h4 class="mume-header" id="__foo">__foo</h4>
 
 <div class="code-chunk" data-id="code-chunk-id-36" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__foo1</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -915,7 +915,7 @@ called B::foo2
 </ul>
 <h3 class="mume-header" id="%E7%B1%BB%E7%9A%84%E5%86%85%E7%BD%AE%E6%8E%A5%E5%8F%A3">类的内置接口</h3>
 
-<h4 class="mume-header" id="__repr__"><code>__repr__</code></h4>
+<h4 class="mume-header" id="__repr__">__repr__</h4>
 
 <div class="code-chunk" data-id="code-chunk-id-37" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__repr__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -952,7 +952,7 @@ called B::foo2
 <li><a href="#defaultdict-%E6%A8%A1%E5%9D%97">defaultdict 模块</a>
 <ul>
 <li><a href="#%E4%BD%BF%E7%94%A8-dict%E5%AE%B9%E5%99%A8">使用 dict+容器</a></li>
-<li><a href="#%E4%BD%BF%E7%94%A8-collectionsdefaultdict">使用 <code>collections.defaultdict</code></a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-collectionsdefaultdict">使用 collections.defaultdict</a></li>
 <li><a href="#%E8%87%AA%E5%8A%A8%E5%88%9B%E5%BB%BA%E9%94%AE">自动创建键</a></li>
 </ul>
 </li>
@@ -981,7 +981,7 @@ called B::foo2
 <li><a href="#python%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2">Python的格式化字符串</a>
 <ul>
 <li><a href="#%E4%BD%BF%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%A6">使用%操作符</a></li>
-<li><a href="#%E4%BD%BF%E7%94%A8stringformat">使用<code>string.format</code></a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8stringformat">使用string.format</a></li>
 <li><a href="#%E4%BD%BF%E7%94%A8-f-%E5%AD%97%E7%AC%A6%E4%B8%B2">使用 f 字符串</a></li>
 </ul>
 </li>
@@ -992,15 +992,15 @@ called B::foo2
 <ul>
 <li><a href="#python%E7%B1%BB%E4%B8%AD%E5%B1%9E%E6%80%A7%E6%96%B9%E6%B3%95%E5%91%BD%E5%90%8D">Python类中属性/方法命名</a>
 <ul>
-<li><a href="#%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E5%BC%80%E5%A4%B4-_foo">以一个下划线开头 <code>_foo</code></a></li>
-<li><a href="#%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E7%BB%93%E5%B0%BE-foo_">以一个下划线结尾 <code>foo_</code></a></li>
-<li><a href="#__foo__"><code>__foo__</code></a></li>
-<li><a href="#__foo"><code>__foo</code></a></li>
+<li><a href="#%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E5%BC%80%E5%A4%B4-_foo">以一个下划线开头 _foo</a></li>
+<li><a href="#%E4%BB%A5%E4%B8%80%E4%B8%AA%E4%B8%8B%E5%88%92%E7%BA%BF%E7%BB%93%E5%B0%BE-foo_">以一个下划线结尾 foo_</a></li>
+<li><a href="#__foo__">__foo__</a></li>
+<li><a href="#__foo">__foo</a></li>
 </ul>
 </li>
 <li><a href="#%E7%B1%BB%E7%9A%84%E5%86%85%E7%BD%AE%E6%8E%A5%E5%8F%A3">类的内置接口</a>
 <ul>
-<li><a href="#__repr__"><code>__repr__</code></a></li>
+<li><a href="#__repr__">__repr__</a></li>
 </ul>
 </li>
 </ul>

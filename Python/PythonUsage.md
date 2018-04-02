@@ -290,7 +290,7 @@ e = {
 }
 ```
 
-#### 使用 `collections.defaultdict`
+#### 使用 collections.defaultdict
 ```python {cmd}
 from collections import defaultdict
 d = defaultdict(list)
@@ -505,7 +505,7 @@ height = 176.23
 print("My name is %s, height is %.1f cm" %(name, height))
 ```
 
-#### 使用`string.format`
+#### 使用string.format
 从版本2.6开始引入：
 ```python {cmd}
 name = 'Fred'
@@ -533,7 +533,7 @@ print(f"My name is {name}, height is {height:.1f} cm")
 
 ### Python类中属性/方法命名
 
-#### 以一个下划线开头 `_foo`
+#### 以一个下划线开头 _foo
 
 使用这种命名的原因：
 - 不希望它被直接import
@@ -560,7 +560,7 @@ _private_func()
 
 
 
-#### 以一个下划线结尾 `foo_`
+#### 以一个下划线结尾 foo_
 
 如`foo_`，这种方式主要是为了避免与Python的 **built-in keywords** 和 **built-in functions** 取一样的名字。
 
@@ -586,11 +586,11 @@ is=12
 
 - 双下划线开头：在类成员中表示名字改编，这是为了使其避免与子类中的名字冲突
 
-#### `__foo__`
+#### \_\_foo\_\_
 
 不要使用，除非你是 Python 的核心开发人员。
 
-#### `__foo`
+#### \_\_foo
 
 ```python {cmd}
 class A:
@@ -626,7 +626,7 @@ b.f()
 
 ### 类的内置接口
 
-#### `__repr__`
+#### \_\_repr\_\_
 
 ```python {cmd}
 class A:
