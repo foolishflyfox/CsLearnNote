@@ -219,6 +219,137 @@ print(f"13-2 : { {i:a[i] for i in a if i not in ['x']} }")
 
 字典的`items()`也支持集合操作。但`values()`不支持集合操作。
 
+### 从字典中提取子集
+
+```python {cmd}
+prices = {
+    'ACME': 45.23,
+    'AAPL': 612.78,
+    'IBM': 205.55,
+    'HPQ': 37.20,
+    'FB': 10.75
+}
+# 获得值大于200的items
+# 使用字典推导
+p1 = {k:v for k,v in prices.items() if v>200}
+print(p1)
+tech_names = ["FB", "IBM", "ACME"]
+p2 = {k:v for k,v in prices.items() if k in tech_names}
+print(p2)
+```
+
+### 字典合并
+```python {cmd}
+from collections import ChainMap
+a = {'x':1, 'z':2}
+b = {'y':2, 'z':4}
+c = ChainMap(a, b)
+print("ChinaMap result:")
+print(c['x'])
+print(c['y'])
+print(c['z'])
+print(c)
+print(list(c.keys()))
+print(list(c.values()))
+# ChainMap 只是存储了一个视图而已
+print("\nChainMap just store a view:")
+a['x'] = 10
+print(c)
+print(list(c.values()))
+c['z'] = 20
+print(a)
+
+print("\ndict.update demo:")
+# 也可使用update进行合并
+d = dict(b)
+d.update(a)
+print(d)
+# dict.update进行了拷贝而非视图
+d['x'] = 30
+print(a)
+```
+
+### 映射名称到序列元素 namedtuple
+
+```python {cmd}
+from collections import namedtuple
+Subscriber = namedtuple('Subscriber', ['addr', 'joined'])
+sub = Subscriber('jonesy@example.com', '2012-10-19')
+print(sub)
+print(sub.addr)
+print(sub.joined)
+
+# 支持所有的普通元组操作
+print(len(sub))
+print(sub[-1])
+addr, joined = sub
+print(addr, joined)
+```
+
+**命名元组的一个主要用途是将你的代码从下表操作中解脱出来。**
+
+```python
+# 普通元组
+def compute_cost(records):
+    total = 0.0
+    for rec in records:
+        total += rec[1]*rec[2]
+    return total
+# namedtuple
+from collections import namedtuple
+Stock = namedtuple('Stock', ['name', 'shares', 'price'])
+def compute_cost(records):
+    total = 0.0
+    for rec in records:
+        s = Stock(*rec)
+        total += s.shares * s.price
+    return total
+```
+
+**命名元组的另一个用途就是作为字典的替代，因为字典存储需要更多的内存空间。如果你需要构建一个非常大的包含字典的数据结构，那么使用命名元组会更加高效。但是：一个命名元组是不可更改的！**
+
+如果真的需要改变属性的值，那么可以使用命名元组实例的 `_replace()`方法，它会创建一个全新的命名元组并将对应的字段用新的值取代：
+```python {cmd}
+from collections import namedtuple
+Stock = namedtuple('Stock', ['name', 'shares', 'price'])
+s = Stock('ACME', 100, 73.5)
+print(s)
+s = s._replace(shares=80)
+print(s)
+```
+
+### 转换并计算数据
+
+问题：你需要在数据序列上执行聚集函数，比如 `sum()`、`min()`、`max()`，但首先需要转换或过滤数据：
+```python {cmd}
+nums = [1,2,3,4,5]
+# 求平方和
+s = sum(x**2 for x in nums)
+print(s)
+```
+
+注意：在`for`中的语句执行1遍，其他的执行循环的次数：
+```python {cmd}
+def f(x):
+    print("call f")
+    return x**2
+a = [1,2,3,4,5,6,7]
+print("---test 1---")
+sum(x for x in range(f(3)))
+
+print("\n---test 2---")
+sum(f(x) for x in range(3))
+
+print("\n---test 3---")
+sum(x for x in a if x < f(3))
+```
+上面演示的是生成器表达式作为一个单独参数传递给函数时候的巧妙语法（并不需要多加一个括号），例如：
+```python {cmd}
+nums = [1,2,3,4,5]
+print(sum(n for n in nums))
+print(sum((n for n in nums)))
+```
+
 ### 删除序列系统元素并保持顺序
 
 ```python {cmd}
