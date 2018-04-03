@@ -774,3 +774,169 @@ import itertools
 for i in itertools.permutations("abc"):
     print(i)
 ```
+
+## 字符串和文本
+
+### 使用多个界定符分割字符串
+
+```python {cmd}
+line = "asdf  fjk;  fj,ek, foo"
+import re
+print(re.split(r'[\s\;\,]+', line))
+fields = re.split(r'([;,\s]+)', line)
+print(fields)
+print(fields[::2])
+
+# 捕获与非捕获
+print(re.split(r'(\s|,|;)+',line))
+# (?:...)表示非捕获
+print(re.split(r'(?:\s|,|;)+',line))
+```
+使用`re.split()`函数时，需要特别注意的是正则表达式中是否包含一个括号捕获分组。如果使用了分组捕获，那么被匹配的文本也将出现在结果列表中；
+
+
+### 字符串开头或结尾匹配
+
+```python {cmd}
+import re
+# 使用 str.startswith str.endswith
+filename = "spam.txt"
+print(filename.startswith('file:'))
+print(filename.endswith('.txt'))
+print(filename[-4:]==".txt")
+print(re.match('[\s\S]*\.(txt|c)$', filename))
+print(filename.endswith(('.txt','c')))
+
+# 检查匹配并归类
+filenames = ['Makefile','foo.c','bar.py','spam.c','spam.h']
+print([f for f in filenames if f.endswith(('.c','.h'))])
+print(any(f.endswith('py') for f in filenames))
+```
+
+### 用 shell 通配符匹配字符串
+
+你可以使用Unix Shell 中常用的通配符（比如：*.py，Dat[0-9]*.csv等）去匹配文本字符串。
+```python {cmd}
+from fnmatch import fnmatch, fnmatchcase
+print(fnmatch('foo.txt', '*.txt'))
+print(fnmatch('foo.txt', '?oo.txt'))
+print(fnmatch('Dat45.csv','Dat[0-9]*'))
+# 大小写敏感(mac os)
+print(fnmatch('foo.txt', '*.TXT'))
+print(fnmatchcase('foo.txt', '*.TXT'))
+
+addresses = [
+    '5412 N CLARK ST',
+    '1060 W ADDISON ST',
+    '1039 W GRANVILLE AVE',
+    '2122 N CLARK ST',
+    '4802 N BROADWAY',
+]
+print([addr for addr in addresses if fnmatch(addr, '* ST')])
+print([addr for addr in addresses if fnmatch(addr, '54[0-9]*CLARK*')])
+```
+
+`fnmatch()`函数的匹配能力介于简单的字符串方法和强大的正则表达式之间。如果在数据处理操作中只需要简单的通配符就能完成的时候，这通常是一个比较合理的方案。
+
+如果你的代码需要做文件名的匹配，最好使用glob模块。
+
+### 字符串匹配和搜索
+
+```python {cmd}
+# 简单的搜索
+text = 'yeah, but no, but yeah, but no, but yeah'
+print(text.find('no'))
+# 对于复杂的匹配，使用 re 模块
+import re
+text1 = '11/27/2012'
+text2 = 'Nov 27, 2012'
+datepat = re.compile(r'\d+/\d+/\d+')
+# 方式1：re.match
+print('yes' if re.match(datepat, text1) else 'no')
+# 方式2：pat.match
+print('yes' if datepat.match(text2) else 'no')
+
+text = 'Today is 11/27/2012. PyCon starts 3/13/2013.'
+# re.match 总是从字符串开始去匹配
+print('yes' if datepat.match(text) else 'no')
+# 任意位置查找
+print(datepat.findall(text))
+
+# 在定义正则式时，通常会利用括号去捕获分组
+datepat = re.compile(r'(\d+)/(\d+)/(\d+)')
+m = datepat.match('11/27/2012')
+print(m.group(0), m.group(1), m.group(2), m.group(3))
+print(m.groups())
+
+print(datepat.findall(text))
+# 时间格式转换
+for month, day, year in datepat.findall(text):
+    print(f'{year}-{month}-{day}')
+# findall 以列表形式返回，finditer 以生成器方式返回
+for m in datepat.finditer(text):
+    month, day, year = m.groups()
+    print(f'{year}-{month}-{day}')
+
+# match 只检查字符串的开头部分
+m = datepat.match("11/27/2012ddasdf")
+print('yes' if m else 'no')
+```
+注意：如果你打算做大量的匹配和搜索操作的话，最好先编译正则表达式，然后再重复使用它。模块级别的函数会将最近编译过的模式缓存起来，不会有太多的性能消耗，但如果使用预编译模式的话，你将会减少查找和一些额外的处理损耗。
+
+### 字符串搜索和替换
+
+```python {cmd}
+# 简单的字符串替换
+text = 'yeah, but no, but yeah, but no'
+print(text.replace('yeah', 'yep'))
+# 复杂的字符串替换
+import re
+text = 'Today is 11/27/2012. PyCon starts 3/13/2013.'
+datepat = re.compile(r'(\d+)/(\d+)/(\d+)')
+print(datepat.sub(r'\3-\1-\2', text))
+
+# 可读性更强的一种方式
+# (?P<name>\d+) 表示捕获为name变量
+# \g<name> 使用name
+datepat = re.compile(r'(?P<month>\d+)/(?P<day>\d+)/(?P<year>\d+)')
+print(datepat.sub(r'\g<year>-\g<month>-\g<day>', text))
+```
+
+对于更加复杂的替换，可以传递一个替换回调函数来替代：
+```python {cmd}
+import re
+from calendar import month_abbr
+text = 'Today is 11/27/2012. PyCon starts 3/13/2013.'
+datepat = re.compile(r'(?P<m>\d+)/(?P<d>\d+)/(?P<y>\d+)')
+def change_date(m):
+    mon_name = month_abbr[int(m.group('m'))]
+    return f"{m.group('d')} {mon_name} {m.group('y')}"
+print(datepat.sub(change_date, text))
+# 第一个返回值为替换结果，第二个返回值为替换次数
+print(datepat.subn(change_date, text))
+```
+
+### 字符串忽略大小写的搜索替换
+
+```python {cmd}
+import re
+text = 'UPPER PYTHON, lower python, Mixed Python'
+print(re.findall(r'python', text, flags=re.IGNORECASE))
+print(re.sub(r'python', 'snake', text, flags=re.IGNORECASE))
+
+def matchCase(word):
+    def replace(m):
+        text = m.group()
+        if text.isupper():
+            return word.upper()
+        elif text.islower():
+            return word.lower()
+        elif text[0].isupper():
+            return word.capitalize()
+        else:
+            return word
+    return replace
+print(re.sub('python',matchCase('snake'),
+    text ,flags=re.IGNORECASE))
+```
+注：上面的后面的例子中，`matchCase('snake')`返回了一个回调函数。
