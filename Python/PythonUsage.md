@@ -1,6 +1,8 @@
 ---
 export_on_save:
  html: true
+export LC_ALL:
+ en_US.UTF-8
 ---
 
 @import "/blog_head.md"
@@ -940,3 +942,166 @@ print(re.sub('python',matchCase('snake'),
     text ,flags=re.IGNORECASE))
 ```
 注：上面的后面的例子中，`matchCase('snake')`返回了一个回调函数。
+
+### 最短匹配模式
+
+你正在使用正则表达式匹配某个文本模式，但是它找到的可能是最长匹配。修改变为最短匹配：
+```python {cmd}
+import re
+text1 = 'Computer says "no."'
+text2 = 'Computer says "no." Phone says "yes."'
+str_pat = re.compile(r'\"(.*)\"')
+print(str_pat.findall(text1))
+# 最长匹配的例子(贪婪模式)
+print(str_pat.findall(text2))
+# 使用最短匹配 在匹配模式后加上 ? (懒惰模式)
+print(re.findall(r'\"(.*?)\"', text2))
+```
+
+### 多行匹配模式
+```python {cmd}
+import re
+comment = re.compile(r'/\*(.*?)\*/')
+text1 = '/* This is one-line of comment */'
+text2 = """
+/*This is multi-line
+ comment*/
+"""
+print(comment.findall(text1))
+print(comment.findall(text2))
+# '?'在后面表示最短匹配，'?:'在捕获组的前面表示不进行捕获
+comment = re.compile(r'/\*([\s\S]*?)\*/')
+print(comment.findall(text2))
+comment = re.compile(r"/\*((?:.|\n)*)\*/")
+print(comment.findall(text2))
+# 使用 re.DOTALL 让点匹配所有字符
+print(re.findall(r'/\*(.*)\*/', text2, flags=re.DOTALL))
+```
+
+### 删除字符串中不需要的字符
+```python {cmd}
+import re
+# 使用 str.strip、str.lstrip、str.rstrip
+# 删除开头/结尾的指定字符串 不会删除中间的字符
+s = '   hello   world  '
+print(f"'{s.strip()}'")
+print(f"'{s.lstrip()}'")
+print(f"'{s.rstrip()}'")
+# strip 的参数中字符是或的关系
+print(f"'{s.strip(' hd')}'")
+# 删除中间的空格
+print(f"'{s.strip().replace(' ','')}'")
+# 删除中间多余的空格
+
+print("'{0}'".format(re.sub(r'\s+', ' ', s.strip())))
+```
+
+### 审查清理文本数据字符串
+```python {cmd}
+# 改写指定字母
+text = 'life is short, please use python'
+print(text.translate({
+    ord('s'):'S',
+    ord('p'):'pop'
+}))
+```
+
+### 字符串对齐
+```python {cmd}
+hw = "hello,world"
+print(f"'{hw.ljust(20)}'")
+print(f"\'{format(hw, '<20')}\'")
+print("'{:<20}'".format(hw))
+
+print(f"'{hw.rjust(20)}'")
+print(f"\'{format(hw, '>20')}\'")
+print("'{:>20}'".format(hw))
+
+print(f"'{hw.center(20)}'")
+print(f"\'{format(hw, '^20')}\'")
+print("'{:^20}'".format(hw))
+
+print(f"'{hw.center(20,'*')}'")
+print(f"\'{format(hw, '*^20s')}\'")
+print("'{:*^20s}'".format(hw))
+
+print(f"\'{hw:*^20s}\'")
+
+# 格式化数字
+x = 1.2345
+print(f"{x:>10}|")
+print(f"{x:<10}|")
+# 默认 . 后面是精确位数
+print(f"{x:^+10.3}|")
+# 加了f后表示小数点后几位
+print(f"{x:^+10.3f}|")
+print(f"{x:$^10.2}|")
+```
+
+### 合并拼接字符串
+
+将几个小的字符串合并为一个。
+```python {cmd}
+# 如果要合并的字符串时一个序列或iterable
+parts = ['Is', 'Chicago', 'Not', 'Chicago']
+parts_dic = {'a':'Is', 'd':'Chicago', 'b':'Not', 'c':'Chi'}
+print(' '.join(parts))
+print(' , '.join(parts))
+print(''.join(parts))
+print(' '.join(parts_dic))
+# 用 + 连接
+a = 'Is Chicago'
+b = "Not Chicago"
+print(a + ' ' + b)
+# 两个字符串字面量直接并排合并
+print('Hello' ' ' 'world')
+```
+编写字符串相关的程序时，要注意效率：
+```python {cmd}
+data = ['ACME', 50, 91.1]
+# 不可取的做法, +操作符存在大量内存复制、垃圾回收
+s = ''
+for i in data:
+    # + 操作存在
+    s += str(i) + ','
+print(s[:-1])
+# 好一些的做法
+s = ','.join(str(i) for i in data)
+print(s)
+
+a = '1'; b='b'; c='3'
+# ugly mode
+print(a + ':' + b + ':' +c)
+# still ugle
+print(':'.join([a,b,c]))
+# better
+print(a,b,c,sep=":")
+```
+
+当混合使用I/O操作和字符串操作时，有时候需要仔细研究你的程序：
+```python
+# Versino 1 : string connection
+# 如果s1、s2较小时合适，i/o操作通常较慢
+with open('filename') as f:
+    f.write(s1 + s2)
+
+# Version 2 : seperate I/O operations
+# 如果s1、s2较大时合适，避免 + 的大量内存占用 
+with open('filename') as f:
+    f.write(s1)
+    f.write(s2)
+```
+
+大量小字符串的输出：
+```python {cmd}
+def sample():
+    yield 'Is'
+    yield 'Chicago'
+    yield 'Not'
+    yield 'Chicago'
+
+print(' '.join(sample()))
+for i in sample():
+    print(i)
+```
+
