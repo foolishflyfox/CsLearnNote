@@ -1456,7 +1456,974 @@ Is
 Chicago
 Not
 Chicago
-</pre></div></div>
+</pre></div></div><h3 class="mume-header" id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E6%9B%BF%E6%8D%A2">字符串中的变量替换</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-61" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">name <span class="token operator">=</span> <span class="token string">'Fred'</span>
+weight <span class="token operator">=</span> <span class="token number">71.32</span>
+<span class="token comment" spellcheck="true"># 原始版本</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'I am %s, weight is %.1f'</span> <span class="token operator">%</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> weight<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># f 字符串版本</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'I am {name} ,weight is {weight:#^10.1f}'</span> <span class="token operator">%</span>vars<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">I am Fred, weight is 71.3
+I am Fred ,weight is ###71.3###
+</pre></div></div><h3 class="mume-header" id="html-%E5%92%8C-xml-%E7%9A%84%E8%BD%AC%E6%8D%A2">html 和 xml 的转换</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> html
+<span class="token comment" spellcheck="true"># 将html中的特殊字符进行转换，使其能够在html中显示</span>
+text <span class="token operator">=</span> <span class="token string">'This is &lt;strong> "strong text" &lt;/strong>'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>html<span class="token punctuation">.</span>escape<span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># html.escape的第二个参数quote指示是否替换冒号</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>html<span class="token punctuation">.</span>escape<span class="token punctuation">(</span>text<span class="token punctuation">,</span> quote<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># html.escape 的反过程</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>html<span class="token punctuation">.</span>unescape<span class="token punctuation">(</span><span class="token string">'This is &amp;lt;strong&amp;gt; &amp;quot;strong text&amp;quot; &amp;lt;/strong&amp;gt;'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info="" class="language-"><code>This is &lt;strong&gt; &quot;strong text&quot; &lt;/strong&gt;
+This is &amp;lt;strong&amp;gt; &amp;quot;strong text&amp;quot; &amp;lt;/strong&amp;gt;
+This is &amp;lt;strong&amp;gt; &quot;strong text&quot; &amp;lt;/strong&amp;gt;
+This is &lt;strong&gt; &quot;strong text&quot; &lt;/strong&gt;
+</code></pre><h3 class="mume-header" id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BB%A4%E7%89%8C%E8%A7%A3%E6%9E%90">字符串令牌解析</h3>
+
+<p>目标：将<code>text = 'foo = 23 + 42 * 10'</code><br>
+解析为：<code>tokens = [('NAME', 'foo'), ('EQ','='), ('NUM', '23'), ('PLUS','+'), ('NUM', '42'), ('TIMES', '*'), ('NUM', '10')]</code></p>
+<div class="code-chunk" data-id="code-chunk-id-62" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<span class="token comment" spellcheck="true"># 定义令牌</span>
+NAME <span class="token operator">=</span> r<span class="token string">'(?P&lt;NAME>[a-zA-Z][a-zA-Z0-9_]*)'</span>
+NUM <span class="token operator">=</span> r<span class="token string">'(?P&lt;NUM>\d+)'</span>
+PLUS <span class="token operator">=</span> r<span class="token string">'(?P&lt;PLUS>\+)'</span>
+TIMES <span class="token operator">=</span> r<span class="token string">'(?P&lt;TIMES>\*)'</span>
+EQ <span class="token operator">=</span> r<span class="token string">'(?P&lt;EQ>=)'</span>
+WS <span class="token operator">=</span> r<span class="token string">'(?P&lt;WS>\s+)'</span>
+master_pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">'|'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>NAME<span class="token punctuation">,</span> NUM<span class="token punctuation">,</span> PLUS<span class="token punctuation">,</span> TIMES<span class="token punctuation">,</span> EQ<span class="token punctuation">,</span> WS<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 使用scanner进行扫描 方法1</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"{:*^30s}"</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token string">' scanner method 1 '</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+scanner <span class="token operator">=</span> master_pat<span class="token punctuation">.</span>scanner<span class="token punctuation">(</span><span class="token string">'foo = 42'</span><span class="token punctuation">)</span>
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    m <span class="token operator">=</span> scanner<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> m<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>lastgroup<span class="token punctuation">,</span> m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:*^30s}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token string">' scanner method 2 '</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 方式2</span>
+scanner <span class="token operator">=</span> master_pat<span class="token punctuation">.</span>scanner<span class="token punctuation">(</span><span class="token string">'foo = 42'</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> m <span class="token keyword">in</span> iter<span class="token punctuation">(</span>scanner<span class="token punctuation">.</span>match<span class="token punctuation">,</span> None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>lastgroup<span class="token punctuation">,</span> m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 方式3</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:*^30s}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token string">' scanner method 3 '</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+<span class="token keyword">def</span> <span class="token function">generate_token</span><span class="token punctuation">(</span>pat<span class="token punctuation">,</span> text<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    Token <span class="token operator">=</span> namedtuple<span class="token punctuation">(</span><span class="token string">'Token'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'type'</span><span class="token punctuation">,</span><span class="token string">'value'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    scanner <span class="token operator">=</span> pat<span class="token punctuation">.</span>scanner<span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> m <span class="token keyword">in</span> iter<span class="token punctuation">(</span>scanner<span class="token punctuation">.</span>match<span class="token punctuation">,</span> None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">yield</span> Token<span class="token punctuation">(</span>m<span class="token punctuation">.</span>lastgroup<span class="token punctuation">,</span> m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> tok <span class="token keyword">in</span> generate_token<span class="token punctuation">(</span>master_pat<span class="token punctuation">,</span> <span class="token string">'foo = 42'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>tok<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 过滤生成的符号</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:*^30s}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token string">' filter the tokens '</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+tokens <span class="token operator">=</span> <span class="token punctuation">(</span>t <span class="token keyword">for</span> t <span class="token keyword">in</span> generate_token<span class="token punctuation">(</span>master_pat<span class="token punctuation">,</span> <span class="token string">'foo = 42'</span><span class="token punctuation">)</span> 
+    <span class="token keyword">if</span> t<span class="token punctuation">.</span>type<span class="token operator">!=</span><span class="token string">'WS'</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> t <span class="token keyword">in</span> tokens<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">****** scanner method 1 ******
+('NAME', 'foo')
+('WS', ' ')
+('EQ', '=')
+('WS', ' ')
+('NUM', '42')
+****** scanner method 2 ******
+('NAME', 'foo')
+('WS', ' ')
+('EQ', '=')
+('WS', ' ')
+('NUM', '42')
+****** scanner method 3 ******
+Token(type='NAME', value='foo')
+Token(type='WS', value=' ')
+Token(type='EQ', value='=')
+Token(type='WS', value=' ')
+Token(type='NUM', value='42')
+***** filter the tokens ******
+Token(type='NAME', value='foo')
+Token(type='EQ', value='=')
+Token(type='NUM', value='42')
+</pre></div></div><p>通常来讲，令牌化是很多高级文本解析与处理的第一步，为了使用上面的扫描方法，你需要记住：</p>
+<ol>
+<li>你必须确认你使用正则表达式指定了所有输入中可能出现的文本序列，如果有任何不可匹配的文本出现，扫描就会直接停止；</li>
+<li>令牌顺序也是有影响的，<code>re</code> 模块会按照指定好的顺序去做匹配，因此如果一个模式恰好是另一个更长模式的子字符串，你需要将长模式写在前面，如：</li>
+</ol>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
+LT <span class="token operator">=</span> r<span class="token string">'(?P&lt;LT>&lt;)'</span>
+LE <span class="token operator">=</span> r<span class="token string">'(?P&lt;LE>&lt;=)'</span>
+EQ <span class="token operator">=</span> r<span class="token string">'(?P&lt;EQ>=)'</span>
+<span class="token comment" spellcheck="true"># incorrect method</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:*^30s}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token string">'incorrect method'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+master_pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">'|'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>LT<span class="token punctuation">,</span> LE<span class="token punctuation">,</span> EQ<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+scanner <span class="token operator">=</span> master_pat<span class="token punctuation">.</span>scanner<span class="token punctuation">(</span><span class="token string">'&lt;='</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> m <span class="token keyword">in</span> iter<span class="token punctuation">(</span>scanner<span class="token punctuation">.</span>match<span class="token punctuation">,</span> None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>lastgroup<span class="token punctuation">,</span> m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:*^30s}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token string">'correct method'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+master_pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">'|'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>LE<span class="token punctuation">,</span> LT<span class="token punctuation">,</span> EQ<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+scanner <span class="token operator">=</span> master_pat<span class="token punctuation">.</span>scanner<span class="token punctuation">(</span><span class="token string">'&lt;='</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> m <span class="token keyword">in</span> iter<span class="token punctuation">(</span>scanner<span class="token punctuation">.</span>match<span class="token punctuation">,</span> None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>lastgroup<span class="token punctuation">,</span> m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info="" class="language-"><code>*******incorrect method*******
+(&apos;LT&apos;, &apos;&lt;&apos;)
+(&apos;EQ&apos;, &apos;=&apos;)
+********correct method********
+(&apos;LE&apos;, &apos;&lt;=&apos;)
+</code></pre><ol start="3">
+<li>留意子字符串形式的模式，比如你有以下两个模式：</li>
+</ol>
+<div class="code-chunk" data-id="code-chunk-id-63" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+PRINT <span class="token operator">=</span> r<span class="token string">'(?P&lt;PRINT>print)'</span>
+NAME <span class="token operator">=</span> r<span class="token string">'(?P&lt;NAME>[a-zA-Z_][a-zA-Z0-9_]*)'</span>
+master_pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">'|'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span>PRINT<span class="token punctuation">,</span> NAME<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+scanner <span class="token operator">=</span> master_pat<span class="token punctuation">.</span>scanner<span class="token punctuation">(</span><span class="token string">'printer'</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> m <span class="token keyword">in</span> iter<span class="token punctuation">(</span>scanner<span class="token punctuation">.</span>match<span class="token punctuation">,</span> None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>lastgroup<span class="token punctuation">,</span> m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">('PRINT', 'print')
+('NAME', 'er')
+</pre></div></div><p>更高阶的令牌化技术可能需要查看 <em>PyParsing</em> 或者 <em>PLY</em> 包。</p>
+<h3 class="mume-header" id="%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E9%80%92%E5%BD%92%E4%B8%8B%E9%99%8D%E5%88%86%E6%9E%90%E5%99%A8">一个简单的递归下降分析器</h3>
+
+<p>要求：根据一组语法规则解析文本并执行命令，或者构造一个代表输入的抽象语法树，如果语法非常简单，你可以自己写这个解析器，而不是使用一些框架。</p>
+<p>解决方案：<br>
+在这个问题中，我们集中讨论特殊语法去解析文本的问题。为了这样做，你首先要以BNF或EBNF形式指定一个标准语法，比如，一个简单数学表达式语法可能像下面：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>expr ::= expr + term
+    | expr - term
+    | term
+term ::= term * factor
+    | term /  factor
+    | factor
+factor ::= (expr)
+    | NUM
+</code></pre><p>或者，以EBNF形式：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>expr ::= term {(+|-) term}*
+term ::= factor {(*|/) factor}*
+factor ::= (expr)
+    | NUM
+</code></pre><p>在EBNF中，包含在 {...}* 中的规则是可选的。* 表示0次或多次重复。</p>
+<p>对于复杂的语法，你最好是选择某个解析工具，如PyParsing 或者是 PLY，下面是使用PLY写的表达式求值程序：</p>
+<div class="code-chunk" data-id="code-chunk-id-64" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> ply<span class="token punctuation">.</span>yacc <span class="token keyword">import</span> yacc
+<span class="token keyword">from</span> ply<span class="token punctuation">.</span>lex <span class="token keyword">import</span> lex
+
+<span class="token comment" spellcheck="true"># Token list</span>
+tokens<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'NUM'</span><span class="token punctuation">,</span><span class="token string">'PLUS'</span><span class="token punctuation">,</span><span class="token string">'MINUS'</span><span class="token punctuation">,</span><span class="token string">'TIMES'</span><span class="token punctuation">,</span><span class="token string">'DIVIDE'</span><span class="token punctuation">,</span><span class="token string">'LPAREN'</span><span class="token punctuation">,</span><span class="token string">'RPAREN'</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># Ignored characters</span>
+t_ignore <span class="token operator">=</span> <span class="token string">' \t\n'</span>
+<span class="token comment" spellcheck="true"># Token specifications (as regexs)</span>
+t_PLUS <span class="token operator">=</span> r<span class="token string">'\+'</span>
+t_MINUS <span class="token operator">=</span> r<span class="token string">'\-'</span>
+t_TIMES <span class="token operator">=</span> r<span class="token string">'\*'</span>
+t_DIVIDE <span class="token operator">=</span> r<span class="token string">'/'</span>
+t_LPAREN <span class="token operator">=</span> r<span class="token string">'\('</span>
+t_RPAREN <span class="token operator">=</span> r<span class="token string">'\)'</span>
+
+<span class="token comment" spellcheck="true"># Token processing functions</span>
+<span class="token keyword">def</span> <span class="token function">t_NUM</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    r<span class="token string">'\d+'</span>
+    t<span class="token punctuation">.</span>value <span class="token operator">=</span> int<span class="token punctuation">(</span>t<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> t
+
+<span class="token comment" spellcheck="true"># error handler</span>
+<span class="token keyword">def</span> <span class="token function">t_error</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Bad character: {!r}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>t<span class="token punctuation">.</span>value<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span>skip<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># bulid the lexer</span>
+lexer <span class="token operator">=</span> lex<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># Grammer rules and handler functions</span>
+<span class="token keyword">def</span> <span class="token function">p_expr</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
+    expr : expr PLUS term
+        | expr MINUS term
+    '''</span>
+    <span class="token keyword">if</span> p<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'+'</span><span class="token punctuation">:</span>
+        p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> p<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+    <span class="token keyword">elif</span> p<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'-'</span><span class="token punctuation">:</span>
+        p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">-</span> p<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">p_expr_term</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
+    expr : term
+    '''</span>
+    p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">p_term</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
+    term : term TIMES factor
+        | term DIVIDE factor
+    '''</span>
+    <span class="token keyword">if</span> p<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'*'</span><span class="token punctuation">:</span>
+        p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">*</span>p<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+    <span class="token keyword">elif</span> p<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">'/'</span><span class="token punctuation">:</span>
+        p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">/</span>p<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">p_term_factor</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
+    term : factor
+    '''</span>
+    p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">p_factor</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
+    factor : NUM
+    '''</span>
+    p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">p_factor_group</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">'''
+    factor : LPAREN expr RPAREN
+    '''</span>
+    p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">p_error</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Syntax error'</span><span class="token punctuation">)</span>
+
+parser <span class="token operator">=</span> yacc<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>parser<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">'2'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>parser<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">'2+3'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>parser<span class="token punctuation">.</span>parse<span class="token punctuation">(</span><span class="token string">'2*(3+4) + 5'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2
+5
+19
+</pre></div></div><h3 class="mume-header" id="%E5%AD%97%E8%8A%82%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8A%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C">字节字符串上的字符串操作</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-65" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token comment" spellcheck="true"># 字节字符串同样也支持大部分和文本字符串一样的内置操作</span>
+data <span class="token operator">=</span> b<span class="token string">'Hello World'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span>b<span class="token string">'Hello'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>replace<span class="token punctuation">(</span>b<span class="token string">'Hello'</span><span class="token punctuation">,</span> b<span class="token string">'Hello Cruel'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 这些操作同样适用于字节数组</span>
+data <span class="token operator">=</span> bytearray<span class="token punctuation">(</span>b<span class="token string">'Hello World'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span>b<span class="token string">'Hello'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>replace<span class="token punctuation">(</span>b<span class="token string">'Hello'</span><span class="token punctuation">,</span> b<span class="token string">'Hello Curel'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 可以用正则表达式匹配字节字符串</span>
+data <span class="token operator">=</span> b<span class="token string">'FOO:BAR,SPAM'</span>
+<span class="token keyword">import</span> re
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>split<span class="token punctuation">(</span>b<span class="token string">'[:,]+'</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 大多数情况下，在文本字符串上的操作均可以用于字节字符串</span>
+<span class="token comment" spellcheck="true"># 不同点1：字节字符串索引操作返回整数而不是单个字符</span>
+a <span class="token operator">=</span> <span class="token string">'Hello World'</span>
+b <span class="token operator">=</span> b<span class="token string">'Hello World'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{a[0]} , 0x{b[0]:x}'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> b<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 不同点2：打印出来为 b'...'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token string">'ascii'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 不同点3：不能格式化</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token string">'{:x}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">except</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'catch a except'</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 实现的方式</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:x}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'ascii'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">b'Hello'
+True
+[b'Hello', b'World']
+b'Hello Cruel World'
+bytearray(b'Hello World')
+True
+[bytearray(b'Hello'), bytearray(b'World')]
+bytearray(b'Hello Curel World')
+[b'FOO', b'BAR', b'SPAM']
+H , 0x48
+H 72
+b'Hello World'
+Hello World
+catch a except
+b'c'
+</pre></div></div><p>一些程序员为了提升程序执行的速度，会倾向于使用字节字符串而不是我蹦字符串，尽管操作字节字符串确实会比文本更加高效（因为厂里文本固有的Unicode相关开销），但通常会导致代码杂乱。你会经常发现字节字符串并不能和Python的其他部分工作，需要手动 encode/decode 操作。</p>
+<h2 class="mume-header" id="%E6%95%B0%E5%AD%97%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4">数字日期和时间</h2>
+
+<p>在Python中执行整数和浮点数的数字运算是很简单。如果你需要执行分数、数组或者是日期和时间的运算，就需要做更多工作。</p>
+<h3 class="mume-header" id="%E6%95%B0%E5%AD%97%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5">数字的四舍五入</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-66" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>round<span class="token punctuation">(</span><span class="token number">1.24</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 当一个值更好在两个边界，round函数返回离它最近的偶数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>round<span class="token punctuation">(</span><span class="token number">1.5</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>round<span class="token punctuation">(</span><span class="token number">2.5</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># round(number [,ndigits]), ndigits可以为负，表示小数前几位</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>round<span class="token punctuation">(</span><span class="token number">12345</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 如果仅仅是为了显示，用str.format</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'{:-.0f}'</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token number">1.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 不要试着去舍入浮点来“修正”表面上看起来正确的问题</span>
+a <span class="token operator">=</span> <span class="token number">2.1</span>
+b <span class="token operator">=</span> <span class="token number">4.2</span>
+c <span class="token operator">=</span> a <span class="token operator">+</span> b
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+c <span class="token operator">=</span> round<span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">1.2
+2.0
+2.0
+12000
+2
+6.300000000000001
+6.3
+</pre></div></div><p>对于大多数使用到浮点的程序，没有必要也不推荐怎么做，尽管在计算的时候回有一点点小的误差，但是这些小的误差是能被理解和容忍的。如果不能允许这些小误差（比如涉及到金融领域），就需要考虑使用 decimal 模块了。</p>
+<h3 class="mume-header" id="%E6%89%A7%E8%A1%8C%E7%B2%BE%E7%A1%AE%E7%9A%84%E6%B5%AE%E7%82%B9%E6%95%B0%E8%BF%90%E7%AE%97">执行精确的浮点数运算</h3>
+
+<p>浮点数的一个普遍问题是它们不能精确表示十进制数，并且即使是最简单的数学运算也会产生小的误差：</p>
+<div class="code-chunk" data-id="code-chunk-id-67" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">a <span class="token operator">=</span> <span class="token number">0.2</span>
+b <span class="token operator">=</span> <span class="token number">0.1</span>
+c <span class="token operator">=</span> a <span class="token operator">+</span> b
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token operator">==</span><span class="token number">0.3</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 正确的判断</span>
+<span class="token keyword">import</span> math
+<span class="token keyword">print</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>isclose<span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token number">0.3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">0.30000000000000004
+False
+True
+</pre></div></div><p>这些错误是有底层CPU和IEEE754标准通过自己的浮点单元去执行算数时的特征。由于Python的浮点数据类型使用底层表示存储数据，因此你没办法去避免这样的误差。</p>
+<p>如果你想更加精确（并能容忍一定的性能损耗），你可以使用decimal模块：</p>
+<div class="code-chunk" data-id="code-chunk-id-68" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> decimal <span class="token keyword">import</span> Decimal
+<span class="token keyword">from</span> decimal <span class="token keyword">import</span> localcontext
+a <span class="token operator">=</span> Decimal<span class="token punctuation">(</span><span class="token string">'4.2'</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> Decimal<span class="token punctuation">(</span><span class="token string">'2.1'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token operator">==</span>Decimal<span class="token punctuation">(</span><span class="token string">'6.3'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+a <span class="token operator">=</span> Decimal<span class="token punctuation">(</span><span class="token string">'1.3'</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> Decimal<span class="token punctuation">(</span><span class="token string">'1.7'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">/</span>b<span class="token punctuation">)</span>
+<span class="token keyword">with</span> localcontext<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> ctx<span class="token punctuation">:</span>
+    ctx<span class="token punctuation">.</span>prec <span class="token operator">=</span> <span class="token number">3</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">/</span>b<span class="token punctuation">)</span>
+<span class="token keyword">with</span> localcontext<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">as</span> ctx<span class="token punctuation">:</span>
+    ctx<span class="token punctuation">.</span>prec <span class="token operator">=</span> <span class="token number">7</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">/</span>b<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">6.3
+True
+0.7647058823529411764705882353
+0.765
+0.7647059
+</pre></div></div><p>decimal 模块实现了 IBM 的“通用小数运算规范”。</p>
+<p>Python新手会倾向于使用decimal模块来处理浮点数的精确运算。然而，先理解你的应用程序目的是非常重要的。如果你是在做科学计算或者工程领域的计算、电脑绘图或者是科学领域的大多数运算，那么使用普通的浮点类型是比较普遍的用法。其中的一个原因是，在真实的世界中很少会要求精确到普通浮点数能提供的17位精度。第二个原因是，原生的浮点数计算要快的多。</p>
+<p>误差的产生：</p>
+<div class="code-chunk" data-id="code-chunk-id-69" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">a <span class="token operator">=</span> <span class="token number">1.23e+18</span>
+b <span class="token operator">=</span> <span class="token number">1</span>
+c <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1.23e+18</span>
+<span class="token comment" spellcheck="true"># 1 被“丢失了”</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token operator">+</span>c<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 使用 math.fsum 进行精确运算</span>
+<span class="token keyword">from</span> math <span class="token keyword">import</span> fsum
+<span class="token keyword">print</span><span class="token punctuation">(</span>fsum<span class="token punctuation">(</span><span class="token punctuation">[</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>c<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">0.0
+1.0
+</pre></div></div><h3 class="mume-header" id="%E6%95%B0%E5%AD%97%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA">数字的格式化输出</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-70" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">x <span class="token operator">=</span> <span class="token number">1234.56789</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:.2f}'"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:>10.1f}'"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:&lt;10.1f}'"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:^10.1f}'"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:,}'"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:e}'"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:.3E}'"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 同时制定宽度和精度的一般形式是：[&lt;>^]?width[,]?(.digits)?</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"'{x:,.2f}'"</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">#上述方法同样使用与Decimal</span>
+<span class="token keyword">from</span> decimal <span class="token keyword">import</span> Decimal
+x <span class="token operator">=</span> Decimal<span class="token punctuation">(</span><span class="token string">'1234.56789'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{x:*^15,.3f}'</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">'1234.57'
+'    1234.6'
+'1234.6    '
+'  1234.6  '
+'1,234.56789'
+'1.234568e+03'
+'1.235E+03'
+'1,234.57'
+***1,234.568***
+</pre></div></div><h3 class="mume-header" id="%E4%BA%8C%E5%85%AB%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E6%95%B4%E6%95%B0">二八十六进制表示整数</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-71" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">x <span class="token operator">=</span> <span class="token number">1234</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>bin<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{x:b}'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>oct<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{x:o}'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>hex<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{x:x}'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 整数是有符号的</span>
+x <span class="token operator">=</span> <span class="token operator">-</span>x
+<span class="token keyword">print</span><span class="token punctuation">(</span>bin<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{x:b}'</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 显示负数对应的无符号二进制表示</span>
+<span class="token comment" spellcheck="true"># 32 位对应的无符号表示</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{2**32+x:b}'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{2**32+x:x}'</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 将不同进制字符串转换为整数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>int<span class="token punctuation">(</span><span class="token string">'4d2'</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>int<span class="token punctuation">(</span><span class="token string">'10011010010'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">0b10011010010
+10011010010
+0o2322
+2322
+0x4d2
+4d2
+-0b10011010010
+-10011010010
+11111111111111111111101100101110
+fffffb2e
+1234
+1234
+</pre></div></div><h3 class="mume-header" id="%E5%AD%97%E8%8A%82%E5%88%B0%E5%A4%A7%E6%95%B4%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E8%A7%A3%E5%8C%85">字节到大整数的打包与解包</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-72" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">data <span class="token operator">=</span> b<span class="token string">'\x00\x124V\x00x\x90\xab\x00\xcd\xef\x01\x00#\x004'</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>len<span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{int.from_bytes(data, 'little'):x}"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{int.from_bytes(data, 'big'):x}"</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>int<span class="token punctuation">.</span>from_bytes<span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token string">'big'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+x <span class="token operator">=</span> <span class="token number">94522842520747284487117727783387188</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>to_bytes<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span> <span class="token string">'big'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">16
+3400230001efcd00ab90780056341200
+123456007890ab00cdef0100230034
+94522842520747284487117727783387188
+b'\x00\x124V\x00x\x90\xab\x00\xcd\xef\x01\x00#\x004'
+</pre></div></div><p>大整数和字节字符串之间的转换操作并不常见，然而，在一些应用领域，比如密码学或网络，有时候也会出现。</p>
+<h3 class="mume-header" id="%E5%A4%8D%E6%95%B0">复数</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-73" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">a <span class="token operator">=</span> complex<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> <span class="token number">2</span><span class="token operator">+</span><span class="token number">4j</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">==</span>b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>real<span class="token punctuation">,</span> a<span class="token punctuation">.</span>imag<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 共轭复数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>conjugate<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">(2+4j)
+True
+2.0 4.0
+(2-4j)
+</pre></div></div><p>常见的运算可以工作：</p>
+<div class="code-chunk" data-id="code-chunk-id-74" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">a <span class="token operator">=</span> <span class="token number">2</span><span class="token operator">+</span><span class="token number">4j</span>
+b <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">-</span><span class="token number">3j</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">-</span>b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">*</span>b<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">/</span>b<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">(3+1j)
+(1+7j)
+(14-2j)
+(-1+0.9999999999999999j)
+</pre></div></div><p>Python 中大部分与数字相关的模块都能处理复数，比如如果使用numpy，可以很容易构造一个复数数组并在这个数组上执行各种操作：</p>
+<div class="code-chunk" data-id="code-chunk-id-75" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+a <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token operator">+</span><span class="token number">3j</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token operator">+</span><span class="token number">5j</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token operator">-</span><span class="token number">7j</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token operator">+</span><span class="token number">9j</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>sin<span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[ 2.+3.j  4.+5.j  6.-7.j  8.+9.j]
+[  4.+3.j   6.+5.j   8.-7.j  10.+9.j]
+[    9.15449915  -4.16890696j   -56.16227422 -48.50245524j
+  -153.20827755-526.47684926j  4008.42651446-589.49948373j]
+</pre></div></div><p>Python的标准数学函数模块 math 不能产生复数值，因此你的代码不会出现复数返回值：</p>
+<div class="code-chunk" data-id="code-chunk-id-76" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> math
+<span class="token keyword">print</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Traceback (most recent call last):
+  File "/Users/fenghuabin/Code/Year2018/CsLearnNote/Python/vvg2xs456_code_chunk.py", line 2, in <module>
+    print(math.sqrt(-1))
+ValueError: math domain error
+</module></pre></div></div><p>但是可以使用 cmath 模块：</p>
+<div class="code-chunk" data-id="code-chunk-id-77" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> cmath
+<span class="token keyword">print</span><span class="token punctuation">(</span>cmath<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 或者是 ** 运算符</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token punctuation">.</span><span class="token number">5</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">1j
+(6.123233995736766e-17+1j)
+</pre></div></div><h3 class="mume-header" id="%E6%97%A0%E7%A9%B7%E5%A4%A7%E4%B8%8Enan">无穷大与NaN</h3>
+
+<p>Python并没有特殊的语法来表示正无穷、负无穷、NaN(非数字)的浮点数，但是可以使用<code>float()</code>来创建它们：</p>
+<div class="code-chunk" data-id="code-chunk-id-78" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> math
+a <span class="token operator">=</span> float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> float<span class="token punctuation">(</span><span class="token string">'-inf'</span><span class="token punctuation">)</span>
+c <span class="token operator">=</span> float<span class="token punctuation">(</span><span class="token string">'nan'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># inf</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>isinf<span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># True</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># -inf</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>isinf<span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># True</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># nan</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>math<span class="token punctuation">.</span>isnan<span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># True</span>
+<span class="token comment" spellcheck="true"># 无穷大的运算</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># inf</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># inf</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token operator">/</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 0.0</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">/</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># nan</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># nan</span>
+<span class="token comment" spellcheck="true"># NaN会在所有操作中传播</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c <span class="token operator">+</span> <span class="token number">20</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># nan</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c <span class="token operator">/</span> <span class="token number">20</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># nan</span>
+<span class="token comment" spellcheck="true"># 两个NaN值不相等</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token operator">==</span>float<span class="token punctuation">(</span><span class="token string">'nan'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># False</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">inf
+True
+-inf
+True
+nan
+True
+inf
+inf
+0.0
+nan
+nan
+nan
+nan
+False
+</pre></div></div><h3 class="mume-header" id="%E5%88%86%E6%95%B0%E8%BF%90%E7%AE%97">分数运算</h3>
+
+<p><code>fractions</code> 模块可以被用来执行包含分数的数学运算，比如：</p>
+<div class="code-chunk" data-id="code-chunk-id-79" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> fractions <span class="token keyword">import</span> Fraction
+a <span class="token operator">=</span> Fraction<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> Fraction<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 27/16</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">*</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 35/64</span>
+
+<span class="token comment" spellcheck="true"># 获取 numerator / denominator</span>
+c <span class="token operator">=</span> a <span class="token operator">*</span> b
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>numerator<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 35</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>denominator<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 64</span>
+
+<span class="token comment" spellcheck="true"># 转换为小数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>float<span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 0.546875</span>
+
+<span class="token comment" spellcheck="true"># 限制分母大小</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>limit_denominator<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 4/7</span>
+
+<span class="token comment" spellcheck="true"># 小数转换为分数</span>
+x <span class="token operator">=</span> <span class="token number">3.75</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Fraction<span class="token punctuation">(</span><span class="token operator">*</span>x<span class="token punctuation">.</span>as_integer_ratio<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">27/16
+35/64
+35
+64
+0.546875
+4/7
+15/4
+</pre></div></div><p>在大多数程序中一般不会出现分数的计算问题，但是有时候还是需要用到的。比如在一个允许接收分数形式的测试单位以分数形式执行运算的程序中，直接使用分数可以减小手动转换为小数或浮点数的工作。</p>
+<h3 class="mume-header" id="%E5%A4%A7%E5%9E%8B%E6%95%B0%E7%BB%84%E8%BF%90%E7%AE%97">大型数组运算</h3>
+
+<p>涉及到数组的重量级运算操作，可以使用NumPy库。NumPy的一个主要特征是它会给Python提供一个数组对象，相比于标准的Python列表而言，更适合用来做数学运算。</p>
+<p>传统的 list 操作：</p>
+<div class="code-chunk" data-id="20180408214923" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;20180408214923&amp;amp;quot;}" class="language-python"><span class="token comment" spellcheck="true"># Python list</span>
+x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+y <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">]</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><div class="code-chunk" data-id="code-chunk-id-81" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408214923&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>x <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[1, 2, 3, 4, 1, 2, 3, 4]
+</pre></div></div><div class="code-chunk" data-id="code-chunk-id-82" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408214923&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token operator">+</span><span class="token number">10</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Traceback (most recent call last):
+  File "/Users/fenghuabin/Code/Year2018/CsLearnNote/Python/2tyq017u3_code_chunk.py", line 5, in <module>
+    print(x+10)
+TypeError: can only concatenate list (not "int") to list
+</module></pre></div></div><div class="code-chunk" data-id="code-chunk-id-83" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408214923&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token operator">+</span>y<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[1, 2, 3, 4, 5, 6, 7, 8]
+</pre></div></div><p>Numpy 库的操作：</p>
+<div class="code-chunk" data-id="20180408215711" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;20180408215711&amp;amp;quot;}" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+ax <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+ay <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><div class="code-chunk" data-id="code-chunk-id-85" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408215711&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>ax<span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[2 4 6 8]
+</pre></div></div><div class="code-chunk" data-id="code-chunk-id-86" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408215711&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>ax<span class="token operator">+</span><span class="token number">10</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[11 12 13 14]
+</pre></div></div><div class="code-chunk" data-id="code-chunk-id-87" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408215711&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>ax<span class="token operator">+</span>ay<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[ 6  8 10 12]
+</pre></div></div><div class="code-chunk" data-id="code-chunk-id-88" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408215711&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>ax<span class="token operator">*</span>ay<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[ 5 12 21 32]
+</pre></div></div><p>如上所示，两种方案中数组的基本数学运算结果并不相同。特别地，NumPy中的标量运算（比如 ax*2 或 ax+10）会作用在每一个元素上，另外当两个操作都是数组的时候执行元素对等位置计算，并最终生成一个新的数组。</p>
+<p>对这个数组中所有元素同时执行数学运算可以使得作用在数组上的函数简单而快速。比如，你想计算多项式的值：</p>
+<div class="code-chunk" data-id="code-chunk-id-89" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408215711&amp;amp;quot;}" class="language-python"><span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token number">3</span><span class="token operator">*</span>x<span class="token operator">**</span><span class="token number">2</span> <span class="token operator">-</span> <span class="token number">2</span><span class="token operator">*</span>x <span class="token operator">+</span> <span class="token number">7</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>ax<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[ 8 15 28 47]
+</pre></div></div><p>NumPy还为数组操作提供了大量的通用函数，这些函数可以作为math模块中的替代，比如：</p>
+<div class="code-chunk" data-id="code-chunk-id-90" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408215711&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span>ax<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>cos<span class="token punctuation">(</span>ax<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[ 1.          1.41421356  1.73205081  2.        ]
+[ 0.54030231 -0.41614684 -0.9899925  -0.65364362]
+</pre></div></div><p>使用这些通用函数要比循环数组并使用 math 模块中的函数执行计算要快得多。因此只要有可能，尽量选择 NumPy 的数组方案。</p>
+<p>底层实现中，NumPy 数组使用了 C 或者 Fortran 语言的机制分配内存。也就是说，它们是一个非常大的连续的并且有相同类型数据组成的内存区域。所以，你可以构造一个比普通 Python 列表大得多的数组，比如，你构建一个10000*10000的浮点数二维数组：</p>
+<div class="code-chunk" data-id="20180408221348" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;20180408221348&amp;amp;quot;}" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+grid <span class="token operator">=</span> np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>shape<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span>float<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Traceback (most recent call last):
+  File "/Users/fenghuabin/Code/Year2018/CsLearnNote/Python/73qp9dc3h_code_chunk.py", line 1, in <module>
+    print(np.cos(grid))
+NameError: name 'np' is not defined
+</module></pre></div></div><div class="code-chunk" data-id="code-chunk-id-92" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408221348&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[[ 0.  0.  0. ...,  0.  0.  0.]
+ [ 0.  0.  0. ...,  0.  0.  0.]
+ [ 0.  0.  0. ...,  0.  0.  0.]
+ ..., 
+ [ 0.  0.  0. ...,  0.  0.  0.]
+ [ 0.  0.  0. ...,  0.  0.  0.]
+ [ 0.  0.  0. ...,  0.  0.  0.]]
+</pre></div></div><p>所有普通操作都会作用在所有元素上：</p>
+<div class="code-chunk" data-id="20180408221653" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408221348&amp;amp;quot; id=&amp;amp;quot;20180408221653&amp;amp;quot;}" class="language-python">grid <span class="token operator">+=</span> <span class="token number">10</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><div class="code-chunk" data-id="code-chunk-id-94" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408221653&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>grid<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[[ 10.  10.  10. ...,  10.  10.  10.]
+ [ 10.  10.  10. ...,  10.  10.  10.]
+ [ 10.  10.  10. ...,  10.  10.  10.]
+ ..., 
+ [ 10.  10.  10. ...,  10.  10.  10.]
+ [ 10.  10.  10. ...,  10.  10.  10.]
+ [ 10.  10.  10. ...,  10.  10.  10.]]
+</pre></div></div><div class="code-chunk" data-id="code-chunk-id-95" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180408221653&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>sin<span class="token punctuation">(</span>grid<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[[-0.54402111 -0.54402111 -0.54402111 ..., -0.54402111 -0.54402111
+  -0.54402111]
+ [-0.54402111 -0.54402111 -0.54402111 ..., -0.54402111 -0.54402111
+  -0.54402111]
+ [-0.54402111 -0.54402111 -0.54402111 ..., -0.54402111 -0.54402111
+  -0.54402111]
+ ..., 
+ [-0.54402111 -0.54402111 -0.54402111 ..., -0.54402111 -0.54402111
+  -0.54402111]
+ [-0.54402111 -0.54402111 -0.54402111 ..., -0.54402111 -0.54402111
+  -0.54402111]
+ [-0.54402111 -0.54402111 -0.54402111 ..., -0.54402111 -0.54402111
+  -0.54402111]]
+</pre></div></div><p>关于 NumPy ，有一点需要特别地注意，那就是他扩展了Python列表的索引功能：</p>
+<div class="code-chunk" data-id="code-chunk-id-96" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+a <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">,</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">10</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">101</span><span class="token punctuation">,</span> <span class="token number">102</span><span class="token punctuation">,</span> <span class="token number">103</span><span class="token punctuation">]</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">101</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">102</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>where<span class="token punctuation">(</span>a<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[[ 1  2  3  4]
+ [ 5  6  7  8]
+ [ 9 10 11 12]]
+
+[5 6 7 8]
+
+[ 2  6 10]
+
+[[ 1  2  3  4]
+ [ 5 16 17  8]
+ [ 9 20 21 12]]
+
+[[101 103 105 107]
+ [105 117 119 111]
+ [109 121 123 115]]
+
+[[101 102 103 104]
+ [106 117 118 109]
+ [111 122 123 114]]
+
+[[ 1  2  3  4]
+ [ 5 10 10  8]
+ [ 9 10 10 10]]
+</pre></div></div><p>NumPy 是 Python 领域中很多科学与工程库的基础，同时也是被广泛使用的最大最复杂的模块。</p>
+<h3 class="mume-header" id="%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97">矩阵与线性代数运算</h3>
+
+<p>你需要执行矩阵和线性代数运算，比如矩阵乘法、寻找行列式、求解线性方程组等等。</p>
+<p>NumPy 库有一个矩阵对象可以用来解决这个问题。矩阵类似于3.9小节中数组对象，但是遵循线性代数的计算规则：</p>
+<div class="code-chunk" data-id="code-chunk-id-97" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+m <span class="token operator">=</span> np<span class="token punctuation">.</span>matrix<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>T<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 返回矩阵的逆</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>I<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># m·m.I = identity matrix</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token operator">*</span>m<span class="token punctuation">.</span>I<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+
+v <span class="token operator">=</span> np<span class="token punctuation">.</span>matrix<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token operator">*</span>v<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">[[ 1 -2  3]
+ [ 0  4  5]
+ [ 7  8 -9]]
+
+[[ 1  0  7]
+ [-2  4  8]
+ [ 3  5 -9]]
+
+[[ 0.33043478 -0.02608696  0.09565217]
+ [-0.15217391  0.13043478  0.02173913]
+ [ 0.12173913  0.09565217 -0.0173913 ]]
+
+[[  1.00000000e+00   0.00000000e+00   0.00000000e+00]
+ [ -1.38777878e-17   1.00000000e+00   0.00000000e+00]
+ [ -2.22044605e-16   0.00000000e+00   1.00000000e+00]]
+
+[[2]
+ [3]
+ [4]]
+
+[[ 8]
+ [32]
+ [ 2]]
+</pre></div></div><p>可以在 <code>numpy.linalg</code>子包中找到更多的操作函数：</p>
+<div class="code-chunk" data-id="code-chunk-id-98" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token comment" spellcheck="true"># determinant 矩阵行列式的值</span>
+m <span class="token operator">=</span> np<span class="token punctuation">.</span>matrix<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+v <span class="token operator">=</span> np<span class="token punctuation">.</span>matrix<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>det<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># eigenvalues 特征值</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>eigvals<span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 解方程 mx=v</span>
+x <span class="token operator">=</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>solve<span class="token punctuation">(</span>m<span class="token punctuation">,</span> v<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token operator">*</span>x<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'\n'</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">-230.0
+
+[-13.11474312   2.75956154   6.35518158]
+
+[[ 0.96521739]
+ [ 0.17391304]
+ [ 0.46086957]]
+
+[[ 2.]
+ [ 3.]
+ [ 4.]]
+
+</pre></div></div><h3 class="mume-header" id="%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9">随机选择</h3>
+
+<p>从一个序列中随机抽取若干个元素，或者想生成几个随机数：</p>
+<div class="code-chunk" data-id="code-chunk-id-99" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> random
+values <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">]</span>
+<span class="token comment" spellcheck="true"># 随机选出 list 中的一个元素</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>choice<span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>choice<span class="token punctuation">(</span>values<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 随机选出 list 中的若干个元素</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>values<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 打乱序列中元素的顺序</span>
+random<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>values<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>values<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 随机生成整数，范围为 [0, 100] 的闭区间</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>randint<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 随机生成 0~1 范围内的浮点数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 以等概率均匀分布生成 0~1 的随机数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 以均值为0，标准差为1，生成高斯分布</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>random<span class="token punctuation">.</span>gauss<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 获取 N 为随机位（二进制）的整数</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{random.getrandbits(200):x}'</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2
+5
+[1, 4, 6]
+[3, 2, 6, 1, 5, 4]
+19
+0.8150461758715217
+0.5306339399596166
+-1.2496417241146405
+b0a10653522ac0ee7508b8c668a6d729a39d27862ad9a1515e
+</pre></div></div><p>random 模块使用 Mersenne Twister 算法来计算生成随机数，这是一个确定性算法，但你可以通过 random.seed() 函数修改初始化种子。</p>
+<h3 class="mume-header" id="%E5%9F%BA%E6%9C%AC%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E8%BD%AC%E6%8D%A2">基本日期与时间转换</h3>
+
+<p>与日期、时间相关的模块为 <code>datetime</code>。其子模块 <code>timedelta</code> 用于表示时间间隔：</p>
+<div class="code-chunk" data-id="code-chunk-id-100" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token comment" spellcheck="true"># timedelta 表示一段时间间隔</span>
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> timedelta
+a <span class="token operator">=</span> timedelta<span class="token punctuation">(</span>days<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">,</span> hours<span class="token operator">=</span><span class="token number">14</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> timedelta<span class="token punctuation">(</span>hours<span class="token operator">=</span><span class="token number">17.5</span><span class="token punctuation">)</span>
+c <span class="token operator">=</span> a<span class="token operator">+</span>b
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>days<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>seconds<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>seconds<span class="token operator">/</span><span class="token number">3600</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>total_seconds<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">3600</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">3
+27000
+7.5
+79.5
+</pre></div></div><p>如果你想表示指定的日期和时间，先创建一个 datetime 实例，然后使用标准的数学运算来操作它们：</p>
+<div class="code-chunk" data-id="code-chunk-id-101" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> timedelta
+a <span class="token operator">=</span> datetime<span class="token punctuation">(</span><span class="token number">2018</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">49</span><span class="token punctuation">,</span> <span class="token number">55</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># datetime 和 timedelta 的运算</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">+</span>timedelta<span class="token punctuation">(</span>hours<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span> minutes<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> datetime<span class="token punctuation">(</span><span class="token number">2012</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">,</span><span class="token number">21</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># datetime 之间的运算</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">-</span>b<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 获取当前时间</span>
+now <span class="token operator">=</span> datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>now<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2018-04-09 20:54:55
+1935 days, 10:49:55
+2018-04-09 10:54:36.481069
+</pre></div></div><p>注意：datetime 会自动处理闰年：</p>
+<div class="code-chunk" data-id="code-chunk-id-102" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+a <span class="token operator">=</span> datetime<span class="token punctuation">(</span><span class="token number">2012</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> datetime<span class="token punctuation">(</span><span class="token number">2012</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">-</span>b<span class="token punctuation">)</span>
+a <span class="token operator">=</span> datetime<span class="token punctuation">(</span><span class="token number">2100</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> datetime<span class="token punctuation">(</span><span class="token number">2100</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">28</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token operator">-</span>b<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2 days, 0:00:00
+1 day, 0:00:00
+</pre></div></div><p>对于大多数基本的日期和时间处理问题，<code>datetime</code> 模块已经足够了，如果你需要执行更加复杂的日期操作，如处理时区、节假日计算等，可以考虑使用 <code>dateutil</code> 模块。</p>
+<h3 class="mume-header" id="%E8%AE%A1%E7%AE%97%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E5%91%A8%E4%BA%94%E7%9A%84%E6%97%A5%E6%9C%9F">计算最后一个周五的日期</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-103" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime<span class="token punctuation">,</span> timedelta
+weekdays <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Monday'</span><span class="token punctuation">,</span> <span class="token string">'Tuesday'</span><span class="token punctuation">,</span> <span class="token string">'Wednesday'</span><span class="token punctuation">,</span>
+    <span class="token string">'Thursday'</span><span class="token punctuation">,</span> <span class="token string">'Friday'</span><span class="token punctuation">,</span> <span class="token string">'Saturday'</span><span class="token punctuation">,</span> <span class="token string">'Sunday'</span><span class="token punctuation">]</span>
+<span class="token keyword">def</span> <span class="token function">get_previous_byday</span><span class="token punctuation">(</span>dayname<span class="token punctuation">,</span> start_date<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> start_date<span class="token operator">==</span>None<span class="token punctuation">:</span>
+        start_date <span class="token operator">=</span> datetime<span class="token punctuation">.</span>today<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    day_delta <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">7</span><span class="token operator">+</span>start_date<span class="token punctuation">.</span>weekday<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span>
+        weekdays<span class="token punctuation">.</span>index<span class="token punctuation">(</span>dayname<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">7</span>
+    day_delta <span class="token operator">=</span> day_delta <span class="token keyword">if</span> day_delta <span class="token keyword">else</span> <span class="token number">7</span>
+    <span class="token keyword">return</span> start_date<span class="token operator">-</span>timedelta<span class="token punctuation">(</span>days<span class="token operator">=</span>day_delta<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>get_previous_byday<span class="token punctuation">(</span><span class="token string">'Sunday'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true"># 2016年最后一个星期五</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>get_previous_byday<span class="token punctuation">(</span><span class="token string">'Friday'</span><span class="token punctuation">,</span> datetime<span class="token punctuation">(</span><span class="token number">2017</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2018-04-08 14:36:25.597614
+2016-12-30 00:00:00
+</pre></div></div><p>查看真实情况：</p>
+<div class="code-chunk" data-id="code-chunk-id-104" data-cmd="/bin/zsh"><div class="input-div"><pre data-role="codeBlock" data-info="sh {code_chunk_offset=1, cmd=&amp;amp;quot;&amp;amp;#x2F;bin&amp;amp;#x2F;zsh&amp;amp;quot;}" class="language-bash"><span class="token function">cal</span> 12 2016
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">   December 2016      
+Su Mo Tu We Th Fr Sa  
+             1  2  3  
+ 4  5  6  7  8  9 10  
+11 12 13 14 15 16 17  
+18 19 20 21 22 23 24  
+25 26 27 28 29 30 31  
+                      
+</pre></div></div><p>可见2016年最后一个周五真的是：2016-12-30。</p>
+<p>如果要执行大量的日期计算，最好使用模块 <code>dateutil</code>。</p>
+<div class="code-chunk" data-id="code-chunk-id-105" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+<span class="token keyword">from</span> dateutil<span class="token punctuation">.</span>relativedelta <span class="token keyword">import</span> relativedelta
+<span class="token keyword">from</span> dateutil<span class="token punctuation">.</span>rrule <span class="token keyword">import</span> <span class="token operator">*</span>
+d <span class="token operator">=</span> datetime<span class="token punctuation">(</span><span class="token number">2017</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token operator">+</span>relativedelta<span class="token punctuation">(</span>weekday<span class="token operator">=</span>FR<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 修改day属性</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>d<span class="token punctuation">.</span>replace<span class="token punctuation">(</span>day<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2016-12-30 00:00:00
+2017-01-10 00:00:00
+</pre></div></div><p>calendar 用于与日历相关的信息处理：</p>
+<div class="code-chunk" data-id="code-chunk-id-106" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> calendar
+<span class="token comment" spellcheck="true"># 返回 2017-2-1 星期几，共多少天</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>calendar<span class="token punctuation">.</span>monthrange<span class="token punctuation">(</span><span class="token number">2017</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 2表示周三</span>
+<span class="token comment" spellcheck="true"># 返回 2016-2-1 星期几，共多少天</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>calendar<span class="token punctuation">.</span>monthrange<span class="token punctuation">(</span><span class="token number">2016</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 0表示周一</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">(2, 28)
+(0, 29)
+</pre></div></div><h3 class="mume-header" id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%97%B6%E9%97%B4">字符串转换为时间</h3>
+
+<div class="code-chunk" data-id="code-chunk-id-107" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+text <span class="token operator">=</span> <span class="token string">'2018-4-9'</span>
+y <span class="token operator">=</span> datetime<span class="token punctuation">.</span>strptime<span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token string">'%Y-%m-%d'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>datetime<span class="token punctuation">.</span>strftime<span class="token punctuation">(</span>y<span class="token punctuation">,</span> <span class="token string">'%A %B %d, %Y'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2018-04-09 00:00:00
+Monday April 09, 2018
+</pre></div></div><p>注意：<code>strptime</code>的性能非常差，如果知道解析格式，最好自己写：</p>
+<div class="code-chunk" data-id="code-chunk-id-108" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+<span class="token keyword">def</span> <span class="token function">strptime</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    year_s<span class="token punctuation">,</span> month_s<span class="token punctuation">,</span> day_s <span class="token operator">=</span> s<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> datetime<span class="token punctuation">(</span>int<span class="token punctuation">(</span>year_s<span class="token punctuation">)</span><span class="token punctuation">,</span> int<span class="token punctuation">(</span>month_s<span class="token punctuation">)</span><span class="token punctuation">,</span>int<span class="token punctuation">(</span>day_s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>strptime<span class="token punctuation">(</span><span class="token string">'2018-4-9'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2018-04-09 00:00:00
+</pre></div></div><p>经过测试，自定义的函数性能比<code>datetime.strptime</code>快7倍，尽量使用自定义的时间解析。</p>
+<h2 class="mume-header" id="%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B8%8E%E7%94%9F%E6%88%90%E5%99%A8">迭代器与生成器</h2>
+
+<h3 class="mume-header" id="%E6%89%8B%E5%8A%A8%E9%81%8D%E5%8E%86%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B8%8D%E7%94%A8-for">手动遍历迭代器(不用 for)</h3>
+
+<p>有如下的一个迭代器：</p>
+<div class="code-chunk" data-id="20180409155152" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;20180409155152&amp;amp;quot;}" class="language-python">a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">]</span>
+iter_a <span class="token operator">=</span> iter<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>使用<code>next</code>函数进行遍历。</p>
+<p>遍历方式1：</p>
+<div class="code-chunk" data-id="code-chunk-id-110" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180409155152&amp;amp;quot;}" class="language-python"><span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        v <span class="token operator">=</span> next<span class="token punctuation">(</span>iter_a<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span>
+<span class="token keyword">except</span> StopIteration<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'stop iteration'</span><span class="token punctuation">)</span>    
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">1
+2
+3
+4
+5
+stop iteration
+</pre></div></div><p>从上面的例子中可以看出，结束时，会弹出一个<code>StopIteration</code>异常。</p>
+<p>遍历方式二：</p>
+<div class="code-chunk" data-id="code-chunk-id-111" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180409155152&amp;amp;quot;}" class="language-python"><span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    v <span class="token operator">=</span> next<span class="token punctuation">(</span>iter_a<span class="token punctuation">,</span> None<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> v<span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">1
+2
+3
+4
+5
+</pre></div></div><h3 class="mume-header" id="%E4%BB%A3%E7%90%86%E8%BF%AD%E4%BB%A3">代理迭代</h3>
+
+<p>创建一个对象能够用于迭代。</p>
+<div class="code-chunk" data-id="code-chunk-id-112" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Node</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_value <span class="token operator">=</span> value
+        self<span class="token punctuation">.</span>_children <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">__repr__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> f<span class="token string">'Node({self._value})'</span>
+    <span class="token keyword">def</span> <span class="token function">add_child</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> node<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_children<span class="token punctuation">.</span>append<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__iter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> iter<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_children<span class="token punctuation">)</span>
+root <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+child1 <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+child2 <span class="token operator">=</span> Node<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+root<span class="token punctuation">.</span>add_child<span class="token punctuation">(</span>child1<span class="token punctuation">)</span>
+root<span class="token punctuation">.</span>add_child<span class="token punctuation">(</span>child2<span class="token punctuation">)</span>
+<span class="token keyword">for</span> ch <span class="token keyword">in</span> root<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>ch<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Node(1)
+Node(2)
+</pre></div></div><h3 class="mume-header" id="%E4%BD%BF%E7%94%A8%E7%94%9F%E6%88%90%E5%99%A8%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9A%84%E8%BF%AD%E4%BB%A3%E6%A8%A1%E5%BC%8F">使用生成器创建新的迭代模式</h3>
+
+<p>实现一个自定义迭代模式，跟普通的内置函数，比如<code>range()</code>、<code>reversed()</code>不一样。</p>
+<div class="code-chunk" data-id="code-chunk-id-113" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">def</span> <span class="token function">frange</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> stop<span class="token punctuation">,</span> increment<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    x <span class="token operator">=</span> start
+    <span class="token keyword">while</span> x <span class="token operator">&lt;</span> stop<span class="token punctuation">:</span>
+        <span class="token keyword">yield</span> x
+        x <span class="token operator">+=</span> increment
+<span class="token keyword">for</span> i <span class="token keyword">in</span> frange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> end<span class="token operator">=</span><span class="token string">'  '</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">,</span> sum<span class="token punctuation">(</span>frange<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>list<span class="token punctuation">(</span>range<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">0  0.5  1.0  1.5  2.0  2.5  3.0  3.5  
+ 10
+[0, 1, 2, 3, 4]
+</pre></div></div><p>一个函数中需要有一个 <code>yield</code> 语句即可将其转换为一个生成器。跟普通函数不同的是，生成器只能用于迭代操作。下面是一个实验，向你展示这样的函数底层工作机制：</p>
+<div class="code-chunk" data-id="code-chunk-id-114" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">def</span> <span class="token function">countdown</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Starting to count from'</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+    <span class="token keyword">while</span> n <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">yield</span> n
+        n <span class="token operator">-=</span> <span class="token number">1</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Done!'</span><span class="token punctuation">)</span>
+c <span class="token operator">=</span> countdown<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>next<span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>next<span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>next<span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>next<span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Starting to count from 3
+3
+2
+1
+Done!
+Traceback (most recent call last):
+  File "/Users/fenghuabin/Code/Year2018/CsLearnNote/Python/qikht4q8g_code_chunk.py", line 11, in <module>
+    print(next(c))
+StopIteration
+</module></pre></div></div><h3 class="mume-header" id="%E5%AE%9E%E7%8E%B0%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%8D%8F%E8%AE%AE">实现迭代器协议</h3>
+
+
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#python-%E4%BD%BF%E7%94%A8">Python 使用</a>
@@ -1547,6 +2514,37 @@ Chicago
 <li><a href="#%E5%AE%A1%E6%9F%A5%E6%B8%85%E7%90%86%E6%96%87%E6%9C%AC%E6%95%B0%E6%8D%AE%E5%AD%97%E7%AC%A6%E4%B8%B2">审查清理文本数据字符串</a></li>
 <li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AF%B9%E9%BD%90">字符串对齐</a></li>
 <li><a href="#%E5%90%88%E5%B9%B6%E6%8B%BC%E6%8E%A5%E5%AD%97%E7%AC%A6%E4%B8%B2">合并拼接字符串</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F%E6%9B%BF%E6%8D%A2">字符串中的变量替换</a></li>
+<li><a href="#html-%E5%92%8C-xml-%E7%9A%84%E8%BD%AC%E6%8D%A2">html 和 xml 的转换</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%BB%A4%E7%89%8C%E8%A7%A3%E6%9E%90">字符串令牌解析</a></li>
+<li><a href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E9%80%92%E5%BD%92%E4%B8%8B%E9%99%8D%E5%88%86%E6%9E%90%E5%99%A8">一个简单的递归下降分析器</a></li>
+<li><a href="#%E5%AD%97%E8%8A%82%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%8A%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%93%8D%E4%BD%9C">字节字符串上的字符串操作</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B0%E5%AD%97%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4">数字日期和时间</a>
+<ul>
+<li><a href="#%E6%95%B0%E5%AD%97%E7%9A%84%E5%9B%9B%E8%88%8D%E4%BA%94%E5%85%A5">数字的四舍五入</a></li>
+<li><a href="#%E6%89%A7%E8%A1%8C%E7%B2%BE%E7%A1%AE%E7%9A%84%E6%B5%AE%E7%82%B9%E6%95%B0%E8%BF%90%E7%AE%97">执行精确的浮点数运算</a></li>
+<li><a href="#%E6%95%B0%E5%AD%97%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA">数字的格式化输出</a></li>
+<li><a href="#%E4%BA%8C%E5%85%AB%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E6%95%B4%E6%95%B0">二八十六进制表示整数</a></li>
+<li><a href="#%E5%AD%97%E8%8A%82%E5%88%B0%E5%A4%A7%E6%95%B4%E6%95%B0%E7%9A%84%E6%89%93%E5%8C%85%E4%B8%8E%E8%A7%A3%E5%8C%85">字节到大整数的打包与解包</a></li>
+<li><a href="#%E5%A4%8D%E6%95%B0">复数</a></li>
+<li><a href="#%E6%97%A0%E7%A9%B7%E5%A4%A7%E4%B8%8Enan">无穷大与NaN</a></li>
+<li><a href="#%E5%88%86%E6%95%B0%E8%BF%90%E7%AE%97">分数运算</a></li>
+<li><a href="#%E5%A4%A7%E5%9E%8B%E6%95%B0%E7%BB%84%E8%BF%90%E7%AE%97">大型数组运算</a></li>
+<li><a href="#%E7%9F%A9%E9%98%B5%E4%B8%8E%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0%E8%BF%90%E7%AE%97">矩阵与线性代数运算</a></li>
+<li><a href="#%E9%9A%8F%E6%9C%BA%E9%80%89%E6%8B%A9">随机选择</a></li>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E8%BD%AC%E6%8D%A2">基本日期与时间转换</a></li>
+<li><a href="#%E8%AE%A1%E7%AE%97%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E5%91%A8%E4%BA%94%E7%9A%84%E6%97%A5%E6%9C%9F">计算最后一个周五的日期</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E4%B8%BA%E6%97%B6%E9%97%B4">字符串转换为时间</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B8%8E%E7%94%9F%E6%88%90%E5%99%A8">迭代器与生成器</a>
+<ul>
+<li><a href="#%E6%89%8B%E5%8A%A8%E9%81%8D%E5%8E%86%E8%BF%AD%E4%BB%A3%E5%99%A8%E4%B8%8D%E7%94%A8-for">手动遍历迭代器(不用 for)</a></li>
+<li><a href="#%E4%BB%A3%E7%90%86%E8%BF%AD%E4%BB%A3">代理迭代</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E7%94%9F%E6%88%90%E5%99%A8%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9A%84%E8%BF%AD%E4%BB%A3%E6%A8%A1%E5%BC%8F">使用生成器创建新的迭代模式</a></li>
+<li><a href="#%E5%AE%9E%E7%8E%B0%E8%BF%AD%E4%BB%A3%E5%99%A8%E5%8D%8F%E8%AE%AE">实现迭代器协议</a></li>
 </ul>
 </li>
 </ul>

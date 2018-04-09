@@ -1105,3 +1105,843 @@ for i in sample():
     print(i)
 ```
 
+### 字符串中的变量替换
+```python {cmd}
+name = 'Fred'
+weight = 71.32
+# 原始版本
+print('I am %s, weight is %.1f' %(name, weight))
+# f 字符串版本
+print(f'I am {name} ,weight is {weight:#^10.1f}' %vars())
+```
+
+### html 和 xml 的转换
+
+```python
+import html
+# 将html中的特殊字符进行转换，使其能够在html中显示
+text = 'This is <strong> "strong text" </strong>'
+print(text)
+print(html.escape(text))
+# html.escape的第二个参数quote指示是否替换冒号
+print(html.escape(text, quote=False))
+# html.escape 的反过程
+print(html.unescape('This is &lt;strong&gt; &quot;strong text&quot; &lt;/strong&gt;'))
+```
+```
+This is <strong> "strong text" </strong>
+This is &lt;strong&gt; &quot;strong text&quot; &lt;/strong&gt;
+This is &lt;strong&gt; "strong text" &lt;/strong&gt;
+This is <strong> "strong text" </strong>
+```
+
+### 字符串令牌解析
+目标：将`text = 'foo = 23 + 42 * 10'`
+解析为：`   tokens = [('NAME', 'foo'), ('EQ','='), ('NUM', '23'), ('PLUS','+'),
+          ('NUM', '42'), ('TIMES', '*'), ('NUM', '10')]`
+
+```python {cmd}
+import re
+# 定义令牌
+NAME = r'(?P<NAME>[a-zA-Z][a-zA-Z0-9_]*)'
+NUM = r'(?P<NUM>\d+)'
+PLUS = r'(?P<PLUS>\+)'
+TIMES = r'(?P<TIMES>\*)'
+EQ = r'(?P<EQ>=)'
+WS = r'(?P<WS>\s+)'
+master_pat = re.compile('|'.join([NAME, NUM, PLUS, TIMES, EQ, WS]))
+# 使用scanner进行扫描 方法1
+print("{:*^30s}".format(' scanner method 1 '))
+scanner = master_pat.scanner('foo = 42')
+while True:
+    m = scanner.match()
+    if m:
+        print((m.lastgroup, m.group()))
+    else:
+        break
+print('{:*^30s}'.format(' scanner method 2 '))
+# 方式2
+scanner = master_pat.scanner('foo = 42')
+for m in iter(scanner.match, None):
+    print((m.lastgroup, m.group()))
+# 方式3
+print('{:*^30s}'.format(' scanner method 3 '))
+from collections import namedtuple
+def generate_token(pat, text):
+    Token = namedtuple('Token', ['type','value'])
+    scanner = pat.scanner(text)
+    for m in iter(scanner.match, None):
+        yield Token(m.lastgroup, m.group())
+for tok in generate_token(master_pat, 'foo = 42'):
+    print(tok)
+# 过滤生成的符号
+print('{:*^30s}'.format(' filter the tokens '))
+tokens = (t for t in generate_token(master_pat, 'foo = 42') 
+    if t.type!='WS')
+for t in tokens:
+    print(t)
+```
+通常来讲，令牌化是很多高级文本解析与处理的第一步，为了使用上面的扫描方法，你需要记住：
+1. 你必须确认你使用正则表达式指定了所有输入中可能出现的文本序列，如果有任何不可匹配的文本出现，扫描就会直接停止；
+2. 令牌顺序也是有影响的，`re` 模块会按照指定好的顺序去做匹配，因此如果一个模式恰好是另一个更长模式的子字符串，你需要将长模式写在前面，如：
+```python
+import re
+LT = r'(?P<LT><)'
+LE = r'(?P<LE><=)'
+EQ = r'(?P<EQ>=)'
+# incorrect method
+print('{:*^30s}'.format('incorrect method'))
+master_pat = re.compile('|'.join([LT, LE, EQ]))
+scanner = master_pat.scanner('<=')
+for m in iter(scanner.match, None):
+    print((m.lastgroup, m.group()))
+print('{:*^30s}'.format('correct method'))
+master_pat = re.compile('|'.join([LE, LT, EQ]))
+scanner = master_pat.scanner('<=')
+for m in iter(scanner.match, None):
+    print((m.lastgroup, m.group()))
+```
+```
+*******incorrect method*******
+('LT', '<')
+('EQ', '=')
+********correct method********
+('LE', '<=')
+```
+3. 留意子字符串形式的模式，比如你有以下两个模式：
+```python {cmd}
+import re
+PRINT = r'(?P<PRINT>print)'
+NAME = r'(?P<NAME>[a-zA-Z_][a-zA-Z0-9_]*)'
+master_pat = re.compile('|'.join([PRINT, NAME]))
+scanner = master_pat.scanner('printer')
+for m in iter(scanner.match, None):
+    print((m.lastgroup, m.group()))
+```
+更高阶的令牌化技术可能需要查看 *PyParsing* 或者 *PLY* 包。
+
+### 一个简单的递归下降分析器
+
+要求：根据一组语法规则解析文本并执行命令，或者构造一个代表输入的抽象语法树，如果语法非常简单，你可以自己写这个解析器，而不是使用一些框架。
+
+解决方案：
+在这个问题中，我们集中讨论特殊语法去解析文本的问题。为了这样做，你首先要以BNF或EBNF形式指定一个标准语法，比如，一个简单数学表达式语法可能像下面：
+```
+expr ::= expr + term
+    | expr - term
+    | term
+term ::= term * factor
+    | term /  factor
+    | factor
+factor ::= (expr)
+    | NUM
+```
+或者，以EBNF形式：
+```
+expr ::= term {(+|-) term}*
+term ::= factor {(*|/) factor}*
+factor ::= (expr)
+    | NUM
+```
+在EBNF中，包含在 {...}* 中的规则是可选的。* 表示0次或多次重复。
+
+对于复杂的语法，你最好是选择某个解析工具，如PyParsing 或者是 PLY，下面是使用PLY写的表达式求值程序：
+```python {cmd}
+from ply.yacc import yacc
+from ply.lex import lex
+
+# Token list
+tokens=['NUM','PLUS','MINUS','TIMES','DIVIDE','LPAREN','RPAREN']
+# Ignored characters
+t_ignore = ' \t\n'
+# Token specifications (as regexs)
+t_PLUS = r'\+'
+t_MINUS = r'\-'
+t_TIMES = r'\*'
+t_DIVIDE = r'/'
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+
+# Token processing functions
+def t_NUM(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+
+# error handler
+def t_error(t):
+    print('Bad character: {!r}'.format(t.value[0]))
+    t.skip(1)
+
+# bulid the lexer
+lexer = lex()
+
+# Grammer rules and handler functions
+def p_expr(p):
+    '''
+    expr : expr PLUS term
+        | expr MINUS term
+    '''
+    if p[2] == '+':
+        p[0] = p[1] + p[3]
+    elif p[2] == '-':
+        p[0] = p[1] - p[3]
+
+def p_expr_term(p):
+    '''
+    expr : term
+    '''
+    p[0] = p[1]
+
+def p_term(p):
+    '''
+    term : term TIMES factor
+        | term DIVIDE factor
+    '''
+    if p[2] == '*':
+        p[0] = p[1]*p[3]
+    elif p[2] == '/':
+        p[0] = p[1]/p[3]
+
+def p_term_factor(p):
+    '''
+    term : factor
+    '''
+    p[0] = p[1]
+
+def p_factor(p):
+    '''
+    factor : NUM
+    '''
+    p[0] = p[1]
+
+def p_factor_group(p):
+    '''
+    factor : LPAREN expr RPAREN
+    '''
+    p[0] = p[2]
+
+def p_error(p):
+    print('Syntax error')
+
+parser = yacc()
+
+print(parser.parse('2'))
+print(parser.parse('2+3'))
+print(parser.parse('2*(3+4) + 5'))
+```
+
+### 字节字符串上的字符串操作
+```python {cmd}
+# 字节字符串同样也支持大部分和文本字符串一样的内置操作
+data = b'Hello World'
+print(data[:5])
+print(data.startswith(b'Hello'))
+print(data.split())
+print(data.replace(b'Hello', b'Hello Cruel'))
+# 这些操作同样适用于字节数组
+data = bytearray(b'Hello World')
+print(data)
+print(data.startswith(b'Hello'))
+print(data.split())
+print(data.replace(b'Hello', b'Hello Curel'))
+
+# 可以用正则表达式匹配字节字符串
+data = b'FOO:BAR,SPAM'
+import re
+print(re.split(b'[:,]+', data))
+
+# 大多数情况下，在文本字符串上的操作均可以用于字节字符串
+# 不同点1：字节字符串索引操作返回整数而不是单个字符
+a = 'Hello World'
+b = b'Hello World'
+print(f'{a[0]} , 0x{b[0]:x}')
+print(a[0], b[0])
+# 不同点2：打印出来为 b'...'
+print(b)
+print(b.decode('ascii'))
+# 不同点3：不能格式化
+try:
+    print(b'{:x}'.format(12))
+except:
+    print('catch a except')
+# 实现的方式
+print('{:x}'.format(12).encode('ascii'))
+```
+一些程序员为了提升程序执行的速度，会倾向于使用字节字符串而不是我蹦字符串，尽管操作字节字符串确实会比文本更加高效（因为厂里文本固有的Unicode相关开销），但通常会导致代码杂乱。你会经常发现字节字符串并不能和Python的其他部分工作，需要手动 encode/decode 操作。
+
+
+## 数字日期和时间
+
+在Python中执行整数和浮点数的数字运算是很简单。如果你需要执行分数、数组或者是日期和时间的运算，就需要做更多工作。
+
+### 数字的四舍五入
+```python {cmd}
+print(round(1.24,1))
+# 当一个值更好在两个边界，round函数返回离它最近的偶数
+print(round(1.5,0))
+print(round(2.5,0))
+# round(number [,ndigits]), ndigits可以为负，表示小数前几位
+print(round(12345, -3))
+# 如果仅仅是为了显示，用str.format
+print('{:-.0f}'.format(1.5))
+# 不要试着去舍入浮点来“修正”表面上看起来正确的问题
+a = 2.1
+b = 4.2
+c = a + b
+print(c)
+c = round(c, 2)
+print(c)
+```
+对于大多数使用到浮点的程序，没有必要也不推荐怎么做，尽管在计算的时候回有一点点小的误差，但是这些小的误差是能被理解和容忍的。如果不能允许这些小误差（比如涉及到金融领域），就需要考虑使用 decimal 模块了。
+
+### 执行精确的浮点数运算
+
+浮点数的一个普遍问题是它们不能精确表示十进制数，并且即使是最简单的数学运算也会产生小的误差：
+```python {cmd}
+a = 0.2
+b = 0.1
+c = a + b
+print(c)
+print(c==0.3)
+# 正确的判断
+import math
+print(math.isclose(c, 0.3))
+```
+这些错误是有底层CPU和IEEE754标准通过自己的浮点单元去执行算数时的特征。由于Python的浮点数据类型使用底层表示存储数据，因此你没办法去避免这样的误差。
+
+如果你想更加精确（并能容忍一定的性能损耗），你可以使用decimal模块：
+```python {cmd}
+from decimal import Decimal
+from decimal import localcontext
+a = Decimal('4.2')
+b = Decimal('2.1')
+print(a+b)
+print(a+b==Decimal('6.3'))
+a = Decimal('1.3')
+b = Decimal('1.7')
+print(a/b)
+with localcontext() as ctx:
+    ctx.prec = 3
+    print(a/b)
+with localcontext() as ctx:
+    ctx.prec = 7
+    print(a/b)
+```
+
+decimal 模块实现了 IBM 的“通用小数运算规范”。
+
+Python新手会倾向于使用decimal模块来处理浮点数的精确运算。然而，先理解你的应用程序目的是非常重要的。如果你是在做科学计算或者工程领域的计算、电脑绘图或者是科学领域的大多数运算，那么使用普通的浮点类型是比较普遍的用法。其中的一个原因是，在真实的世界中很少会要求精确到普通浮点数能提供的17位精度。第二个原因是，原生的浮点数计算要快的多。
+
+误差的产生：
+```python {cmd}
+a = 1.23e+18
+b = 1
+c = -1.23e+18
+# 1 被“丢失了”
+print(a+b+c)
+# 使用 math.fsum 进行精确运算
+from math import fsum
+print(fsum([a,b,c]))
+```
+### 数字的格式化输出
+
+```python {cmd}
+x = 1234.56789
+print(f"'{x:.2f}'")
+print(f"'{x:>10.1f}'")
+print(f"'{x:<10.1f}'")
+print(f"'{x:^10.1f}'")
+print(f"'{x:,}'")
+print(f"'{x:e}'")
+print(f"'{x:.3E}'")
+# 同时制定宽度和精度的一般形式是：[<>^]?width[,]?(.digits)?
+print(f"'{x:,.2f}'")
+#上述方法同样使用与Decimal
+from decimal import Decimal
+x = Decimal('1234.56789')
+print(f'{x:*^15,.3f}')
+```
+
+### 二八十六进制表示整数
+```python {cmd}
+x = 1234
+print(bin(x))
+print(f'{x:b}')
+
+print(oct(x))
+print(f'{x:o}')
+
+print(hex(x))
+print(f'{x:x}')
+
+# 整数是有符号的
+x = -x
+print(bin(x))
+print(f'{x:b}')
+# 显示负数对应的无符号二进制表示
+# 32 位对应的无符号表示
+print(f'{2**32+x:b}')
+print(f'{2**32+x:x}')
+
+# 将不同进制字符串转换为整数
+print(int('4d2', 16))
+print(int('10011010010', 2))
+```
+
+### 字节到大整数的打包与解包
+```python {cmd}
+data = b'\x00\x124V\x00x\x90\xab\x00\xcd\xef\x01\x00#\x004'
+print(len(data))
+print(f"{int.from_bytes(data, 'little'):x}")
+print(f"{int.from_bytes(data, 'big'):x}")
+print(int.from_bytes(data, 'big'))
+
+x = 94522842520747284487117727783387188
+print(x.to_bytes(16, 'big'))
+```
+大整数和字节字符串之间的转换操作并不常见，然而，在一些应用领域，比如密码学或网络，有时候也会出现。
+
+### 复数
+
+```python {cmd}
+a = complex(2,4)
+b = 2+4j
+print(a)
+print(a==b)
+print(a.real, a.imag)
+# 共轭复数
+print(a.conjugate())
+```
+常见的运算可以工作：
+```python {cmd}
+a = 2+4j
+b = 1-3j
+print(a+b)
+print(a-b)
+print(a*b)
+print(a/b)
+```
+Python 中大部分与数字相关的模块都能处理复数，比如如果使用numpy，可以很容易构造一个复数数组并在这个数组上执行各种操作：
+```python {cmd}
+import numpy as np
+a = np.array([2+3j,4+5j,6-7j,8+9j])
+print(a)
+print(a+2)
+print(np.sin(a))
+```
+Python的标准数学函数模块 math 不能产生复数值，因此你的代码不会出现复数返回值：
+```python {cmd}
+import math
+print(math.sqrt(-1))
+```
+但是可以使用 cmath 模块：
+```python {cmd}
+import cmath
+print(cmath.sqrt(-1))
+# 或者是 ** 运算符
+print((-1)**.5)
+```
+
+### 无穷大与NaN
+
+Python并没有特殊的语法来表示正无穷、负无穷、NaN(非数字)的浮点数，但是可以使用`float()`来创建它们：
+```python {cmd}
+import math
+a = float('inf')
+b = float('-inf')
+c = float('nan')
+print(a) # inf
+print(math.isinf(a)) # True
+print(b) # -inf
+print(math.isinf(b)) # True
+print(c) # nan
+print(math.isnan(c)) # True
+# 无穷大的运算
+print(a+100) # inf
+print(a*100) # inf
+print(10000/a) # 0.0
+print(a/a) # nan
+print(a+b) # nan
+# NaN会在所有操作中传播
+print(c + 20) # nan
+print(c / 20) # nan
+# 两个NaN值不相等
+print(c==float('nan')) # False
+```
+
+### 分数运算
+
+`fractions` 模块可以被用来执行包含分数的数学运算，比如：
+```python {cmd}
+from fractions import Fraction
+a = Fraction(5, 4)
+b = Fraction(7, 16)
+print(a+b) # 27/16
+print(a*b) # 35/64
+
+# 获取 numerator / denominator
+c = a * b
+print(c.numerator) # 35
+print(c.denominator) # 64
+
+# 转换为小数
+print(float(c)) # 0.546875
+
+# 限制分母大小
+print(c.limit_denominator(8)) # 4/7
+
+# 小数转换为分数
+x = 3.75
+print(Fraction(*x.as_integer_ratio()))
+```
+在大多数程序中一般不会出现分数的计算问题，但是有时候还是需要用到的。比如在一个允许接收分数形式的测试单位以分数形式执行运算的程序中，直接使用分数可以减小手动转换为小数或浮点数的工作。
+
+### 大型数组运算
+
+涉及到数组的重量级运算操作，可以使用NumPy库。NumPy的一个主要特征是它会给Python提供一个数组对象，相比于标准的Python列表而言，更适合用来做数学运算。
+
+传统的 list 操作：
+```python {cmd id="20180408214923"}
+# Python list
+x = [1, 2, 3, 4]
+y = [5, 6, 7, 8]
+```
+```python {cmd continue="20180408214923"}
+print(x * 2)
+```
+```python {cmd continue="20180408214923"}
+print(x+10)
+```
+```python {cmd continue="20180408214923"}
+print(x+y)
+```
+
+Numpy 库的操作：
+```python {cmd id="20180408215711"}
+import numpy as np
+ax = np.array([1,2,3,4])
+ay = np.array([5,6,7,8])
+```
+```python {cmd continue="20180408215711"}
+print(ax*2)
+```
+```python {cmd continue="20180408215711"}
+print(ax+10)
+```
+```python {cmd continue="20180408215711"}
+print(ax+ay)
+```
+```python {cmd continue="20180408215711"}
+print(ax*ay)
+```
+
+如上所示，两种方案中数组的基本数学运算结果并不相同。特别地，NumPy中的标量运算（比如 ax*2 或 ax+10）会作用在每一个元素上，另外当两个操作都是数组的时候执行元素对等位置计算，并最终生成一个新的数组。
+
+对这个数组中所有元素同时执行数学运算可以使得作用在数组上的函数简单而快速。比如，你想计算多项式的值：
+```python {cmd continue="20180408215711"}
+def f(x):
+    return 3*x**2 - 2*x + 7
+print(f(ax))
+```
+
+NumPy还为数组操作提供了大量的通用函数，这些函数可以作为math模块中的替代，比如：
+```python {cmd continue="20180408215711"}
+print(np.sqrt(ax))
+print(np.cos(ax))
+```
+使用这些通用函数要比循环数组并使用 math 模块中的函数执行计算要快得多。因此只要有可能，尽量选择 NumPy 的数组方案。
+
+底层实现中，NumPy 数组使用了 C 或者 Fortran 语言的机制分配内存。也就是说，它们是一个非常大的连续的并且有相同类型数据组成的内存区域。所以，你可以构造一个比普通 Python 列表大得多的数组，比如，你构建一个10000*10000的浮点数二维数组：
+```python {cmd id="20180408221348"}
+import numpy as np
+grid = np.zeros(shape=(10000, 10000), dtype=float)
+```
+```python {cmd continue="20180408221348"}
+print(grid)
+```
+所有普通操作都会作用在所有元素上：
+```python {cmd continue="20180408221348" id="20180408221653"}
+grid += 10
+```
+```python {cmd continue="20180408221653"}
+print(grid)
+```
+```python {cmd continue="20180408221653"}
+print(np.sin(grid))
+```
+
+关于 NumPy ，有一点需要特别地注意，那就是他扩展了Python列表的索引功能：
+```python {cmd}
+import numpy as np
+a = np.array([[1,2,3,4],[5,6,7,8],[9,10,11,12]])
+print(a, end='\n'*2)
+print(a[1], end='\n'*2)
+print(a[:, 1], end='\n'*2)
+a[1:,1:3] += 10
+print(a, end='\n'*2)
+print(a+[100, 101, 102, 103], end='\n'*2)
+print(a+[[100],[101],[102]], end='\n'*2)
+print(np.where(a<10, a, 10))
+```
+NumPy 是 Python 领域中很多科学与工程库的基础，同时也是被广泛使用的最大最复杂的模块。
+
+### 矩阵与线性代数运算
+
+你需要执行矩阵和线性代数运算，比如矩阵乘法、寻找行列式、求解线性方程组等等。
+
+NumPy 库有一个矩阵对象可以用来解决这个问题。矩阵类似于3.9小节中数组对象，但是遵循线性代数的计算规则：
+```python {cmd}
+import numpy as np
+m = np.matrix([[1, -2, 3], [0, 4, 5], [7, 8, -9]])
+print(m, end='\n'*2)
+print(m.T, end='\n'*2)
+# 返回矩阵的逆
+print(m.I, end='\n'*2)
+# m·m.I = identity matrix
+print(m*m.I, end='\n'*2)
+
+v = np.matrix([[2],[3],[4]])
+print(v, end='\n'*2)
+
+print(m*v)
+```
+
+可以在 `numpy.linalg`子包中找到更多的操作函数：
+```python {cmd}
+import numpy as np
+# determinant 矩阵行列式的值
+m = np.matrix([[1, -2, 3], [0, 4, 5], [7, 8, -9]])
+v = np.matrix([[2],[3],[4]])
+print(np.linalg.det(m), end='\n'*2)
+# eigenvalues 特征值
+print(np.linalg.eigvals(m), end='\n'*2)
+# 解方程 mx=v
+x = np.linalg.solve(m, v)
+print(x, end='\n'*2)
+print(m*x, end='\n'*2)
+```
+
+### 随机选择
+
+从一个序列中随机抽取若干个元素，或者想生成几个随机数：
+```python {cmd}
+import random
+values = [1,2,3,4,5,6]
+# 随机选出 list 中的一个元素
+print(random.choice(values))
+print(random.choice(values))
+# 随机选出 list 中的若干个元素
+print(random.sample(values, 3))
+# 打乱序列中元素的顺序
+random.shuffle(values)
+print(values)
+# 随机生成整数，范围为 [0, 100] 的闭区间
+print(random.randint(0,100))
+# 随机生成 0~1 范围内的浮点数
+print(random.random())
+# 以等概率均匀分布生成 0~1 的随机数
+print(random.uniform(0, 1))
+# 以均值为0，标准差为1，生成高斯分布
+print(random.gauss(0, 1))
+# 获取 N 为随机位（二进制）的整数
+print(f'{random.getrandbits(200):x}')
+```
+
+random 模块使用 Mersenne Twister 算法来计算生成随机数，这是一个确定性算法，但你可以通过 random.seed() 函数修改初始化种子。
+
+### 基本日期与时间转换
+
+与日期、时间相关的模块为 `datetime`。其子模块 `timedelta` 用于表示时间间隔：
+```python {cmd}
+# timedelta 表示一段时间间隔
+from datetime import timedelta
+a = timedelta(days=2, hours=14)
+b = timedelta(hours=17.5)
+c = a+b
+print(c.days)
+print(c.seconds)
+print(c.seconds/3600)
+print(c.total_seconds() / 3600)
+```
+
+如果你想表示指定的日期和时间，先创建一个 datetime 实例，然后使用标准的数学运算来操作它们：
+```python {cmd}
+from datetime import datetime
+from datetime import timedelta
+a = datetime(2018, 4, 9, 10, 49, 55)
+# datetime 和 timedelta 的运算
+print(a+timedelta(hours=10, minutes=5))
+b = datetime(2012, 12,21)
+# datetime 之间的运算
+print(a-b)
+# 获取当前时间
+now = datetime.now()
+print(now)
+```
+
+注意：datetime 会自动处理闰年：
+```python {cmd}
+from datetime import datetime
+a = datetime(2012,3,1)
+b = datetime(2012,2,28)
+print(a-b)
+a = datetime(2100,3,1)
+b = datetime(2100,2,28)
+print(a-b)
+```
+
+对于大多数基本的日期和时间处理问题，`datetime` 模块已经足够了，如果你需要执行更加复杂的日期操作，如处理时区、节假日计算等，可以考虑使用 `dateutil` 模块。
+
+### 计算最后一个周五的日期
+
+```python {cmd}
+from datetime import datetime, timedelta
+weekdays = ['Monday', 'Tuesday', 'Wednesday',
+    'Thursday', 'Friday', 'Saturday', 'Sunday']
+def get_previous_byday(dayname, start_date=None):
+    if start_date==None:
+        start_date = datetime.today()
+    day_delta = (7+start_date.weekday() -
+        weekdays.index(dayname))%7
+    day_delta = day_delta if day_delta else 7
+    return start_date-timedelta(days=day_delta)
+print(get_previous_byday('Sunday'))
+
+# 2016年最后一个星期五
+print(get_previous_byday('Friday', datetime(2017, 1, 1)))
+```
+查看真实情况：
+```sh {cmd="/bin/zsh"}
+cal 12 2016
+```
+可见2016年最后一个周五真的是：2016-12-30。
+
+如果要执行大量的日期计算，最好使用模块 `dateutil`。
+```python {cmd}
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from dateutil.rrule import *
+d = datetime(2017, 1, 1)
+print(d+relativedelta(weekday=FR(-1)))
+# 修改day属性
+print(d.replace(day=10))
+```
+
+calendar 用于与日历相关的信息处理：
+```python {cmd}
+import calendar
+# 返回 2017-2-1 星期几，共多少天
+print(calendar.monthrange(2017, 2)) # 2表示周三
+# 返回 2016-2-1 星期几，共多少天
+print(calendar.monthrange(2016, 2)) # 0表示周一
+```
+
+### 字符串转换为时间
+```python {cmd}
+from datetime import datetime
+text = '2018-4-9'
+y = datetime.strptime(text, '%Y-%m-%d')
+print(y)
+print(datetime.strftime(y, '%A %B %d, %Y'))
+```
+注意：`strptime`的性能非常差，如果知道解析格式，最好自己写：
+```python {cmd}
+from datetime import datetime
+def strptime(s):
+    year_s, month_s, day_s = s.split('-')
+    return datetime(int(year_s), int(month_s),int(day_s))
+print(strptime('2018-4-9'))
+```
+经过测试，自定义的函数性能比`datetime.strptime`快7倍，尽量使用自定义的时间解析。
+
+## 迭代器与生成器
+
+### 手动遍历迭代器(不用 for)
+有如下的一个迭代器：
+```python {cmd id="20180409155152"}
+a = [1,2,3,4,5]
+iter_a = iter(a)
+```
+使用`next`函数进行遍历。
+
+遍历方式1：
+```python {cmd continue="20180409155152"}
+try:
+    while True:
+        v = next(iter_a)
+        print(v)
+except StopIteration:
+    print('stop iteration')    
+```
+从上面的例子中可以看出，结束时，会弹出一个`StopIteration`异常。
+
+遍历方式二：
+```python {cmd continue="20180409155152"}
+while True:
+    v = next(iter_a, None)
+    if v:
+        print(v)
+    else:
+        break
+```
+
+### 代理迭代
+
+创建一个对象能够用于迭代。
+```python {cmd}
+class Node:
+    def __init__(self, value):
+        self._value = value
+        self._children = []
+    def __repr__(self):
+        return f'Node({self._value})'
+    def add_child(self, node):
+        self._children.append(node)
+    def __iter__(self):
+        return iter(self._children)
+root = Node(0)
+child1 = Node(1)
+child2 = Node(2)
+root.add_child(child1)
+root.add_child(child2)
+for ch in root:
+    print(ch)
+```
+
+### 使用生成器创建新的迭代模式
+
+实现一个自定义迭代模式，跟普通的内置函数，比如`range()`、`reversed()`不一样。
+
+```python {cmd}
+def frange(start, stop, increment):
+    x = start
+    while x < stop:
+        yield x
+        x += increment
+for i in frange(0, 4, 0.5):
+    print(i, end='  ')
+print('\n', sum(frange(1,5,1)))
+print(list(range(0, 5, 1)))
+```
+
+一个函数中需要有一个 `yield` 语句即可将其转换为一个生成器。跟普通函数不同的是，生成器只能用于迭代操作。下面是一个实验，向你展示这样的函数底层工作机制：
+
+```python {cmd}
+def countdown(n):
+    print('Starting to count from', n)
+    while n > 0:
+        yield n
+        n -= 1
+    print('Done!')
+c = countdown(3)
+print(next(c))
+print(next(c))
+print(next(c))
+print(next(c))
+```
+
+### 实现迭代器协议
+
+
+
