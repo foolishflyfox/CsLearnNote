@@ -1,8 +1,6 @@
 ---
 export_on_save:
  html: true
-export LC_ALL:
- en_US.UTF-8
 ---
 
 @import "/blog_head.md"
@@ -1855,93 +1853,649 @@ print(strptime('2018-4-9'))
 ```
 经过测试，自定义的函数性能比`datetime.strptime`快7倍，尽量使用自定义的时间解析。
 
-## 迭代器与生成器
+## 函数
 
-### 手动遍历迭代器(不用 for)
-有如下的一个迭代器：
-```python {cmd id="20180409155152"}
-a = [1,2,3,4,5]
-iter_a = iter(a)
+使用 `def` 语句定义函数是所有程序的基础。本章的目的是讲解一些更加高级和不常见的函数定义和使用模式。涉及到的内容包括默认参数、任意数量参数、强制关键字参数、注解和闭包。另外一些高级的控制流和利用回调函数传递数据的技术也会在这里讲解到。
+
+### 可接受任意数量参数的函数
+
+```python {cmd}
+# 计算平均值，参数数量不确定，至少为 1 个
+def avg(first, *rest):
+    return (first + sum(rest))/(1+len(rest))
+print(avg(1,2,3,4))
+print(avg(5))
 ```
-使用`next`函数进行遍历。
+在这个例子中， `rest` 形参是所有其他位置参数组成的元组。然后我们在代码中把它当成了一个序列来进行后续的计算。
 
-遍历方式1：
-```python {cmd continue="20180409155152"}
-try:
-    while True:
-        v = next(iter_a)
-        print(v)
-except StopIteration:
-    print('stop iteration')    
+为了接受任意数量的关键字参数，使用一个以 ** 开头的参数:
+```python
+import html
+def make_element(name, value, **attrs):
+    keyvalues = [f' {k}="{v}"' for k,v in attrs.items()]
+    return (f'<{name}{"".join(keyvalues)}>'
+     f'{html.escape(value)}</{name}>')
+print(make_element('item', 'Albatross', 
+    size='large', quantity=6))
+print(make_element('p', '<spam>'))
 ```
-从上面的例子中可以看出，结束时，会弹出一个`StopIteration`异常。
+```
+<item size="large" quantity="6">Albatross</item>
+<p>&lt;spam&gt;</p>
+```
 
-遍历方式二：
-```python {cmd continue="20180409155152"}
-while True:
-    v = next(iter_a, None)
-    if v:
-        print(v)
+如果同时希望接收任意数量的位置参数和关键字参数，可以同时使用 \* 和 \*\* 。
+
+```python {cmd}
+def anyargs(*args, **kwargs):
+    print(args) # a tuple
+    print(kwargs) # a dict
+```
+**注意：** 一个 \* 参数只能出现在函数定义中最后一个位置参数后面，而 \*\* 参数只能出现在最后一个参数，有一点需要注意的是，在 * 参数后面仍然可以定义其他参数。
+
+```python {cmd}
+def a(x, *args, y):
+    pass
+def b(x, *args, y, **kwargs):
+    pass
+```
+这种参数就是我们所说的强制关键字参数。
+
+### 只接受关键字参数的函数
+
+如果你希望函数的某些参数强制使用关键字参数传递，只需要将强制关键字参数放在某个 \* 参数或者单个 \* 后面就能达到这种效果，比如：
+```python {cmd id="20180411092137"}
+def recv(maxsize, *, block):
+    'Receives a message'
+    pass
+def test(func, *args, **kwargs):
+    try:
+        func(*args, **kwargs)
+    except TypeError:
+        print('Catch TypeError')
     else:
-        break
+        print('No Error')
+```
+```python {cmd continue="20180411092137"}
+test(recv, 1024, True) # recv(1024, True)
+test(recv, 1024, block=True) # recv(1024, block=True)
+```
+利用这种技术，我们还能在接受任意多个位置参数的函数中指定关键字参数，比如:
+```python {cmd}
+def minimum(*values, clip=None):
+    m = min(values)
+    if clip != None:
+        m = clip if clip>m else m
+    return m
+print(minimum(1,5,2,-5,10))
+print(minimum(1,5,2,-5,10,clip=0))
+```
+很多情况下，使用强制关键字参数会比使用位置参数表意更加清晰，程序也更加具有可读性：
+```python
+msg = recv(1024, False)
+```
+如果调用者对`recv`函数不是很熟悉，那他肯定不明白那个False参数到底用来干嘛，但是，如果代码编程下面的样子的话就清楚多了：
+```python
+msg = recv(1024, block=False)
+```
+另外，使用强制关键字参数也比使用 **kwargs 参数更好，因为在使用函数 help 时的输出也更加容易理解：
+```python {cmd continue="20180411092137"}
+help(recv)
 ```
 
-### 代理迭代
+### 给函数参数增加元信息
 
-创建一个对象能够用于迭代。
+你写好了一个函数，然后想为这个函数的参数增加一些额外的信息，这样的话，其他使用者就能清楚地知道这个函数应该怎么用，使用函数参数注解是一个很好的办法，它能够提示程序员应该怎样使用这个函数，如下面是一个被注解了的函数：
 ```python {cmd}
-class Node:
-    def __init__(self, value):
-        self._value = value
-        self._children = []
+def add(x:int, y:int) -> int:
+    return x+y
+help(add)
+```
+Python解释器不会对这些注释添加任何的语义。它们不会被类型检查，运行时跟没有加注解之前的效果也没有任何差距。然而，对于那些阅读源代码的人来讲就非常有帮助。第三方工具和框架可能会对这些注释添加语义，同时它们也会出现在文档中。
+
+```python
+def add(x:int, y:int) -> int:
+    return x+y
+print(add.__annotations__)
+```
+```
+{'x': <class 'int'>, 'y': <class 'int'>, 'return': <class 'int'>}
+```
+
+### 返回多个值的函数
+
+你希望构造一个可以返回多个值的函数。
+
+为了能返回多个值，函数直接 return 一个元组就可以了，例如：
+```python {cmd}
+def myfun():
+    return 1, 2, 3
+a, b, c = myfun()
+print(a, b, c,)
+d = myfun()
+print(d)
+```
+尽管 `myfun()` 看上去返回了多个值，其实是先创建了一个元组，然后返回的。
+```python {cmd}
+def myfun():
+    return (1,2,3)
+a, b, c = myfun()
+print(a, b, c)
+d = myfun()
+print(d)
+```
+这个语法看上去比较奇怪，实际上我们使用的是逗号生成一个元组，而不是括号：
+```python {cmd}
+a = (1)
+print(a)
+b = 1,
+print(b)
+```
+
+### 定义有默认参数的函数
+
+定义一个函数或方法，它的一个或多个参数使可选的，并且有一个默认值：
+```python {cmd}
+def spam(a, b=24):
+    print(a, b)
+spam(1)
+spam(1,2)
+```
+
+如果默认参数是一个可修改的容器，比如列表、集合或字典，可以使用 None 作为默认值
+```python {cmd}
+def spam(a, b:list=None) -> list:
+    b = b if b is not None else []
+    return []+b
+help(spam)
+```
+
+如果你不想提供一个默认值，而是想仅仅测试一下某个默认参数是不是有参数传递进来，可以像下面这样写：
+```python {cmd}
+_no_value = object()
+def spam(a, b=_no_value):
+    if b is _no_value:
+        print('No b value supplied')
+    else:
+        print('b value has supplied')
+spam(1)
+spam(1, 2)
+spam(1, None)
+```
+可以看出，传递一个 None 值和不传值是两种不同的情况。
+
+默认参数的值仅仅在函数定义的时候赋值一次：
+```python {cmd}
+x = 42
+def spam(a, b=x):
+    print(a, b)
+spam(10)
+x = 43
+spam(10)
+```
+注意，当我们改变 `x` 的值时，对默认参数值并没有影响，这是因为在函数定义时就已经确定了它的默认值。
+
+其次，默认参数的值应该是不可变的对象，比如 None、True、False、数字或字符串，特别不要写类似：`def spam(a,b=[])`的代码。如果这样做了，当默认值在其他地方被修改后，你将会遇到各种麻烦以及安全问题：
+```python {cmd}
+def spam(a, b=[]):
+    print(b)
+    return b
+x = spam(1)
+x.append(99)
+spam(1)
+```
+
+这种结果不是你想要的，为了避免这种情况的发生，最好是将默认值设为 None，然后在函数里面检查它：
+```python {cmd}
+def spam(a, b=None):
+    b = [] if b is None else b
+    print(b)
+    return b
+x = spam(1)
+x.append(99)
+spam(1)
+```
+
+在测试 None 值时，使用 is 操作符很重要，也是这种方案的关键点，有时候大家会犯下面的错误：
+```python {cmd}
+def spam(a, b=None):
+    if not b: # NO! use 'b is None' instead
+        print('b is None :', b)
+        b = []
+    else:
+        print('b is not None')
+x = []
+spam(1)
+spam(1, x)
+spam(1, 0)
+spam(1, '')
+```
+应该修改为：
+```python {cmd}
+def spam(a, b=None):
+    if b is None: # NO! use 'b is None' instead
+        print('b is None :', b)
+        b = []
+    else:
+        print('b is not None')
+x = []
+spam(1)
+spam(1, x)
+spam(1, 0)
+spam(1, '')
+```
+或者是：
+```python {cmd}
+def spam(a, b=None):
+    if b==None: # NO! use 'b is None' instead
+        print('b is None :', b)
+        b = []
+    else:
+        print('b is not None')
+x = []
+spam(1)
+spam(1, x)
+spam(1, 0)
+spam(1, '')
+```
+
+最后一个问题是一个函数需要测试某个可选参数是否被使用者传递进来。这时候需要小心的是，你不能用某个默认值比如 None、0 或者 False 值来测试用户提供的值（因为这些值都是合法的，是可能被用户传递进来的）。
+
+为了解决这个问题，你可以创建一个独一无二的私有对象实例，就像之前的 `_no_value` 变量那样。在函数里面，你可以通过检查被传递参数值跟这个实例是否一样来判断。这里的思路是用户不可能去传递这个 _no_value 实例作为输入，因此这里通过检查这个值就能确定某个参数是否被传递进来了。
+
+### 定义匿名或内联函数
+
+你想为 `sort()` 操作创建一个很短的回调函数，但有不想用 def 去写一个单行函数，而是希望通过某个快捷方式以内联方式来创建这个函数：
+```python {cmd}
+add = lambda x,y: x+y
+print(add(3,5))
+print(add('hello', 'world'))
+```
+
+lambda 表达式典型的使用场景是排序或数据 reduce 等：
+```python {cmd}
+names = ['David Beazley', 'Brain Jones',
+    'Raymond Hettinger', 'Ned Batchelder']
+print(sorted(names, key=lambda nm: nm.split()[-1]))
+```
+尽管 lambda 表达式也许你定义简单函数，但是它的使用是有限制的。你只能指定单个表达式，它的值就是最后的返回值。也就是说不能包含其他的语言特性了，包括多个语句、条件表达式、迭代以及异常处理等等。
+
+你可以不使用 lambda 表达式就能编写大部分python代码。但是，当有人编写大量计算表达式值得短小函数或者需要用户提供回调函数的程序时候，你就会看到 lambda 表达式的身影了。
+
+### 匿名函数捕获变量值
+
+你可以用 lambda 定义一个匿名函数，并且在定义时捕获到某些变量的值：
+```python {cmd}
+x = 10
+a = lambda y: x+y
+def A(y):
+    return x+y
+x = 20
+b = lambda y: x+y
+def B(y):
+    return x+y
+print(a(10))
+print(A(10))
+print(b(10))
+print(B(10))
+```
+在lambda表达式中，x是一个自由变量，在运行时绑定值，而不是定义时就绑定，**这跟函数的默认值参数定义时不同的**。因此，在调用这个lambda表达式的时候，x的值是执行时的值。
+
+如果你想让某个匿名函数在定义时就捕获到值，可以将那个参数值定义成默认参数即可：
+```python {cmd}
+x = 10
+a = lambda y,x=x:x+y
+x = 20
+b = lambda y,x=x:x+y
+print(a(10))
+print(b(10))
+```
+
+这里列出来的问题是新手很容易犯的错误，有些新手可能会不恰当地使用 lambda 表达式，比如通过在一个循环或列表推导中创建一个 lambda 表达式列表，并期望函数在定义时就记住每次的迭代值，例如：
+```python {cmd}
+# Wrong code
+funcs = [lambda x:x+n for n in range(5)]
+for f in funcs:
+    print(f(0))
+print()
+# Right code
+funcs = [lambda x,n=n:x+n for n in range(5)]
+for f in funcs:
+    print(f(0))
+```
+**通过使用函数默认值形式，lambda函数在定义时就能绑定到值。**
+
+### 减少可到用对象的参数个数
+
+问题：你有一个其他 python 代码使用的 callable 对象，可能是一个回调函数或者是一个处理器，但是它的参数太多了，导致调用时出错。
+
+解决方案：如果要减少某个函数的参数个数，你可以使用 `functools.partial()`。`partial()`函数允许你给一个或多个参数设置固定的值，减少接下来被调用时的参数个数。
+```python {cmd}
+def spam(a, b, c, d):
+    print(a, b, c, d)
+
+# 使用 functools.partial 函数来固定某些参数值
+from functools import partial
+s1 = partial(spam, 1) # a=1
+s1(2,3,4)
+s2 = partial(spam, d=42)
+s2(1,c=2,b=3)
+s3 = partial(spam, 1, 2, d=35)
+s3(3)
+```
+可以看出 `partial()` 固定某些参数，并返回一个新的 callable 对象。这个新的 callable 接受未赋值的参数，然后跟之前赋值过的参数合并起来，最后所有参数传递给原始函数，其内部的工作机制为：
+```python {cmd}
+def mypartial(f, *argv, **kwargv):
+    return lambda *v,**kwv:f(*argv,*v,**kwv, **kwargv)
+
+def spam(a, b, c, d):
+    print(a, b, c, d)
+
+s1 = mypartial(spam, 1) # a=1
+s1(2,3,4)
+s2 = mypartial(spam, d=42)
+s2(1,c=2,b=3)
+s3 = mypartial(spam, 1, 2, d=35)
+s3(3)
+```
+本节要解决的问题是让原版不兼容的代码可以一起工作。
+例子1,假设你有一个点的列表来表示 (x, y)坐标元组。你可以用一下的函数来计算两点之间的距离：
+```python {cmd id="20180411135623"}
+points = [(1,2),(3,4),(5,6),(7,8)]
+import math
+def distance(p1, p2):
+    x1, y1 = p1
+    x2, y2 = p2
+    return math.hypot(x1-x2, y1-y2)
+```
+现在假设你想以某个点为基点，根据点和基点之间的距离来排序所有的这些点，列表的 `sort` 接受一个关键字参数来自定义排序逻辑，但是它只能接受一个单个参数的函数(distance()很显然不符合该条件)。现在我们可以通过使用 `partial()`来解决这个问题：
+```python {cmd continue="20180411135623"}
+pt = (4,3)
+from functools import partial
+points.sort(key=partial(distance, pt))
+print(points)
+pt = (6,5)
+points.sort(key=lambda p:distance(p, pt))
+print(points)
+```
+
+更进一步，`partial()` 通常被用来微调其他库函数所使用的回调函数的参数。
+
+很多时候，`partial()` 能实现的效果，lambda 表达式也能实现,不过相比而言会显得比较臃肿，对于代码阅读的人来说更加难懂。这时候使用 `partial()` 可以更加直观地表达你的意图（给某些参数预先赋值）。
+
+### 将单方法的类转换为函数
+
+问题：你有一个除 `__init__()` 方法外只定义了一个方法的类，为了简化代码，你想将它转换成一个函数。
+
+解决方案：大多数情况下，可以使用闭包将单个方法的类转换成函数，例如下面示例的类用于计数：
+```python {cmd}
+class MyCounter:
+    def __init__(self, init=0):
+        self.count = init
+    def tick(self):
+        self.count += 1
+        return self.count
+ct1 = MyCounter()
+print(ct1.tick())
+print(ct1.tick())
+ct2 = MyCounter(100)
+print(ct1.tick())
+print(ct2.tick())
+print(ct2.tick())
+```
+这个类可以被一个更简单的函数来替代：
+```python {cmd}
+def get_counter(init=0):
+    closure_var = {'count':init}
+    def counter():
+        closure_var['count'] += 1
+        return closure_var['count']
+    return counter
+ct1 = get_counter()
+print(ct1())
+print(ct1())
+ct2 = get_counter(100)
+print(ct1())
+print(ct2())
+print(ct2())
+```
+大部分情况下，你拥有一个单方法的原因是需要存储某些额外的状态来给方法使用。
+
+使用一个内部函数或闭包的方法通常会更加优雅一些。简单来说，一个闭包就是一个函数，只不过在函数内部带上了一个额外的变量环境。闭包关键特点就是会记住自己被定义时的环境。因此，在我们解决方案中，`opener()`函数记住了 template 参数的值，并在接下来的调用中使用它。
+
+任何时候，只要你碰到需要给某个函数增加额外的状态信息的问题，都可以考虑使用闭包。相比将你的函数转换成一个类而言，闭包通常是一种更加简洁和优雅的方案。
+
+### 带额外信息的回调函数
+
+问题：你的代码中依赖到回调函数的使用（比如时间处理器、等待后台任务完成后的回调等），并且你还需要然回调函数拥有额外的状态值，以便在它的内部使用到。
+
+解决方案：这一小节主要讨论的是那些出现在很多函数库和框架中的回调函数的使用——特别是跟异步处理有关的。为了演示和测试，我们先定义如下一个需要调用回调函数的函数：
+```python {cmd id="20180411155159"}
+def apply_async(func, args, *, callback):
+    # compute the result
+    result = func(*args)
+    # invoke the callback with the result
+    callback(result)
+def add(x, y):
+    return x+y
+```
+实际上，这段代码可以做如何更高级的处理，包括线程、进程和定时器，但是这些都不是我们所要关心的。我们仅仅需要关注回调函数的调用。下面是一个演示如何使用上述代码的例子：
+```python {cmd continue="20180411155159"}
+def print_result(result):
+    print('Got :', result)
+
+apply_async(add, (2,5), callback=print_result)
+apply_async(add, ('hello ', 'world'), callback=print_result)
+```
+注意到 `print_result()` 函数仅仅接受一个参数 result。不能再传入其他信息，而当你想让回调函数访问其他变量或特定环境的变量值的时候就会遇到麻烦。
+
+为了让回调函数访问外部信息，一种方法是使用一个绑定方法来替代一个简单函数。比如，下面这个类会保存一个内部序列号，每次接收到一个 result 的时候，序列号加 1：
+```python {cmd continue="20180411155159"}
+class ResultHandler:
+    def __init__(self):
+        self.sequence = 0
+    def handler(self, result):
+        self.sequence += 1
+        print(f'[{self.sequence}] Got : {result}')
+
+r1 = ResultHandler()
+apply_async(add, (2,3), callback=r1.handler)
+apply_async(add, ('hello ','world'), callback=r1.handler)
+r2 = ResultHandler()
+apply_async(add, (10,20), callback=r2.handler)
+```
+第二种方式，作为类的替代，可以使用一个闭包捕获状态值：
+```python {cmd continue="20180411155159"}
+def get_handler():
+    sequence = 0
+    def handler(result):
+        nonlocal sequence
+        sequence += 1
+        print(f'[{sequence}] Got : {result}')
+    return handler
+h1 = get_handler()
+apply_async(add, (2,3), callback=h1)
+apply_async(add, ('hello ','world'), callback=h1)
+h2 = get_handler()
+apply_async(add, (10,20), callback=h2)
+```
+
+还有另外一种更加高级的方法，可以使用协程来完成同样的事情：
+```python {cmd continue="20180411155159"}
+def make_handler():
+    sequence = 0
+    while True:
+        result = yield
+        sequence += 1
+        print(f'[{sequence}] Got : {result}')
+handler = make_handler()
+next(handler) # Advance to the yield
+apply_async(add, (2,3), callback=handler.send)
+apply_async(add, ('hello ','world'), callback=handler.send)
+```
+
+基于回调函数的软件通常都有可能变得非常复杂。一部分原因是回调函数通常会跟请求执行代码断开，因此，请求代码和处理结果之间的执行环境实际上已经丢失了。如果你想让回调函数连续执行多步操作，那你必须去解决如何保存和恢复相关的状态信息了。
+
+至少有两种主要的方式来捕获和保存信息，你可以在一个对象实例（通过一个绑定方法）或者在一个闭包中保存它。两种方式比起来，闭包或许更加轻量级和自然一点，因为它们可以很简单地通过函数来构造。它们还能自动捕获所有被使用到的变量，因此，你无需去担心如何去存储额外的状态信息。
+
+如果使用闭包，你需要注意那些可修改变量的操作。在上面的方案中，`nonlocal`声明语句用来指示接下来的变量会在回调函数中被修改。如果没有这个声明，代码会报错。
+
+
+而使用一个协程来作为一个回调函数就更加有趣了。它跟闭包方法密切相关，某种意义上来讲，它显得更加简洁，因为总共就一个函数而已。并且，你可以很自由地修改变量而无需去使用 nonlocal 声明。这种方式的唯一缺点是相对于其他 Python 技术而言，或许比较难以理解。另外一个比较难懂的部分：比如使用之前需要调用 `next()`，实际上这个步骤很容易被忘记。尽管如此，协程还有其他方面的用处，比如作为一个内联回调函数的定义。
+
+### 内联回调函数 [unfinished]
+问题：当你编写使用回调函数的代码时，担心很多小函数的扩张可能会弄乱程序控制流，你希望找到某个方法来让代码看上去更像是一个普通的执行序列；
+
+解决方案：通过生成器和协程可以使得回调函数内联在某个函数中，为了演示说明，假设你有如下所示的一个执行某种计算任务然后调用一个回调函数的函数：
+```python {cmd id="20180411163837"}
+def apply_async(func, arg, *, callback):
+    result = func(*arg)
+    callback(result)
+```
+接下来让我们看一下下面的代码，它包含了一个 `Async` 类和一个 `inlined_async` 装饰器：
+```python {cmd continue="20180411163837"}
+from queue import Queue
+from functools import wraps
+
+class Async:
+    def __init__(self, func, args):
+        self.func = func
+        self.args = args
+
+def inlined_async(func):
+    @wraps(func)
+```
+
+### 访问闭包中定义的变量
+
+问题：你想要扩展函数中的某个闭包，允许它能访问和修改函数的内部变量。
+
+解决方案：通常来讲，闭包的内部变量对于外界来讲是完全隐藏的。但是，你可以通过编写访问函数，并将其作为函数属性绑定到闭包上来实现这个目的：
+```python {cmd}
+def sample():
+    n = 0
+    # closure function
+    def func():
+        print('n =', n)
+    # accessor method for n
+    def get_n():
+        return n
+    def set_n(value):
+        nonlocal n
+        n = value
+    # attach as function attributes
+    func.get_n = get_n
+    func.set_n = set_n
+    return func
+
+# usage
+f = sample()
+f()
+f.set_n(10)
+print(f.get_n())
+f()
+```
+为了说明他如何工作，有两点需要解释一下。首先，`nonlocal`声明可以让我们编写函数来修改内部变量的值。其次，函数属性允许我们使用一种很简单的是将访问方法绑定到闭包函数上，这跟实例方法很像，尽管没有定义任何的类。
+
+## 类与对象
+
+本章主要关注点是和类定义有关的常见编程模型，包括让对象支持常见的 Python 特性、特殊方法的使用、类封装技术、继承、内存管理以及有用的设计模式。
+
+### 改变对象的字符串显示
+
+问题：你想改变对象实例的打印或显示输出，让它们更具有可读性。
+
+解决方案：要改变一个实例的字符串表示，可重新定义它的 `__str__()` 和 `__repr__()` 方法。例如：
+```python {cmd id="20180411211358"}
+class Pair:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
     def __repr__(self):
-        return f'Node({self._value})'
-    def add_child(self, node):
-        self._children.append(node)
-    def __iter__(self):
-        return iter(self._children)
-root = Node(0)
-child1 = Node(1)
-child2 = Node(2)
-root.add_child(child1)
-root.add_child(child2)
-for ch in root:
-    print(ch)
+        return f'Pair({self.x!r}, {self.y!r})'
+    def __str__(self):
+        return f'({self.x!s}, {self.y!s})'
+```
+```python
+p = Pair(3, 4)
+>>> p # 输出 __repr__() 的返回
+>>> print(p) # 输出 __str__() 的返回
+p = Pair('apple', 'banana')
+>>> p
+>>> print(p)
+```
+```
+Pair(3, 4)
+(3, 4)
+Pair('apple', 'banana')
+(apple, banana)
 ```
 
-### 使用生成器创建新的迭代模式
+我们在这里还演示了在格式化的时候怎样使用不同的字符串表现形式。特别来讲，!r 格式化代码指明输出使用 `__repr__()` 来替代默认的 `__str__()` :
 
-实现一个自定义迭代模式，跟普通的内置函数，比如`range()`、`reversed()`不一样。
+```python {cmd continue="20180411211358"}
+p = Pair(3, 4)
+print(f'{p!r}')
+print(f'{p!s}')
+print(f'{p}')
 
+s = 'hello, world'
+print(f'{s!r}')
+print(f'{s}')
+```
+
+自定义 `__repr__()` 和 `__str__()` 通常是很好的习惯，因为它能简化调试和实例的输出。例如，如果仅仅是打印输出或者日志输出某个实例，那么程序员会看到实例更加详细与有用的信息。
+
+`__repr__()` 生成的文本字符串标准做法是需要让 `eval(repr(x))==x` 为真。如果实在做不到，应该创建一个有用的文本字符串，并使用 \< 和 \> 括起来，比如：
 ```python {cmd}
-def frange(start, stop, increment):
-    x = start
-    while x < stop:
-        yield x
-        x += increment
-for i in frange(0, 4, 0.5):
-    print(i, end='  ')
-print('\n', sum(frange(1,5,1)))
-print(list(range(0, 5, 1)))
+f = open('test.py')
+print(f'{f!r}')
 ```
 
-一个函数中需要有一个 `yield` 语句即可将其转换为一个生成器。跟普通函数不同的是，生成器只能用于迭代操作。下面是一个实验，向你展示这样的函数底层工作机制：
+如果 `__str__()` 没有被定义，那么就会使用 `__repr__()` 来替代输出。
 
+### 自定义字符串的格式化
+
+问题：你想通过 `format()` 函数和字符串方法使得一个对象能支持自定义的格式化。
+
+解决方案：为了自定义字符串的格式化，我们需要在类上面定义 `__format__()` 方法。例如：
 ```python {cmd}
-def countdown(n):
-    print('Starting to count from', n)
-    while n > 0:
-        yield n
-        n -= 1
-    print('Done!')
-c = countdown(3)
-print(next(c))
-print(next(c))
-print(next(c))
-print(next(c))
+_formats = {
+    'ymd' : '{d.year}-{d.month}-{d.day}',
+    'mdy' : '{d.month}/{d.day}/{d.year}',
+    'dmy' : '{d.day}/{d.month}/{d.year}'
+}
+
+class Date:
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+
+    def __format__(self, code=''):
+        if code == '':
+            code = 'ymd'
+        fmt = _formats[code]
+        return fmt.format(d=self)
+date = Date(2018, 4, 11)
+print(f'{date}')
+print(f"Today is {date:mdy}")
+print(format(date, 'dmy'))
 ```
 
-### 实现迭代器协议
+讨论：`__format__()` 方法给 Python 字符串格式化功能提供了一个钩子。这里需要强调的是，格式化代码的解析工作完全由类自己决定。因此，格式化代码可以是任何值。例如参考下面来自 datetime 模块中的代码：
+```python {cmd}
+from datetime import date
+d = date(2018, 4, 11)
+print(format(d, '%A, %B %d %Y'))
+print(f'Today is {d:%a, %b %d %Y}')
+```
+对于内置类型的格式化，有一些标准的约定。可以参考 `string` 模块文档说明。
 
+### 让对象支持上下文管理协议
+
+问题：你想让你的对象支持上下文管理协议 （with 语句）。
+
+解决方案：为了让一个对象兼容 with 语句，你需要实现一个 `__enter__()` 和 `__exit__()` 方法。
 
 
