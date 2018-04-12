@@ -2496,6 +2496,406 @@ print(f'Today is {d:%a, %b %d %Y}')
 
 问题：你想让你的对象支持上下文管理协议 （with 语句）。
 
-解决方案：为了让一个对象兼容 with 语句，你需要实现一个 `__enter__()` 和 `__exit__()` 方法。
+解决方案：为了让一个对象兼容 with 语句，你需要实现一个 `__enter__()` 和 `__exit__()` 方法。例如，考虑如下的一个类，它能为我们车间一个网络连接：
+```python {cmd id="20180411222157"}
+from socket import socket, AF_INET, SOCK_STREAM
 
+class LazyConnection:
+    def __init__(self,address,family=AF_INET,type=SOCK_STREAM):
+        self.address = address
+        self.family = family
+        self.type = type
+        self.sock = None
+    
+    def __enter__(self):
+        if self.sock is not None:
+            raise RuntimeError('Already connected')
+        self.sock = socket(self.family, self.type)
+        self.sock.connect(self.address)
+        return self.sock
+    
+    def __exit__(self, exc_ty, exc_val, tb):
+        self.sock.close()
+        self.sock = None
+```
+
+这个类的关键特点在于它表示了一个网络连接，但是初始化的时候并不会做如何事情（比如它并没有建立一个连接）。连接的建立和关闭是使用 with 语句自动完成的，例如：
+```python {cmd continue="20180411222157"}
+from functools import partial
+conn = LazyConnection(('www.python.org', 80))
+with conn as s:
+    # conn.__enter__() executes : connection open
+    s.send(b'GET /index.html HTTP/1.0\r\n')
+    s.send(b'Host: wwww.python.org\r\n')
+    s.send(b'\r\n')
+    resp = b''.join(iter(partial(s.recv, 8192), b''))
+print(resp)
+```
+讨论：编写上下文管理器的主要原理是你的代码会放到 with 语句中执行。当出现 with 语句的时候，对象的 `__enter__()` 会被触发，它返回的值（如果有的话）被赋值给 as 说明的变量。然后，with 语句块中的代码开始执行。最后，`__exit__()` 方法被触发进行清理工作。
+
+不管 with 代码块中发生什么，上面的控制流都会执行完成，就算代码发生了异常也是一样。事实上，`__exit__()` 方法的三个参数中包含了异常类型、异常值、追溯信息（如果有的话）。`__exit__()` 方法能自己决定这样利用这个异常信息，或者忽略它，并返回一个 None 值。如果 `__exit__()` 返回 True，那么异常会被清空，就好像什么都没发生一样，with 语句后面的程序继续在正常执行。
+
+还有一个细节问题就是 `LazyConnection` 类是否允许多个 with 语句来嵌套使用连接。很显然，上面的定义中值允许一个 socket 的连接，如果正在使用一个 socket 的时候，有重复使用 with 语句，就会产生异常。不过你可以像下面这样修改上面的实现来解决这个问题：
+```python {cmd}
+from socket import socket, AF_INET, SOCK_STREAM
+
+class LazyConnection:
+    def __init__(self, address, family=AF_INET, type=SOCK_STREAM):
+        self.address = address
+        self.family = family
+        self.type = type
+        self.connections = []
+    def __enter__(self):
+        sock = socket(self.family, self.family)
+        sock.connect(self.address)
+        self.connections.append(sock)
+        return sock
+    def __exit__(self, exc_tp, exc_val, tb):
+        self.connections.pop().close()
+    
+# example use:
+from functools import partial
+
+conn = LazyConnection(('www.python.org', 80))
+with conn as s1:
+    pass
+    with conn as s2:
+        pass
+        # s1 and s2 are independent sockets
+```
+
+在需要管理一些资源，比如文件、网络连接和锁的编程环境中，使用上下文管理器是很普遍的。这些资源的一个主要特点是它们必须被手动地关闭或者释放来确保程序的正常运行。例如，如果你请求了一个锁，那么你必须确保之后释放了它，否则就可能产生死锁。通过实现 `__enter__()` 和 `__exit__()` 方法并使用 with 语句可以很容易避免这些问题。因为 `__exit__()` 方法可以让你无需担心这些了。
+
+### 创建大量对象时节省内存的方法
+
+问题：你的程序要创建大量（可能上百万）的对象，导致占用很大的内存。
+
+解决方案：对于主要是用来当成简单的数据结构的类而言，你可以通过给类添加 `__slots__` 属性来极大地减少实例所占用的内存，比如：
+```python {cmd}
+class Date:
+    __slots__ = ['year', 'month', 'day']
+    def __init__(self, year, month, day):
+        self.year = year
+        self.month = month
+        self.day = day
+```
+当你定义 __slots_ 后，Python就会为实例使用一种更加紧凑的内部表示。实例通过一个很小的固定大小的数组来构建，而不是为每个实例定义一个字典，这跟元组或列表很类似。在 `__slots__` 中列出的属性名在内部被映射到这个数组的指定下标上。使用 `__slots__` 一个不好的地方是我们不能再给实例添加新的属性了，只能使用 `__slots__` 中定义的那些属性名。
+
+讨论：使用 slots 后节省的内存会跟存储属性的数量和类型有关。不过，一般来讲，使用到的内存总量和将数据存储在一个元组中差不多。为了给你一个直观地认识，假设你不适用 slots ，直接存储一个 Date 实例，在 64 位的Python上要占用428字节，而如果使用了slots，内存下降到156字节。如果程序中需要创建大量的日期实例，那么这个就能极大地减小内存使用量了。
+
+尽管 slots 看上去是一个很有用的特性，很多时候你还是得减少对它的使用冲动。Python 的很多特性都依赖于普通的基于字典的实现。另外，定义了 slots 后的类不再支持一些普通类的特性了，比如多继承。大多数情况下，你应该只在那些经常被使用到的 **用作数据结构的类** 上定义slots（比如在程序中需要创建某个类的几百万个实例对象）。
+
+关于 `__slots__` 的一个常见误区是他可以作为一个封装工具来防止用户给实例增加新的属性。尽管使用 slots 可以达到这样的目的，但是这个并不是它的初衷，`__slots__` 更多的是用来作为一个内存优化工具。
+
+### 在类中封装属性名
+
+问题：你想封装类的实例上面的“私有”数据，但是 Python 语言没有访问控制。
+
+解决方案：Python 程序员不去依赖语言特性去封装数据，而是通过遵循一定的属性和方法命名规约来达到这个效果。第一个约定是任何以单下划线 _ 开头的名字都应该是内部实现，比如：
+```python {cmd}
+class A:
+    def __init__(self):
+        self._internal = 0 # An internal attribute
+        self.public = 1 # An public attribute
+    
+    def public_method(self):
+        '''
+        A public method
+        '''
+        pass
+    
+    def _internal_method(self):
+        pass
+```
+Python 并不会真的阻止别人访问内部名称，但是如果你这么做肯定是不好的，可能会导致脆弱的代码，同时还要注意，使用下划线开头的约定同样适用于模块名和模块级别函数。例如，如果你看到某个模块名以单下划线开头（比如 `_socket`），那它就是内部实现。类似的，模块级别函数，比如 `sys._getframe()` 在使用的时候就需要加倍小心了。
+
+你还可能会遇到在类定义中使用两个下划线（`__`）开头的命名，比如：
+```python
+class B:
+    def __init__(self):
+        self.__private = 0
+    
+    def __private_method(self):
+        pass
+
+    def public_method(self):
+        pass
+        self.__private_method()
+```
+
+使用双下划线开始会导致访问名称变成其他形式。比如，在前面的类 B 中，私有属性会被分别重命名为 `_B__private` 和 `_B__private_method`。这时候，你可能会问，这样重命名的目的是什么，答案就是继承——这种属性通过继承是无法被覆盖的。比如：
+```python
+class C(B):
+    def __init__(self):
+        super().__init__()
+        self.__private = 1 # Does not override B.__private
+
+    # Does not override B.__private_method()
+    def __private_method(self):
+        pass
+```
+这里，私有名称 `__private` 和 `__private_method` 被重命名为 `_C__private` 和 `_C__private_method`，这个跟父类B中的名称完全不同。
+
+例如：
+```python {cmd}
+class A:
+    def _private_method(self):
+        print('A _private_method')
+    def foo(self):
+        self._private_method()
+class B(A):
+    def _private_method(self):
+        print('B _private_method')
+b = B()
+b.foo()
+```
+可以看出，B类中的`_private_method`的同名方法覆盖了，再来看看 `__private_method`的版本：
+```python {cmd}
+class A:
+    def __private_method(self):
+        print('A __private_method')
+    def foo(self):
+        self.__private_method()
+class B(A):
+    def __private_method(self):
+        print('B __private_method')
+b = B()
+b.foo()
+```
+可见，A中的 `__private_method` 并没有被B中的 `__private_method` 所覆盖。
+
+讨论：上面提到了两种不同的编码约定来命名私有属性，那么哪种方式好呢？大多数而言，你应该让你的非公共名称以单下划线开头。但是，如果你清楚你的代码会涉及到子类，并且有些内部属性应该在子类中隐藏起来，那么才考虑使用双下划线方案。
+例如
+```python {cmd}
+class A:
+    def _private_method(self):
+        print('A _private_method')
+class B(A):
+    def foo(self):
+        self._private_method()
+b = B()
+b.foo()
+```
+子类可以继承父类的单下划线开始的方法`_private_method`。
+
+```python {cmd}
+class A:
+    def __private_method(self):
+        print('A _private_method')
+class B(A):
+    def foo(self):
+        self.__private_method()
+b = B()
+b.foo()
+```
+子类不能继承父类的双下划线开始的方法`__private_method`。
+
+还有一点要注意的是：有时候你定义的一个变量和某个关键字冲突，这时候可能以使用单下划线作为**后缀**，例如：
+```python
+lambda_ = 2.0 # Trailing _ to avoid clash with lambda keyword
+```
+这里我们并不使用单下划线前缀的原因是它避免误解使用初衷。
+
+总结：**双下划线打头的属性或方法：父类方法不能被子类方法覆盖，子类不继承父类方法。**
+
+### 创建可管理的属性
+
+问题：你想给某个实例 attribute 添加出访问与修改之外的其他处理逻辑，比如类型检查或合法性验证。
+
+解决方法：自定义某个属性的一种简单方法是将它定义为一个 property。例如下面的代码定义了一个 property，增加对一个属性简单的类型检查：
+
+```python {cmd id="20180412153218"}
+class Person:
+    def __init__(self, first_name):
+        self.first_name = first_name
+    # Getter function
+    @property
+    def first_name(self):
+        return self._first_name
+
+    # Setter function
+    @first_name.setter
+    def first_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._first_name = value
+
+    # Deleter function (optional)
+    @first_name.deleter
+    def first_name(self):
+        raise AttributeError("Can't delete attribute")
+
+a = Person('Guido')
+```
+上述代码中有3个相关的方法，这3个方法的名称必须都一样，第一个方法是一个 getter 函数，它使得 first_name 成为一个属性。其他两个方法给 first_name 属性添加了 setter 和 deleter 函数。需要强调的是，只有在 first_name 属性被创建后，后面的两个修饰器 `@first_name.setter` 和 `@first_name.deleter`才能被定义。
+
+property 的一个关键特征是它看上去和不同的 attribute 没有两样，但是访问它的时候回自动触发 getter、setter、deleter方法：
+```python {cmd continue='20180412153218'}
+print(a.first_name)
+```
+```python {cmd continue='20180412153218'}
+a.first_name = 42
+```
+```python {cmd continue='20180412153218'}
+del a.first_name
+```
+
+在实现一个 property 的时候，底层数据（如果有的话）仍然需要存储在某个地方。因此，在 get 和 set 方法中，你会看到对 `_first_name` 属性的操作，这也是实际数据保存的地方。另外，你可能还会问为什么 `__init__()` 方法中设置了 self.first_name 而不是 self._first_name ? 在这个例子中，我们创建了一个 property 的目的就是在设置 attribute 的时候进行检查。因此，你可能想在初始化的时候也进行这种类型检查，通过设置 `self.first_name` 就会自动调用 `setter` 方法，这个方法里面会进行参数的检查，否则就直接访问 `self._first_name` 了。
+
+还能在已存在 get 和 set 方法基础上定义 property。例如：
+```python {cmd id="20180412201509"}
+class Person:
+    def __init__(self, first_name):
+        self.set_first_name(first_name)
+    # Getter function
+    def get_first_name(self):
+        return self._first_name
+    # Setter function
+    def set_first_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._first_name = value
+    # Deleter function (optional)
+    def del_first_name(self):
+        raise AttributeError("Can't delete attribute")
+    # Make a property from existing get/set mothods
+    first_name = property(get_first_name, set_first_name, del_first_name)
+```
+讨论：一个 property 属性其实就是一系列相关绑定方法的集合。如果你去查看拥有 property 的类，就会发现 property 本身的 fget、fset 和 fdel 属性就是累里面的普通方法，比如：
+```python
+>>> Person.first_name.fget
+>>> Person.first_name.fset
+>>> Person.first_name.fdel
+```
+```
+<function __main__.Person.get_first_name>
+<function __main__.Person.set_first_name>
+<function __main__.Person.del_first_name>
+```
+通常来讲，你不会直接去调用 fget 或 fset，它们会在访问 property 的时候自动被触发。
+
+只有当你确实需要对 attribute 执行额外的操作的时候才应该使用到 property。有时候一些从其他编程语言（比如 Java）过来的程序员总认为所有访问都应该通过 getter 和 setter，所有他们认为代码应该像下面这样写：
+```python
+class Person:
+    def __init__(self, first_name):
+        self._first_name = first_name
+    @property
+    def first_name(self):
+        return self._first_name
+    @first_name.setter
+    def first_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._first_name = value
+```
+**不要写这种没有做任何额外操作的 property。** 首先，它会让你的代码变得很臃肿，而且还会迷惑阅读者。其次，它还会让你的程序运行起来变得慢很多。最后，这样的设计并没有带来任何的好处。特别是当你以后想给普通 attribute 访问添加额外的处理逻辑的时候，你可以将他变成一个 property 而无需改变原来的代码。因为访问 attribute 的代码还是保持原样。
+
+Properties 还是一种定义动态计算 attribute 的方法。这种类型的 attributes 并不会被实际地存储，而是在需要的时候计算出来，比如：
+```python {cmd}
+import math
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+
+    @property
+    def area(self):
+        return math.pi * self.radius ** 2
+    
+    @property
+    def diameter(self):
+        return self.radius * 2
+
+    @property
+    def perimeter(self):
+        return 2 * math.pi * self.radius
+
+c = Circle(4.0)
+print(c.area)
+print(c.diameter)
+print(c.perimeter)
+```
+
+尽管 properties 可以实现优雅的编程接口，但有时你还是想直接使用 getter 和 setter 函数，例如：
+```python {cmd continue="20180412201509"}
+p = Person('Guido')
+print(p.get_first_name())
+p.set_first_name('Kobe')
+print(p.get_first_name())
+```
+这种情况的出现通常是因为 Python 代码被集成到一个大型基础平台架构或程序中。例如，有可能是一个 Python 类准备加入到一个基于远程过程调用的大型分布式系统中。这种情况下，直接使用 get/set 方法（普通方法调用）而不是 property 或许会更加容易兼容。
+
+最后一点，不要像下面这样写大量重复代码的 property 定义：
+```python {cmd}
+class Person:
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
+    @property
+    def first_name(self):
+        return self._first_name
+    @property
+    def last_name(self):
+        return self._last_name
+    @first_name.setter
+    def first_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._first_name = value
+    @last_name.setter
+    def last_name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._last_name = value
+p = Person('Jim', 'Green')
+```
+重复代码会导致臃肿、容易出错和丑陋的程序。好消息是，通过使用装饰器或者闭包，有很多种更好的方法来完成同样的事情。
+
+### 调用父类方法
+
+问题：你想在子类中调用父类的某个已经被覆盖的方法。
+解决方案：为了调用父类（超类）的一个方法，可以使用 super() 函数，比如：
+```python {cmd}
+class A:
+    def spam(self):
+        print('A spam')
+
+class B(A):
+    def spam(self):
+        print('B spam')
+        super().spam() # call parent spam()
+
+b = B()
+b.spam()
+```
+`super()` 函数的一个常见语法是在 `__init__()` 方法中确保父类被正确地初始化：
+```python {cmd}
+class A:
+    def __init__(self):
+        self.x = 0
+
+class B(A):
+    def __init__(self):
+        super().__init__()
+        self.y = 1
+b = B()
+print(b.x)
+```
+
+`super()` 的另一个常见用法出现在覆盖 Python 特殊方法的代码中，比如：
+```python {cmd}
+class Proxy:
+    def __init__(self, obj):
+        self._obj = obj
+    # Delegate attribute lookup to internal obj
+    def __getattr__(self, name)
+        return getattr(self._obj, name)
+    # Delegate attribute assignment
+    def __setattr__(self, name, value):
+        if name.startswith('_'):
+            super().__setattr__(name, value)
+        else:
+            setattr(self._obj, name, value)
+```
+
+讨论：
 

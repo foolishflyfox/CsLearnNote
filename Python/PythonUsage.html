@@ -2213,17 +2213,11 @@ Pair(&apos;apple&apos;, &apos;banana&apos;)
 s <span class="token operator">=</span> <span class="token string">'hello, world'</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{s!r}'</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{s}'</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Pair(3, 4)
-(3, 4)
-(3, 4)
-'hello, world'
-hello, world
-</pre></div></div><p>自定义 <code>__repr__()</code> 和 <code>__str__()</code> 通常是很好的习惯，因为它能简化调试和实例的输出。例如，如果仅仅是打印输出或者日志输出某个实例，那么程序员会看到实例更加详细与有用的信息。</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>自定义 <code>__repr__()</code> 和 <code>__str__()</code> 通常是很好的习惯，因为它能简化调试和实例的输出。例如，如果仅仅是打印输出或者日志输出某个实例，那么程序员会看到实例更加详细与有用的信息。</p>
 <p><code>__repr__()</code> 生成的文本字符串标准做法是需要让 <code>eval(repr(x))==x</code> 为真。如果实在做不到，应该创建一个有用的文本字符串，并使用 &lt; 和 &gt; 括起来，比如：</p>
 <div class="code-chunk" data-id="code-chunk-id-150" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python">f <span class="token operator">=</span> open<span class="token punctuation">(</span><span class="token string">'test.py'</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{f!r}'</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text"><_io.TextIOWrapper name="test.py" mode="r" encoding="US-ASCII">
-</_io.TextIOWrapper></pre></div></div><p>如果 <code>__str__()</code> 没有被定义，那么就会使用 <code>__repr__()</code> 来替代输出。</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>如果 <code>__str__()</code> 没有被定义，那么就会使用 <code>__repr__()</code> 来替代输出。</p>
 <h3 class="mume-header" id="%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96">自定义字符串的格式化</h3>
 
 <p>问题：你想通过 <code>format()</code> 函数和字符串方法使得一个对象能支持自定义的格式化。</p>
@@ -2249,21 +2243,342 @@ date <span class="token operator">=</span> Date<span class="token punctuation">(
 <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{date}'</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"Today is {date:mdy}"</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>format<span class="token punctuation">(</span>date<span class="token punctuation">,</span> <span class="token string">'dmy'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">2018-4-11
-Today is 4/11/2018
-11/4/2018
-</pre></div></div><p>讨论：<code>__format__()</code> 方法给 Python 字符串格式化功能提供了一个钩子。这里需要强调的是，格式化代码的解析工作完全由类自己决定。因此，格式化代码可以是任何值。例如参考下面来自 datetime 模块中的代码：</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>讨论：<code>__format__()</code> 方法给 Python 字符串格式化功能提供了一个钩子。这里需要强调的是，格式化代码的解析工作完全由类自己决定。因此，格式化代码可以是任何值。例如参考下面来自 datetime 模块中的代码：</p>
 <div class="code-chunk" data-id="code-chunk-id-152" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> date
 d <span class="token operator">=</span> date<span class="token punctuation">(</span><span class="token number">2018</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>format<span class="token punctuation">(</span>d<span class="token punctuation">,</span> <span class="token string">'%A, %B %d %Y'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'Today is {d:%a, %b %d %Y}'</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Wednesday, April 11 2018
-Today is Wed, Apr 11 2018
-</pre></div></div><p>对于内置类型的格式化，有一些标准的约定。可以参考 <code>string</code> 模块文档说明。</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>对于内置类型的格式化，有一些标准的约定。可以参考 <code>string</code> 模块文档说明。</p>
 <h3 class="mume-header" id="%E8%AE%A9%E5%AF%B9%E8%B1%A1%E6%94%AF%E6%8C%81%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%8D%8F%E8%AE%AE">让对象支持上下文管理协议</h3>
 
 <p>问题：你想让你的对象支持上下文管理协议 （with 语句）。</p>
-<p>解决方案：为了让一个对象兼容 with 语句，你需要实现一个 <code>__enter__()</code> 和 <code>__exit__()</code> 方法。</p>
+<p>解决方案：为了让一个对象兼容 with 语句，你需要实现一个 <code>__enter__()</code> 和 <code>__exit__()</code> 方法。例如，考虑如下的一个类，它能为我们车间一个网络连接：</p>
+<div class="code-chunk" data-id="20180411222157" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;20180411222157&amp;amp;quot;}" class="language-python"><span class="token keyword">from</span> socket <span class="token keyword">import</span> socket<span class="token punctuation">,</span> AF_INET<span class="token punctuation">,</span> SOCK_STREAM
+
+<span class="token keyword">class</span> <span class="token class-name">LazyConnection</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>address<span class="token punctuation">,</span>family<span class="token operator">=</span>AF_INET<span class="token punctuation">,</span>type<span class="token operator">=</span>SOCK_STREAM<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>address <span class="token operator">=</span> address
+        self<span class="token punctuation">.</span>family <span class="token operator">=</span> family
+        self<span class="token punctuation">.</span>type <span class="token operator">=</span> type
+        self<span class="token punctuation">.</span>sock <span class="token operator">=</span> None
+    
+    <span class="token keyword">def</span> <span class="token function">__enter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>sock <span class="token keyword">is</span> <span class="token operator">not</span> None<span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> RuntimeError<span class="token punctuation">(</span><span class="token string">'Already connected'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sock <span class="token operator">=</span> socket<span class="token punctuation">(</span>self<span class="token punctuation">.</span>family<span class="token punctuation">,</span> self<span class="token punctuation">.</span>type<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sock<span class="token punctuation">.</span>connect<span class="token punctuation">(</span>self<span class="token punctuation">.</span>address<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>sock
+    
+    <span class="token keyword">def</span> <span class="token function">__exit__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> exc_ty<span class="token punctuation">,</span> exc_val<span class="token punctuation">,</span> tb<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>sock<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sock <span class="token operator">=</span> None
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>这个类的关键特点在于它表示了一个网络连接，但是初始化的时候并不会做如何事情（比如它并没有建立一个连接）。连接的建立和关闭是使用 with 语句自动完成的，例如：</p>
+<div class="code-chunk" data-id="code-chunk-id-154" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180411222157&amp;amp;quot;}" class="language-python"><span class="token keyword">from</span> functools <span class="token keyword">import</span> partial
+conn <span class="token operator">=</span> LazyConnection<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'www.python.org'</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">with</span> conn <span class="token keyword">as</span> s<span class="token punctuation">:</span>
+    <span class="token comment" spellcheck="true"># conn.__enter__() executes : connection open</span>
+    s<span class="token punctuation">.</span>send<span class="token punctuation">(</span>b<span class="token string">'GET /index.html HTTP/1.0\r\n'</span><span class="token punctuation">)</span>
+    s<span class="token punctuation">.</span>send<span class="token punctuation">(</span>b<span class="token string">'Host: wwww.python.org\r\n'</span><span class="token punctuation">)</span>
+    s<span class="token punctuation">.</span>send<span class="token punctuation">(</span>b<span class="token string">'\r\n'</span><span class="token punctuation">)</span>
+    resp <span class="token operator">=</span> b<span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>iter<span class="token punctuation">(</span>partial<span class="token punctuation">(</span>s<span class="token punctuation">.</span>recv<span class="token punctuation">,</span> <span class="token number">8192</span><span class="token punctuation">)</span><span class="token punctuation">,</span> b<span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>resp<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>讨论：编写上下文管理器的主要原理是你的代码会放到 with 语句中执行。当出现 with 语句的时候，对象的 <code>__enter__()</code> 会被触发，它返回的值（如果有的话）被赋值给 as 说明的变量。然后，with 语句块中的代码开始执行。最后，<code>__exit__()</code> 方法被触发进行清理工作。</p>
+<p>不管 with 代码块中发生什么，上面的控制流都会执行完成，就算代码发生了异常也是一样。事实上，<code>__exit__()</code> 方法的三个参数中包含了异常类型、异常值、追溯信息（如果有的话）。<code>__exit__()</code> 方法能自己决定这样利用这个异常信息，或者忽略它，并返回一个 None 值。如果 <code>__exit__()</code> 返回 True，那么异常会被清空，就好像什么都没发生一样，with 语句后面的程序继续在正常执行。</p>
+<p>还有一个细节问题就是 <code>LazyConnection</code> 类是否允许多个 with 语句来嵌套使用连接。很显然，上面的定义中值允许一个 socket 的连接，如果正在使用一个 socket 的时候，有重复使用 with 语句，就会产生异常。不过你可以像下面这样修改上面的实现来解决这个问题：</p>
+<div class="code-chunk" data-id="code-chunk-id-155" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">from</span> socket <span class="token keyword">import</span> socket<span class="token punctuation">,</span> AF_INET<span class="token punctuation">,</span> SOCK_STREAM
+
+<span class="token keyword">class</span> <span class="token class-name">LazyConnection</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> address<span class="token punctuation">,</span> family<span class="token operator">=</span>AF_INET<span class="token punctuation">,</span> type<span class="token operator">=</span>SOCK_STREAM<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>address <span class="token operator">=</span> address
+        self<span class="token punctuation">.</span>family <span class="token operator">=</span> family
+        self<span class="token punctuation">.</span>type <span class="token operator">=</span> type
+        self<span class="token punctuation">.</span>connections <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">__enter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        sock <span class="token operator">=</span> socket<span class="token punctuation">(</span>self<span class="token punctuation">.</span>family<span class="token punctuation">,</span> self<span class="token punctuation">.</span>family<span class="token punctuation">)</span>
+        sock<span class="token punctuation">.</span>connect<span class="token punctuation">(</span>self<span class="token punctuation">.</span>address<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>connections<span class="token punctuation">.</span>append<span class="token punctuation">(</span>sock<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> sock
+    <span class="token keyword">def</span> <span class="token function">__exit__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> exc_tp<span class="token punctuation">,</span> exc_val<span class="token punctuation">,</span> tb<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>connections<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    
+<span class="token comment" spellcheck="true"># example use:</span>
+<span class="token keyword">from</span> functools <span class="token keyword">import</span> partial
+
+conn <span class="token operator">=</span> LazyConnection<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">'www.python.org'</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">with</span> conn <span class="token keyword">as</span> s1<span class="token punctuation">:</span>
+    <span class="token keyword">pass</span>
+    <span class="token keyword">with</span> conn <span class="token keyword">as</span> s2<span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+        <span class="token comment" spellcheck="true"># s1 and s2 are independent sockets</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>在需要管理一些资源，比如文件、网络连接和锁的编程环境中，使用上下文管理器是很普遍的。这些资源的一个主要特点是它们必须被手动地关闭或者释放来确保程序的正常运行。例如，如果你请求了一个锁，那么你必须确保之后释放了它，否则就可能产生死锁。通过实现 <code>__enter__()</code> 和 <code>__exit__()</code> 方法并使用 with 语句可以很容易避免这些问题。因为 <code>__exit__()</code> 方法可以让你无需担心这些了。</p>
+<h3 class="mume-header" id="%E5%88%9B%E5%BB%BA%E5%A4%A7%E9%87%8F%E5%AF%B9%E8%B1%A1%E6%97%B6%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98%E7%9A%84%E6%96%B9%E6%B3%95">创建大量对象时节省内存的方法</h3>
+
+<p>问题：你的程序要创建大量（可能上百万）的对象，导致占用很大的内存。</p>
+<p>解决方案：对于主要是用来当成简单的数据结构的类而言，你可以通过给类添加 <code>__slots__</code> 属性来极大地减少实例所占用的内存，比如：</p>
+<div class="code-chunk" data-id="code-chunk-id-156" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Date</span><span class="token punctuation">:</span>
+    __slots__ <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'year'</span><span class="token punctuation">,</span> <span class="token string">'month'</span><span class="token punctuation">,</span> <span class="token string">'day'</span><span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> year<span class="token punctuation">,</span> month<span class="token punctuation">,</span> day<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>year <span class="token operator">=</span> year
+        self<span class="token punctuation">.</span>month <span class="token operator">=</span> month
+        self<span class="token punctuation">.</span>day <span class="token operator">=</span> day
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>当你定义 _<em>slots</em> 后，Python就会为实例使用一种更加紧凑的内部表示。实例通过一个很小的固定大小的数组来构建，而不是为每个实例定义一个字典，这跟元组或列表很类似。在 <code>__slots__</code> 中列出的属性名在内部被映射到这个数组的指定下标上。使用 <code>__slots__</code> 一个不好的地方是我们不能再给实例添加新的属性了，只能使用 <code>__slots__</code> 中定义的那些属性名。</p>
+<p>讨论：使用 slots 后节省的内存会跟存储属性的数量和类型有关。不过，一般来讲，使用到的内存总量和将数据存储在一个元组中差不多。为了给你一个直观地认识，假设你不适用 slots ，直接存储一个 Date 实例，在 64 位的Python上要占用428字节，而如果使用了slots，内存下降到156字节。如果程序中需要创建大量的日期实例，那么这个就能极大地减小内存使用量了。</p>
+<p>尽管 slots 看上去是一个很有用的特性，很多时候你还是得减少对它的使用冲动。Python 的很多特性都依赖于普通的基于字典的实现。另外，定义了 slots 后的类不再支持一些普通类的特性了，比如多继承。大多数情况下，你应该只在那些经常被使用到的 <strong>用作数据结构的类</strong> 上定义slots（比如在程序中需要创建某个类的几百万个实例对象）。</p>
+<p>关于 <code>__slots__</code> 的一个常见误区是他可以作为一个封装工具来防止用户给实例增加新的属性。尽管使用 slots 可以达到这样的目的，但是这个并不是它的初衷，<code>__slots__</code> 更多的是用来作为一个内存优化工具。</p>
+<h3 class="mume-header" id="%E5%9C%A8%E7%B1%BB%E4%B8%AD%E5%B0%81%E8%A3%85%E5%B1%9E%E6%80%A7%E5%90%8D">在类中封装属性名</h3>
+
+<p>问题：你想封装类的实例上面的“私有”数据，但是 Python 语言没有访问控制。</p>
+<p>解决方案：Python 程序员不去依赖语言特性去封装数据，而是通过遵循一定的属性和方法命名规约来达到这个效果。第一个约定是任何以单下划线 _ 开头的名字都应该是内部实现，比如：</p>
+<div class="code-chunk" data-id="code-chunk-id-157" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_internal <span class="token operator">=</span> <span class="token number">0</span> <span class="token comment" spellcheck="true"># An internal attribute</span>
+        self<span class="token punctuation">.</span>public <span class="token operator">=</span> <span class="token number">1</span> <span class="token comment" spellcheck="true"># An public attribute</span>
+    
+    <span class="token keyword">def</span> <span class="token function">public_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">'''
+        A public method
+        '''</span>
+        <span class="token keyword">pass</span>
+    
+    <span class="token keyword">def</span> <span class="token function">_internal_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>Python 并不会真的阻止别人访问内部名称，但是如果你这么做肯定是不好的，可能会导致脆弱的代码，同时还要注意，使用下划线开头的约定同样适用于模块名和模块级别函数。例如，如果你看到某个模块名以单下划线开头（比如 <code>_socket</code>），那它就是内部实现。类似的，模块级别函数，比如 <code>sys._getframe()</code> 在使用的时候就需要加倍小心了。</p>
+<p>你还可能会遇到在类定义中使用两个下划线（<code>__</code>）开头的命名，比如：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>__private <span class="token operator">=</span> <span class="token number">0</span>
+    
+    <span class="token keyword">def</span> <span class="token function">__private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+
+    <span class="token keyword">def</span> <span class="token function">public_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+        self<span class="token punctuation">.</span>__private_method<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>使用双下划线开始会导致访问名称变成其他形式。比如，在前面的类 B 中，私有属性会被分别重命名为 <code>_B__private</code> 和 <code>_B__private_method</code>。这时候，你可能会问，这样重命名的目的是什么，答案就是继承——这种属性通过继承是无法被覆盖的。比如：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">C</span><span class="token punctuation">(</span>B<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>__private <span class="token operator">=</span> <span class="token number">1</span> <span class="token comment" spellcheck="true"># Does not override B.__private</span>
+
+    <span class="token comment" spellcheck="true"># Does not override B.__private_method()</span>
+    <span class="token keyword">def</span> <span class="token function">__private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+</pre><p>这里，私有名称 <code>__private</code> 和 <code>__private_method</code> 被重命名为 <code>_C__private</code> 和 <code>_C__private_method</code>，这个跟父类B中的名称完全不同。</p>
+<p>例如：</p>
+<div class="code-chunk" data-id="code-chunk-id-158" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">_private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'A _private_method'</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_private_method<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">_private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'B _private_method'</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> B<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b<span class="token punctuation">.</span>foo<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>可以看出，B类中的<code>_private_method</code>的同名方法覆盖了，再来看看 <code>__private_method</code>的版本：</p>
+<div class="code-chunk" data-id="code-chunk-id-159" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'A __private_method'</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>__private_method<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'B __private_method'</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> B<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b<span class="token punctuation">.</span>foo<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>可见，A中的 <code>__private_method</code> 并没有被B中的 <code>__private_method</code> 所覆盖。</p>
+<p>讨论：上面提到了两种不同的编码约定来命名私有属性，那么哪种方式好呢？大多数而言，你应该让你的非公共名称以单下划线开头。但是，如果你清楚你的代码会涉及到子类，并且有些内部属性应该在子类中隐藏起来，那么才考虑使用双下划线方案。<br>
+例如</p>
+<div class="code-chunk" data-id="code-chunk-id-160" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">_private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'A _private_method'</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_private_method<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> B<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b<span class="token punctuation">.</span>foo<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>子类可以继承父类的单下划线开始的方法<code>_private_method</code>。</p>
+<div class="code-chunk" data-id="code-chunk-id-161" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__private_method</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'A _private_method'</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">foo</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>__private_method<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b <span class="token operator">=</span> B<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b<span class="token punctuation">.</span>foo<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>子类不能继承父类的双下划线开始的方法<code>__private_method</code>。</p>
+<p>还有一点要注意的是：有时候你定义的一个变量和某个关键字冲突，这时候可能以使用单下划线作为<strong>后缀</strong>，例如：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">lambda_ <span class="token operator">=</span> <span class="token number">2.0</span> <span class="token comment" spellcheck="true"># Trailing _ to avoid clash with lambda keyword</span>
+</pre><p>这里我们并不使用单下划线前缀的原因是它避免误解使用初衷。</p>
+<p>总结：<strong>双下划线打头的属性或方法：父类方法不能被子类方法覆盖，子类不继承父类方法。</strong></p>
+<h3 class="mume-header" id="%E5%88%9B%E5%BB%BA%E5%8F%AF%E7%AE%A1%E7%90%86%E7%9A%84%E5%B1%9E%E6%80%A7">创建可管理的属性</h3>
+
+<p>问题：你想给某个实例 attribute 添加出访问与修改之外的其他处理逻辑，比如类型检查或合法性验证。</p>
+<p>解决方法：自定义某个属性的一种简单方法是将它定义为一个 property。例如下面的代码定义了一个 property，增加对一个属性简单的类型检查：</p>
+<div class="code-chunk" data-id="20180412153218" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;20180412153218&amp;amp;quot;}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> first_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>first_name <span class="token operator">=</span> first_name
+    <span class="token comment" spellcheck="true"># Getter function</span>
+    @property
+    <span class="token keyword">def</span> <span class="token function">first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_first_name
+
+    <span class="token comment" spellcheck="true"># Setter function</span>
+    @first_name<span class="token punctuation">.</span>setter
+    <span class="token keyword">def</span> <span class="token function">first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> isinstance<span class="token punctuation">(</span>value<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> TypeError<span class="token punctuation">(</span><span class="token string">'Expected a string'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_first_name <span class="token operator">=</span> value
+
+    <span class="token comment" spellcheck="true"># Deleter function (optional)</span>
+    @first_name<span class="token punctuation">.</span>deleter
+    <span class="token keyword">def</span> <span class="token function">first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> AttributeError<span class="token punctuation">(</span><span class="token string">"Can't delete attribute"</span><span class="token punctuation">)</span>
+
+a <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">'Guido'</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>上述代码中有3个相关的方法，这3个方法的名称必须都一样，第一个方法是一个 getter 函数，它使得 first_name 成为一个属性。其他两个方法给 first_name 属性添加了 setter 和 deleter 函数。需要强调的是，只有在 first_name 属性被创建后，后面的两个修饰器 <code>@first_name.setter</code> 和 <code>@first_name.deleter</code>才能被定义。</p>
+<p>property 的一个关键特征是它看上去和不同的 attribute 没有两样，但是访问它的时候回自动触发 getter、setter、deleter方法：</p>
+<div class="code-chunk" data-id="code-chunk-id-163" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;#x27;20180412153218&amp;amp;#x27;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>first_name<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><div class="code-chunk" data-id="code-chunk-id-164" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;#x27;20180412153218&amp;amp;#x27;}" class="language-python">a<span class="token punctuation">.</span>first_name <span class="token operator">=</span> <span class="token number">42</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><div class="code-chunk" data-id="code-chunk-id-165" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;#x27;20180412153218&amp;amp;#x27;}" class="language-python"><span class="token keyword">del</span> a<span class="token punctuation">.</span>first_name
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>在实现一个 property 的时候，底层数据（如果有的话）仍然需要存储在某个地方。因此，在 get 和 set 方法中，你会看到对 <code>_first_name</code> 属性的操作，这也是实际数据保存的地方。另外，你可能还会问为什么 <code>__init__()</code> 方法中设置了 self.first_name 而不是 self._first_name ? 在这个例子中，我们创建了一个 property 的目的就是在设置 attribute 的时候进行检查。因此，你可能想在初始化的时候也进行这种类型检查，通过设置 <code>self.first_name</code> 就会自动调用 <code>setter</code> 方法，这个方法里面会进行参数的检查，否则就直接访问 <code>self._first_name</code> 了。</p>
+<p>还能在已存在 get 和 set 方法基础上定义 property。例如：</p>
+<div class="code-chunk" data-id="20180412201509" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;20180412201509&amp;amp;quot;}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> first_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>set_first_name<span class="token punctuation">(</span>first_name<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># Getter function</span>
+    <span class="token keyword">def</span> <span class="token function">get_first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_first_name
+    <span class="token comment" spellcheck="true"># Setter function</span>
+    <span class="token keyword">def</span> <span class="token function">set_first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> isinstance<span class="token punctuation">(</span>value<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> TypeError<span class="token punctuation">(</span><span class="token string">'Expected a string'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_first_name <span class="token operator">=</span> value
+    <span class="token comment" spellcheck="true"># Deleter function (optional)</span>
+    <span class="token keyword">def</span> <span class="token function">del_first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> AttributeError<span class="token punctuation">(</span><span class="token string">"Can't delete attribute"</span><span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># Make a property from existing get/set mothods</span>
+    first_name <span class="token operator">=</span> property<span class="token punctuation">(</span>get_first_name<span class="token punctuation">,</span> set_first_name<span class="token punctuation">,</span> del_first_name<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>讨论：一个 property 属性其实就是一系列相关绑定方法的集合。如果你去查看拥有 property 的类，就会发现 property 本身的 fget、fset 和 fdel 属性就是累里面的普通方法，比如：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> Person<span class="token punctuation">.</span>first_name<span class="token punctuation">.</span>fget
+<span class="token operator">>></span><span class="token operator">></span> Person<span class="token punctuation">.</span>first_name<span class="token punctuation">.</span>fset
+<span class="token operator">>></span><span class="token operator">></span> Person<span class="token punctuation">.</span>first_name<span class="token punctuation">.</span>fdel
+</pre><pre data-role="codeBlock" data-info="" class="language-"><code>&lt;function __main__.Person.get_first_name&gt;
+&lt;function __main__.Person.set_first_name&gt;
+&lt;function __main__.Person.del_first_name&gt;
+</code></pre><p>通常来讲，你不会直接去调用 fget 或 fset，它们会在访问 property 的时候自动被触发。</p>
+<p>只有当你确实需要对 attribute 执行额外的操作的时候才应该使用到 property。有时候一些从其他编程语言（比如 Java）过来的程序员总认为所有访问都应该通过 getter 和 setter，所有他们认为代码应该像下面这样写：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> first_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_first_name <span class="token operator">=</span> first_name
+    @property
+    <span class="token keyword">def</span> <span class="token function">first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_first_name
+    @first_name<span class="token punctuation">.</span>setter
+    <span class="token keyword">def</span> <span class="token function">first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> isinstance<span class="token punctuation">(</span>value<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> TypeError<span class="token punctuation">(</span><span class="token string">'Expected a string'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_first_name <span class="token operator">=</span> value
+</pre><p><strong>不要写这种没有做任何额外操作的 property。</strong> 首先，它会让你的代码变得很臃肿，而且还会迷惑阅读者。其次，它还会让你的程序运行起来变得慢很多。最后，这样的设计并没有带来任何的好处。特别是当你以后想给普通 attribute 访问添加额外的处理逻辑的时候，你可以将他变成一个 property 而无需改变原来的代码。因为访问 attribute 的代码还是保持原样。</p>
+<p>Properties 还是一种定义动态计算 attribute 的方法。这种类型的 attributes 并不会被实际地存储，而是在需要的时候计算出来，比如：</p>
+<div class="code-chunk" data-id="code-chunk-id-167" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> math
+<span class="token keyword">class</span> <span class="token class-name">Circle</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> radius<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>radius <span class="token operator">=</span> radius
+
+    @property
+    <span class="token keyword">def</span> <span class="token function">area</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> math<span class="token punctuation">.</span>pi <span class="token operator">*</span> self<span class="token punctuation">.</span>radius <span class="token operator">**</span> <span class="token number">2</span>
+    
+    @property
+    <span class="token keyword">def</span> <span class="token function">diameter</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>radius <span class="token operator">*</span> <span class="token number">2</span>
+
+    @property
+    <span class="token keyword">def</span> <span class="token function">perimeter</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">2</span> <span class="token operator">*</span> math<span class="token punctuation">.</span>pi <span class="token operator">*</span> self<span class="token punctuation">.</span>radius
+
+c <span class="token operator">=</span> Circle<span class="token punctuation">(</span><span class="token number">4.0</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>area<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>diameter<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>perimeter<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">50.26548245743669
+8.0
+25.132741228718345
+</pre></div></div><p>尽管 properties 可以实现优雅的编程接口，但有时你还是想直接使用 getter 和 setter 函数，例如：</p>
+<div class="code-chunk" data-id="code-chunk-id-168" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;20180412201509&amp;amp;quot;}" class="language-python">p <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">'Guido'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>get_first_name<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+p<span class="token punctuation">.</span>set_first_name<span class="token punctuation">(</span><span class="token string">'Kobe'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>get_first_name<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Guido
+Kobe
+</pre></div></div><p>这种情况的出现通常是因为 Python 代码被集成到一个大型基础平台架构或程序中。例如，有可能是一个 Python 类准备加入到一个基于远程过程调用的大型分布式系统中。这种情况下，直接使用 get/set 方法（普通方法调用）而不是 property 或许会更加容易兼容。</p>
+<p>最后一点，不要像下面这样写大量重复代码的 property 定义：</p>
+<div class="code-chunk" data-id="code-chunk-id-169" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Person</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> first_name<span class="token punctuation">,</span> last_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>first_name <span class="token operator">=</span> first_name
+        self<span class="token punctuation">.</span>last_name <span class="token operator">=</span> last_name
+    @property
+    <span class="token keyword">def</span> <span class="token function">first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_first_name
+    @property
+    <span class="token keyword">def</span> <span class="token function">last_name</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_last_name
+    @first_name<span class="token punctuation">.</span>setter
+    <span class="token keyword">def</span> <span class="token function">first_name</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> isinstance<span class="token punctuation">(</span>value<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> TypeError<span class="token punctuation">(</span><span class="token string">'Expected a string'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_first_name <span class="token operator">=</span> value
+    @last_name<span class="token punctuation">.</span>setter
+    <span class="token keyword">def</span> <span class="token function">last_name</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> isinstance<span class="token punctuation">(</span>value<span class="token punctuation">,</span> str<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> TypeError<span class="token punctuation">(</span><span class="token string">'Expected a string'</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>_last_name <span class="token operator">=</span> value
+p <span class="token operator">=</span> Person<span class="token punctuation">(</span><span class="token string">'Jim'</span><span class="token punctuation">,</span> <span class="token string">'Green'</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>重复代码会导致臃肿、容易出错和丑陋的程序。好消息是，通过使用装饰器或者闭包，有很多种更好的方法来完成同样的事情。</p>
+<h3 class="mume-header" id="%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E6%96%B9%E6%B3%95">调用父类方法</h3>
+
+<p>问题：你想在子类中调用父类的某个已经被覆盖的方法。<br>
+解决方案：为了调用父类（超类）的一个方法，可以使用 super() 函数，比如：</p>
+<div class="code-chunk" data-id="code-chunk-id-170" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">spam</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'A spam'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">spam</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'B spam'</span><span class="token punctuation">)</span>
+        super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>spam<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># call parent spam()</span>
+
+b <span class="token operator">=</span> B<span class="token punctuation">(</span><span class="token punctuation">)</span>
+b<span class="token punctuation">.</span>spam<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">B spam
+A spam
+</pre></div></div><p><code>super()</code> 函数的一个常见语法是在 <code>__init__()</code> 方法中确保父类被正确地初始化：</p>
+<div class="code-chunk" data-id="code-chunk-id-171" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">A</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">0</span>
+
+<span class="token keyword">class</span> <span class="token class-name">B</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">1</span>
+b <span class="token operator">=</span> B<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>b<span class="token punctuation">.</span>x<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">0
+</pre></div></div><p><code>super()</code> 的另一个常见用法出现在覆盖 Python 特殊方法的代码中，比如：</p>
+<div class="code-chunk" data-id="code-chunk-id-172" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Proxy</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_obj <span class="token operator">=</span> obj
+    <span class="token comment" spellcheck="true"># Delegate attribute lookup to internal obj</span>
+    <span class="token keyword">def</span> <span class="token function">__getattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> getattr<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_obj<span class="token punctuation">,</span> name<span class="token punctuation">)</span>
+    <span class="token comment" spellcheck="true"># Delegate attribute assignment</span>
+    <span class="token keyword">def</span> <span class="token function">__setattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> name<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">'_'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            super<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__setattr__<span class="token punctuation">(</span>name<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            setattr<span class="token punctuation">(</span>self<span class="token punctuation">.</span>_obj<span class="token punctuation">,</span> name<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>讨论：</p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -2401,6 +2716,10 @@ Today is Wed, Apr 11 2018
 <li><a href="#%E6%94%B9%E5%8F%98%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%BE%E7%A4%BA">改变对象的字符串显示</a></li>
 <li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96">自定义字符串的格式化</a></li>
 <li><a href="#%E8%AE%A9%E5%AF%B9%E8%B1%A1%E6%94%AF%E6%8C%81%E4%B8%8A%E4%B8%8B%E6%96%87%E7%AE%A1%E7%90%86%E5%8D%8F%E8%AE%AE">让对象支持上下文管理协议</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E5%A4%A7%E9%87%8F%E5%AF%B9%E8%B1%A1%E6%97%B6%E8%8A%82%E7%9C%81%E5%86%85%E5%AD%98%E7%9A%84%E6%96%B9%E6%B3%95">创建大量对象时节省内存的方法</a></li>
+<li><a href="#%E5%9C%A8%E7%B1%BB%E4%B8%AD%E5%B0%81%E8%A3%85%E5%B1%9E%E6%80%A7%E5%90%8D">在类中封装属性名</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E5%8F%AF%E7%AE%A1%E7%90%86%E7%9A%84%E5%B1%9E%E6%80%A7">创建可管理的属性</a></li>
+<li><a href="#%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E6%96%B9%E6%B3%95">调用父类方法</a></li>
 </ul>
 </li>
 </ul>
