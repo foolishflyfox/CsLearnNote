@@ -2636,6 +2636,8 @@ class C(B):
 ```
 这里，私有名称 `__private` 和 `__private_method` 被重命名为 `_C__private` 和 `_C__private_method`，这个跟父类B中的名称完全不同。
 
+**注意：双下划线开头且双下划线结尾并不会被重命名，如 `__private_method__` 并不会导致重命名。**
+
 例如：
 ```python {cmd}
 class A:
@@ -2727,7 +2729,7 @@ class Person:
 
 a = Person('Guido')
 ```
-上述代码中有3个相关的方法，这3个方法的名称必须都一样，第一个方法是一个 getter 函数，它使得 first_name 成为一个属性。其他两个方法给 first_name 属性添加了 setter 和 deleter 函数。需要强调的是，只有在 first_name 属性被创建后，后面的两个修饰器 `@first_name.setter` 和 `@first_name.deleter`才能被定义。
+上述代码中有3个相关的方法，这3个方法的名称必须都一样，第一个方法是一个 getter 函数，它使得 first_name 成为一个属性。其他两个方法给 first_name 属性添加了 setter 和 deleter 函数。需要强调的是，只有在 first_name 属性被创建后，后面的两个装饰器 `@first_name.setter` 和 `@first_name.deleter`才能被定义。
 
 property 的一个关键特征是它看上去和不同的 attribute 没有两样，但是访问它的时候回自动触发 getter、setter、deleter方法：
 ```python {cmd continue='20180412153218'}
@@ -2897,5 +2899,480 @@ class Proxy:
             setattr(self._obj, name, value)
 ```
 
-讨论：
+讨论：实际上，大家对于在 Python 中如何正确使用 `super()` 函数普遍知之甚少。你有时候会看到像下面这样直接调用父类的一个方法：
+```python {cmd}
+class Base:
+    def __init__(self):
+        print('Base.__init__')
+
+class A(Base):
+    def __init__(self):
+        Base.__init__(self)
+        print('A.__init__')
+
+a = A()
+```
+尽管对大部分代码而言，这样做没有什么问题，但是在更复杂的涉及到多继承的代码中就有可能导致很奇怪的问题发生。比如，考虑如下的情况：
+```python {cmd}
+class Base:
+    def __init__(self):
+        print('Base.__init__')
+    
+class A(Base):
+    def __init__(self):
+        Base.__init__(self)
+        print('A.__init__')
+
+class B(Base):
+    def __init__(self):
+        Base.__init__(self)
+        print('B.__init__')
+
+class C(A, B):
+    def __init__(self):
+        A.__init__(self)
+        B.__init__(self)
+        print('C.__init__')
+
+c = C()
+```
+你会发现 `Base.__init__()` 中被调用了2次。
+
+可能两次调用 `Base.__init__()` 没有什么坏处，但有时候却不是。另一方面，假设你在代码中使用 `super()`，结果就会非常完美：
+```python {cmd id="20180413090245"}
+class Base:
+    def __init__(self):
+        print('Base.__init__')
+
+class A(Base):
+    def __init__(self):
+        super().__init__()
+        print('A.__init__')
+    
+class B(Base):
+    def __init__(self):
+        super().__init__()
+        print('B.__init__')
+
+class C(A, B):
+    def __init__(self):
+        super().__init__()
+        print('C.__init__')
+```
+``` python {cmd continue="20180413090245"}
+c = C()
+```
+运行这个新版本后，你会发现每个 `__init__()` 方法 只会被调用一次了。
+
+为了弄清它的原理，我们需要花点时间解释一下 Python 是如何实现继承的。对于你定义的每一个类，Python 会计算出一个所谓的方法解析顺序(Method Resolution Order,MRO)列表。这个 MRO 列表就是一个简单的所有基类的线性顺序表。例如：
+```python
+>>> C.__mro__
+```
+```
+(__main__.C, __main__.A, __main__.B, __main__.Base, object)
+```
+为了实现继承，Python 会在 MRO 列表上从左到右开始查找基类，直到找到第一个匹配这个属性的类为止。
+
+而这个 MRO 列表的构建是通过一个 C3 线性化算法来实现的。我们不去深究这个算法的数学原理，它实际上就是合并所有父类的 MRO 列表，并遵循如下3条准则：
+1. 子类会先于父类被检查
+1. 多个父类会根据他们在列表中的顺序被检查
+1. 如果对下一个类存在两个合法的选择，选择第一个父类
+
+老实说，你所要知道的就是 MRO 列表中的类顺序会让你定义的任意类层级关系变得有意义。
+
+但你使用 `super()` 函数时，Python会在 MRO 列表上据需搜索下一个类。只要每个重定义的方法统一使用 `super()` 并只调用它一次，那么控制流最终会遍历完整个 MRO列表，每个方法也会只被调用一次。
+
+`super()` 有个令人吃惊的地方是，它并不一定去查找某个类在 MRO 中下一个直接父类，你甚至可以在一个没有直接父类的类中使用它：
+```python {cmd id="20180413095127"}
+class A:
+    def spam(self):
+        print('A.spam')
+        super().spam()
+```
+如果你试着直接使用这个类就会出错：
+```python {cmd continue="20180413095127"}
+a = A()
+a.spam()
+```
+但是，如果你使用多继承的话：
+```python {cmd continue="20180413095127"}
+class B:
+    def spam(self):
+        print("B.spam")
+
+class C(A, B):
+    pass
+
+c = C()
+c.spam()
+```
+你可以看到在类 A 中使用 `super().spam()` 实际上调用的是和类A毫无关系的类 B 中的 spam() 方法。
+
+在定义混入类的时候，这样使用 `super()` 是很普遍的。
+
+然而，由于 `super()` 可能会调用不是你想要的方法，你应该遵循一些通用原则。首先，确保在继承体系中所有相同名字的方法拥有可兼容的参数标签（比如：相同的参数个数和参数名称）。这样可以确保 `super()` 调用一个非直接父类方法时不会出错。其次，最好确保最顶层的类提供了这个方法的实现，这样的话在 MRO 上面的查找链肯定可以找到某个确定的方法。
+
+### 子类中扩展 property
+
+问题：在子类中，你想要扩展定义在父类中的 property 的功能。
+解决方案：考虑如下的代码，它定义了一个 property:
+```python {cmd id="20180413100146"}
+class Person:
+    def __init__(self, name):
+        self.name = name
+    
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        if not isinstance(value, str):
+            raise TypeError('Expected a string')
+        self._name = value
+
+    @name.deleter
+    def name(self):
+        raise AttributeError("Can't delete attribute")
+```
+下面是一个示例类，它继承自 Person 并扩展了 name 属性的功能：
+```python {cmd id="20180413100628" continue="20180413100146"}
+class SubPerson(Person):
+    @property
+    def name(self):
+        print('    Getting name')
+        return super().name
+    
+    @name.setter
+    def name(self, value):
+        print('    Setting name to', value)
+        super(SubPerson, SubPerson).name.__set__(self, value)
+
+    @name.deleter
+    def name(self):
+        print('    Deleting name')
+        super(SubPerson, SubPerson).name.__delete__(self)
+```
+接下来使用这个新类：
+```python {cmd continue="20180413100628"}
+print('Create SubPerson:')
+s = SubPerson('Guido')
+print('Get s.name:')
+print(s.name)
+print('Set s.name:')
+s.name = 'Larry'
+s.name = 42
+```
+可以单独扩展 property 中的某一个方法，不过定义方法不同：
+```python {cmd continue="20180413100146"}
+class SubPerson(Person):
+    @property
+    def name(self):
+        print('Getting name')
+        return super().name
+s = SubPerson('Guido')
+```
+setter 函数整个消失了，需要修改为：
+```python {cmd continue="20180413100146"}
+class SubPerson(Person):
+    @Person.name.getter
+    def name(self):
+        print('Getting name')
+        return super().name
+s = SubPerson('Guido')
+print(s.name)
+```
+
+讨论：在子类中扩展一个 property 可能会引起很多不易察觉的问题，因为一个 property 其实是 getter、setter 和 deleter 方法的集合。因此，当你扩展一个 property 的时候，你需要先确定你是否要重新定义所有的方法还是只修改其中某个。
+
+### 创建新的类或实例属性
+
+问题：你想创建一个新的拥有一些额外功能的实例属性类型，比如类型检查。
+
+解决方案：如果你想创建一个全新的实例属性，可以通过一个描述器类的形式来定义它的功能：
+```python {cmd id="20180413105013"}
+# Descriptor attribute for an integer type-checked attribute
+class Integer:
+    def __init__(self, name):
+        self.name = name
+    
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        else:
+            return instance.__dict__[self.name]
+
+    def __set__(self, instance, value):
+        if not isinstance(value, int):
+            raise TypeError('Expected an int')
+        instance.__dict__[self.name] = value
+
+    def __delete__(self, instance):
+        del instance.__dict__[self.name]
+```
+一个描述器就是一个实现了 3 个核心的属性访问操作（get、set、delete）的类，分别为`__get__()`、`__set__()` 和 `__delete__()` 这 3 个特殊的方法。这些方法接受一个实例作为输入，之后相应地操作实例底层的字典。
+
+为了使用一个描述器，需要将这个描述器的实例作为类属性放到一个类的定义中。例如：
+```python {cmd id="20180413105631" continue="20180413105013"}
+class Point:
+    x = Integer('x')
+    y = Integer('y')
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+```
+当这样之后，所有对描述器属性（比如 x 或 y）的访问，都会被 `__get__()`、`__set__()` 和 `__delete__()` 方法捕获到。例如：
+```python {cmd id="20180413110333" continue="20180413105631"}
+p = Point(2, 3)
+```
+调用 `__get__` 函数：
+```python {cmd continue="20180413110333"}
+print(p.x)
+```
+
+调用 `__set__` 函数：
+```python {cmd continue="20180413110333"}
+p.x = -5
+```
+
+如果设置为非整数，就会抛出错误：
+```python {cmd continue="20180413110333"}
+p.y = 5.0
+```
+作为输入，描述器的每一个方法都会接受一个操作实例，为了实现请求操作，会相应的操作实例底层的字典(`__dict__`属性)。描述器的 self.name 属性存储了实例字典中被设计使用到的key。
+
+讨论：描述器可实现大部分 Python 类特性中的底层魔法，包括 @classmethod、@staticmethod、@property 甚至是 `__slots__` 特性。
+
+通过定义一个描述器，你可以在底层捕获核心的实例操作(get、set、delete)，并且可完全自定义它们的行为。这是一个强大的工具，有了它你可以实现很多高级功能，并且它也是很多高级库和框架中的重要工具之一。
+
+描述器的一个比较困惑的地方是它只能在类级别被定义，而不能为每个实例单独定义，因此下面的代码是无法工作的：
+```python {cmd}
+class Point:
+    def __init__(self, x, y):
+        self.x = Integer('x')
+        self.y = Integer('y')
+        self.x = x
+        self.y = y
+```
+同时，`__get__()` 方法实现起来比看起来要复杂得多：
+```python
+# Descriptor attribute for an integer type-checked attribute
+class Integer:
+    def Integer:
+        def __get__(self, instance, cls):
+            if instance is None:
+                return self
+            else:
+                return instance.__dict__[self.name]
+```
+`__get__()` 看上去有点复杂的原因归结于实例变量和类变量的不同。如果一个描述器被当做一个类变量来访问，那么 `instance` 参数被设置成 `None`。这种情况下,标准做法是简单的返回这个描述符本身即可（尽管你还可以添加其他的自定义操作）。例如：
+```python {cmd continue="20180413105631"}
+p = Point(2, 3)
+print(p.x)
+print(Point.x)
+```
+
+描述器通常是那些使用到装饰器或元类的大型框架中的一个组件。同时它们的使用也被隐藏在后面。举个例子，下面是一些更高级的基于描述器的代码，并涉及到一个装饰器：
+```python
+# Descriptor for a type-checked attribute
+class Typed:
+    def __init__(self, name, expected_type):
+        self.name = name
+        self.expected_type = expected_type
+
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        else:
+            return instance.__dict__[self.name]
+
+    def __set__(self, instance, value):
+        if not isinstance(value, self.expected_type):
+            raise TypeError('Expected a', self.expected_type)
+        else:
+            self.__dict__[self.name] = value
+    
+    def __delete__(self, instance):
+        del instance.__dict__[self.name]
+
+# Class decorator that applies it to selected attributes
+def typeasset(**kwargs):
+    def decorate(cls):
+        for name, expected_type in kwargs.items()
+            # Attach a Typeddescriptor to the class
+            setattr(cls, name, Typed(name, expected_type))
+            return cls
+    return decorate
+
+# Example use
+@typeasset(name=str, shares=int, price=float)
+class Stock:
+    def __init__(self, name, shares, price):
+        self.name = name
+        self.shares = shares
+        self.price = price
+```
+最后要指出的一点是，如果你只是想简单地自定义某个类的单个属性访问的话就不用去写描述器了。这种情况下，property 技术会更加容易。当进程中有很多重复代码的时候，描述器就很有用了（比如你想在你代码的很多地方使用描述器提供的功能或者将它作为一个函数库的特性）。
+
+### 使用延时计算属性 (unfinish)
+
+问题：你想将一个只读属性定义成一个 property，并且只在访问的时候才会出结果，结果一旦被访问后，你希望结果值被缓存起来，不用每次去计算。
+
+解决方案：定义一个延迟属性的一种高效方法是通过使用一个描述器类，如下所示：
+```python {cmd id="20180413141943"}
+class lazyproperty:
+    def __init__(self, func):
+        self.func = func
+    def __get__(self, instance, cls):
+        if instance is None:
+            return self
+        else:
+            value = self.func(instance)
+            setattr(instance, self.func.__name__, value)
+```
+你需要像下面这样在一个类中使用它：
+```python {cmd continue="20180413141943"}
+import math
+
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+
+```
+
+## 装饰器和闭包
+
+### 装饰器基础知识
+
+装饰器是可调用的对象，其参数使另一个函数（被装饰的函数）。装饰器可能会处理被装饰的函数，然后把它放回，或者将其替换成另一个函数或可调用对象。
+
+假如有个名为 decorate 的装饰器：
+```python
+@decorate
+def target():
+    print('running target()')
+```
+上面代码的效果与下面写法一样：
+```python
+def target():
+    print('running target()')
+
+target = decorate(target)
+```
+两种写法的最终结果一样：上述两个代码片段执行完毕后得到的 `target` 不一定是原来那个 `target` 函数，而是 `decorate(target)` 返回的函数。
+
+为了确认被装饰的函数会被替换，请看示例 7-1 中的控制台会话。
+```python {cmd}
+def deco(fun):
+    def inner():
+        print('running inner()')
+    return inner # deco 返回 inner 函数对象
+
+@deco # 使用 deco 装饰 target
+def target():
+    print('running target()')
+
+target() # 调用被装饰的 target 其实会运行 inner
+```
+```python
+>>> target # 审查对象，发现 target 现在是 inner 的引用
+```
+```
+<function __main__.deco.<locals>.inner>
+```
+严格来说，装饰器只是语法糖。如前所示，装饰器可以像常规的可调用对象那样调用，其参数是另一个函数。有时，这样做更加方便，尤其是做元编程（在运行时改变程序的行为）时。
+```python {cmd}
+def deco(fun):
+    def inner():
+        print('running inner()')
+    return inner
+
+def target():
+    print('running target')
+
+target = deco(target)
+target()
+```
+综上，装饰器的一大特点是，能把装饰的函数替换成其他函数；第二个特性是，装饰器在加载模块时立即执行；
+
+### Python何时执行装饰器
+
+装饰器的一个关键特性是，它们在被装饰的函数定义之后立即运行。这通常是在导入时（即 Python 加载模块时），如下：
+```python 
+registry = []
+
+def register(func):
+    print(f'running register{func}')
+    registry.append(func)
+    return func
+
+@register
+def f1():
+    print('running f1()')
+
+@register
+def f2():
+    print('running f2()')
+
+def f3():
+    print('running f3()')
+
+def main():
+    print('running main()')
+    print('register ->', register)
+    f1()
+    f2()
+    f3()
+if __name__ == '__main__':
+    main()
+```
+```
+running register<function f1 at 0x10391f9d8>
+running register<function f2 at 0x10391f8c8>
+running main()
+register -> <function register at 0x1038e2620>
+running f1()
+running f2()
+running f3()
+```
+注意：register 在模块中其他函数之前运行（两次）。调用 register 时，传递给它的参数使被修饰的函数。
+
+加载模块后，registry 中有两个被装饰函数的引用：`f1` 和 `f2`。这两个函数，以及 `f3` 只有在 `main` 明确调用它们时才会执行。
+
+该例子是为了说明：**函数装饰器在导入模块时，立即执行，而被修饰的函数只有在明确调用时运行，这突出了 Python 程序员所说的导入时和运行时的区别；**
+
+考虑到装饰器在真实代码中的常用方式，上面的示例有两个不寻常的地方：
+- 装饰器函数与被装饰的函数在同一个模块中定义。实际情况是，装饰器通常在一个模块中定义，然后应用到其他模块中的函数上；
+- `register` 装饰器返回的函数与通过参数传入的相同。实际上，大多数装饰器会在内部定义一个函数，然后将其返回。
+
+虽然示例中的 `register` 装饰器原封不动的返回被装饰的函数，但是这种技术并非没有用处。很多 Python Web 框架使用这样的装饰器吧函数添加到某种中央注册处，例如把URL模式映射成 HTTP 响应的函数上的注册处。这种注册装饰器可能会也可能不会改变被装饰的函数。
+
+### 使用装饰器改进“策略”模式
+
+
+## 元编程
+
+软件开发领域中最经典的口头禅是“don't repeat yourself”。也就是说，任何时候，当你的程序中存在高度重复（或者是通过剪切复制）的代码时，都应该想想是否有更加好的解决方案。在Python当中，通常可以通过元变成来解决这类问题。简而言之，元变成就是关于创建操作源代码（比如修改、生成或包装原来的代码）的函数和类。主要技术是使用装饰器、类装饰器和元类。不过还有一些其他的技术，包括签名对象、使用 `exec()` 执行代码以及对内部函数和类的反射技术等。
+
+本章的主要目的是向大家介绍这些元编程技术，并且给出实例来演示它们是怎样定制化你的源代码行为的。
+
+### 在函数上添加包装器
+
+问题：你想在函数上添加一个包装器，增加额外的操作处理（比如日志、计时等）。
+
+解决方案：如果你想使用额外的代码包装一个函数，可以定义一个装饰器函数，例如：
+```python {cmd}
+import time
+
+from functions import wraps
+
+def timethis(func):
+    '''
+    Decorator that reports the execution time
+    '''
+    @wraps(func)
+```
+
+
+
 
