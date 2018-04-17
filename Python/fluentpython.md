@@ -684,3 +684,306 @@ TypeError: unhashable type: 'list'
 
 鸭子测试可以表述为：当看到一只鸟走起来像鸭子、游泳像鸭子、叫起来也像鸭子，那这只鸟就可以被称为鸭子。
 
+### 映射的弹性键查询
+
+有时候为了方便起见，就算某个键在映射里不存在，我们也洗完通过这个件读取值得时候能得到一个默认值，三种方式：
+- `setdefault`
+- `defaultdict`
+- 自定义 `dict` 子类
+
+#### defaultdict 处理找不到的键的一个选择
+
+在用户创建 `defaultdict` 对象的时候，就需要给它配置一个为找不到的键创造默认值的方法。
+
+具体而言，在实例化一个 defaultdict 的时候，就需要给它配置一个为找不到的键创造默认值的方法。
+
+**`defaultdict` 中的 `default_factory` 只会在 `__getitem__`中被调用，其他地方不会发挥作用，比如 dd 是一个 `defaultdict`，k 是个找不到的键，dd[k] 会调用 `default_factory`，不过 dd.get(k) 会返回 None。**
+
+```python
+>>> dd = defaultdict(list)
+>>> dd.get('a')
+>>> dd['a']
+[]
+```
+所有者一切背后的功臣其实是特殊方法 `__missing__`，它会在`defaultdict`遇到找不到的键的时候调用`default_factory`,而实际这个特性是所有映射类型都可以选择去支持的。
+```python {cmd}
+class MyDict(dict):
+    def __init__(self, default_factory):
+        super().__init__()
+        self.default_factory = default_factory
+    def __missing__(self, k):
+        self[k] = self.default_factory()
+        return self[k]
+
+md = MyDict(list)
+md['a'].append(1)
+print(md)
+```
+
+> `__missing__` 方法只会被 `__getitem__` 调用(比如在表达式 d[k] 中)。提供 `__missing__` 方法对 get 或 `__contains__` 这些方法的使用没有影响。
+```python
+class StrKeyDict0(dict):
+    def __missing__(self, k):
+        if isinstance(k, str):
+            raise KeyError(k)
+        return self[str(k)]
+    def get(self, k, default=None):
+        try:
+            return self[k]
+        except KeyError:
+            return default
+    def __contains__(self, k):
+        return k in self.keys() or str(k) in self.keys()
+d = StrKeyDict0([('2','two'),('4','four')])
+d['2']
+d[4]
+```
+> 如果要自定义一个映射类型，更合适的策略是继承 `collection.UserDict`类。
+
+### 字典的变种
+
+`collections.OrderedDict` : 这个类型在添加键的时候会被保持顺序，因此键的迭代次序总是一致；
+
+`collecton.ChainMap` : 该类型可以容纳数个不同的映射对象，然后在进行键查找操作的时候，这些对象会被当做一个整体被逐个查找，找到键被找到为止。
+```python
+>>> d1 = {'one': 1, 'two': 2, 'three': 3, 'four': 4}
+>>> d2 = {'eleven':11, 'twelve':12}
+>>> from collections import ChainMap
+>>> d = ChainMap(d1,d2)
+>>> 'one' in d
+True
+>>> 'eleven' in d
+True
+```
+
+`collections.Counter`：这个映射类型会给键准备一个整数计数器，每次更新一个键的时候就会增加这个计数器，所以这个类型可用于给可散列列表对象技术，或者是当成多重集来用——多重集就是集合中的元素可以出现不止一次：
+- 计数/多重集合 作用：
+```python
+>>> Counter('abccabacd')
+Counter({'a': 3, 'c': 3, 'b': 2, 'd': 1})
+>>> Counter([1,2,2,3,3,1,2,3,6,5,6])
+Counter({2: 3, 3: 3, 1: 2, 6: 2, 5: 1})
+```
+- `+`/`-` 运算
+```python
+>>> c1 = Counter('abbcbca')
+>>> c2 = Counter('bccdb')
+>>> c1
+Counter({'b': 3, 'a': 2, 'c': 2})
+>>> c2
+Counter({'b': 2, 'c': 2, 'd': 1})
+>>> c1 + c2
+Counter({'b': 5, 'c': 4, 'a': 2, 'd': 1})
+>>> c1 - c2
+Counter({'a': 2, 'b': 1})
+```
+
+- `most_common(n)`计算最频繁的 n 个元素
+```python
+>>> c = Counter('aabdababbabdcddeabd')
+>>> c
+Counter({'a': 6, 'b': 6, 'd': 5, 'c': 1, 'e': 1})
+>>> c.most_common(2)
+[('a', 6), ('b', 6)]
+>>> c.most_common(1)
+[('a', 6)]
+```
+
+`collection.UserDict` ：这个类单纯地将标准 dict 用纯Python又实现了一遍，跟 OrderedDict、ChainMap、Counter这些开箱机用的类型不同，UserDict是让用户继承写子类的。
+
+### 子类化 UserDict
+
+UserDict 不是 dict 的子类，但是 UserDict 有个叫 data 的属性，是 dict 实例，这个属性实际上就是 UserDict 最终存储数据的地方。这样做的好处主要是：`UserDict` 的子类能够在实现 `__setitem__` 的时候避免不必要的递归，也可以让 `__contains__` 中的代码更加简洁。
+
+因为 UserDict 继承的是 MutableMapping，所以自定义的`StrKeyDict`中剩下的那些映射方法都是从 UserDict、MutableMapping和Mapping这些超类中继承而来的。Mapping类虽然是一个抽象基类（ABC)，但它却提供了好几个实用的方法。
+```python
+>>> class StrKeyDict0(UserDict):                          
+...     def __missing__(self, k):
+...         if isinstance(k, str):
+...             raise KeyError(k)
+...         return self[str(k)]
+...     def __setitem__(self, key, item):
+...         self.data[str(key)] = item 
+...     def __contains__(self, k):    
+...         return str(k) in self.data
+... 
+>>> d = StrKeyDict0([('2','two'),('4','four'),('1',None)])
+>>> d[3] = 'three'
+>>> 1 in d
+True
+>>> 5 in d
+False
+>>> d
+{'2': 'two', '4': 'four', '1': None, '3': 'three'}
+# 继承自 MutableMapping 的 update 方法
+>>> d.update([(5,'five'),(6,'six')])
+>>> d.update({7:'seven'})
+>>> d
+{'2': 'two', '4': 'four', '1': None, '3': 'three', '5': 'five', '6': 'six', '7': 'seven'}
+# 继承自 Mapping 的 get 方法
+>>> d.get(10,'N/A')
+'N/A'
+```
+
+### 不可变映射类型
+
+标准库中的所有映射类型都是可变的。
+
+通过 `MappingProxyType` 可以变相实现只读：
+```python
+from types import MappingProxyType
+>>> d = {1:'A'}
+>>> d_proxy = MappingProxyType(d)
+>>> d_proxy
+mappingproxy({1: 'A'})
+>>> d_proxy[1]
+'A'
+>>> d_proxy[2] = 'x'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'mappingproxy' object does not support item assignment
+>>> d_proxy[1] = 'B'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'mappingproxy' object does not support item assignment
+# d_proxy 是动态的，对 d 所做的任何改动都会反馈到 d_proxy 上
+>>> d[2] = 'B'
+>>> d_proxy
+mappingproxy({1: 'A', 2: 'B'})
+>>> d_proxy[2]
+'B'
+```
+### 集合论
+
+集合的本质是许多唯一对象的聚集，因此，集合可以用于去重：
+```python
+>>> l = ['spam','spam','eggs','spam']
+>>> set(l)
+{'spam', 'eggs'}
+>>> list(set(l))
+['spam', 'eggs']
+```
+
+set 和它不可变的姐妹类型 frozenset 直到 Python2.3 才首次以模块的形式出现，在 Python2.7 中它们升级为built-in类型。
+
+集合中的元素必须是可散列的，set 类型本身是不可散列的，但是 fronzeset 可以。因此可以创建一个包含不同 frozenset 的 set。
+
+集合的运算：a | b (a和b的并集)，a & b (a和b的交集)，a - b (a和b的差集)，a ^ b (a和b的对称差)。
+
+代码 `{1,2,3}` 这种字面量句法相比于构造方法`set([1,2,3])`要更快且更易读：
+```python
+>>> from dis import dis
+>>> dis('{1}')
+  1           0 LOAD_CONST               0 (1)
+              2 BUILD_SET                1
+              4 RETURN_VALUE
+>>> dis('set([1])')
+  1           0 LOAD_NAME                0 (set)
+              2 LOAD_CONST               0 (1)
+              4 BUILD_LIST               1
+              6 CALL_FUNCTION            1
+              8 RETURN_VALUE
+```
+
+由于 Python 中没有针对 frozenset 的特殊字面量句法，我们智能常用构造方法：
+```python
+>>> frozenset(range(5))
+frozenset({0, 1, 2, 3, 4})
+```
+
+#### 集合推导
+
+Python2.7 带来了集合推导（set comprehensions）和之前的字典推导。新建一个Latin-1 字符集合，该集合中的每个字符的 Unicode 名字里都有 'SIGN' 这个单词：
+```python
+>>> {chr(i) for i in range(32,256) if 'SIGN' in name(chr(i),'')}
+{'±', '$', '§', '¢', '°', '¬', '£', '>', '×', '÷', '%', 
+'+', '¥', '¶', 'µ', '#', '<', '¤', '®', '=', '©'}
+```
+
+备注：可以使用 `in` 判断某个字符串是否有某种类型的子字符串，而不用正则表达式：
+```python
+>>> s = "apple banana"
+>>> 'na' in s
+True
+>>> 'aa' in s
+False
+```
+
+#### 集合的操作
+
+```puml
+@startuml
+Container <|-- Set
+Iterable <|- Set
+Sized <|- Set
+Set <|- MutableSet
+Container : ‘__contains__’
+Iterable : '__iter__'
+Sized : '__len__'
+Set : isdisjoint
+Set : `__le__`
+Set : `__lt__`
+Set : `__ge__`
+Set : `__gt__`
+Set : `__eq__`
+Set : `__ne__`
+Set : `__and__`
+Set : `__or__`
+Set : `__sub__`
+Set : `__xor__`
+MutableSet : add
+MutableSet : discard
+MutableSet : remove
+MutableSet : pop
+MutableSet : clear
+MutableSet : `__ior__`
+MutableSet : `__iand__`
+MutableSet : `__ixor__`
+MutableSet : `__isub__`
+@enduml
+```
+
+相求4个聚合类型 a、b、c、d的并集，可以用 `a.union(b,c,d)`，其中 a 必须是 set，b、c、d可以是如何类型的可迭代对象：
+```python
+>>> def f():
+...     m = 0
+...     while m < 3:
+...         yield m
+...         m += 1
+... 
+>>> a = {5}
+>>> b = f()
+>>> c = 'xyz'
+>>> d = {10,'w'}
+>>> a.union(b,c,d)
+{0, 1, 2, 'x', 'z', 5, 10, 'y', 'w'}
+```
+
+下面，我们会继续讨论字典和集合类型背后的实现。
+
+### dict 和 set 的背后
+
+5 个问题：
+1. Python 中的 dict 和 set 的效率有多高？
+1. 为什么它们是无序的？
+1. 为什么不是所有的Python对象都可以当做 dict 的键或者 set 里的元素？
+1. 为什么 dict 的键和 set 元素的顺序是根据它们被添加的次序而定的？为什么映射对象的生命周期中，这个顺序并不是一成不变的？
+1. 为什么不应该在迭代循环 dict 或 set 的同时往里面添加元素？
+
+#### 一个关于效率的实验
+
+所有的 Python 程序员都从经验中得出结论，认为字典和集合的速度是非常快的。接下来我们要通过可控的实验来验证这一点。
+
+为了对比容器的大小对 dict、set 或 list 的 in 元素运算符效率的影响，先创建一个有 1000万个双精度浮点数的数组，名叫 haystack。另外还有一个包含 1000 个浮点数的 needles 数组。 从其中 500 个数字是从 haystack 中跳出的，另外500个肯定不在 haystack 中。
+
+作为 dict 测试的基准，用 dict.fromkeys() 来建立一个含有 1000 个浮点数的名叫 haystack 的字典，并用 timeit 模块测试：
+实验设备：Python 3.6，MacBook Pro 13， Core i5
+|haystack<br>长度|增长<br>系数|dict|增长<br>系数|集合|增长<br>系数|集合<br>交集|增长<br>系数|队列|增长<br>系数|
+|---|---|---|---|---|---|---|---|---|---|
+|1000|1×|70.5 μs|1.0x|74.9 µs|1.0x|19.6 μs|1.0x|6.54 ms|1.0x|
+|10000|10×|84.6 μs|1.2x|80.5 µs|1.08x|25.1 µs|1.28x|68.7 ms|10.5x|
+|100000|100×|91.5 μs|1.3x|83.3 µs|1.15x|28.4 µs|1.45x|882 ms|134x|
+|1000000|1000×|114 μs|1.62x|91.7 µs|1.22x|32.1 µs|1.64x|31.2 s|4771x|
+|10000000|10000×|139 μs|1.97x|98.9 µs|1.32x|37.5 µs|1.91x|517s|79051x|
+
+下面让我们看看字典和集合如此快的原因：对散列表内部结构的讨论。

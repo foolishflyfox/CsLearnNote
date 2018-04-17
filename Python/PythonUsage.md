@@ -3373,6 +3373,8 @@ def timethis(func):
     @wraps(func)
 ```
 
-
+```python {cmd}
+print('abc')
+```
 
 

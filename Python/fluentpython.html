@@ -973,10 +973,428 @@ TypeError<span class="token punctuation">:</span> unhashable <span class="token 
 </table>
 <p><strong>鸭子类型(duck typing)</strong>：一种动态类型的风格，在这种风格中，一个对象有效的语义不是由继承自特定的类或特定的接口决定，而是由 <em>当前方法和属性的集合</em> 决定。</p>
 <p>鸭子测试可以表述为：当看到一只鸟走起来像鸭子、游泳像鸭子、叫起来也像鸭子，那这只鸟就可以被称为鸭子。</p>
+<h3 class="mume-header" id="%E6%98%A0%E5%B0%84%E7%9A%84%E5%BC%B9%E6%80%A7%E9%94%AE%E6%9F%A5%E8%AF%A2">映射的弹性键查询</h3>
+
+<p>有时候为了方便起见，就算某个键在映射里不存在，我们也洗完通过这个件读取值得时候能得到一个默认值，三种方式：</p>
+<ul>
+<li><code>setdefault</code></li>
+<li><code>defaultdict</code></li>
+<li>自定义 <code>dict</code> 子类</li>
+</ul>
+<h4 class="mume-header" id="defaultdict-%E5%A4%84%E7%90%86%E6%89%BE%E4%B8%8D%E5%88%B0%E7%9A%84%E9%94%AE%E7%9A%84%E4%B8%80%E4%B8%AA%E9%80%89%E6%8B%A9">defaultdict 处理找不到的键的一个选择</h4>
+
+<p>在用户创建 <code>defaultdict</code> 对象的时候，就需要给它配置一个为找不到的键创造默认值的方法。</p>
+<p>具体而言，在实例化一个 defaultdict 的时候，就需要给它配置一个为找不到的键创造默认值的方法。</p>
+<p><strong><code>defaultdict</code> 中的 <code>default_factory</code> 只会在 <code>__getitem__</code>中被调用，其他地方不会发挥作用，比如 dd 是一个 <code>defaultdict</code>，k 是个找不到的键，dd[k] 会调用 <code>default_factory</code>，不过 dd.get(k) 会返回 None。</strong></p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> dd <span class="token operator">=</span> defaultdict<span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> dd<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> dd<span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token punctuation">]</span>
+</pre><p>所有者一切背后的功臣其实是特殊方法 <code>__missing__</code>，它会在<code>defaultdict</code>遇到找不到的键的时候调用<code>default_factory</code>,而实际这个特性是所有映射类型都可以选择去支持的。</p>
+<div class="code-chunk" data-id="code-chunk-id-10" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=10, cmd}" class="language-python"><span class="token keyword">class</span> <span class="token class-name">MyDict</span><span class="token punctuation">(</span><span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> default_factory<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__init__<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>default_factory <span class="token operator">=</span> default_factory
+    <span class="token keyword">def</span> <span class="token function">__missing__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">[</span>k<span class="token punctuation">]</span> <span class="token operator">=</span> self<span class="token punctuation">.</span>default_factory<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">[</span>k<span class="token punctuation">]</span>
+
+md <span class="token operator">=</span> MyDict<span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">)</span>
+md<span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>md<span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">{'a': [1]}
+</pre></div></div><blockquote>
+<p><code>__missing__</code> 方法只会被 <code>__getitem__</code> 调用(比如在表达式 d[k] 中)。提供 <code>__missing__</code> 方法对 get 或 <code>__contains__</code> 这些方法的使用没有影响。</p>
+</blockquote>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">StrKeyDict0</span><span class="token punctuation">(</span><span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__missing__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> KeyError<span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">get</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> k<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">try</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> self<span class="token punctuation">[</span>k<span class="token punctuation">]</span>
+        <span class="token keyword">except</span> KeyError<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> default
+    <span class="token keyword">def</span> <span class="token function">__contains__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> k <span class="token keyword">in</span> self<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">or</span> <span class="token builtin">str</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>keys<span class="token punctuation">(</span><span class="token punctuation">)</span>
+d <span class="token operator">=</span> StrKeyDict0<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'2'</span><span class="token punctuation">,</span><span class="token string">'two'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'4'</span><span class="token punctuation">,</span><span class="token string">'four'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+d<span class="token punctuation">[</span><span class="token string">'2'</span><span class="token punctuation">]</span>
+d<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span>
+</pre><blockquote>
+<p>如果要自定义一个映射类型，更合适的策略是继承 <code>collection.UserDict</code>类。</p>
+</blockquote>
+<h3 class="mume-header" id="%E5%AD%97%E5%85%B8%E7%9A%84%E5%8F%98%E7%A7%8D">字典的变种</h3>
+
+<p><code>collections.OrderedDict</code> : 这个类型在添加键的时候会被保持顺序，因此键的迭代次序总是一致；</p>
+<p><code>collecton.ChainMap</code> : 该类型可以容纳数个不同的映射对象，然后在进行键查找操作的时候，这些对象会被当做一个整体被逐个查找，找到键被找到为止。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> d1 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'one'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'two'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'three'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'four'</span><span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> d2 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'eleven'</span><span class="token punctuation">:</span><span class="token number">11</span><span class="token punctuation">,</span> <span class="token string">'twelve'</span><span class="token punctuation">:</span><span class="token number">12</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> collections <span class="token keyword">import</span> ChainMap
+<span class="token operator">>></span><span class="token operator">></span> d <span class="token operator">=</span> ChainMap<span class="token punctuation">(</span>d1<span class="token punctuation">,</span>d2<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token string">'one'</span> <span class="token keyword">in</span> d
+<span class="token boolean">True</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token string">'eleven'</span> <span class="token keyword">in</span> d
+<span class="token boolean">True</span>
+</pre><p><code>collections.Counter</code>：这个映射类型会给键准备一个整数计数器，每次更新一个键的时候就会增加这个计数器，所以这个类型可用于给可散列列表对象技术，或者是当成多重集来用——多重集就是集合中的元素可以出现不止一次：</p>
+<ul>
+<li>计数/多重集合 作用：</li>
+</ul>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> Counter<span class="token punctuation">(</span><span class="token string">'abccabacd'</span><span class="token punctuation">)</span>
+Counter<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'d'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> Counter<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+Counter<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">2</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+</pre><ul>
+<li><code>+</code>/<code>-</code> 运算</li>
+</ul>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> c1 <span class="token operator">=</span> Counter<span class="token punctuation">(</span><span class="token string">'abbcbca'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c2 <span class="token operator">=</span> Counter<span class="token punctuation">(</span><span class="token string">'bccdb'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c1
+Counter<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c2
+Counter<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'d'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c1 <span class="token operator">+</span> c2
+Counter<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'d'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c1 <span class="token operator">-</span> c2
+Counter<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+</pre><ul>
+<li><code>most_common(n)</code>计算最频繁的 n 个元素</li>
+</ul>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> c <span class="token operator">=</span> Counter<span class="token punctuation">(</span><span class="token string">'aabdababbabdcddeabd'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c
+Counter<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'a'</span><span class="token punctuation">:</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">:</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token string">'d'</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'e'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c<span class="token punctuation">.</span>most_common<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> c<span class="token punctuation">.</span>most_common<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><p><code>collection.UserDict</code> ：这个类单纯地将标准 dict 用纯Python又实现了一遍，跟 OrderedDict、ChainMap、Counter这些开箱机用的类型不同，UserDict是让用户继承写子类的。</p>
+<h3 class="mume-header" id="%E5%AD%90%E7%B1%BB%E5%8C%96-userdict">子类化 UserDict</h3>
+
+<p>UserDict 不是 dict 的子类，但是 UserDict 有个叫 data 的属性，是 dict 实例，这个属性实际上就是 UserDict 最终存储数据的地方。这样做的好处主要是：<code>UserDict</code> 的子类能够在实现 <code>__setitem__</code> 的时候避免不必要的递归，也可以让 <code>__contains__</code> 中的代码更加简洁。</p>
+<p>因为 UserDict 继承的是 MutableMapping，所以自定义的<code>StrKeyDict</code>中剩下的那些映射方法都是从 UserDict、MutableMapping和Mapping这些超类中继承而来的。Mapping类虽然是一个抽象基类（ABC)，但它却提供了好几个实用的方法。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">StrKeyDict0</span><span class="token punctuation">(</span>UserDict<span class="token punctuation">)</span><span class="token punctuation">:</span>                          
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">__missing__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>             <span class="token keyword">raise</span> KeyError<span class="token punctuation">(</span>k<span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">return</span> self<span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">__setitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> key<span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         self<span class="token punctuation">.</span>data<span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> item 
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">__contains__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> k<span class="token punctuation">)</span><span class="token punctuation">:</span>    
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">return</span> <span class="token builtin">str</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span> <span class="token keyword">in</span> self<span class="token punctuation">.</span>data
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> d <span class="token operator">=</span> StrKeyDict0<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'2'</span><span class="token punctuation">,</span><span class="token string">'two'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'4'</span><span class="token punctuation">,</span><span class="token string">'four'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'1'</span><span class="token punctuation">,</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> d<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'three'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token number">1</span> <span class="token keyword">in</span> d
+<span class="token boolean">True</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token number">5</span> <span class="token keyword">in</span> d
+<span class="token boolean">False</span>
+<span class="token operator">>></span><span class="token operator">></span> d
+<span class="token punctuation">{</span><span class="token string">'2'</span><span class="token punctuation">:</span> <span class="token string">'two'</span><span class="token punctuation">,</span> <span class="token string">'4'</span><span class="token punctuation">:</span> <span class="token string">'four'</span><span class="token punctuation">,</span> <span class="token string">'1'</span><span class="token punctuation">:</span> <span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token string">'3'</span><span class="token punctuation">:</span> <span class="token string">'three'</span><span class="token punctuation">}</span>
+<span class="token comment"># 继承自 MutableMapping 的 update 方法</span>
+<span class="token operator">>></span><span class="token operator">></span> d<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token string">'five'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token string">'six'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> d<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">7</span><span class="token punctuation">:</span><span class="token string">'seven'</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> d
+<span class="token punctuation">{</span><span class="token string">'2'</span><span class="token punctuation">:</span> <span class="token string">'two'</span><span class="token punctuation">,</span> <span class="token string">'4'</span><span class="token punctuation">:</span> <span class="token string">'four'</span><span class="token punctuation">,</span> <span class="token string">'1'</span><span class="token punctuation">:</span> <span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token string">'3'</span><span class="token punctuation">:</span> <span class="token string">'three'</span><span class="token punctuation">,</span> <span class="token string">'5'</span><span class="token punctuation">:</span> <span class="token string">'five'</span><span class="token punctuation">,</span> <span class="token string">'6'</span><span class="token punctuation">:</span> <span class="token string">'six'</span><span class="token punctuation">,</span> <span class="token string">'7'</span><span class="token punctuation">:</span> <span class="token string">'seven'</span><span class="token punctuation">}</span>
+<span class="token comment"># 继承自 Mapping 的 get 方法</span>
+<span class="token operator">>></span><span class="token operator">></span> d<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token string">'N/A'</span><span class="token punctuation">)</span>
+<span class="token string">'N/A'</span>
+</pre><h3 class="mume-header" id="%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%98%A0%E5%B0%84%E7%B1%BB%E5%9E%8B">不可变映射类型</h3>
+
+<p>标准库中的所有映射类型都是可变的。</p>
+<p>通过 <code>MappingProxyType</code> 可以变相实现只读：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> types <span class="token keyword">import</span> MappingProxyType
+<span class="token operator">>></span><span class="token operator">></span> d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token string">'A'</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> d_proxy <span class="token operator">=</span> MappingProxyType<span class="token punctuation">(</span>d<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> d_proxy
+mappingproxy<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">:</span> <span class="token string">'A'</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> d_proxy<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+<span class="token string">'A'</span>
+<span class="token operator">>></span><span class="token operator">></span> d_proxy<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'x'</span>
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+TypeError<span class="token punctuation">:</span> <span class="token string">'mappingproxy'</span> <span class="token builtin">object</span> does <span class="token operator">not</span> support item assignment
+<span class="token operator">>></span><span class="token operator">></span> d_proxy<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'B'</span>
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+TypeError<span class="token punctuation">:</span> <span class="token string">'mappingproxy'</span> <span class="token builtin">object</span> does <span class="token operator">not</span> support item assignment
+<span class="token comment"># d_proxy 是动态的，对 d 所做的任何改动都会反馈到 d_proxy 上</span>
+<span class="token operator">>></span><span class="token operator">></span> d<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'B'</span>
+<span class="token operator">>></span><span class="token operator">></span> d_proxy
+mappingproxy<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">:</span> <span class="token string">'A'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span> <span class="token string">'B'</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> d_proxy<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token string">'B'</span>
+</pre><h3 class="mume-header" id="%E9%9B%86%E5%90%88%E8%AE%BA">集合论</h3>
+
+<p>集合的本质是许多唯一对象的聚集，因此，集合可以用于去重：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> l <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'spam'</span><span class="token punctuation">,</span><span class="token string">'spam'</span><span class="token punctuation">,</span><span class="token string">'eggs'</span><span class="token punctuation">,</span><span class="token string">'spam'</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">set</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span>
+<span class="token punctuation">{</span><span class="token string">'spam'</span><span class="token punctuation">,</span> <span class="token string">'eggs'</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">set</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token string">'spam'</span><span class="token punctuation">,</span> <span class="token string">'eggs'</span><span class="token punctuation">]</span>
+</pre><p>set 和它不可变的姐妹类型 frozenset 直到 Python2.3 才首次以模块的形式出现，在 Python2.7 中它们升级为built-in类型。</p>
+<p>集合中的元素必须是可散列的，set 类型本身是不可散列的，但是 fronzeset 可以。因此可以创建一个包含不同 frozenset 的 set。</p>
+<p>集合的运算：a | b (a和b的并集)，a &amp; b (a和b的交集)，a - b (a和b的差集)，a ^ b (a和b的对称差)。</p>
+<p>代码 <code>{1,2,3}</code> 这种字面量句法相比于构造方法<code>set([1,2,3])</code>要更快且更易读：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> dis <span class="token keyword">import</span> dis
+<span class="token operator">>></span><span class="token operator">></span> dis<span class="token punctuation">(</span><span class="token string">'{1}'</span><span class="token punctuation">)</span>
+  <span class="token number">1</span>           <span class="token number">0</span> LOAD_CONST               <span class="token number">0</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+              <span class="token number">2</span> BUILD_SET                <span class="token number">1</span>
+              <span class="token number">4</span> RETURN_VALUE
+<span class="token operator">>></span><span class="token operator">></span> dis<span class="token punctuation">(</span><span class="token string">'set([1])'</span><span class="token punctuation">)</span>
+  <span class="token number">1</span>           <span class="token number">0</span> LOAD_NAME                <span class="token number">0</span> <span class="token punctuation">(</span><span class="token builtin">set</span><span class="token punctuation">)</span>
+              <span class="token number">2</span> LOAD_CONST               <span class="token number">0</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+              <span class="token number">4</span> BUILD_LIST               <span class="token number">1</span>
+              <span class="token number">6</span> CALL_FUNCTION            <span class="token number">1</span>
+              <span class="token number">8</span> RETURN_VALUE
+</pre><p>由于 Python 中没有针对 frozenset 的特殊字面量句法，我们智能常用构造方法：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">frozenset</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token builtin">frozenset</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+</pre><h4 class="mume-header" id="%E9%9B%86%E5%90%88%E6%8E%A8%E5%AF%BC">集合推导</h4>
+
+<p>Python2.7 带来了集合推导（set comprehensions）和之前的字典推导。新建一个Latin-1 字符集合，该集合中的每个字符的 Unicode 名字里都有 'SIGN' 这个单词：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token builtin">chr</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">32</span><span class="token punctuation">,</span><span class="token number">256</span><span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token string">'SIGN'</span> <span class="token keyword">in</span> name<span class="token punctuation">(</span><span class="token builtin">chr</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token string">'±'</span><span class="token punctuation">,</span> <span class="token string">'$'</span><span class="token punctuation">,</span> <span class="token string">'§'</span><span class="token punctuation">,</span> <span class="token string">'¢'</span><span class="token punctuation">,</span> <span class="token string">'°'</span><span class="token punctuation">,</span> <span class="token string">'¬'</span><span class="token punctuation">,</span> <span class="token string">'£'</span><span class="token punctuation">,</span> <span class="token string">'>'</span><span class="token punctuation">,</span> <span class="token string">'×'</span><span class="token punctuation">,</span> <span class="token string">'÷'</span><span class="token punctuation">,</span> <span class="token string">'%'</span><span class="token punctuation">,</span> 
+<span class="token string">'+'</span><span class="token punctuation">,</span> <span class="token string">'¥'</span><span class="token punctuation">,</span> <span class="token string">'¶'</span><span class="token punctuation">,</span> <span class="token string">'µ'</span><span class="token punctuation">,</span> <span class="token string">'#'</span><span class="token punctuation">,</span> <span class="token string">'&lt;'</span><span class="token punctuation">,</span> <span class="token string">'¤'</span><span class="token punctuation">,</span> <span class="token string">'®'</span><span class="token punctuation">,</span> <span class="token string">'='</span><span class="token punctuation">,</span> <span class="token string">'©'</span><span class="token punctuation">}</span>
+</pre><p>备注：可以使用 <code>in</code> 判断某个字符串是否有某种类型的子字符串，而不用正则表达式：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> s <span class="token operator">=</span> <span class="token string">"apple banana"</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token string">'na'</span> <span class="token keyword">in</span> s
+<span class="token boolean">True</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token string">'aa'</span> <span class="token keyword">in</span> s
+<span class="token boolean">False</span>
+</pre><h4 class="mume-header" id="%E9%9B%86%E5%90%88%E7%9A%84%E6%93%8D%E4%BD%9C">集合的操作</h4>
+
+<p><?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="330px" preserveAspectRatio="none" style="width:427px;height:330px;" version="1.1" viewBox="0 0 427 330" width="427px" zoomAndPan="magnify"><defs><filter height="300%" id="faj1nddp8ghtp" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"></feGaussianBlur><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"></feColorMatrix><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"></feOffset><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"></feBlend></filter></defs><g><!--class Container--><rect fill="#FEFECE" filter="url(#faj1nddp8ghtp)" height="60.9551" id="Container" style="stroke: #A80036; stroke-width: 1.5;" width="88" x="207" y="8"></rect><ellipse cx="222.45" cy="24" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"></ellipse><path d="M225.4231,29.6431 Q224.8421,29.9419 224.2029,30.0913 Q223.5638,30.2407 222.8582,30.2407 Q220.3514,30.2407 219.0315,28.5889 Q217.7117,26.937 217.7117,23.8159 Q217.7117,20.6865 219.0315,19.0347 Q220.3514,17.3828 222.8582,17.3828 Q223.5638,17.3828 224.2112,17.5322 Q224.8587,17.6816 225.4231,17.9805 L225.4231,20.7031 Q224.7923,20.1221 224.1988,19.8523 Q223.6053,19.5825 222.9744,19.5825 Q221.6297,19.5825 220.9449,20.6492 Q220.2601,21.7158 220.2601,23.8159 Q220.2601,25.9077 220.9449,26.9744 Q221.6297,28.041 222.9744,28.041 Q223.6053,28.041 224.1988,27.7712 Q224.7923,27.5015 225.4231,26.9204 Z "></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="55" x="236.55" y="28.5352">Container</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="208" x2="294" y1="40" y2="40"></line><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="76" x="213" y="54.6348">‘__contains__’</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="208" x2="294" y1="60.9551" y2="60.9551"></line><!--class Set--><rect fill="#FEFECE" filter="url(#faj1nddp8ghtp)" height="190.5059" id="Set" style="stroke: #A80036; stroke-width: 1.5;" width="70" x="216" y="129"></rect><ellipse cx="240.45" cy="145" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"></ellipse><path d="M243.4231,150.6431 Q242.8421,150.9419 242.2029,151.0913 Q241.5638,151.2407 240.8582,151.2407 Q238.3514,151.2407 237.0315,149.5889 Q235.7117,147.937 235.7117,144.8159 Q235.7117,141.6865 237.0315,140.0347 Q238.3514,138.3828 240.8582,138.3828 Q241.5638,138.3828 242.2112,138.5322 Q242.8587,138.6816 243.4231,138.9805 L243.4231,141.7031 Q242.7923,141.1221 242.1988,140.8523 Q241.6053,140.5825 240.9744,140.5825 Q239.6297,140.5825 238.9449,141.6492 Q238.2601,142.7158 238.2601,144.8159 Q238.2601,146.9077 238.9449,147.9744 Q239.6297,149.041 240.9744,149.041 Q241.6053,149.041 242.1988,148.7712 Q242.7923,148.5015 243.4231,147.9204 Z "></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="17" x="256.55" y="149.5352">Set</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="217" x2="285" y1="161" y2="161"></line><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="49" x="222" y="175.6348">isdisjoint</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="47" x="222" y="188.5898">`__le__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="45" x="222" y="201.5449">`__lt__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="51" x="222" y="214.5">`__ge__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="49" x="222" y="227.4551">`__gt__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="51" x="222" y="240.4102">`__eq__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="51" x="222" y="253.3652">`__ne__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="58" x="222" y="266.3203">`__and__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="50" x="222" y="279.2754">`__or__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="58" x="222" y="292.2305">`__sub__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="57" x="222" y="305.1855">`__xor__`</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="217" x2="285" y1="311.5059" y2="311.5059"></line><!--class Iterable--><rect fill="#FEFECE" filter="url(#faj1nddp8ghtp)" height="60.9551" id="Iterable" style="stroke: #A80036; stroke-width: 1.5;" width="76" x="6" y="194"></rect><ellipse cx="21" cy="210" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"></ellipse><path d="M23.9731,215.6431 Q23.3921,215.9419 22.7529,216.0913 Q22.1138,216.2407 21.4082,216.2407 Q18.9014,216.2407 17.5815,214.5889 Q16.2617,212.937 16.2617,209.8159 Q16.2617,206.6865 17.5815,205.0347 Q18.9014,203.3828 21.4082,203.3828 Q22.1138,203.3828 22.7612,203.5322 Q23.4087,203.6816 23.9731,203.9805 L23.9731,206.7031 Q23.3423,206.1221 22.7488,205.8523 Q22.1553,205.5825 21.5244,205.5825 Q20.1797,205.5825 19.4949,206.6492 Q18.8101,207.7158 18.8101,209.8159 Q18.8101,211.9077 19.4949,212.9744 Q20.1797,214.041 21.5244,214.041 Q22.1553,214.041 22.7488,213.7712 Q23.3423,213.5015 23.9731,212.9204 Z "></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="44" x="35" y="214.5352">Iterable</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="81" y1="226" y2="226"></line><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="48" x="12" y="240.6348">'__iter__'</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="7" x2="81" y1="246.9551" y2="246.9551"></line><!--class Sized--><rect fill="#FEFECE" filter="url(#faj1nddp8ghtp)" height="60.9551" id="Sized" style="stroke: #A80036; stroke-width: 1.5;" width="63" x="117.5" y="194"></rect><ellipse cx="132.5" cy="210" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"></ellipse><path d="M135.4731,215.6431 Q134.8921,215.9419 134.2529,216.0913 Q133.6138,216.2407 132.9082,216.2407 Q130.4014,216.2407 129.0815,214.5889 Q127.7617,212.937 127.7617,209.8159 Q127.7617,206.6865 129.0815,205.0347 Q130.4014,203.3828 132.9082,203.3828 Q133.6138,203.3828 134.2612,203.5322 Q134.9087,203.6816 135.4731,203.9805 L135.4731,206.7031 Q134.8423,206.1221 134.2488,205.8523 Q133.6553,205.5825 133.0244,205.5825 Q131.6797,205.5825 130.9949,206.6492 Q130.3101,207.7158 130.3101,209.8159 Q130.3101,211.9077 130.9949,212.9744 Q131.6797,214.041 133.0244,214.041 Q133.6553,214.041 134.2488,213.7712 Q134.8423,213.5015 135.4731,212.9204 Z "></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="31" x="146.5" y="214.5352">Sized</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="118.5" x2="179.5" y1="226" y2="226"></line><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="46" x="123.5" y="240.6348">'__len__'</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="118.5" x2="179.5" y1="246.9551" y2="246.9551"></line><!--class MutableSet--><rect fill="#FEFECE" filter="url(#faj1nddp8ghtp)" height="164.5957" id="MutableSet" style="stroke: #A80036; stroke-width: 1.5;" width="95" x="321.5" y="142"></rect><ellipse cx="336.5" cy="158" fill="#ADD1B2" rx="11" ry="11" style="stroke: #A80036; stroke-width: 1.0;"></ellipse><path d="M339.4731,163.6431 Q338.8921,163.9419 338.2529,164.0913 Q337.6138,164.2407 336.9082,164.2407 Q334.4014,164.2407 333.0815,162.5889 Q331.7617,160.937 331.7617,157.8159 Q331.7617,154.6865 333.0815,153.0347 Q334.4014,151.3828 336.9082,151.3828 Q337.6138,151.3828 338.2612,151.5322 Q338.9087,151.6816 339.4731,151.9805 L339.4731,154.7031 Q338.8423,154.1221 338.2488,153.8523 Q337.6553,153.5825 337.0244,153.5825 Q335.6797,153.5825 334.9949,154.6492 Q334.3101,155.7158 334.3101,157.8159 Q334.3101,159.9077 334.9949,160.9744 Q335.6797,162.041 337.0244,162.041 Q337.6553,162.041 338.2488,161.7712 Q338.8423,161.5015 339.4731,160.9204 Z "></path><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="63" x="350.5" y="162.5352">MutableSet</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="322.5" x2="415.5" y1="174" y2="174"></line><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="20" x="327.5" y="188.6348">add</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="40" x="327.5" y="201.5898">discard</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="40" x="327.5" y="214.5449">remove</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="21" x="327.5" y="227.5">pop</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="26" x="327.5" y="240.4551">clear</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="53" x="327.5" y="253.4102">`__ior__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="61" x="327.5" y="266.3652">`__iand__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="60" x="327.5" y="279.3203">`__ixor__`</text><text fill="#000000" font-family="sans-serif" font-size="11" lengthAdjust="spacingAndGlyphs" textLength="61" x="327.5" y="292.2754">`__isub__`</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="322.5" x2="415.5" y1="298.5957" y2="298.5957"></line><!--link Container to Set--><path d="M251,89.5867 C251,101.7688 251,115.1641 251,128.6396 " fill="none" id="Container-Set" style="stroke: #A80036; stroke-width: 1.0;"></path><polygon fill="none" points="244.0001,89.2142,251,69.2141,258.0001,89.2141,244.0001,89.2142" style="stroke: #A80036; stroke-width: 1.0;"></polygon><!--link Iterable to Set--><path d="M59.3091,174.7997 C70.6403,147.2123 89.1197,115.2682 117.5,99 C141.792,85.0753 156.22,85.0543 180.5,99 C194.9108,107.2772 206.592,119.7226 215.9893,133.6122 " fill="none" id="Iterable-Set" style="stroke: #A80036; stroke-width: 1.0;"></path><polygon fill="none" points="65.7764,177.4937,52.2823,193.8311,52.643,172.6446,65.7764,177.4937" style="stroke: #A80036; stroke-width: 1.0;"></polygon><!--link Sized to Set--><path d="M201.1455,224.5 C206.0762,224.5 211.0068,224.5 215.9375,224.5 " fill="none" id="Sized-Set" style="stroke: #A80036; stroke-width: 1.0;"></path><polygon fill="none" points="200.875,231.4999,180.875,224.5,200.875,217.4999,200.875,231.4999" style="stroke: #A80036; stroke-width: 1.0;"></polygon><!--link Set to MutableSet--><path d="M306.1784,224.5 C311.2382,224.5 316.298,224.5 321.3578,224.5 " fill="none" id="Set-MutableSet" style="stroke: #A80036; stroke-width: 1.0;"></path><polygon fill="none" points="306.0313,231.4999,286.0313,224.5,306.0312,217.4999,306.0313,231.4999" style="stroke: #A80036; stroke-width: 1.0;"></polygon><!--
+@startuml
+Container <|- - Set
+Iterable <|- Set
+Sized <|- Set
+Set <|- MutableSet
+Container : ‘__contains__’
+Iterable : '__iter__'
+Sized : '__len__'
+Set : isdisjoint
+Set : `__le__`
+Set : `__lt__`
+Set : `__ge__`
+Set : `__gt__`
+Set : `__eq__`
+Set : `__ne__`
+Set : `__and__`
+Set : `__or__`
+Set : `__sub__`
+Set : `__xor__`
+MutableSet : add
+MutableSet : discard
+MutableSet : remove
+MutableSet : pop
+MutableSet : clear
+MutableSet : `__ior__`
+MutableSet : `__iand__`
+MutableSet : `__ixor__`
+MutableSet : `__isub__`
+@enduml
+
+PlantUML version 1.2018.01(Mon Jan 29 02:08:22 CST 2018)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 9.0.4+11
+Operating System: Mac OS X
+OS Version: 10.13.4
+Default Encoding: US-ASCII
+Language: zh
+Country: CN
+--></g></svg></p><p>相求4个聚合类型 a、b、c、d的并集，可以用 <code>a.union(b,c,d)</code>，其中 a 必须是 set，b、c、d可以是如何类型的可迭代对象：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     m <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">while</span> m <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">yield</span> m
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         m <span class="token operator">+=</span> <span class="token number">1</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> a <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> b <span class="token operator">=</span> f<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> c <span class="token operator">=</span> <span class="token string">'xyz'</span>
+<span class="token operator">>></span><span class="token operator">></span> d <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token string">'w'</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> a<span class="token punctuation">.</span>union<span class="token punctuation">(</span>b<span class="token punctuation">,</span>c<span class="token punctuation">,</span>d<span class="token punctuation">)</span>
+<span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'x'</span><span class="token punctuation">,</span> <span class="token string">'z'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token string">'y'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">}</span>
+</pre><p>下面，我们会继续讨论字典和集合类型背后的实现。</p>
+<h3 class="mume-header" id="dict-%E5%92%8C-set-%E7%9A%84%E8%83%8C%E5%90%8E">dict 和 set 的背后</h3>
+
+<p>5 个问题：</p>
+<ol>
+<li>Python 中的 dict 和 set 的效率有多高？</li>
+<li>为什么它们是无序的？</li>
+<li>为什么不是所有的Python对象都可以当做 dict 的键或者 set 里的元素？</li>
+<li>为什么 dict 的键和 set 元素的顺序是根据它们被添加的次序而定的？为什么映射对象的生命周期中，这个顺序并不是一成不变的？</li>
+<li>为什么不应该在迭代循环 dict 或 set 的同时往里面添加元素？</li>
+</ol>
+<h4 class="mume-header" id="%E4%B8%80%E4%B8%AA%E5%85%B3%E4%BA%8E%E6%95%88%E7%8E%87%E7%9A%84%E5%AE%9E%E9%AA%8C">一个关于效率的实验</h4>
+
+<p>所有的 Python 程序员都从经验中得出结论，认为字典和集合的速度是非常快的。接下来我们要通过可控的实验来验证这一点。</p>
+<p>为了对比容器的大小对 dict、set 或 list 的 in 元素运算符效率的影响，先创建一个有 1000万个双精度浮点数的数组，名叫 haystack。另外还有一个包含 1000 个浮点数的 needles 数组。 从其中 500 个数字是从 haystack 中跳出的，另外500个肯定不在 haystack 中。</p>
+<p>作为 dict 测试的基准，用 dict.fromkeys() 来建立一个含有 1000 个浮点数的名叫 haystack 的字典，并用 timeit 模块测试：<br>
+实验设备：Python 3.6，MacBook Pro 13， Core i5</p>
+<table>
+<thead>
+<tr>
+<th>haystack<br>长度</th>
+<th>增长<br>系数</th>
+<th>dict</th>
+<th>增长<br>系数</th>
+<th>集合</th>
+<th>增长<br>系数</th>
+<th>集合<br>交集</th>
+<th>增长<br>系数</th>
+<th>队列</th>
+<th>增长<br>系数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>1×</td>
+<td>70.5 μs</td>
+<td>1.0x</td>
+<td>74.9 µs</td>
+<td>1.0x</td>
+<td>19.6 μs</td>
+<td>1.0x</td>
+<td>6.54 ms</td>
+<td>1.0x</td>
+</tr>
+<tr>
+<td>10000</td>
+<td>10×</td>
+<td>84.6 μs</td>
+<td>1.2x</td>
+<td>80.5 µs</td>
+<td>1.08x</td>
+<td>25.1 µs</td>
+<td>1.28x</td>
+<td>68.7 ms</td>
+<td>10.5x</td>
+</tr>
+<tr>
+<td>100000</td>
+<td>100×</td>
+<td>91.5 μs</td>
+<td>1.3x</td>
+<td>83.3 µs</td>
+<td>1.15x</td>
+<td>28.4 µs</td>
+<td>1.45x</td>
+<td>882 ms</td>
+<td>134x</td>
+</tr>
+<tr>
+<td>1000000</td>
+<td>1000×</td>
+<td>114 μs</td>
+<td>1.62x</td>
+<td>91.7 µs</td>
+<td>1.22x</td>
+<td>32.1 µs</td>
+<td>1.64x</td>
+<td>31.2 s</td>
+<td>4771x</td>
+</tr>
+<tr>
+<td>10000000</td>
+<td>10000×</td>
+<td>139 μs</td>
+<td>1.97x</td>
+<td>98.9 µs</td>
+<td>1.32x</td>
+<td>37.5 µs</td>
+<td>1.91x</td>
+<td>517s</td>
+<td>79051x</td>
+</tr>
+</tbody>
+</table>
+<p>下面让我们看看字典和集合如此快的原因：对散列表内部结构的讨论。</p>
 
       </div>
-      
-      
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E6%B5%81%E7%95%85%E7%9A%84-python">流畅的 Python</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E7%AB%A0-python%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B">第一章 Python数据模型</a>
+<ul>
+<li><a href="#%E4%B8%80%E6%91%9Epython%E9%A3%8E%E6%A0%BC%E7%9A%84%E7%BA%B8%E7%89%8C">一摞Python风格的纸牌</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95">如何使用特殊方法</a>
+<ul>
+<li><a href="#%E6%A8%A1%E6%8B%9F%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B">模拟数值类型</a></li>
+<li><a href="#__repr__"><strong>repr</strong></a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E5%B8%83%E5%B0%94%E5%80%BC">自定义的布尔值</a></li>
+</ul>
+</li>
+<li><a href="#%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95%E6%80%BB%E7%BB%93">特殊方法总结</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BA%8F%E5%88%97%E6%9E%84%E6%88%90%E7%9A%84%E6%95%B0%E7%BB%84">序列构成的数组</a>
+<ul>
+<li><a href="#%E5%86%85%E7%BD%AE%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B%E9%A2%84%E8%A7%88">内置序列类型预览</a></li>
+<li><a href="#%E5%88%97%E8%A1%A8%E6%8E%A8%E5%AF%BC%E5%92%8C%E7%94%9F%E6%88%90%E5%99%A8%E8%A1%A8%E8%BE%BE%E5%BC%8F">列表推导和生成器表达式</a>
+<ul>
+<li><a href="#%E5%88%97%E8%A1%A8%E6%8E%A8%E5%AF%BC%E5%90%8C-map-filter%E7%9A%84%E6%AF%94%E8%BE%83">列表推导同 map、filter的比较</a></li>
+<li><a href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF">笛卡尔积</a></li>
+<li><a href="#%E7%94%9F%E6%88%90%E5%99%A8%E8%A1%A8%E8%BE%BE%E5%BC%8F">生成器表达式</a></li>
+</ul>
+</li>
+<li><a href="#%E5%85%83%E7%BB%84%E4%B8%8D%E4%BB%85%E4%BB%85%E6%98%AF%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%9A%84%E5%88%97%E8%A1%A8">元组不仅仅是不可变的列表</a>
+<ul>
+<li><a href="#%E5%85%83%E7%BB%84-%E8%AE%B0%E5%BD%95">元组-记录</a></li>
+<li><a href="#%E5%85%B7%E5%90%8D%E5%85%83%E7%BB%84">具名元组</a></li>
+<li><a href="#tuple%E6%B2%A1%E6%9C%89%E7%9A%84%E6%96%B9%E6%B3%95">tuple没有的方法</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%87%E7%89%87">切片</a>
+<ul>
+<li><a href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%88%87%E7%89%87%E5%92%8C%E5%8C%BA%E9%97%B4%E4%BC%9A%E5%BF%BD%E7%95%A5%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0">为什么切片和区间会忽略最后一个元素</a></li>
+<li><a href="#%E5%A4%9A%E7%BB%B4%E5%88%87%E7%89%87%E5%92%8C%E7%9C%81%E7%95%A5">多维切片和省略</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BA%8F%E5%88%97%E7%9A%84%E5%A2%9E%E9%87%8F%E8%B5%8B%E5%80%BC">序列的增量赋值</a></li>
+<li><a href="#listsort-%E6%96%B9%E6%B3%95%E5%92%8C%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0-sorted">list.sort 方法和内置函数 sorted</a></li>
+<li><a href="#%E7%94%A8-bisect-%E6%9D%A5%E7%AE%A1%E7%90%86%E5%B7%B2%E6%8E%92%E5%BA%8F%E7%9A%84%E5%BA%8F%E5%88%97">用 bisect 来管理已排序的序列</a></li>
+<li><a href="#%E5%BD%93%E5%88%97%E8%A1%A8%E4%B8%8D%E6%98%AF%E9%A6%96%E9%80%89%E6%97%B6">当列表不是首选时</a>
+<ul>
+<li><a href="#%E6%95%B0%E7%BB%84">数组</a></li>
+<li><a href="#%E5%86%85%E5%AD%98%E8%A7%86%E5%9B%BE">内存视图</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%AD%97%E5%85%B8%E5%92%8C%E9%9B%86%E5%90%88">字典和集合</a>
+<ul>
+<li><a href="#%E5%AD%97%E5%85%B8%E6%8E%A8%E5%AF%BC">字典推导</a></li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%98%A0%E5%B0%84%E6%96%B9%E6%B3%95">常见的映射方法</a></li>
+<li><a href="#%E6%98%A0%E5%B0%84%E7%9A%84%E5%BC%B9%E6%80%A7%E9%94%AE%E6%9F%A5%E8%AF%A2">映射的弹性键查询</a>
+<ul>
+<li><a href="#defaultdict-%E5%A4%84%E7%90%86%E6%89%BE%E4%B8%8D%E5%88%B0%E7%9A%84%E9%94%AE%E7%9A%84%E4%B8%80%E4%B8%AA%E9%80%89%E6%8B%A9">defaultdict 处理找不到的键的一个选择</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%97%E5%85%B8%E7%9A%84%E5%8F%98%E7%A7%8D">字典的变种</a></li>
+<li><a href="#%E5%AD%90%E7%B1%BB%E5%8C%96-userdict">子类化 UserDict</a></li>
+<li><a href="#%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%98%A0%E5%B0%84%E7%B1%BB%E5%9E%8B">不可变映射类型</a></li>
+<li><a href="#%E9%9B%86%E5%90%88%E8%AE%BA">集合论</a>
+<ul>
+<li><a href="#%E9%9B%86%E5%90%88%E6%8E%A8%E5%AF%BC">集合推导</a></li>
+<li><a href="#%E9%9B%86%E5%90%88%E7%9A%84%E6%93%8D%E4%BD%9C">集合的操作</a></li>
+</ul>
+</li>
+<li><a href="#dict-%E5%92%8C-set-%E7%9A%84%E8%83%8C%E5%90%8E">dict 和 set 的背后</a>
+<ul>
+<li><a href="#%E4%B8%80%E4%B8%AA%E5%85%B3%E4%BA%8E%E6%95%88%E7%8E%87%E7%9A%84%E5%AE%9E%E9%AA%8C">一个关于效率的实验</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
     </body>
     
     
@@ -985,4 +1403,17 @@ TypeError<span class="token punctuation">:</span> unhashable <span class="token 
     
     
     
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
   </html>

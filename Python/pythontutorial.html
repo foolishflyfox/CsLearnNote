@@ -5,8 +5,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
-      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css">
       
       
       
@@ -329,9 +328,10 @@ code.language-yaml {
 <h6 class="mume-header" id="research">re.search</h6>
 
 <p>函数<code>re.search</code>在给定字符串中寻找第一个与指定正则表达式匹配的子串，如果找到这样的子串，将返回<code>MatchObject</code>，否则返回 None。监狱返回值的这种特征，在条件语句中使用这个函数，如下所示：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">if</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre class="language-python"><span class="token keyword">if</span> re<span class="token punctuation">.</span>search<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> string<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Found it!'</span><span class="token punctuation">)</span>
-</pre><p>然而，如果需要获悉有关匹配的子串的详细详细，可查看返回的<code>MatchObject</code>。</p>
+</pre>
+<p>然而，如果需要获悉有关匹配的子串的详细详细，可查看返回的<code>MatchObject</code>。</p>
 <h6 class="mume-header" id="rematch">re.match</h6>
 
 <p>函数<code>re.match</code>尝试在给定字符串开头查找与正则表达式匹配的子串，因此<code>re.match('p', 'python')</code>返回真(<code>MatchObject</code>)，而<code>re.match('p','www.python.org')</code>返回 None。</p>
@@ -339,50 +339,49 @@ code.language-yaml {
 <h6 class="mume-header" id="resplit">re.split</h6>
 
 <p>函数<code>re.split</code>根据与模式匹配的子串来分割字符串。这类似于字符串方法<code>split</code>，但使用正则表达式来指定分隔符，而不是指定固定的分隔符。例如，使用字符串方法<code>split</code>时，可以用字符串<code>,</code>为分隔符来分割字符串，但使用<code>re.split</code>时，可以用逗号和空格为分隔符来分割字符串。</p>
-<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 some_text <span class="token operator">=</span> <span class="token string">'alpha, beta,,, , gamma  delta'</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span> re<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"[, ]+"</span><span class="token punctuation">,</span> some_text<span class="token punctuation">)</span> <span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['alpha', 'beta', 'gamma', 'delta']
-</pre></div></div><p><strong>注意</strong>：如果没事包含圆括号，将分割时匹配的子串用括号中的内容替代，如：</p>
-<div class="code-chunk" data-id="code-chunk-id-1" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+</pre>
+<p><strong>注意</strong>：如果没事包含圆括号，将分割时匹配的子串用括号中的内容替代，如：</p>
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 <span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"o(ob)a"</span><span class="token punctuation">,</span><span class="token string">"foobar"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['f', 'ob', 'r']
-</pre></div></div><p><code>re.split</code>的<code>maxsplit</code>指定最多分割多少次：</p>
-<div class="code-chunk" data-id="code-chunk-id-2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+</pre>
+<p><code>re.split</code>的<code>maxsplit</code>指定最多分割多少次：</p>
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 some_text <span class="token operator">=</span> <span class="token string">'alpha, beta,,, , gamma  delta'</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span> re<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"[, ]+"</span><span class="token punctuation">,</span> some_text<span class="token punctuation">,</span> maxsplit<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['alpha', 'beta', 'gamma  delta']
-</pre></div></div><h6 class="mume-header" id="refindall">re.findall</h6>
+</pre>
+<h6 class="mume-header" id="refindall">re.findall</h6>
 
 <p>函数<code>re.findall</code>返回一个列表，其中包含所有与给定模式匹配的子串，例如要找出字符串包含的所有单词：</p>
-<div class="code-chunk" data-id="code-chunk-id-3" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 text <span class="token operator">=</span> <span class="token string">'"Hm... Err -- you are sure?" he said, sounding insecure'</span>
 pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"[a-zA-Z]+"</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span> re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> text<span class="token punctuation">)</span> <span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['Hm', 'Err', 'you', 'are', 'sure', 'he', 'said', 'sounding', 'insecure']
-</pre></div></div><p>要找出字符串中包含的所有标点符号：</p>
-<div class="code-chunk" data-id="code-chunk-id-4" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+</pre>
+<p>要找出字符串中包含的所有标点符号：</p>
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 text <span class="token operator">=</span> <span class="token string">'"Hm... Err -- you are sure?" he said, sounding insecure'</span>
 pat <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span><span class="token string">"[^a-zA-Z\s]+"</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> text<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">['"', '...', '--', '?"', ',']
-</pre></div></div><h6 class="mume-header" id="resub">re.sub</h6>
+</pre>
+<h6 class="mume-header" id="resub">re.sub</h6>
 
 <p>函数 <code>re.sub</code> 从左往右将模式匹配字符串替换为指定内容：</p>
-<div class="code-chunk" data-id="code-chunk-id-5" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 pat <span class="token operator">=</span> <span class="token string">'\{name\}'</span>
 text <span class="token operator">=</span> <span class="token string">'Dear {name} ...'</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>pat<span class="token punctuation">,</span> <span class="token string">'Mr. Gumby'</span><span class="token punctuation">,</span> text<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Dear Mr. Gumby ...
-</pre></div></div><h6 class="mume-header" id="reescape">re.escape</h6>
+</pre>
+<h6 class="mume-header" id="reescape">re.escape</h6>
 
 <p><code>re.escape</code>是一个工具函数，用于对字符串中所有可能被视为正则表达式运算符的字符串进行转义。使用这个函数的情况有：字符串很长，其中包含大量特殊字符，而你不想输入大量的反斜杠；你从用户那里获取了一个字符串（如通过函数<code>input</code>），想将其用于正则表达式中。如：</p>
-<div class="code-chunk" data-id="code-chunk-id-6" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 <span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>escape<span class="token punctuation">(</span><span class="token string">'www.python.org'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>escape<span class="token punctuation">(</span><span class="token string">'But where is the ambiguity?'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">www\.python\.org
-But\ where\ is\ the\ ambiguity\?
-</pre></div></div><h5 class="mume-header" id="%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BC%96%E7%BB%84">匹配对象和编组</h5>
+</pre>
+<h5 class="mume-header" id="%E5%8C%B9%E9%85%8D%E5%AF%B9%E8%B1%A1%E5%92%8C%E7%BC%96%E7%BB%84">匹配对象和编组</h5>
 
 <p>在模块中，查找与模式匹配的子串的函数都在找到时返回MatchObject对象。这种对象包含于模式匹配的子串信息，还包含模式的哪部分与子串的哪部分匹配的信息。这些子串部分称为<strong>编组(group)</strong>。<br>
 编组就是放在圆括号内的子模式，它们是根据 <em>左边的括号</em> 数编号的，其中编组 0 指的是这个模式，因此在下面的模式中：<br>
@@ -429,26 +428,24 @@ But\ where\ is\ the\ ambiguity\?
 <p><code>match_object.start</code>: 返回与给定编组(默认为0，即整个模式)匹配的子串的起始索引</p>
 <p><code>match_object.end</code>: 与<code>start</code>类似，不过返回终止索引+1</p>
 <p><code>match_object.span</code>: 返回一个<code>tuple</code>,其中包含给定编组(默认为0，即整个模式)匹配的子串的起始索引和终止索引</p>
-<div class="code-chunk" data-id="code-chunk-id-7" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 m <span class="token operator">=</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span>r<span class="token string">'www\.(.*)\..{3}'</span><span class="token punctuation">,</span><span class="token string">'www.python.org'</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>end<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>span<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">python
-4
-10
-(4, 10)
-</pre></div></div><h5 class="mume-header" id="%E6%9B%BF%E6%8D%A2%E4%B8%AD%E7%9A%84%E7%BB%84%E5%8F%B7%E5%92%8C%E5%87%BD%E6%95%B0">替换中的组号和函数</h5>
+</pre>
+<h5 class="mume-header" id="%E6%9B%BF%E6%8D%A2%E4%B8%AD%E7%9A%84%E7%BB%84%E5%8F%B7%E5%92%8C%E5%87%BD%E6%95%B0">替换中的组号和函数</h5>
 
 <p>在第一个<code>re.sub</code>使用示例中，我们只是将一个子串替换为另一个。这也可使用字符串方法<code>replace</code>完成。当然，正则表达式非常有用，因为它们可以让你能够以更灵活的方式进行搜索，还能让你能够执行更复杂的替换。</p>
 <p>为了利用<code>re.sub</code>的强大功能，最简单的方式是在替代字符串中使用组号。在替换字符串中，如何类似于<code>\\n</code>的转义字符都将被替换为与模式中编组n匹配的字符串。</p>
 <p>例如，假设要将<code>*something*</code>替换为<code>&lt;em&gt;something&lt;/em&gt;</code>，其中前者是 markdown 的写法，而后者是对应的 html 代码，下面先来创建一个正则表达式。</p>
-<div class="code-chunk" data-id="0401_1" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;0401_1&amp;amp;quot;}" class="language-python"><span class="token keyword">import</span> re
+<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="id" data-code=""><pre class="language-python "><span class="token keyword">import</span> re
 emphasis_pattern <span class="token operator">=</span> r<span class="token string">'\*([^\*]+)\*'</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>注意，正则表达式容易变得难以理解，因此为了方便其他人以后阅读，使用有意义的变量名非常重要。</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div><div class="output-div"></div></div>
+<p>注意，正则表达式容易变得难以理解，因此为了方便其他人以后阅读，使用有意义的变量名非常重要。</p>
 <p><strong>提示：</strong> 要让正则表达式更容易理解，一种方法是在调用模块<code>re</code>中的函数时，使用标志 VERBOSE。这让你能够在模式中添加空白（空格、制表符、换行符等），而 re 将忽略它们--除非将它放在字符类中或使用反斜杠对其进行转义。在这样的正则表达式中，你还可以添加注释，下面代码创建的模式对象与 emphasis_pattern 等价，但使用了 VERBOSE 标志：</p>
-<div class="code-chunk" data-id="0401_2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd id=&amp;amp;quot;0401_2&amp;amp;quot;}" class="language-python"><span class="token keyword">import</span> re
+<div class="code-chunk" data-id="code-chunk-id-1" data-cmd="id" data-code=""><pre class="language-python "><span class="token keyword">import</span> re
 emphasis_pattern <span class="token operator">=</span> re<span class="token punctuation">.</span>compile<span class="token punctuation">(</span>r<span class="token triple-quoted-string string">'''
     \*     # 起始突出标志--一个星号
     (      # 与要突出的内容匹配的编组的起始位置
@@ -456,10 +453,14 @@ emphasis_pattern <span class="token operator">=</span> re<span class="token punc
     )      # 编组到此结束
     \*     # 结束突出符号
 '''</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>VERBOSE<span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>创建模式后，就可以使用 <code>re.sub</code> 来完成所需的替换了：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>emphasis_pattern<span class="token punctuation">,</span> r<span class="token string">'&lt;em>\1&lt;/em>'</span><span class="token punctuation">,</span><span class="token string">'Hello,*world*'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><pre data-role="codeBlock" data-info="" class="language-"><code>&apos;Hello,&lt;em&gt;world&lt;/em&gt;&apos;
-</code></pre><p>如你所见，成功地将纯文本转换成了HTML代码。然而，通过将函数用作替换内容，可执行更复杂的替换。这个函数将MatchObject作为唯一的参数，它返回的字符串将用作替换内容。换而言之，你可以对匹配的字符串做如何处理，并通过细致的处理来生成替换内容。</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div><div class="output-div"><pre class="language-text">id: /Users/fenghuabin/Code/Year2018/CsLearnNote/Python/4bnbhubzv_code_chunk: no such user
+</pre></div></div>
+<p>创建模式后，就可以使用 <code>re.sub</code> 来完成所需的替换了：</p>
+<pre class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>emphasis_pattern<span class="token punctuation">,</span> r<span class="token string">'&lt;em>\1&lt;/em>'</span><span class="token punctuation">,</span><span class="token string">'Hello,*world*'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre>
+<pre class="language-">&apos;Hello,&lt;em&gt;world&lt;/em&gt;&apos;
+</pre>
+<p>如你所见，成功地将纯文本转换成了HTML代码。然而，通过将函数用作替换内容，可执行更复杂的替换。这个函数将MatchObject作为唯一的参数，它返回的字符串将用作替换内容。换而言之，你可以对匹配的字符串做如何处理，并通过细致的处理来生成替换内容。</p>
 <h5 class="mume-header" id="%E6%89%BE%E5%87%BA%E5%8F%91%E4%BB%B6%E4%BA%BA">找出发件人</h5>
 
 <h5 class="mume-header" id="%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%8C%B9%E9%85%8D%E7%9A%842%E7%A7%8D%E6%96%B9%E5%BC%8F">正则表达式匹配的2种方式</h5>
@@ -487,7 +488,7 @@ emphasis_pattern <span class="token operator">=</span> re<span class="token punc
 <h5 class="mume-header" id="%E6%B3%A8%E6%84%8F%E7%82%B9">注意点</h5>
 
 <p>想使用<code>[.\n]</code>匹配所有字符是错误的，<code>[.\r\n]</code>，<code>[\n.]</code>，<code>[\r\n.]</code>，<code>[.\s]</code>，<code>[\s.]</code>都是错误的：</p>
-<div class="code-chunk" data-id="code-chunk-id-10" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd}" class="language-python"><span class="token keyword">import</span> re
+<pre class="language-python {cmd}"><span class="token keyword">import</span> re
 s <span class="token operator">=</span> <span class="token string">"python"</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"1:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[.\n]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"2:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[.\r\n]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -497,8 +498,8 @@ s <span class="token operator">=</span> <span class="token string">"python"</spa
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"6:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[\s.]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"7:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p[\s\S]*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"8:"</span><span class="token punctuation">,</span> re<span class="token punctuation">.</span>match<span class="token punctuation">(</span><span class="token string">"p(\n|.)*n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">Hello,<em>world</em>
-</pre></div></div>
+</pre>
+
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#python-%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B">Python 基础教程</a>
@@ -538,7 +539,6 @@ s <span class="token operator">=</span> <span class="token string">"python"</spa
 </div>
       <a id="sidebar-toc-btn">≡</a>
     </body>
-    
     
     
     

@@ -215,7 +215,7 @@ emphasis_pattern = re.compile(r'''
 ```
 
 创建模式后，就可以使用 `re.sub` 来完成所需的替换了：
-```python 
+```python
 print(re.sub(emphasis_pattern, r'<em>\1</em>','Hello,*world*'))
 ```
 ```
@@ -253,6 +253,7 @@ print(re.sub(emphasis_pattern, r'<em>\1</em>','Hello,*world*'))
 ##### 注意点
 
 想使用`[.\n]`匹配所有字符是错误的，`[.\r\n]`，`[\n.]`，`[\r\n.]`，`[.\s]`，`[\s.]`都是错误的：
+
 ```python {cmd}
 import re
 s = "python"
@@ -265,4 +266,3 @@ print("6:", re.match("p[\s.]*n", s))
 print("7:", re.match("p[\s\S]*n", s))
 print("8:", re.match("p(\n|.)*n", s))
 ```
-
