@@ -34,6 +34,7 @@
 ## Python 编程语言
 
 - [Python cookbook](/Python/PythonUsage.html)
+- [Fluent Python](/Python/fluentpython.html)
 
 ## 文档编写
 
