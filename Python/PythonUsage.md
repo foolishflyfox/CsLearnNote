@@ -976,6 +976,10 @@ print(comment.findall(text2))
 print(re.findall(r'/\*(.*)\*/', text2, flags=re.DOTALL))
 ```
 
+findall 使用的注意点：
+1. `re.M` 与有 `^ ... $` 的正则式搭配使用
+1. `re.compile` 进行编译是就需要指定 `flag`，之后的 `findall` 中的 flag 将被忽略
+
 ### 删除字符串中不需要的字符
 ```python {cmd}
 import re

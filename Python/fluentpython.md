@@ -987,3 +987,579 @@ MutableSet : `__isub__`
 |10000000|10000×|139 μs|1.97x|98.9 µs|1.32x|37.5 µs|1.91x|517s|79051x|
 
 下面让我们看看字典和集合如此快的原因：对散列表内部结构的讨论。
+
+#### 字典中的散列表
+
+散列表其实是一个稀疏数组（总是有空白元素的数组称为稀疏数组）。在一部的数据结构教材中，散列表中的单元通常称为表元(bucket)。在dict散列表中，每个键值对都占用一个表元，每个表元有两个部分，一个是对键的引用。因为所有表元的大小一致，所以可以通过偏移量来读取某个表元。
+
+因为 Python 会设法保证大概还有三分之一的表元是空的，所以在快到达这个阈值的时候，原有的散列表会被复制到一个更大的空间里面。
+
+要把一个对象放入到散列表中，首先要计算这个元素的散列值。Python 中可以用 hash() 方法来做这件事情。
+
+**01. 散列值和相等性**
+内置的 `hash()` 方法可以用于所有的内置类型对象。如果自定义对象调用`hash()` 的话，实际上运行的是自定义的 `__hash__` 。如果两个对象在比较的时候是相等的，那它们的散列值必须相等，否则散列表就不能正常运行了。例如，如果1==1.0为True，那么hash(1)==hash(1.0)也必须为True。
+
+**注意：hash函数并不是单射，即一个值有对应的一个的哈希值，但一个哈希值可能有多个值与之对应，这就产生了冲突。**
+```dot
+digraph G{
+    rankdir=LR
+    A [label="hash(-1)"]
+    B [label="hash(-2)"]
+    C [label="-2"]
+    A->C
+    B->C
+}
+```
+为了让散列值能够胜任散列表索引这一角色，它们必须在索引空间中尽量分散开来。这意味着在最理想的状况下，越是相似但不相等的对象，它们的散列值得差别应该越大。
+```python {cmd}
+import sys
+MAX_BITS = len(format(sys.maxsize, 'b'))
+print('%s-bit Python build' %(MAX_BITS+1))
+
+def hash_diff(o1, o2):
+    h1 = f'{hash(o1):>0{MAX_BITS}b}'
+    h2 = f'{hash(o2):>0{MAX_BITS}b}'
+    diff = ''.join('!' if b1!=b2 else ' ' for b1,b2 in zip(h1,h2))
+    count = f'! = {diff.count("!")}'
+    width = max(len(repr(o1)), len(repr(o2)),8)
+    sep = '-' * (width * 2 + MAX_BITS)
+    return (f'{o1:<{width}}{h1}\n'
+    f'{"":{width}}{diff} {count}\n' 
+    f'{o2:<{width}}{h2}\n{sep}')
+
+if __name__ == '__main__':
+    print(hash_diff(1, 1.0))
+    print(hash_diff(1.0, 1.0001))
+    print(hash_diff(1.0001, 1.0002))
+    print(hash_diff(1.0002, 1.0003))    
+```
+
+从 Python3.3 开始，str、bytes、datetime 对象的散列值计算过程中多了随机的“加盐”的过程。所以，加盐值是Python进程内的一个常量，但是每次启动Python解释器都会生成一个不同的盐值。随机盐值是为了防止 DOS 攻击而采取的一种安全策略。
+
+**02. 散列表算法**
+
+为了获取 `my_dict[search_key]` 背后的值，Python 首先会调用 hash(search_key) 来计算 search_key 的散列值，把这个值最低的几位数字作为偏移量，在散列表中查找表元（具体取几位，得看当前散列表的大小）。若找到的表元是空的，则抛出 KeyError 异常。若不是空的，则表元里会有一对 found_key:found_value。这时候 Python 会检验 search_key==found_key 是否为真，如果它们相等的话，就会返回 found_value。
+
+如果 search_key 和 found_key 不匹配的话，这种情况称为散列冲突。发生这种情况是因为散列表所做的其实是把随机地元素映射到只有几位的数字上，而散列表本身的索引又只依赖于这个数字的一部分。
+
+#### dict 的实现及其导致的结果
+
+使用散列表给 dict 带来的优势和限制有哪些：
+
+- 键必须是可散列的
+    - 支持 hash() 函数，并通过 `__hash__()` 方法所得到的散列值是不变的；
+    - 支持通过 `__eq__()` 方法检测相等性；
+    - 如果 a==b 为 True，那么 hash(a)==hash(b) 必定为 True；
+
+> 如果你实现了一个类的 `__eq__` 方法，并且希望它是可散列的，那么一定要有一个恰当的 `__hash__` 方法，保证在 a==b 为真的情况下，hash(a)==hash(b) 也必定为真，否则就会破坏核定的散列表算法，导致由这些对象所组成的字典和集合完全失去可靠性，这个后果是非常可怕的。另一方面，如果一个含有自定义的 `__eq__` 依赖的类处于可变的状态，那就不要再这个类中实现 `__hash__` 方法。
+
+- 字典在内存上的开销较大
+
+由于字典使用了散列表，而散列表又必须是**稀疏的**，这导致了它在空间上的效率低下。举例而言，如果你需要存放数量巨大的记录，那么放在元组或是具名元组构成的列表中会使比较好的选择；最好不要根据 JSON 的风格，用由字典组成的列表用来存放这些记录。
+
+> 记住我们现在讨论的是空间优化，如果你手头有几百万个对象，而你的机器有几个GB的内存，那么空间的优化工作可以等到真正需要的时候在开始计划，因为优化往往是可维护性的对立面。
+
+- 键查询很快：dict 的实现是典型的空间换时间：字典类型有较大的内存开销，但它们提供了无视数量大小的快速访问——只要字典能被装在内存里。
+
+- 键的次序取决于添加顺序
+```python
+>>> DIAL_CODES = [
+... (86,'China'),
+... (91,'India'),
+... (62,'Indonesia'),
+... (1, 'United States'),
+... (55, 'Brazil'),
+... (92, 'Pakistan'),
+... (880, 'Bangladesh'),
+... (234, 'Nigeria'),
+... (7, 'Russia'),
+... (81, 'Japan')]
+>>> d1 = dict(DIAL_CODES)
+>>> print('d1:',d1.keys())
+d1: dict_keys([86, 91, 62, 1, 55, 92, 880, 234, 7, 81])
+>>> d2 = dict(sorted(DIAL_CODES))
+>>> print('d2:', d2.keys())
+d2: dict_keys([1, 7, 55, 62, 81, 86, 91, 92, 234, 880])
+>>> d3 = dict(sorted(DIAL_CODES, key=lambda x:x[1]))
+>>> print('d3:', d3.keys())
+d3: dict_keys([880, 55, 86, 91, 62, 81, 234, 92, 7, 1])
+>>> d1==d2==d3
+True
+```
+
+不要对字典同时进行迭代和修改，如果想扫描并修改一个字典，最好分成两步来进行：首先对字典迭代，以得出需要添加的内容，吧这些内容放在一个字典中，迭代结束后对原有字典进行更新。
+
+> 在 Python3 中，keys()、items()、values() 方法返回的都是字典的视图，即这些方法返回的值更像集合，而不是像 Python2 那样返回列表。
+
+### set 的实现集导致的结果
+
+set 和 frozenset 的实现也依赖于散列表，但是它们的散列表中只存有元素的引用（相当于字典中只存放键而没有相应的值）。
+
+**在 set 加入到 Python 之前，我们都是把字典加上无意义的值当做集合来用的。**
+
+- 集合中的元素必须是可散列的
+- 集合很消耗内存
+- 可以很高效地判断元素是否存在于某个集合中
+- 元数的次序取决于被添加到集合中的次序
+- 往集合中添加元素可能会改变集合中已有元素的次序
+
+JSON 被当做 “瘦身版XML”，在很多情境下，JSON都成功取代了XML，由于用于紧凑的列表和字典表达式，JSON格式可以完美地用于数据交换。
+
+## 文本和字节序列
+
+> 人类使用文本，计算机使用字节序列。——Esther Nam and Travis Fischer
+
+Python 3 明确区分了人类可读的文本字符串和原始的字节序列，隐式地吧字节序列转换成Unicode文本已成为过去。
+
+### 字符问题
+
+“字符串” 是一个相当简单的概念：一个字符串就是一个字符序列，问题出在对“字符”的定义上。
+
+在 2015 年，字符的最佳定义是 Unicode 字符。
+
+Unicode 标准把字符的标识和具体的字节表述进行了如下的明确区分：
+
+- 字符的标识：即码位，是 0~1114111 的数字，在Unicode 标准中以 4~6 个十六进制数字表示。
+- 字符的具体表述取决于所用编码，编码时码位和字节序列之间的转换是使用的算法。在 UTF-9 编码中，A(U+0041)的码位编码成单个字节 \x41，而在 UTF-16LE编码中编码成两个字节 \x41\0x00。再比如，欧元符号(U+20AC)在UTF-8中编码是3个字节：\xe2\x82\xac，而在UTF-16LE中编码成两个字节：\xac\x20。
+
+把码位转换成字节序列的过程称为编码，把字节序列变为码位的过程是解码。
+```python
+>>> s = 'café'
+>>> len(s)
+4
+# 编码过程：码位 -> 字节序列
+>>> b = s.encode('utf-8')
+>>> b
+b'caf\xc3\xa9'
+>>> len(b)
+5
+# 解码过程：字节序列 -> 码位
+>>> b.decode('utf-8')
+'café'
+```
+> 如果想帮助自己记住 `.encode` 和 `.decode`，可以把字节序列变为晦涩难懂的机器磁芯转储，把 Unicode 字符串想成“人类可读”的文本，那么把字节序列变成人类可读的文本字符串就是解码，而把字符串变成用于存储或传输的字节序列就是编码。
+
+虽然 Python3 的 str 类型基本上相当于 Python2 的unicode类型，只不过换了一个新的名字，但是 Python3 的 bytes 类型却不是把 str 类型换个名称那么简单，而且还有关系紧密的 bytearray 类型。因此，在讨论编码和解码的问题之前，有必要先来介绍一下二进制序列类型。
+
+### 字节概要
+
+bytes 和 bytearray 对象的各个元素是介于 0~255 之间的整数，而不是像 Python2 的 str 对象那样是单个的字符。然而，二进制序列的切片始终是同一类型的二进制序列，包括长度为1的切片：
+```python
+>>> cafe = bytes('café', encoding='utf-8')
+>>> cafe
+b'caf\xc3\xa9'
+>>> cafe[0]
+99
+>>> cafe[:1]
+b'c'
+>>> cafe_arr = bytearray(cafe)
+>>> cafe_arr
+bytearray(b'caf\xc3\xa9')
+>>> cafe_arr[-1:]
+bytearray(b'\xa9'
+```
+
+虽然二进制序列其实是整数序列，但是它们的字面量表示法表明其中有 ASCII 文本，因此，各个字节的值可能会使用下列3种不同的方式显示：
+- 可打印的 ASCII 范围内的直接(从空格到~)：使用ASCII字符本身
+- 制表符、换行符、回车符和\对应的字节：使用转义序列\t、\n、\r、\\\\。
+- 其他字节的值：使用十六进制转义序列（例如，\x00 是空字节）
+
+除了格式化方法（format、format_map）和几个处理 Unicode 数据的方法(如casefold / isdicimal / isidentifier / isnumeric / isprintable / encode)之外，str类型的其他方法都支持bytes和bytearray类型。
+
+二进制序列中有个类方法是 str 没有的，名为 fromhex：
+```python
+>>> bytes.fromhex('31 4B ce A9')
+b'1K\xce\xa9'
+```
+使用缓冲类对象构建二进制序列是一种底层操作，可能涉及类型转换：
+```python
+>>> from array import array
+# 创建 signed short 类型的 array
+>>> numbers = array('h',[-2,-1,0,1,2])
+>>> octets = bytes(numbers)
+>>> octets
+b'\xfe\xff\xff\xff\x00\x00\x01\x00\x02\x00'
+```
+使用缓冲类对象创建 bytes 或 bytearray 对象时，始终赋值源对象中的字节序列。与之相反，memoryview 对象允许在二进制数据结构之间共享内存。如果从二进制序列中提取结构化信息，struct 模块是重要的工具。
+
+#### 结构体和内存试图
+struct 模块中提供了一些函数，将打包的字节序列转换成不同类型字段组成的元组，还有一些函数用于反向操作。struct 模块能处理 bytes、bytearray、memoryview对象。
+```python
+>>> import struct
+# < 表示小端模式，3s表示3字节的bytes，H表示unsigned short
+>>> fmt = '<3s3sHH'
+>>> with open('filter.gif', 'rb') as fp:
+...     img = memoryview(fp.read())
+... 
+>>> header = img[:10]
+>>> bytes(header)
+b'GIF89a,\x01,\x01'
+# 拆包，得到一个元组，包括类型、版本、宽度、高度
+>>> struct.unpack(fmt, header)
+(b'GIF', b'89a', 300, 300)
+```
+
+### 基本的编解码器
+
+Python 自带了超过 100 中编码解码器(codec, ecoder/decoder)，用于在文本和字节之间相互转换。每个编码器都有一个名称，如 'utf_8'，而且经常有几个别名，如'utf8'、'utf-8'、'U8'。这些名称可以传递给 open()、str.encode()、bytes.decode()等函数的encoding参数。
+
+使用3个编码器编码字节字符串 'El Niño'，得到的字节序列相差很大：
+```python
+>>> for codec in ['latin-1','utf-8','utf-16']:
+...     print(codec, 'El Niño'.encode(encoding=codec), sep='\t')
+... 
+latin-1	b'El Ni\xf1o'
+utf-8	b'El Ni\xc3\xb1o'
+utf-16	b'\xff\xfeE\x00l\x00 \x00N\x00i\x00\xf1\x00o\x00'
+```
+
+一些编码的介绍：
+- latin1（即iso8859_1）：一种重要的编码，是其他编码的基础，例如cp1252 和 Unicode（注意：latin1与cp1252的字节值是一样的，甚至连码位都相同）
+- cp1252：Microsoft定制的latin1超集，添加了有用的符号，例如弯引号和€：有些Windows应用把它称为 ASCI，但它并不是ASCI标准
+- cp437：IBM PC 最初的字符集，包含框图符号，与后来出现的 latin1 不兼容
+- gb2312：用于编码简体中文的陈旧标准，这是亚洲语言中使用最广泛的多字节编码之一
+- utf-8：目前Web中最常用的8位编码，与ASCII兼容
+- utf-16le：UTF-16的16位编码方案的一种形式；所有 UTF-16 支持通过转义序列(称为代理对，surrogate pair)表示超过U+FFFF的码位。
+
+### 了解编码解码问题
+
+虽然有个一般性的 UnicodeError 异常，但是报告错误时几乎都会指明具体的异常：UnicodeEncodeError(把字符串转换成二进制序列时)或UnicodeDecodeError(把二进制序列转换成字符串时)。如果源码的编码与预期不符，加载Python模块时还可能抛出 SyntaxError。
+
+#### 处理 UnicodeEncodeError
+
+多数非 UTF 编解码器只能处理 Unicode 字符的一小部分子集。
+```python
+>>> city = 'São Paulo'
+# utf-? 编码能处理任何的字符串
+>>> city.encode('utf-8')
+b'S\xc3\xa3o Paulo'
+>>> city.encode('utf-16')
+b'\xff\xfeS\x00\xe3\x00o\x00 \x00P\x00a\x00u\x00l\x00o\x00'
+# iso8859-1 也能处理 'São Paulo'
+>>> city.encode('iso8859_1')
+b'S\xe3o Paulo'
+# cp437 不能处理 ã
+>>> city.encode('cp437')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/Users/fenghuabin/anaconda3/lib/python3.6/encodings/cp437.py", line 12, in encode
+    return codecs.charmap_encode(input,errors,encoding_map)
+UnicodeEncodeError: 'charmap' codec can't encode character '\xe3' in position 1: character maps to <undefined>
+# 以忽略无法编码的字符跳过，这种做法通常不妥
+>>> city.encode('cp437',errors='ignore')
+b'So Paulo'
+# 将无法编码的字符替换成 ?，显示给用户
+>>> city.encode('cp437',errors='replace')
+b'S?o Paulo'
+# 把无法编码的字符替换成 XML 实体
+>>> city.encode('cp437',errors='xmlcharrefreplace')
+b'S&#227;o Paulo'
+```
+
+#### 处理 UnicodeDecodeError
+不是每个字节都包含有效的ASCII字符，也不是每个字符序列都是有效的UTF-8或UTF-16。因此，把二进制序列转换成文本时，如果假设是这两个编码中的一个，遇到无法转换的字节序列时就会抛出 UnicodeDecodeError。
+
+另一方面，很多陈旧的 8 为编码 —— 如 cp1252，iso8859-1 和 koi8-r 能解码如何字节序列流而不抛出错误，例如随机噪声。因此，如果程序使用错误的8位编码，解码过程悄无声息，而得到的是无用的输出。
+
+> 乱码字符称为鬼符(gremlin)
+
+把字节序列解码成字符串：成功和错误处理
+```python
+# 这些字节是使用latin1 编码的 'Montréal'
+>>> octets = b'Montr\xe9al'
+# 可以使用 cp1252 解码，因为它是 latin1 的有效超集
+>>> octets.decode('cp1252')
+'Montréal'
+# ISO-8895-7 用于希腊文编码，无法正确解码 '\xe9'
+>>> octets.decode('iso8859-7')
+'Montrιal'
+# KOI8-R 用于编码俄文
+>>> octets.decode('koi8_r')
+'MontrИal'
+# utf-8 检测到 octets 不是有效的 UTF-8 字符串，抛出错误 UnicodeDecodeError
+>>> octets.decode('utf-8')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 5: invalid continuation byte
+# \xe9 被替换成 � （码位：U+FFFD）
+>>> octets.decode('utf-8', errors='replace')
+'Montr�al'
+```
+
+#### 使用预期之外的编码加载模块时抛出SyntaxError
+
+Python3 默认使用 UTF-8 编码源码，Python2 默认使用 ASCII。
+
+如果加载的 .py 模块中包含 UTF-8 之外的数据，而且没有声明编码，会得到类似下面的消息：
+```
+SyntaxError: Non-UTF-8 code starting with '\xc4' in file x2.py on line 1, 
+but no encoding declared; see http://python.org/dev/peps/pep-0263/ for details
+```
+GNU/Linux 和 OS X 系统大都使用 UTF-8，因此打开在 Windows 系统中使用 cp1252 编码。
+
+为了修正这个问题，可以在文件顶部添加一个神奇的 coding 注释：
+```python
+# coding: cp1252
+print('你好，世界')
+```
+> 现在 Python3 的源码不再限于使用ASCII，而是默认使用优秀的 UTF-8，因此要修正源码的陈旧编码（如 cp1252）问题，最好将其转换为UTF-8，别去麻烦coding注释，如果你用的编辑器不支持 UTF-8，那就换了它。
+
+Python 允许在源码中使用非ASCII标识符：
+```python
+>>> 苹果='apple'
+>>> print(苹果)
+apple
+>>> π = 3.14
+>>> print(π)
+3.14
+```
+
+#### 如何找出字节序列的编码
+
+如何找出字节序列的编码？简单来说，不能，必须有人告诉你。
+
+有些通信协议和文件格式，如HTTP、XML，包含明确证明内容的首部。可以确定的是，某些字节流不是 ASCII，因为其中包含大于127的字节值，而且 UTF-8 和 UTF-16 的方式也限制了可用的字节序列。不过即便如此，我们也不能根据特定的位模式来 100% 确定二进制文件的编码时 ASCII 或 UTF-8。
+
+统一字符编码侦测包 chardet 可以识别所支持的 30 种编码。Chardet 是一个 Python 库，可以在程序中使用，不过它也提供了命令行工具 chardetect。
+```sh
+bash-3.2$ chardetect ai_homework.md 
+ai_homework.md: utf-8 with confidence 0.99
+```
+二进制序列编码文本通常不会指明自己的编码，但是 UTF 格式可以在文本内容的开始添加一个字节序标记。
+
+#### BOM 有用的鬼符
+
+UTF-16 编码的序列开头有几个额外的字节：
+```python
+>>> u16 = 'El Niño'.encode(encoding='utf-16')
+>>> u16
+b'\xff\xfeE\x00l\x00 \x00N\x00i\x00\xf1\x00o\x00'
+```
+其中的`\xff\xfe`就是额外的字节。这是 BOM，即字节序标记（Byte Order Mark），指明编码时使用 Intel CPU 的小字节序。
+
+在小字节序设备中，各个码位的最低有效字节在前面。
+
+UTF-16 有两个变种：UTF-16LE 显式指明使用小字节序，UTF-16BE，显式指明使用大字节序，如果使用这两个变种，不会生成 BOM：
+```python
+>>> 'El Niño'.encode(encoding='utf_16')
+b'\xff\xfeE\x00l\x00 \x00N\x00i\x00\xf1\x00o\x00'
+>>> 'El Niño'.encode(encoding='utf_16le')
+b'E\x00l\x00 \x00N\x00i\x00\xf1\x00o\x00'
+>>> 'El Niño'.encode(encoding='utf_16be')
+b'\x00E\x00l\x00 \x00N\x00i\x00\xf1\x00o'
+```
+如果有BOM，UTF-16编码器会将其过滤掉，为你提供没有前导 ZERO WITH NOBREAK SPACE 字符的真正文本。根据标准，文件使用 UTF-16编码，并且没有BOM，那么应该假定使用 UTF-16BE 编码。然而，Intel x86 架构用的是小字节序，因此有很多文本用的是不带 BOM 的小字节序 UTF-16 编码。
+
+### 处理文本文件
+
+处理文本的最佳时间是 "Unicode三明治"：要尽早将输入的字节序列解码成字符串三明治中的“肉片”是程序的业务逻辑，在这里只能处理字符串对象。在其他处理过程中，一定不能编码或解码。对输出来说，则要尽量晚地把字符串编码成字节序列。多数 Web 框架都是这样做的，使用框架时很少接触字节序列。例如，在 Django 中，视图应该输出 Unicode 字符串；Django 会负责将响应编码成字节序列，而且默认使用UTF-8编码。
+
+> 需要在多台设备中或多种场合中运行的代码，一定不能依赖默认编码。打开文件时始终应该明确传入 encoding=参数，因为不同的设备使用的默认编码可能不同，有时隔一天都会发生变化。
+
+> 除非像判断编码，否则不要在二进制模式中打开文本文件；即使如此，也应该使用 Chardet 而不是重新发明轮子。常规代码只应该使用二进制模式打开二进制文件，如光栅图像。
+
+### 为了正确比较而规范化 Unicode 字符串
+
+因为 Unicode 有组合字符（变音符号和附加到前一个字符上的记号，打印时作为一个整体），所以字符串比较起来很复杂，比如 café 可以用两种方式构成，分别有 4 个和 5 个码位，但是结果完全一样：
+```python
+>>> s1 = 'café'
+>>> s2 = 'cafe\u0301'
+>>> s1, s2
+('café', 'café')
+>>> len(s1), len(s2)
+(4, 5)
+>>> s1==s2
+False
+```
+
+U+0301 是 COMBINING ACUTE ACCENT，加在 e 后面得到 é。在Unicode标准中，'é' 和 'e\u0301' 这样的序列称为 标准等价物，应用程序应该吧它们视为相同字符。但是，Python看到的是不同的码位序列，因此判定两者不相等。
+
+这个问题的解决方案是使用 unicodedata.normalize 函数提供的 Unicode 规范化。这个函数的第一个参数使4个字符串中的一个：NFC、NFD、NFKC、NFKD。
+
+- NFC（Normalization Form C）：使用最少的码位构成等价的字符串
+- NFD ：把组合字符分成基字符和单独的组合字符
+
+这两种规范化方式都能让比较行为符合预期：
+```python
+>>> from unicodedata import normalize
+>>> s1 = 'café'
+>>> s2 = 'cafe\u0301'
+>>> len(s1), len(s2)
+(4, 5)
+>>> len(normalize('NFC',s1)),len(normalize('NFC',s2))
+(4, 4)
+>>> len(normalize('NFD',s1)),len(normalize('NFD',s2))
+(5, 5)
+>>> normalize('NFC',s1)==normalize('NFC',s2)
+True
+>>> normalize('NFD',s1)==normalize('NFD',s2)
+True
+```
+另两个规范化形式为 NFKC 和 NFKD。
+
+#### 大小写折叠
+
+大小写折叠就是把所有文本写成小写，再做其他转换，由 `str.casefold()` 支持。
+
+对于只包含 latin1 字符的字符串 s，`s.casefold()` 得到的结果与 `s.lower()` 一样。
+
+
+# 把函数视为对象
+
+## 一等函数
+
+在 Python 中，函数是一等对象。编程语言理论家将“一等对象”定义为满足下列条件的程序实体：
+
+- 在运行时创建
+- 能赋值给变量或数据结构中的元素
+- 能作为参数传给函数
+- 能作为函数的返回值
+
+在 Python 中，整数、字符串和字典都是一等对象。
+
+一等函数实际上的意思是：函数在Python中是一等对象。
+
+### 把函数视为对象
+
+```python
+>>> def factorial(n):
+...     '''returns n! '''
+...     return 1 if n < 2 else n*factorial(n-1)
+... 
+>>> factorial(42)
+1405006117752879898543142606244511569936384000000000
+>>> factorial.__dict__
+{}
+>>> type(factorial)
+<class 'function'>
+```
+### 高阶函数
+接受函数为参数，或者把函数作为结果返回的函数就是高阶函数（higher-order function）。map 函数就是一例，此外，内置函数 sorted 也是。
+
+### 匿名函数
+
+lambda 关键字在Python表达式中创建匿名函数。
+
+除了作为参数传递给高阶函数之外，Python 很少使用匿名函数。
+
+**Lumdh 提出的 lambda 表达式重构秘籍**
+如果使用 lambda 表达式导致一段代码难以阅读，Fredrik Lundh 建议像下面这样重构：
+1. 编写注释：说明 lambda 表达式的作用
+1. 研究一会注释，并找出一个名称来概括注释
+1. 把lambda表达式转换成def语句，使用那个名称来定义函数
+1. 删除注释
+
+### 可调用对象
+
+除了用户定义的函数，调用运算符（即括号）还可以用到其他对象上，如果想判断对象能否被调用，可以使用内置的 callable()函数。
+Python 数据模型文档列出了 7 种可调用对象：
+1. 用户定义的函数：用lambda 和 def 创建
+1. 内置函数：使用C语言实现的函数，如 len 或 time.strftime
+1. 内置方法：使用C实现的方法，如 dict.get
+1. 方法：在类的定义体中定义的函数
+1. 类：调用类时会运行类的 `__new__` 方法创建一个实例，然后运行 `__init__` 方法，初始化实例，最后把实例返回给调用方。因为 Python 没有 new 运算符，所以调用类相当于调用函数。
+1. 类的实例：如果定义了 `__call__` 方法，那么它的实例可以作为函数调用
+1. 生成器函数：使用 yield 关键字的函数或方法，调用生成器函数返回的是生成器对象。
+
+生成器函数在很多方面与其他可调用对象不同，后面章节会介绍，生成器函数还可以作为协程。
+
+Python 中有各种各样的可调用类型，因此判断对象是否可调用，最安全的方式是使用内置的 callable() 函数。
+
+### 用户定义的可调用类型
+
+不仅 Python 函数是真正的对象，任何 Python 对象都可以表现得像函数，为此，只需要实现实例方法：`__call__`。
+```python
+>>> class A:
+...     def __call__(self):
+...         print('hello,world')
+... 
+>>> a = A()
+>>> a()
+hello,world
+```
+实现 `__call__` 方法的类是创建函数类对象的简便方式，可以使用类中的属性记录运行环境，如下实现了一个计数器：
+```python
+>>> class MyCounter:
+...     def __init__(self, init=0):
+...         self.v = init
+...     def __call__(self):
+...         self.v += 1
+...         return self.v
+... 
+>>> c1 = MyCounter()
+>>> c1()
+1
+>>> c1()
+2
+>>> c2 = MyCounter()
+>>> c1()
+3
+>>> c2()
+1
+```
+创建保有内部状态的函数还有另一种截然不同的方法--使用闭包。
+```python
+>>> def GetCounter(init=0):
+...     v = init
+...     def f():
+...         nonlocal v
+...         v += 1
+...         return v
+...     return f
+... 
+>>> c1 = GetCounter()
+>>> c1()
+1
+>>> c1()
+2
+>>> c2 = GetCounter()
+>>> c1()
+3
+>>> c2()
+1
+```
+
+下面讨论把函数视为对象处理的另一方面：运行时内省。
+
+### 函数内省
+
+除了 `__doc__`，函数对象还有很多属性。使用 dir 可以探知 factorial 具有下列属性：
+```
+['__annotations__', '__call__', '__class__', '__closure__', '__code__', 
+'__defaults__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', 
+'__format__', '__ge__', '__get__', '__getattribute__', '__globals__', '__gt__', 
+'__hash__', '__init__', '__init_subclass__', '__kwdefaults__', '__le__', '__lt__', 
+'__module__', '__name__', '__ne__', '__new__', '__qualname__', '__reduce__', 
+'__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', 
+'__subclasshook__']
+```
+其中大多数属性是 Python 对象共有的，本节讨论把函数作为对象相关的几个属性。
+
+1. `__dict__` : 存储赋予它的 **用户属性**。一般来说，为函数随意赋予属性不是很常见，但是 Django 框架这么做了。
+
+下面字典说明函数专有而一边对象没有的属性。计算两个属性集合的差便能得到函数专有属性列表：
+```python
+>>> class C:pass
+... 
+>>> def fun():pass
+... 
+>>> obj = C()
+>>> sorted(set(dir(fun))-set(dir(obj)))
+['__annotations__', '__call__', '__closure__', '__code__', '__defaults__', 
+'__get__', '__globals__', '__kwdefaults__', '__name__', '__qualname__']
+```
+用户定义的函数的属性：
+|名称|类型|说明|
+|---|---|---|
+|`__annotations__`|dict|参数和返回值的注解|
+|`__call__`|method-<br>wrapper|实现 () 运算，即可调用对象协议|
+|`__closure__`|tuple|函数闭包，即自由变量的绑定(通常为 None)|
+|`__code__`|code|编译成字节码的函数元数据和函数定义体|
+|`__defaults__`|tuple|形参默认值|
+|`__get__`|method-<br>wrapper|实现只读描述符协议|
+|`__globals__`|dict|函数所在模块中的全局变量|
+|`__kwdefaults__`|dict|**仅限关键字形式参数**的默认值|
+|`__name__`|str|函数名称，匿名函数为 <lambda>|
+|`__qualname__`|str|函数的限定名称|
+
+
