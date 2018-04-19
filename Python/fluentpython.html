@@ -1002,8 +1002,7 @@ TypeError<span class="token punctuation">:</span> unhashable <span class="token 
 md <span class="token operator">=</span> MyDict<span class="token punctuation">(</span><span class="token builtin">list</span><span class="token punctuation">)</span>
 md<span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 <span class="token keyword">print</span><span class="token punctuation">(</span>md<span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">{'a': [1]}
-</pre></div></div><blockquote>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><blockquote>
 <p><code>__missing__</code> 方法只会被 <code>__getitem__</code> 调用(比如在表达式 d[k] 中)。提供 <code>__missing__</code> 方法对 get 或 <code>__contains__</code> 这些方法的使用没有影响。</p>
 </blockquote>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">StrKeyDict0</span><span class="token punctuation">(</span><span class="token builtin">dict</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -1384,24 +1383,7 @@ MAX_BITS <span class="token operator">=</span> <span class="token builtin">len</
     <span class="token keyword">print</span><span class="token punctuation">(</span>hash_diff<span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">1.0001</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span>hash_diff<span class="token punctuation">(</span><span class="token number">1.0001</span><span class="token punctuation">,</span> <span class="token number">1.0002</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
     <span class="token keyword">print</span><span class="token punctuation">(</span>hash_diff<span class="token punctuation">(</span><span class="token number">1.0002</span><span class="token punctuation">,</span> <span class="token number">1.0003</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">64-bit Python build
-1       000000000000000000000000000000000000000000000000000000000000001
-                                                                        ! = 0
-1.0     000000000000000000000000000000000000000000000000000000000000001
--------------------------------------------------------------------------------
-1.0     000000000000000000000000000000000000000000000000000000000000001
-                       !! !   !! !! !!!   ! !!! ! !!   !!!   !          ! = 21
-1.0001  000000000000000110100011011011100010111010110001110001000000001
--------------------------------------------------------------------------------
-1.0001  000000000000000110100011011011100010111010110001110001000000001
-                      ! !!!  ! !! !!  !  !!!  !!!! !  !  !  !!          ! = 22
-1.0002  000000000000001101000110110111000101110101100011100010000000001
--------------------------------------------------------------------------------
-1.0002  000000000000001101000110110111000101110101100011100010000000001
-                     !!!! ! !!  !  ! !! !! !   ! !!! !! !!   !          ! = 23
-1.0003  000000000000010011101010010010101000110000010101010011000000001
--------------------------------------------------------------------------------
-</pre></div></div><p>从 Python3.3 开始，str、bytes、datetime 对象的散列值计算过程中多了随机的“加盐”的过程。所以，加盐值是Python进程内的一个常量，但是每次启动Python解释器都会生成一个不同的盐值。随机盐值是为了防止 DOS 攻击而采取的一种安全策略。</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>从 Python3.3 开始，str、bytes、datetime 对象的散列值计算过程中多了随机的“加盐”的过程。所以，加盐值是Python进程内的一个常量，但是每次启动Python解释器都会生成一个不同的盐值。随机盐值是为了防止 DOS 攻击而采取的一种安全策略。</p>
 <p><strong>02. 散列表算法</strong></p>
 <p>为了获取 <code>my_dict[search_key]</code> 背后的值，Python 首先会调用 hash(search_key) 来计算 search_key 的散列值，把这个值最低的几位数字作为偏移量，在散列表中查找表元（具体取几位，得看当前散列表的大小）。若找到的表元是空的，则抛出 KeyError 异常。若不是空的，则表元里会有一对 found_key:found_value。这时候 Python 会检验 search_key==found_key 是否为真，如果它们相等的话，就会返回 found_value。</p>
 <p>如果 search_key 和 found_key 不匹配的话，这种情况称为散列冲突。发生这种情况是因为散列表所做的其实是把随机地元素映射到只有几位的数字上，而散列表本身的索引又只依赖于这个数字的一部分。</p>
@@ -1907,7 +1889,505 @@ hello<span class="token punctuation">,</span>world
 </tr>
 </tbody>
 </table>
+<h3 class="mume-header" id="%E4%BB%8E%E5%AE%9A%E4%BD%8D%E5%8F%82%E6%95%B0%E5%88%B0%E4%BB%85%E9%99%90%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0">从定位参数到仅限关键字参数</h3>
 
+<p>Python 最好的特性之一是提供了极为灵活的参数处理机制，而且 Python 3 进一步提供了仅限关键字 参数(keyword-only argument)。与之密切相关的是，调用函数时使用 * 和 ** 展开可迭代对象，映射到单个参数。</p>
+<p>定义一个用于生成HTML标签的tag函数：</p>
+<pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token keyword">def</span> <span class="token function">tag</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> <span class="token operator">*</span>content<span class="token punctuation">,</span> cls<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> <span class="token operator">**</span>attrs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""生成一个或多个HTML标签"""</span>
+    attr_str <span class="token operator">=</span> <span class="token string">''</span>
+    <span class="token keyword">if</span> attrs<span class="token punctuation">:</span>
+        <span class="token keyword">for</span> k<span class="token punctuation">,</span>v <span class="token keyword">in</span> attrs<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            attr_str <span class="token operator">+=</span> f<span class="token string">' {k}="{v}"'</span>
+    cls_str <span class="token operator">=</span> <span class="token string">''</span>
+    <span class="token keyword">if</span> cls <span class="token keyword">is</span> <span class="token operator">not</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+        cls_str <span class="token operator">=</span> f<span class="token string">' class="{cls}"'</span>
+    left_tag <span class="token operator">=</span> f<span class="token string">'{name}{cls_str}{attr_str}'</span>
+    right_tag <span class="token operator">=</span> f<span class="token string">'/{name}'</span>
+    <span class="token keyword">if</span> <span class="token operator">not</span> content<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> f<span class="token string">'&lt;{left_tag} />'</span>
+    <span class="token keyword">return</span> <span class="token string">'\n'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>f<span class="token string">'&lt;{left_tag}>{sub_ct}&lt;{right_tag}>'</span>
+        <span class="token keyword">for</span> sub_ct <span class="token keyword">in</span> content<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>测试效果：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> tag<span class="token punctuation">(</span><span class="token string">'br'</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;br />'</span>
+<span class="token operator">>></span><span class="token operator">></span> tag<span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">,</span><span class="token string">'hello'</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;p>hello&lt;/p>'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">print</span><span class="token punctuation">(</span>tag<span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">,</span><span class="token string">'hello'</span><span class="token punctuation">,</span><span class="token string">'world'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">&lt;</span>p<span class="token operator">></span>hello<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+<span class="token operator">&lt;</span>p<span class="token operator">></span>world<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+<span class="token operator">>></span><span class="token operator">></span> tag<span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">,</span><span class="token string">'hello'</span><span class="token punctuation">,</span><span class="token builtin">id</span><span class="token operator">=</span><span class="token number">33</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;p id="33">hello&lt;/p>'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">print</span><span class="token punctuation">(</span>tag<span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">,</span><span class="token string">'hello'</span><span class="token punctuation">,</span><span class="token string">'world'</span><span class="token punctuation">,</span>cls<span class="token operator">=</span><span class="token string">'sidebar'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">&lt;</span>p <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar"</span><span class="token operator">></span>hello<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+<span class="token operator">&lt;</span>p <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"sidebar"</span><span class="token operator">></span>world<span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+<span class="token operator">>></span><span class="token operator">></span> tag<span class="token punctuation">(</span>content<span class="token operator">=</span><span class="token string">'testing'</span><span class="token punctuation">,</span>name<span class="token operator">=</span><span class="token string">'img'</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;img content="testing" />'</span>
+<span class="token operator">>></span><span class="token operator">></span> my_tag <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">'img'</span><span class="token punctuation">,</span><span class="token string">'title'</span><span class="token punctuation">:</span><span class="token string">'Sumset Boulevard'</span><span class="token punctuation">,</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token string">'src'</span><span class="token punctuation">:</span><span class="token string">'sunset.jpg'</span><span class="token punctuation">,</span> <span class="token string">'cls'</span><span class="token punctuation">:</span><span class="token string">'framed'</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> tag<span class="token punctuation">(</span><span class="token operator">**</span>my_tag<span class="token punctuation">)</span>
+<span class="token string">'&lt;img class="framed" title="Sumset Boulevard" src="sunset.jpg" />'</span>
+</pre><p>仅限关键字参数是 Python3 新增的特性。在上面的示例中，cls 参数只能通过关键字参数指定，它一定不会捕获未命名的定位参数。<strong>定义函数时，若想指定仅限关键字参数，要把它们放到前面有 * 的参数后面</strong>。</p>
+<p>如果不想支持数量不定的定位参数，但是想支持仅限关键字参数，在签名中放一个 * :</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span><span class="token operator">*</span><span class="token punctuation">,</span>b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">return</span> a<span class="token punctuation">,</span>b
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>b<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span>b<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span>
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+TypeError<span class="token punctuation">:</span> f<span class="token punctuation">(</span><span class="token punctuation">)</span> takes <span class="token number">1</span> positional argument but <span class="token number">2</span>
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+TypeError<span class="token punctuation">:</span> f<span class="token punctuation">(</span><span class="token punctuation">)</span> missing <span class="token number">1</span> required keyword<span class="token operator">-</span>only argument<span class="token punctuation">:</span> <span class="token string">'b'</span>
+</pre><p>注意：仅限关键字参数不一定要有默认值，可以像上例 b 一样，强制传入实参。</p>
+<h3 class="mume-header" id="%E8%8E%B7%E5%8F%96%E5%85%B3%E4%BA%8E%E5%8F%82%E6%95%B0%E7%9A%84%E4%BF%A1%E6%81%AF">获取关于参数的信息</h3>
+
+<p>函数对象有个 <code>__defaults__</code> 属性，它的值是一个元组，里面保存着定位参数和关键字参数的默认值。仅限关键字参数的默认值在 <code>__kwdefaults__</code> 属性中。然而，参数的名称在 <code>__code__</code> 属性中，它的值是一个 code 对象引用，自身也有很多属性。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     c <span class="token operator">=</span> a <span class="token operator">+</span> b
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     d <span class="token operator">=</span> c<span class="token operator">*</span><span class="token number">2</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">return</span> d
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">.</span>__defaults__
+<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">.</span>__code__
+<span class="token operator">&lt;</span>code <span class="token builtin">object</span> f at <span class="token number">0x10adebc00</span><span class="token punctuation">,</span> <span class="token builtin">file</span> <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token operator">></span>
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">.</span>__code__<span class="token punctuation">.</span>co_varnames
+<span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">,</span> <span class="token string">'d'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">.</span>__code__<span class="token punctuation">.</span>co_argcount
+<span class="token number">2</span>
+</pre><p>可以看出，这种组织信息的方式并不遍历。参数名在 <code>__code__.co_varnames</code> 中，不过里面还有函数定义体中创建的局部变量。因此，参数名称是前 N 个字符串，N 的值由 <code>__code__.argcount</code> 确定。</p>
+<p>我们可以用更好的方式--使用<code>inspect</code>模块。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">def</span> <span class="token function">f</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     c <span class="token operator">=</span> a <span class="token operator">+</span> b
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     d <span class="token operator">=</span> c <span class="token operator">*</span> <span class="token number">2</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">return</span> d
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> inspect <span class="token keyword">import</span> signature
+<span class="token operator">>></span><span class="token operator">></span> sig <span class="token operator">=</span> signature<span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> sig
+<span class="token operator">&lt;</span>Signature <span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token operator">></span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">str</span><span class="token punctuation">(</span>sig<span class="token punctuation">)</span>
+<span class="token string">'(a, b=100)'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">for</span> name<span class="token punctuation">,</span> param <span class="token keyword">in</span> sig<span class="token punctuation">.</span>parameters<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">print</span><span class="token punctuation">(</span>param<span class="token punctuation">.</span>kind<span class="token punctuation">,</span> <span class="token string">':'</span><span class="token punctuation">,</span> name<span class="token punctuation">,</span> <span class="token string">'='</span><span class="token punctuation">,</span> param<span class="token punctuation">.</span>default<span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+POSITIONAL_OR_KEYWORD <span class="token punctuation">:</span> a <span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token string">'inspect._empty'</span><span class="token operator">></span>
+POSITIONAL_OR_KEYWORD <span class="token punctuation">:</span> b <span class="token operator">=</span> <span class="token number">100</span>
+</pre><p><code>inspect.signature</code> 函数返回一个 inspect.Signature 对象，他有一个 parameters 属性，这是一个有序映射，把参数名和 inspect.Parameter 对象对应起来。各个 Parameter 属性也有自己的属性。</p>
+<p>kind 属性值是 _ParameterKind 类中的5个值之一：</p>
+<ul>
+<li>POSITIONAL_OR_KEYWORD : 可以通过定位参数和关键字传入的形参</li>
+<li>VAR_POSITIONAL : 定位参数元组，如 <code>f(*a)</code> 中的 <code>a</code></li>
+<li>VAR_KEYWORD : 定位参数元组，如<code>f(**a)</code> 中的 <code>a</code></li>
+<li>KEYWORD_ONLY : 仅限关键字参数(Python3 新增)，如<code>f(*, a)</code>和<code>f(*x,a)</code>中的<code>a</code></li>
+<li>POSITIONAL_ONLY : 目前，Python声明语句的句法不支持，但是有些使用C语言实现且不接受关键字参数的函数支持。</li>
+</ul>
+<h3 class="mume-header" id="%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A">函数注释</h3>
+
+<p>Python 3 提供了一种句法，用于为函数声明中的参数和返回值附加元数据。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">def</span> <span class="token function">clip</span><span class="token punctuation">(</span>text<span class="token punctuation">:</span><span class="token builtin">str</span><span class="token punctuation">,</span> max_len<span class="token punctuation">:</span><span class="token string">'int > 0'</span><span class="token operator">=</span><span class="token number">80</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">></span><span class="token builtin">str</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""在 max_len 前面或后面的第一个空格处截断文本
+    """</span>
+    end <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span> <span class="token operator">></span> max_len<span class="token punctuation">:</span>
+        space_before <span class="token operator">=</span> text<span class="token punctuation">.</span>rfind<span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> max_len<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> space_before <span class="token operator">>=</span><span class="token number">0</span><span class="token punctuation">:</span>
+            end <span class="token operator">=</span> space_before
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            space_before <span class="token operator">=</span> text<span class="token punctuation">.</span>rfind<span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">,</span> max_len<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> space_before <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">:</span>
+                end <span class="token operator">=</span> space_before
+        <span class="token keyword">if</span> end <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            end <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> text<span class="token punctuation">[</span><span class="token punctuation">:</span>end<span class="token punctuation">]</span><span class="token punctuation">.</span>rstrip<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>函数声明中各个参数可以在冒号<code>:</code>之后添加注释表达式。如果参数有默认值，注释放在参数名和=号之间。如果想注释返回值，在 <code>)</code> 和函数声明末尾的 <code>:</code> 之间添加 <code>-&gt;</code> 和一个表达式。那个表达式可以是任何类型，注释中最常见的是类（如 str 和 int）和字符串（如 'int &gt; 0'）。</p>
+<p>注释不会做任何的处理，只会存储在函数的<code>__annotations__</code>属性（一个字典）中。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> clip<span class="token punctuation">.</span>__annotations__
+<span class="token punctuation">{</span><span class="token string">'text'</span><span class="token punctuation">:</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token string">'str'</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token string">'max_len'</span><span class="token punctuation">:</span> <span class="token string">'int > 0'</span><span class="token punctuation">,</span> <span class="token string">'return'</span><span class="token punctuation">:</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token string">'str'</span><span class="token operator">></span><span class="token punctuation">}</span>
+</pre><p>注释只是元数据，可供 IDE、框架和装饰器等工具使用。</p>
+<h3 class="mume-header" id="%E6%94%AF%E6%8C%81%E5%87%BD%E6%95%B0%E6%98%AF%E7%BC%96%E7%A8%8B%E7%9A%84%E5%8C%85">支持函数是编程的包</h3>
+
+<p>虽然 Guido 明确表明，Python 的目标不是编程函数式编程语言，但是得益于 operator 和 functools 等包的支持，函数式编程风格也可以实现。</p>
+<h4 class="mume-header" id="operator-%E6%A8%A1%E5%9D%97">operator 模块</h4>
+
+<p>在函数式编程中，经常需要把算术运算符当做函数使用，例如，不想使用递归计算阶乘。求和可以使用 sum 函数，但是求积却没有这样的函数，我们可以使用 reduce 函数，但是需要一个函数计算序列中两个元素之积。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> functools <span class="token keyword">import</span> <span class="token builtin">reduce</span>
+<span class="token operator">>></span><span class="token operator">></span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">]</span>
+<span class="token comment"># 求和公式</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">reduce</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> a<span class="token punctuation">,</span>b<span class="token punctuation">:</span>a<span class="token operator">+</span>b<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token number">15</span>
+<span class="token comment"># 求积公式</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">reduce</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> a<span class="token punctuation">,</span>b<span class="token punctuation">:</span>a<span class="token operator">*</span>b<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token number">120</span>
+</pre><p>operator 模块为多个算术运算符提供了对应的函数，从而避免编写 <code>lambda a,b:a*b</code> 这样的平凡匿名化函数。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">import</span> operator
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">reduce</span><span class="token punctuation">(</span>operator<span class="token punctuation">.</span>add<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token number">15</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">reduce</span><span class="token punctuation">(</span>operator<span class="token punctuation">.</span>mul<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token number">120</span>
+</pre><p><code>operator</code> 模块中还有一类函数，能替代从序列中取出元素或读取对象属性的lambda表达式：因此<code>itemgetter</code> 和 <code>attrgetter</code> 其实会自动构建函数。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> d <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span><span class="token number">4.8</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'orange'</span><span class="token punctuation">,</span><span class="token number">6.2</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">,</span><span class="token number">2.3</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'pear'</span><span class="token punctuation">,</span><span class="token number">3.9</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> key<span class="token operator">=</span>operator<span class="token punctuation">.</span>itemgetter<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">,</span> <span class="token number">2.3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'pear'</span><span class="token punctuation">,</span> <span class="token number">3.9</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span> <span class="token number">4.8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'orange'</span><span class="token punctuation">,</span> <span class="token number">6.2</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">sorted</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> key<span class="token operator">=</span><span class="token keyword">lambda</span> p<span class="token punctuation">:</span>p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">,</span> <span class="token number">2.3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'pear'</span><span class="token punctuation">,</span> <span class="token number">3.9</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span> <span class="token number">4.8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token string">'orange'</span><span class="token punctuation">,</span> <span class="token number">6.2</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><p>itemgetter 还可以返回多个提取的值构成的元组：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> get_fruit <span class="token operator">=</span> operator<span class="token punctuation">.</span>itemgetter<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">for</span> fruit <span class="token keyword">in</span> d<span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">print</span><span class="token punctuation">(</span>get_fruit<span class="token punctuation">(</span>fruit<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token punctuation">(</span><span class="token number">4.8</span><span class="token punctuation">,</span> <span class="token string">'apple'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">6.2</span><span class="token punctuation">,</span> <span class="token string">'orange'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">2.3</span><span class="token punctuation">,</span> <span class="token string">'banana'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">3.9</span><span class="token punctuation">,</span> <span class="token string">'pear'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> get_fruit <span class="token operator">=</span> <span class="token keyword">lambda</span> o<span class="token punctuation">:</span><span class="token punctuation">(</span>o<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>o<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">for</span> fruit <span class="token keyword">in</span> d<span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">print</span><span class="token punctuation">(</span>get_fruit<span class="token punctuation">(</span>fruit<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token punctuation">(</span><span class="token number">4.8</span><span class="token punctuation">,</span> <span class="token string">'apple'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">6.2</span><span class="token punctuation">,</span> <span class="token string">'orange'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">2.3</span><span class="token punctuation">,</span> <span class="token string">'banana'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">3.9</span><span class="token punctuation">,</span> <span class="token string">'pear'</span><span class="token punctuation">)</span>
+</pre><p>itemgetter 使用 [] 运算符，因此它不仅支持序列，还支持映射和任何实现 <code>__getitem__</code> 方法的类。</p>
+<p><code>attrgetter</code> 的演示：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">Fruit</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> price<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         self<span class="token punctuation">.</span>name<span class="token punctuation">,</span> self<span class="token punctuation">.</span>price <span class="token operator">=</span> name<span class="token punctuation">,</span> price
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> fruits <span class="token operator">=</span> <span class="token punctuation">[</span>Fruit<span class="token punctuation">(</span>n<span class="token punctuation">,</span>p<span class="token punctuation">)</span> <span class="token keyword">for</span> n<span class="token punctuation">,</span>p <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'apple'</span><span class="token punctuation">,</span><span class="token string">'orange'</span><span class="token punctuation">,</span><span class="token string">'banana'</span><span class="token punctuation">,</span><span class="token string">'pear'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token punctuation">[</span><span class="token number">4.8</span><span class="token punctuation">,</span><span class="token number">6.2</span><span class="token punctuation">,</span><span class="token number">2.3</span><span class="token punctuation">,</span><span class="token number">3.9</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> get_frname <span class="token operator">=</span> operator<span class="token punctuation">.</span>attrgetter<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">for</span> fx <span class="token keyword">in</span> fruits<span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">print</span><span class="token punctuation">(</span>get_frname<span class="token punctuation">(</span>fx<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+apple
+orange
+banana
+pear
+<span class="token operator">>></span><span class="token operator">></span> get_frname <span class="token operator">=</span> <span class="token keyword">lambda</span> o<span class="token punctuation">:</span>o<span class="token punctuation">.</span>name
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">for</span> fx <span class="token keyword">in</span> fruits<span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">print</span><span class="token punctuation">(</span>get_frname<span class="token punctuation">(</span>fx<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+apple
+orange
+banana
+pear
+</pre><p>下面是 <code>operator</code> 模块中定义的部分函数（省略了以 _ 开头的名称，因为它们基本上是实现细节）：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">[</span>name <span class="token keyword">for</span> name <span class="token keyword">in</span> <span class="token builtin">dir</span><span class="token punctuation">(</span>operator<span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token operator">not</span> name<span class="token punctuation">.</span>startswith<span class="token punctuation">(</span><span class="token string">'_'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token string">'abs'</span><span class="token punctuation">,</span> <span class="token string">'add'</span><span class="token punctuation">,</span> <span class="token string">'and_'</span><span class="token punctuation">,</span> <span class="token string">'attrgetter'</span><span class="token punctuation">,</span> <span class="token string">'concat'</span><span class="token punctuation">,</span> <span class="token string">'contains'</span><span class="token punctuation">,</span> <span class="token string">'countOf'</span><span class="token punctuation">,</span> 
+<span class="token string">'delitem'</span><span class="token punctuation">,</span> <span class="token string">'eq'</span><span class="token punctuation">,</span> <span class="token string">'floordiv'</span><span class="token punctuation">,</span> <span class="token string">'ge'</span><span class="token punctuation">,</span> <span class="token string">'getitem'</span><span class="token punctuation">,</span> <span class="token string">'gt'</span><span class="token punctuation">,</span> <span class="token string">'iadd'</span><span class="token punctuation">,</span> <span class="token string">'iand'</span><span class="token punctuation">,</span> 
+<span class="token string">'iconcat'</span><span class="token punctuation">,</span> <span class="token string">'ifloordiv'</span><span class="token punctuation">,</span> <span class="token string">'ilshift'</span><span class="token punctuation">,</span> <span class="token string">'imatmul'</span><span class="token punctuation">,</span> <span class="token string">'imod'</span><span class="token punctuation">,</span> <span class="token string">'imul'</span><span class="token punctuation">,</span> <span class="token string">'index'</span><span class="token punctuation">,</span> 
+<span class="token string">'indexOf'</span><span class="token punctuation">,</span> <span class="token string">'inv'</span><span class="token punctuation">,</span> <span class="token string">'invert'</span><span class="token punctuation">,</span> <span class="token string">'ior'</span><span class="token punctuation">,</span> <span class="token string">'ipow'</span><span class="token punctuation">,</span> <span class="token string">'irshift'</span><span class="token punctuation">,</span> <span class="token string">'is_'</span><span class="token punctuation">,</span> <span class="token string">'is_not'</span><span class="token punctuation">,</span> 
+<span class="token string">'isub'</span><span class="token punctuation">,</span> <span class="token string">'itemgetter'</span><span class="token punctuation">,</span> <span class="token string">'itruediv'</span><span class="token punctuation">,</span> <span class="token string">'ixor'</span><span class="token punctuation">,</span> <span class="token string">'le'</span><span class="token punctuation">,</span> <span class="token string">'length_hint'</span><span class="token punctuation">,</span> 
+<span class="token string">'lshift'</span><span class="token punctuation">,</span> <span class="token string">'lt'</span><span class="token punctuation">,</span> <span class="token string">'matmul'</span><span class="token punctuation">,</span> <span class="token string">'methodcaller'</span><span class="token punctuation">,</span> <span class="token string">'mod'</span><span class="token punctuation">,</span> <span class="token string">'mul'</span><span class="token punctuation">,</span> <span class="token string">'ne'</span><span class="token punctuation">,</span> <span class="token string">'neg'</span><span class="token punctuation">,</span> 
+<span class="token string">'not_'</span><span class="token punctuation">,</span> <span class="token string">'or_'</span><span class="token punctuation">,</span> <span class="token string">'pos'</span><span class="token punctuation">,</span> <span class="token string">'pow'</span><span class="token punctuation">,</span> <span class="token string">'rshift'</span><span class="token punctuation">,</span> <span class="token string">'setitem'</span><span class="token punctuation">,</span> <span class="token string">'sub'</span><span class="token punctuation">,</span> <span class="token string">'truediv'</span><span class="token punctuation">,</span> 
+<span class="token string">'truth'</span><span class="token punctuation">,</span> <span class="token string">'xor'</span><span class="token punctuation">]</span>
+</pre><p>最后介绍一下 methodcaller。它的作用于 attrgetter 和 itemgetter 类似，它会自行创建函数。methodcaller 创建的函数会在对象上调用参数指定的方法：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> operator <span class="token keyword">import</span> methodcaller
+<span class="token operator">>></span><span class="token operator">></span> s <span class="token operator">=</span> <span class="token string">'The time has come'</span>
+<span class="token operator">>></span><span class="token operator">></span> upcase <span class="token operator">=</span> methodcaller<span class="token punctuation">(</span><span class="token string">'upper'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> upcase<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token string">'THE TIME HAS COME'</span>
+<span class="token comment"># 类似于 functions.partial 函数，用于冻结某些参数</span>
+<span class="token operator">>></span><span class="token operator">></span> hiphenate <span class="token operator">=</span> methodcaller<span class="token punctuation">(</span><span class="token string">'replace'</span><span class="token punctuation">,</span> <span class="token string">' '</span><span class="token punctuation">,</span> <span class="token string">'-'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> hiphenate<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token string">'The-time-has-come'</span>
+<span class="token operator">>></span><span class="token operator">></span> s
+<span class="token string">'The time has come'</span>
+</pre><h4 class="mume-header" id="%E4%BD%BF%E7%94%A8-functoolspartial-%E5%86%BB%E7%BB%93%E5%8F%82%E6%95%B0">使用 functools.partial 冻结参数</h4>
+
+<p>functools 模块提供了一系列的高阶函数，其中最广为人知或许的是 <code>reduce</code>。余下的函数中，最有用的是 partial 及其辩题，partialmethod。</p>
+<p>functools.partial 这个高阶函数用于部分应用函数。部分应用是指：基于一个函数创建一个新的可调用对象，把原函数的某些参数固定。使用这些函数可以把接受1个或多个参数的函数改编成需要回调的API，这样参数更少。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> operator <span class="token keyword">import</span> mul
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> functools <span class="token keyword">import</span> partial
+<span class="token operator">>></span><span class="token operator">></span> triple <span class="token operator">=</span> partial<span class="token punctuation">(</span>mul<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> triple<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span>
+<span class="token number">21</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token punctuation">[</span>triple<span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">27</span><span class="token punctuation">]</span>
+</pre><pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> picture <span class="token operator">=</span> partial<span class="token punctuation">(</span>tag<span class="token punctuation">,</span> <span class="token string">'img'</span><span class="token punctuation">,</span> cls<span class="token operator">=</span><span class="token string">'pic-frame'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> picture<span class="token punctuation">(</span>src<span class="token operator">=</span><span class="token string">'wumpus.jpeg'</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;img class="pic-frame" src="wumpus.jpeg" />'</span>
+<span class="token operator">>></span><span class="token operator">></span> picture
+functools<span class="token punctuation">.</span>partial<span class="token punctuation">(</span><span class="token operator">&lt;</span>function tag at <span class="token number">0x10ab21e18</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token string">'img'</span><span class="token punctuation">,</span> cls<span class="token operator">=</span><span class="token string">'pic-frame'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> picture<span class="token punctuation">.</span>func
+<span class="token operator">&lt;</span>function tag at <span class="token number">0x10ab21e18</span><span class="token operator">></span>
+<span class="token operator">>></span><span class="token operator">></span> picture<span class="token punctuation">.</span>args
+<span class="token punctuation">(</span><span class="token string">'img'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> picture<span class="token punctuation">.</span>keywords
+<span class="token punctuation">{</span><span class="token string">'cls'</span><span class="token punctuation">:</span> <span class="token string">'pic-frame'</span><span class="token punctuation">}</span>
+</pre><p><code>functools.partialmethod</code> 函数(Python 3.4 新增)的作用与 partial 一样，不过是用于处理方法，如：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> functools <span class="token keyword">import</span> partialmethod
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">MyMul</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">mul</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">return</span> a<span class="token operator">*</span>b
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     double <span class="token operator">=</span> partialmethod<span class="token punctuation">(</span>mul<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> mymul <span class="token operator">=</span> MyMul<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> mymul<span class="token punctuation">.</span>double<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token number">40</span>
+</pre><h4 class="mume-header" id="%E5%90%8E%E8%AE%B0">后记</h4>
+
+<p>Python 从另一门函数语言（Hashell）中借鉴了列表推导，使得Python对map、filter、以及lambda表达式的需求极大地减少了。</p>
+<h2 class="mume-header" id="%E4%BD%BF%E7%94%A8%E4%B8%80%E7%AD%89%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">使用一等函数实现设计模式</h2>
+
+<p>虽然设计模式与语言无关，但这并不意味着每一个设计模式都能在每一种语言中使用。</p>
+<p>《设计模式：可复用面向对象软件的基础》的作者在引言中承认，所用的语言决定了那些设计模式可用：</p>
+<blockquote>
+<p>程序设计语言的选择非常重要，它将影响人们理解问题的出发点。我们的设计模式常用了 Smalltalk 和 C++ 层的语言特性，这个选择实际上决定了那些机制可以方便地实现，那些则不能。若我们常用过程式语言，可能就要包括诸如“集成”、“封装” 和 “多态” 的设计模式了。</p>
+</blockquote>
+<h3 class="mume-header" id="%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90">案例分析</h3>
+
+<p>如果合理利用作为一等对象的函数，某些设计模式可以被简化，“策略”模式就是其中一个很好的例子。</p>
+<h4 class="mume-header" id="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F">经典的策略模式</h4>
+
+<p>策略模式的定义：定义一系列算法，把它们一一封装起来，并且使它们可以相互替换。本模式使得算法可以独立于使用它的客户而改变。</p>
+<p>电商领域有个功能明显可以使用“策略”模式，即根据客户的属性或订单中的商品计算折扣。</p>
+<p>假如一个网店制定了下述的折扣规则：</p>
+<ul>
+<li>同一订单中，单个商品的数量达到20个或以上，享 10% 折扣</li>
+<li>订单中的不同商品达到10个或以上，享7%折扣</li>
+<li>有 1000 或以上积分的顾客，每个订单享 5% 折扣</li>
+</ul>
+<p>简单起见，我们假定一个订单一次只能享用一个折扣。</p>
+<p><img src="../assets/FPfig6_1.png" alt="FPfig6_1"></p>
+<ul>
+<li>上下文：把一些计算委托给实现不同算法的可互换组件，它提供服务。在这个电商示例中，上下文是 Order，它会根据不同的算法计算促销折扣。</li>
+<li>策略：实现不同的组件共同的接口，在这个示例中，名为 Promotion 的抽象类表演这个角色</li>
+<li>具体策略：策略的具体子类。fidelityPromo/BulkPromo/LargeOrderPromo是实现的3个具体策略。</li>
+</ul>
+<p>实现 Order 类，支持插入式折扣策略：</p>
+<div class="code-chunk" data-id="20180419145715" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=12, cmd id=&amp;amp;quot;20180419145715&amp;amp;quot; class=line-numbers}" class="language-python line-numbers"><span class="token keyword">from</span> abc <span class="token keyword">import</span> ABC<span class="token punctuation">,</span> abstractmethod
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+
+Customer <span class="token operator">=</span> namedtuple<span class="token punctuation">(</span><span class="token string">'Customer'</span><span class="token punctuation">,</span> <span class="token string">'name fidelity'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">LineItem</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> product<span class="token punctuation">,</span> quantity<span class="token punctuation">,</span> price<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>product <span class="token operator">=</span> product
+        self<span class="token punctuation">.</span>quantity <span class="token operator">=</span> quantity
+        self<span class="token punctuation">.</span>price <span class="token operator">=</span> price
+    
+    <span class="token keyword">def</span> <span class="token function">total</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>price <span class="token operator">*</span> self<span class="token punctuation">.</span>quantity
+
+<span class="token keyword">class</span> <span class="token class-name">Order</span><span class="token punctuation">:</span> <span class="token comment"># 上下文</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> customer<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> promotion<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>customer <span class="token operator">=</span> customer
+        self<span class="token punctuation">.</span>cart <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>cart<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>promotion <span class="token operator">=</span> promotion
+
+    <span class="token keyword">def</span> <span class="token function">total</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> <span class="token string">'__total'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>__total <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>cart<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__total
+
+    <span class="token keyword">def</span> <span class="token function">due</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>promotion <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            discount <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            discount <span class="token operator">=</span> self<span class="token punctuation">.</span>promotion<span class="token punctuation">.</span>discount<span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> discount
+
+    <span class="token keyword">def</span> <span class="token function">__repr__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        fmt <span class="token operator">=</span> <span class="token string">'Order total: {:.2f} due:{:.2f}'</span>
+        <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>due<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Promotion</span><span class="token punctuation">(</span>ABC<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># 策略，抽象基类</span>
+    @abstractmethod
+    <span class="token keyword">def</span> <span class="token function">discount</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""返回折扣金额（正值）"""</span>
+
+<span class="token keyword">class</span> <span class="token class-name">BulkItemPromo</span><span class="token punctuation">(</span>Promotion<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""单个商品为20个或以上时提供10%的折扣
+    """</span>
+    <span class="token keyword">def</span> <span class="token function">discount</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        discount_v <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> item <span class="token keyword">in</span> order<span class="token punctuation">.</span>cart<span class="token punctuation">:</span>
+            <span class="token keyword">if</span>  item<span class="token punctuation">.</span>quantity <span class="token operator">>=</span> <span class="token number">20</span><span class="token punctuation">:</span>
+                discount_v <span class="token operator">+=</span> item<span class="token punctuation">.</span>quantity<span class="token operator">*</span>item<span class="token punctuation">.</span>price<span class="token operator">*</span><span class="token number">0.1</span>
+        <span class="token keyword">return</span> discount_v
+
+<span class="token keyword">class</span> <span class="token class-name">LargeOrderPromo</span><span class="token punctuation">(</span>Promotion<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""订单中的不同商品达到10个或以上的时候，提供 7% 的折扣
+    """</span>
+    <span class="token keyword">def</span> <span class="token function">discount</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        distinct_items <span class="token operator">=</span> <span class="token punctuation">{</span>item<span class="token punctuation">.</span>product <span class="token keyword">for</span> item <span class="token keyword">in</span> order<span class="token punctuation">.</span>cart<span class="token punctuation">}</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>distinct_items<span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">10</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> order<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.07</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token number">0</span>
+
+
+<span class="token keyword">class</span> <span class="token class-name">FidelityPromo</span><span class="token punctuation">(</span>Promotion<span class="token punctuation">)</span><span class="token punctuation">:</span> 
+    <span class="token triple-quoted-string string">"""为积分1000或以上的顾客提供 5% 的折扣
+    """</span>
+    <span class="token keyword">def</span> <span class="token function">discount</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> order<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">0.05</span> <span class="token keyword">if</span> order<span class="token punctuation">.</span>customer<span class="token punctuation">.</span>fidelity <span class="token operator">></span> <span class="token number">1000</span> <span class="token keyword">else</span> <span class="token number">0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>注意：在示例 6-1 中，我把 Promotion 定义为抽象基类 (Abstract Base Class, ABC)，这么做是为了使用 <code>@abstractmethod</code> 装饰器，从而明确表明所用的模式。</p>
+<blockquote>
+<p>在Python3.4及之后，声明抽象基类的最简单方式是子类话<code>abc.ABC</code>。</p>
+</blockquote>
+<div class="code-chunk" data-id="code-chunk-id-13" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=13, cmd continue=&amp;amp;quot;20180419145715&amp;amp;quot;}" class="language-python">joe <span class="token operator">=</span> Customer<span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+ann <span class="token operator">=</span> Customer<span class="token punctuation">(</span><span class="token string">'Ann Smith'</span><span class="token punctuation">,</span> <span class="token number">1100</span><span class="token punctuation">)</span>
+cart <span class="token operator">=</span> <span class="token punctuation">[</span>LineItem<span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    LineItem<span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">1.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    LineItem<span class="token punctuation">(</span><span class="token string">'watermellon'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">5.0</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> FidelityPromo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>ann<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> FidelityPromo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+banana_cart <span class="token operator">=</span> <span class="token punctuation">[</span>LineItem<span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    LineItem<span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">1.5</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> banana_cart<span class="token punctuation">,</span> BulkItemPromo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+long_order <span class="token operator">=</span> <span class="token punctuation">[</span>LineItem<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>item_code<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1.0</span><span class="token punctuation">)</span> <span class="token keyword">for</span> item_code <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> long_order<span class="token punctuation">,</span> LargeOrderPromo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> LargeOrderPromo<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><h4 class="mume-header" id="%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0-%E7%AD%96%E7%95%A5-%E6%A8%A1%E5%BC%8F">使用函数实现 “策略” 模式</h4>
+
+<p>在上面的例子中，每个具体策略都是一个类，而且都自定义了一个方法，即<code>discount</code>。此外，策略实例没有状态（没有实例属性）。其实它看起来像是普通的函数，下面对上面的例子进行重构，把具体策略换成简单的函数，并去掉 Promo 抽象类。</p>
+<div class="code-chunk" data-id="20180419164816" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=14, cmd id=&amp;amp;quot;20180419164816&amp;amp;quot; class=line-numbers}" class="language-python line-numbers"><span class="token keyword">from</span> abc <span class="token keyword">import</span> ABC<span class="token punctuation">,</span> abstractmethod
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+
+Customer <span class="token operator">=</span> namedtuple<span class="token punctuation">(</span><span class="token string">'Customer'</span><span class="token punctuation">,</span> <span class="token string">'name fidelity'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">LineItem</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> product<span class="token punctuation">,</span> quantity<span class="token punctuation">,</span> price<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>product <span class="token operator">=</span> product
+        self<span class="token punctuation">.</span>quantity <span class="token operator">=</span> quantity
+        self<span class="token punctuation">.</span>price <span class="token operator">=</span> price
+    
+    <span class="token keyword">def</span> <span class="token function">total</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>price <span class="token operator">*</span> self<span class="token punctuation">.</span>quantity
+
+<span class="token keyword">class</span> <span class="token class-name">Order</span><span class="token punctuation">:</span> <span class="token comment"># 上下文</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> customer<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> promotion<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>customer <span class="token operator">=</span> customer
+        self<span class="token punctuation">.</span>cart <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>cart<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>promotion <span class="token operator">=</span> promotion
+
+    <span class="token keyword">def</span> <span class="token function">total</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token builtin">hasattr</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> <span class="token string">'__total'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>__total <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>item<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">for</span> item <span class="token keyword">in</span> self<span class="token punctuation">.</span>cart<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__total
+
+    <span class="token keyword">def</span> <span class="token function">due</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>promotion <span class="token keyword">is</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            discount <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            discount <span class="token operator">=</span> self<span class="token punctuation">.</span>promotion<span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> discount
+
+    <span class="token keyword">def</span> <span class="token function">__repr__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        fmt <span class="token operator">=</span> <span class="token string">'Order total: {:.2f} due:{:.2f}'</span>
+        <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>due<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">fidelity_promo</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""为积分为1000及以上的顾客提供 5%的折扣"""</span>
+    <span class="token keyword">return</span> order<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">.05</span> <span class="token keyword">if</span> order<span class="token punctuation">.</span>customer<span class="token punctuation">.</span>fidelity<span class="token operator">>=</span><span class="token number">1000</span> <span class="token keyword">else</span> <span class="token number">0</span>
+
+<span class="token keyword">def</span> <span class="token function">bulk_item_promo</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""单个商品为20个或以上的提供10%的折扣"""</span>
+    discount <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> item <span class="token keyword">in</span> order<span class="token punctuation">.</span>cart<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> item<span class="token punctuation">.</span>quantity <span class="token operator">>=</span> <span class="token number">20</span><span class="token punctuation">:</span>
+            discount <span class="token operator">+=</span> item<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">.1</span>
+    <span class="token keyword">return</span> discount
+
+<span class="token keyword">def</span> <span class="token function">large_order_promo</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""订单中的不同商品达到10个或以上 提供7%的折扣"""</span>
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span><span class="token punctuation">{</span>item<span class="token punctuation">.</span>product <span class="token keyword">for</span> item <span class="token keyword">in</span> order<span class="token punctuation">.</span>cart<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token operator">>=</span><span class="token number">10</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> order<span class="token punctuation">.</span>total<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">.07</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+
+joe <span class="token operator">=</span> Customer<span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+ann <span class="token operator">=</span> Customer<span class="token punctuation">(</span><span class="token string">'Ann Smith'</span><span class="token punctuation">,</span> <span class="token number">1100</span><span class="token punctuation">)</span>
+cart <span class="token operator">=</span> <span class="token punctuation">[</span>LineItem<span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    LineItem<span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">1.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    LineItem<span class="token punctuation">(</span><span class="token string">'watermellon'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">5.0</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+banana_cart <span class="token operator">=</span> <span class="token punctuation">[</span>LineItem<span class="token punctuation">(</span><span class="token string">'banana'</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">.5</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    LineItem<span class="token punctuation">(</span><span class="token string">'apple'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">1.5</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+long_order <span class="token operator">=</span> <span class="token punctuation">[</span>LineItem<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>item_code<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1.0</span><span class="token punctuation">)</span> 
+    <span class="token keyword">for</span> item_code <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>测试效果：</p>
+<div class="code-chunk" data-id="code-chunk-id-15" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=15, cmd continue=&amp;amp;quot;20180419164816&amp;amp;quot;}" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> fidelity_promo<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>ann<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> fidelity_promo<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> banana_cart<span class="token punctuation">,</span> bulk_item_promo<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> long_order<span class="token punctuation">,</span> large_order_promo<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span> Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> large_order_promo<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>值得注意的是，《设计模式：可复用面向对象软件的基础》一书的作者指出：“策略对象通常是很好的享元（flyweight）”。其中，书中对享元的定义为：</p>
+<blockquote>
+<p>享元是可共享的对象，可以同时在多个上下文中使用。共享是推荐的做法，这样不必在每个新的上下文中（这里是Order实例）中使用相同的策略时不断新建具体策略对象，从而减少消耗。</p>
+</blockquote>
+<p>以此，为了避免“策略”模式的一个缺点（运行时消耗），《设计模式：可复用面向对象软件的基础》的作者建议使用另一个模式，但是代码行数和维护成本都会不断攀升。</p>
+<p>在复杂的情况下，需要具体策略维护内部状态，可能需要把 “策略” 和 “享元” 结合起来。但是，具体策略一般没有内部状态，只是处理上下文中的数据，此时一定要使用普通的函数，别去编写只有一个方法的类，再去实现另一个类声明的单函数接口。<em>函数比用户定义的类的实例轻量，并且因为不会创建实例，所以没必要用享元</em>。</p>
+<p>假设我们想创建一个“元策略”，让它为指定的订单选择最佳折扣，接下来的几节会继续重构，利用函数和模块是对象，使用不同的方法实现这个需求。</p>
+<h4 class="mume-header" id="%E6%9C%80%E4%BD%B3%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E7%AE%80%E5%8D%95%E7%9A%84%E6%96%B9%E5%BC%8F">最佳选择策略：简单的方式</h4>
+
+<p>我们继续使用上面的顾客和购物车，在此基础上添加3个测试：<br>
+<code>best_promo</code> 函数计算所有折扣，并返回额度最大的：</p>
+<div class="code-chunk" data-id="code-chunk-id-16" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=16, cmd continue=&amp;amp;quot;20180419164816&amp;amp;quot;}" class="language-python">promo_func <span class="token operator">=</span> <span class="token punctuation">[</span>fidelity_promo<span class="token punctuation">,</span> bulk_item_promo<span class="token punctuation">,</span> large_order_promo<span class="token punctuation">]</span>
+<span class="token keyword">def</span> <span class="token function">best_promo</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""选择可用的最佳折扣
+    """</span>
+    <span class="token keyword">return</span> <span class="token builtin">max</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>order<span class="token punctuation">)</span> <span class="token keyword">for</span> f <span class="token keyword">in</span> promo_func<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> long_order<span class="token punctuation">,</span> best_promo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> banana_cart<span class="token punctuation">,</span> best_promo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Order<span class="token punctuation">(</span>ann<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> best_promo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>上面实例的一个小缺陷：若想添加新的促销策略，要定义相应的函数，还要记得把它添加到 promo_func ，否则新策略不能进入对比。</p>
+<h4 class="mume-header" id="%E6%89%BE%E5%87%BA%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84%E5%85%A8%E9%83%A8%E7%AD%96%E7%95%A5">找出模块中的全部策略</h4>
+
+<p>在 Python 中，模块也是一等对象，而且标准库提供了几个处理模块的函数。</p>
+<ul>
+<li><code>globals()</code> : 返回一个字典，表示当前的全局符号表。这个符号表始终指向当前模块（对函数或方法来说，是指定它们的模块，而不是调用它们的模块）</li>
+</ul>
+<p>方案1：使用<code>globals</code> 函数帮助 best_promo 自动找到其他可用的 *_promo 函数，过程有点曲折：</p>
+<div class="code-chunk" data-id="code-chunk-id-17" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=17, cmd continue=&amp;amp;quot;20180419164816&amp;amp;quot;}" class="language-python">promos <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token keyword">for</span> name <span class="token keyword">in</span> <span class="token builtin">globals</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> name<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token string">'_promo'</span><span class="token punctuation">)</span> <span class="token operator">and</span> name<span class="token operator">!=</span><span class="token string">'best_promo'</span><span class="token punctuation">]</span>
+<span class="token keyword">def</span> <span class="token function">best_promo</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> <span class="token builtin">max</span><span class="token punctuation">(</span>f<span class="token punctuation">(</span>order<span class="token punctuation">)</span> <span class="token keyword">for</span> f <span class="token keyword">in</span> promos<span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> long_order<span class="token punctuation">,</span> best_promo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Order<span class="token punctuation">(</span>joe<span class="token punctuation">,</span> banana_cart<span class="token punctuation">,</span> best_promo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>Order<span class="token punctuation">(</span>ann<span class="token punctuation">,</span> cart<span class="token punctuation">,</span> best_promo<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>收集上有可用促销的另一种方法是，在一个单独的模块中保存上有策略函数，把 <code>best_promo</code> 排除在外。</p>
+<p>在下面的实例中，最大的变化是内省名为 promotions 的独立模块，构建策略函数列表。注意，要导入 promotions 模块，并提供高阶内省函数的 inspect 模块：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> promotions
+
+promos <span class="token operator">=</span> <span class="token punctuation">[</span>func <span class="token keyword">for</span> name<span class="token punctuation">,</span>func <span class="token keyword">in</span> inspect<span class="token punctuation">.</span>getmembers<span class="token punctuation">(</span>
+    promotions<span class="token punctuation">,</span> inspect<span class="token punctuation">.</span>isfunction<span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">best_promo</span><span class="token punctuation">(</span>order<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""选择可用的最佳折扣
+    """</span>
+    <span class="token keyword">return</span> <span class="token builtin">max</span><span class="token punctuation">(</span> f<span class="token punctuation">(</span>order<span class="token punctuation">)</span> <span class="token keyword">for</span> f <span class="token keyword">in</span> promos <span class="token punctuation">)</span>
+</pre><p><code>inspect.getmembers</code> 函数用于获取对象的属性。第二个参数使可选的判断条件（一个布尔值函数）。我们使用的是<code>inspect.isfunction</code>，只获取模块中的函数。</p>
+<p>不过怎么命名策略函数，方法2的<code>promotions</code>模块只能包含计算订单折扣的函数。当然，这是对代码的隐形假设，如果有人在 <code>promotions</code>模块中使用不同的签名定义函数，那么 <code>best_promo</code> 也会尝试将其应用到订单上时就会出错。</p>
+<p>我们可以添加更为严格的测试，审查传递给实例的参数，进一步过滤函数。</p>
+<p>下一节讨论 “命令” 模式，这个设计模式也常使用单方法类实现，同样也可以换成普通的函数。</p>
+<h3 class="mume-header" id="%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F">命令模式</h3>
+
+<p>“命令” 设计模式也可以通过将函数作为参数传递而简化。这一模式对类的编排如下：<br>
+<img src="../assets/FPfig6_2.png" alt="FPfig6_2"><br>
+图6-2：菜单驱动的文本编辑器的 UML 类图，使用命令设计模式的实现。各个命令可以有不同的接收者（实现操作的对象）。对<code>PasteCommand</code>来说，接收者就是Document，对OpenCommand来说，接收者就是应用程序。</p>
+<p><strong>“命令”模式的目的是解耦调用操作的对象（调用者）和提供实现的对象（接收者）</strong>。在《设计模式：可复用面向对象软件的基础》所列举的实例中，调用者是图形应用程序中的菜单，而接收者是被编辑的文档或者是应用程序自身。</p>
+<p>这个模式的做法是，在两者之间放一个 Command 对象，让它实现只有一个方法（execute）的接口，调用接收者中的方法执行所需的操作，这样，调用者无需了解接收者的接口，而且不同的接收者可以适应不同的Command子类。调用者有一个具体的命令，通过调用 execute 方法执行。</p>
+<p>Gamma 等人说过：命令模式是回调机制的面向对象的替代品。</p>
+<p>我们可以不为调用者提供一个 Command 实例，而是给它一个函数，此时，调用者不用调用 command.execute(),而是直接调用 command() 即可。MacroCommand()可以实现成定义了 <code>__call__</code> 方法的类。这样， MacroCommand 的实例就是可调用对象，各自维护一个函数列表，供之后的调用：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">MacroCommand</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""一个执行一组命令的命令
+    """</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> commands<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>commands <span class="token operator">=</span> commands
+
+    <span class="token keyword">def</span> <span class="token function">__call__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> command <span class="token keyword">in</span> self<span class="token punctuation">.</span>commands<span class="token punctuation">:</span>
+            command<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre>
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#%E6%B5%81%E7%95%85%E7%9A%84-python">流畅的 Python</a>
@@ -2025,6 +2505,29 @@ hello<span class="token punctuation">,</span>world
 <li><a href="#%E5%8F%AF%E8%B0%83%E7%94%A8%E5%AF%B9%E8%B1%A1">可调用对象</a></li>
 <li><a href="#%E7%94%A8%E6%88%B7%E5%AE%9A%E4%B9%89%E7%9A%84%E5%8F%AF%E8%B0%83%E7%94%A8%E7%B1%BB%E5%9E%8B">用户定义的可调用类型</a></li>
 <li><a href="#%E5%87%BD%E6%95%B0%E5%86%85%E7%9C%81">函数内省</a></li>
+<li><a href="#%E4%BB%8E%E5%AE%9A%E4%BD%8D%E5%8F%82%E6%95%B0%E5%88%B0%E4%BB%85%E9%99%90%E5%85%B3%E9%94%AE%E5%AD%97%E5%8F%82%E6%95%B0">从定位参数到仅限关键字参数</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E5%85%B3%E4%BA%8E%E5%8F%82%E6%95%B0%E7%9A%84%E4%BF%A1%E6%81%AF">获取关于参数的信息</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E6%B3%A8%E9%87%8A">函数注释</a></li>
+<li><a href="#%E6%94%AF%E6%8C%81%E5%87%BD%E6%95%B0%E6%98%AF%E7%BC%96%E7%A8%8B%E7%9A%84%E5%8C%85">支持函数是编程的包</a>
+<ul>
+<li><a href="#operator-%E6%A8%A1%E5%9D%97">operator 模块</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-functoolspartial-%E5%86%BB%E7%BB%93%E5%8F%82%E6%95%B0">使用 functools.partial 冻结参数</a></li>
+<li><a href="#%E5%90%8E%E8%AE%B0">后记</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E4%B8%80%E7%AD%89%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">使用一等函数实现设计模式</a>
+<ul>
+<li><a href="#%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90">案例分析</a>
+<ul>
+<li><a href="#%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F">经典的策略模式</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0-%E7%AD%96%E7%95%A5-%E6%A8%A1%E5%BC%8F">使用函数实现 “策略” 模式</a></li>
+<li><a href="#%E6%9C%80%E4%BD%B3%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%E7%AE%80%E5%8D%95%E7%9A%84%E6%96%B9%E5%BC%8F">最佳选择策略：简单的方式</a></li>
+<li><a href="#%E6%89%BE%E5%87%BA%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84%E5%85%A8%E9%83%A8%E7%AD%96%E7%95%A5">找出模块中的全部策略</a></li>
+</ul>
+</li>
+<li><a href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F">命令模式</a></li>
 </ul>
 </li>
 </ul>

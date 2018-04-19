@@ -1562,4 +1562,591 @@ hello,world
 |`__name__`|str|函数名称，匿名函数为 <lambda>|
 |`__qualname__`|str|函数的限定名称|
 
+### 从定位参数到仅限关键字参数
+
+Python 最好的特性之一是提供了极为灵活的参数处理机制，而且 Python 3 进一步提供了仅限关键字 参数(keyword-only argument)。与之密切相关的是，调用函数时使用 * 和 ** 展开可迭代对象，映射到单个参数。
+
+定义一个用于生成HTML标签的tag函数：
+```python {class=line-numbers}
+def tag(name, *content, cls=None, **attrs):
+    """生成一个或多个HTML标签"""
+    attr_str = ''
+    if attrs:
+        for k,v in attrs.items():
+            attr_str += f' {k}="{v}"'
+    cls_str = ''
+    if cls is not None:
+        cls_str = f' class="{cls}"'
+    left_tag = f'{name}{cls_str}{attr_str}'
+    right_tag = f'/{name}'
+    if not content:
+        return f'<{left_tag} />'
+    return '\n'.join(f'<{left_tag}>{sub_ct}<{right_tag}>'
+        for sub_ct in content)
+```
+测试效果：
+```python
+>>> tag('br')
+'<br />'
+>>> tag('p','hello')
+'<p>hello</p>'
+>>> print(tag('p','hello','world'))
+<p>hello</p>
+<p>world</p>
+>>> tag('p','hello',id=33)
+'<p id="33">hello</p>'
+>>> print(tag('p','hello','world',cls='sidebar'))
+<p class="sidebar">hello</p>
+<p class="sidebar">world</p>
+>>> tag(content='testing',name='img')
+'<img content="testing" />'
+>>> my_tag = {'name':'img','title':'Sumset Boulevard',
+...     'src':'sunset.jpg', 'cls':'framed'}
+>>> tag(**my_tag)
+'<img class="framed" title="Sumset Boulevard" src="sunset.jpg" />'
+```
+
+仅限关键字参数是 Python3 新增的特性。在上面的示例中，cls 参数只能通过关键字参数指定，它一定不会捕获未命名的定位参数。**定义函数时，若想指定仅限关键字参数，要把它们放到前面有 \* 的参数后面**。
+
+如果不想支持数量不定的定位参数，但是想支持仅限关键字参数，在签名中放一个 \* :
+```python
+>>> def f(a,*,b):
+...     return a,b
+... 
+>>> f(1,b=2)
+(1, 2)
+>>> f(1,2,b=3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: f() takes 1 positional argument but 2
+>>> f(1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: f() missing 1 required keyword-only argument: 'b'
+```
+注意：仅限关键字参数不一定要有默认值，可以像上例 b 一样，强制传入实参。
+
+### 获取关于参数的信息
+
+函数对象有个 `__defaults__` 属性，它的值是一个元组，里面保存着定位参数和关键字参数的默认值。仅限关键字参数的默认值在 `__kwdefaults__` 属性中。然而，参数的名称在 `__code__` 属性中，它的值是一个 code 对象引用，自身也有很多属性。
+```python
+>>> def f(a, b=100):
+...     c = a + b
+...     d = c*2
+...     return d
+... 
+>>> f.__defaults__
+(100,)
+>>> f.__code__
+<code object f at 0x10adebc00, file "<stdin>", line 1>
+>>> f.__code__.co_varnames
+('a', 'b', 'c', 'd')
+>>> f.__code__.co_argcount
+2
+```
+可以看出，这种组织信息的方式并不遍历。参数名在 `__code__.co_varnames` 中，不过里面还有函数定义体中创建的局部变量。因此，参数名称是前 N 个字符串，N 的值由 `__code__.argcount` 确定。
+
+我们可以用更好的方式--使用`inspect`模块。
+```python
+>>> def f(a, b=100):
+...     c = a + b
+...     d = c * 2
+...     return d
+... 
+>>> from inspect import signature
+>>> sig = signature(f)
+>>> sig
+<Signature (a, b=100)>
+>>> str(sig)
+'(a, b=100)'
+>>> for name, param in sig.parameters.items():
+...     print(param.kind, ':', name, '=', param.default)
+... 
+POSITIONAL_OR_KEYWORD : a = <class 'inspect._empty'>
+POSITIONAL_OR_KEYWORD : b = 100
+```
+`inspect.signature` 函数返回一个 inspect.Signature 对象，他有一个 parameters 属性，这是一个有序映射，把参数名和 inspect.Parameter 对象对应起来。各个 Parameter 属性也有自己的属性。
+
+kind 属性值是 _ParameterKind 类中的5个值之一：
+- POSITIONAL_OR_KEYWORD : 可以通过定位参数和关键字传入的形参
+- VAR_POSITIONAL : 定位参数元组，如 `f(*a)` 中的 `a`
+- VAR_KEYWORD : 定位参数元组，如`f(**a)` 中的 `a`
+- KEYWORD_ONLY : 仅限关键字参数(Python3 新增)，如`f(*, a)`和`f(*x,a)`中的`a`
+- POSITIONAL_ONLY : 目前，Python声明语句的句法不支持，但是有些使用C语言实现且不接受关键字参数的函数支持。
+
+### 函数注释
+
+Python 3 提供了一种句法，用于为函数声明中的参数和返回值附加元数据。
+```python
+def clip(text:str, max_len:'int > 0'=80)->str:
+    """在 max_len 前面或后面的第一个空格处截断文本
+    """
+    end = None
+    if len(text) > max_len:
+        space_before = text.rfind(' ', 0, max_len)
+        if space_before >=0:
+            end = space_before
+        else:
+            space_before = text.rfind(' ', max_len)
+            if space_before >= 0:
+                end = space_before
+        if end is None:
+            end = len(text)
+    return text[:end].rstrip()
+```
+函数声明中各个参数可以在冒号`:`之后添加注释表达式。如果参数有默认值，注释放在参数名和=号之间。如果想注释返回值，在 `)` 和函数声明末尾的 `:` 之间添加 `->` 和一个表达式。那个表达式可以是任何类型，注释中最常见的是类（如 str 和 int）和字符串（如 'int > 0'）。
+
+注释不会做任何的处理，只会存储在函数的`__annotations__`属性（一个字典）中。
+```python
+>>> clip.__annotations__
+{'text': <class 'str'>, 'max_len': 'int > 0', 'return': <class 'str'>}
+```
+注释只是元数据，可供 IDE、框架和装饰器等工具使用。
+
+### 支持函数是编程的包
+
+虽然 Guido 明确表明，Python 的目标不是编程函数式编程语言，但是得益于 operator 和 functools 等包的支持，函数式编程风格也可以实现。
+
+#### operator 模块
+
+在函数式编程中，经常需要把算术运算符当做函数使用，例如，不想使用递归计算阶乘。求和可以使用 sum 函数，但是求积却没有这样的函数，我们可以使用 reduce 函数，但是需要一个函数计算序列中两个元素之积。
+```python
+>>> from functools import reduce
+>>> a = [1,2,3,4,5]
+# 求和公式
+>>> reduce(lambda a,b:a+b, a)
+15
+# 求积公式
+>>> reduce(lambda a,b:a*b, a)
+120
+```
+operator 模块为多个算术运算符提供了对应的函数，从而避免编写 `lambda a,b:a*b` 这样的平凡匿名化函数。
+```python
+>>> import operator
+>>> reduce(operator.add, a)
+15
+>>> reduce(operator.mul, a)
+120
+```
+
+`operator` 模块中还有一类函数，能替代从序列中取出元素或读取对象属性的lambda表达式：因此`itemgetter` 和 `attrgetter` 其实会自动构建函数。
+```python
+>>> d = [('apple',4.8),('orange',6.2),('banana',2.3),('pear',3.9)]
+>>> sorted(d, key=operator.itemgetter(1))
+[('banana', 2.3), ('pear', 3.9), ('apple', 4.8), ('orange', 6.2)]
+>>> sorted(d, key=lambda p:p[1])
+[('banana', 2.3), ('pear', 3.9), ('apple', 4.8), ('orange', 6.2)]
+```
+itemgetter 还可以返回多个提取的值构成的元组：
+```python
+>>> get_fruit = operator.itemgetter(1,0)
+>>> for fruit in d:
+...     print(get_fruit(fruit))
+... 
+(4.8, 'apple')
+(6.2, 'orange')
+(2.3, 'banana')
+(3.9, 'pear')
+>>> get_fruit = lambda o:(o[1],o[0])
+>>> for fruit in d:
+...     print(get_fruit(fruit))
+... 
+(4.8, 'apple')
+(6.2, 'orange')
+(2.3, 'banana')
+(3.9, 'pear')
+```
+itemgetter 使用 [] 运算符，因此它不仅支持序列，还支持映射和任何实现 `__getitem__` 方法的类。
+
+`attrgetter` 的演示：
+```python
+>>> class Fruit:
+...     def __init__(self, name, price):
+...         self.name, self.price = name, price
+... 
+>>> fruits = [Fruit(n,p) for n,p in zip(['apple','orange','banana','pear'],
+...     [4.8,6.2,2.3,3.9])]
+>>> get_frname = operator.attrgetter('name')
+>>> for fx in fruits:
+...     print(get_frname(fx))
+... 
+apple
+orange
+banana
+pear
+>>> get_frname = lambda o:o.name
+>>> for fx in fruits:
+...     print(get_frname(fx))
+... 
+apple
+orange
+banana
+pear
+```
+
+下面是 `operator` 模块中定义的部分函数（省略了以 _ 开头的名称，因为它们基本上是实现细节）：
+```python
+>>> [name for name in dir(operator) if not name.startswith('_')]
+['abs', 'add', 'and_', 'attrgetter', 'concat', 'contains', 'countOf', 
+'delitem', 'eq', 'floordiv', 'ge', 'getitem', 'gt', 'iadd', 'iand', 
+'iconcat', 'ifloordiv', 'ilshift', 'imatmul', 'imod', 'imul', 'index', 
+'indexOf', 'inv', 'invert', 'ior', 'ipow', 'irshift', 'is_', 'is_not', 
+'isub', 'itemgetter', 'itruediv', 'ixor', 'le', 'length_hint', 
+'lshift', 'lt', 'matmul', 'methodcaller', 'mod', 'mul', 'ne', 'neg', 
+'not_', 'or_', 'pos', 'pow', 'rshift', 'setitem', 'sub', 'truediv', 
+'truth', 'xor']
+```
+
+最后介绍一下 methodcaller。它的作用于 attrgetter 和 itemgetter 类似，它会自行创建函数。methodcaller 创建的函数会在对象上调用参数指定的方法：
+```python
+>>> from operator import methodcaller
+>>> s = 'The time has come'
+>>> upcase = methodcaller('upper')
+>>> upcase(s)
+'THE TIME HAS COME'
+# 类似于 functions.partial 函数，用于冻结某些参数
+>>> hiphenate = methodcaller('replace', ' ', '-')
+>>> hiphenate(s)
+'The-time-has-come'
+>>> s
+'The time has come'
+```
+
+#### 使用 functools.partial 冻结参数
+
+functools 模块提供了一系列的高阶函数，其中最广为人知或许的是 `reduce`。余下的函数中，最有用的是 partial 及其辩题，partialmethod。
+
+functools.partial 这个高阶函数用于部分应用函数。部分应用是指：基于一个函数创建一个新的可调用对象，把原函数的某些参数固定。使用这些函数可以把接受1个或多个参数的函数改编成需要回调的API，这样参数更少。
+```python
+>>> from operator import mul
+>>> from functools import partial
+>>> triple = partial(mul, 3)
+>>> triple(7)
+21
+>>> [triple(i) for i in range(1,10)]
+[3, 6, 9, 12, 15, 18, 21, 24, 27]
+```
+
+```python
+>>> picture = partial(tag, 'img', cls='pic-frame')
+>>> picture(src='wumpus.jpeg')
+'<img class="pic-frame" src="wumpus.jpeg" />'
+>>> picture
+functools.partial(<function tag at 0x10ab21e18>, 'img', cls='pic-frame')
+>>> picture.func
+<function tag at 0x10ab21e18>
+>>> picture.args
+('img',)
+>>> picture.keywords
+{'cls': 'pic-frame'}
+```
+
+`functools.partialmethod` 函数(Python 3.4 新增)的作用与 partial 一样，不过是用于处理方法，如：
+```python
+>>> from functools import partialmethod
+>>> class MyMul:
+...     def mul(self, a, b):
+...         return a*b
+...     double = partialmethod(mul, 2)
+... 
+>>> mymul = MyMul()
+>>> mymul.double(20)
+40
+```
+
+#### 后记
+
+Python 从另一门函数语言（Hashell）中借鉴了列表推导，使得Python对map、filter、以及lambda表达式的需求极大地减少了。
+
+## 使用一等函数实现设计模式
+
+虽然设计模式与语言无关，但这并不意味着每一个设计模式都能在每一种语言中使用。
+
+《设计模式：可复用面向对象软件的基础》的作者在引言中承认，所用的语言决定了那些设计模式可用：
+> 程序设计语言的选择非常重要，它将影响人们理解问题的出发点。我们的设计模式常用了 Smalltalk 和 C++ 层的语言特性，这个选择实际上决定了那些机制可以方便地实现，那些则不能。若我们常用过程式语言，可能就要包括诸如“集成”、“封装” 和 “多态” 的设计模式了。
+
+### 案例分析
+
+如果合理利用作为一等对象的函数，某些设计模式可以被简化，“策略”模式就是其中一个很好的例子。
+
+#### 经典的策略模式
+
+策略模式的定义：定义一系列算法，把它们一一封装起来，并且使它们可以相互替换。本模式使得算法可以独立于使用它的客户而改变。
+
+电商领域有个功能明显可以使用“策略”模式，即根据客户的属性或订单中的商品计算折扣。
+
+假如一个网店制定了下述的折扣规则：
+- 同一订单中，单个商品的数量达到20个或以上，享 10% 折扣
+- 订单中的不同商品达到10个或以上，享7%折扣
+- 有 1000 或以上积分的顾客，每个订单享 5% 折扣
+
+简单起见，我们假定一个订单一次只能享用一个折扣。
+
+![FPfig6_1](/assets/FPfig6_1.png)
+
+- 上下文：把一些计算委托给实现不同算法的可互换组件，它提供服务。在这个电商示例中，上下文是 Order，它会根据不同的算法计算促销折扣。
+- 策略：实现不同的组件共同的接口，在这个示例中，名为 Promotion 的抽象类表演这个角色
+- 具体策略：策略的具体子类。fidelityPromo/BulkPromo/LargeOrderPromo是实现的3个具体策略。
+
+实现 Order 类，支持插入式折扣策略：
+```python {cmd id="20180419145715" class=line-numbers}
+from abc import ABC, abstractmethod
+from collections import namedtuple
+
+Customer = namedtuple('Customer', 'name fidelity')
+
+class LineItem:
+    def __init__(self, product, quantity, price):
+        self.product = product
+        self.quantity = quantity
+        self.price = price
+    
+    def total(self):
+        return self.price * self.quantity
+
+class Order: # 上下文
+    def __init__(self, customer, cart, promotion=None):
+        self.customer = customer
+        self.cart = list(cart)
+        self.promotion = promotion
+
+    def total(self):
+        if not hasattr(self, '__total'):
+            self.__total = sum(item.total() for item in self.cart)
+        return self.__total
+
+    def due(self):
+        if self.promotion is None:
+            discount = 0
+        else:
+            discount = self.promotion.discount(self)
+        return self.total() - discount
+
+    def __repr__(self):
+        fmt = 'Order total: {:.2f} due:{:.2f}'
+        return fmt.format(self.total(), self.due())
+
+class Promotion(ABC): # 策略，抽象基类
+    @abstractmethod
+    def discount(self, order):
+        """返回折扣金额（正值）"""
+
+class BulkItemPromo(Promotion):
+    """单个商品为20个或以上时提供10%的折扣
+    """
+    def discount(self, order):
+        discount_v = 0
+        for item in order.cart:
+            if  item.quantity >= 20:
+                discount_v += item.quantity*item.price*0.1
+        return discount_v
+
+class LargeOrderPromo(Promotion):
+    """订单中的不同商品达到10个或以上的时候，提供 7% 的折扣
+    """
+    def discount(self, order):
+        distinct_items = {item.product for item in order.cart}
+        if len(distinct_items) >= 10:
+            return order.total() * 0.07
+        else:
+            return 0
+
+
+class FidelityPromo(Promotion): 
+    """为积分1000或以上的顾客提供 5% 的折扣
+    """
+    def discount(self, order):
+        return order.total()*0.05 if order.customer.fidelity > 1000 else 0
+```
+注意：在示例 6-1 中，我把 Promotion 定义为抽象基类 (Abstract Base Class, ABC)，这么做是为了使用 `@abstractmethod` 装饰器，从而明确表明所用的模式。
+
+> 在Python3.4及之后，声明抽象基类的最简单方式是子类话`abc.ABC`。
+
+```python {cmd continue="20180419145715"}
+joe = Customer('John Doe', 0)
+ann = Customer('Ann Smith', 1100)
+cart = [LineItem('banana', 4, 0.5),
+    LineItem('apple', 10, 1.5),
+    LineItem('watermellon', 5, 5.0)]
+print( Order(joe, cart, FidelityPromo()) )
+print( Order(ann, cart, FidelityPromo()) )
+banana_cart = [LineItem('banana', 30, .5),
+    LineItem('apple', 10, 1.5)]
+print( Order(joe, banana_cart, BulkItemPromo()) )
+long_order = [LineItem(str(item_code),1,1.0) for item_code in range(10)]
+print( Order(joe, long_order, LargeOrderPromo()) )
+print( Order(joe, cart, LargeOrderPromo()) )
+```
+
+#### 使用函数实现 “策略” 模式
+
+在上面的例子中，每个具体策略都是一个类，而且都自定义了一个方法，即`discount`。此外，策略实例没有状态（没有实例属性）。其实它看起来像是普通的函数，下面对上面的例子进行重构，把具体策略换成简单的函数，并去掉 Promo 抽象类。
+```python {cmd id="20180419164816" class=line-numbers}
+from abc import ABC, abstractmethod
+from collections import namedtuple
+
+Customer = namedtuple('Customer', 'name fidelity')
+
+class LineItem:
+    def __init__(self, product, quantity, price):
+        self.product = product
+        self.quantity = quantity
+        self.price = price
+    
+    def total(self):
+        return self.price * self.quantity
+
+class Order: # 上下文
+    def __init__(self, customer, cart, promotion=None):
+        self.customer = customer
+        self.cart = list(cart)
+        self.promotion = promotion
+
+    def total(self):
+        if not hasattr(self, '__total'):
+            self.__total = sum(item.total() for item in self.cart)
+        return self.__total
+
+    def due(self):
+        if self.promotion is None:
+            discount = 0
+        else:
+            discount = self.promotion(self)
+        return self.total() - discount
+
+    def __repr__(self):
+        fmt = 'Order total: {:.2f} due:{:.2f}'
+        return fmt.format(self.total(), self.due())
+
+def fidelity_promo(order):
+    """为积分为1000及以上的顾客提供 5%的折扣"""
+    return order.total()*.05 if order.customer.fidelity>=1000 else 0
+
+def bulk_item_promo(order):
+    """单个商品为20个或以上的提供10%的折扣"""
+    discount = 0
+    for item in order.cart:
+        if item.quantity >= 20:
+            discount += item.total() * .1
+    return discount
+
+def large_order_promo(order):
+    """订单中的不同商品达到10个或以上 提供7%的折扣"""
+    if len({item.product for item in order.cart})>=10:
+        return order.total() * .07
+    else:
+        return 0
+
+joe = Customer('John Doe', 0)
+ann = Customer('Ann Smith', 1100)
+cart = [LineItem('banana', 4, 0.5),
+    LineItem('apple', 10, 1.5),
+    LineItem('watermellon', 5, 5.0)]
+banana_cart = [LineItem('banana', 30, .5),
+    LineItem('apple', 10, 1.5)]
+long_order = [LineItem(str(item_code),1,1.0) 
+    for item_code in range(10)]
+```
+测试效果：
+```python {cmd continue="20180419164816"}
+print( Order(joe, cart, fidelity_promo) )
+print( Order(ann, cart, fidelity_promo) )
+print( Order(joe, banana_cart, bulk_item_promo) )
+print( Order(joe, long_order, large_order_promo) )
+print( Order(joe, cart, large_order_promo) )
+```
+
+值得注意的是，《设计模式：可复用面向对象软件的基础》一书的作者指出：“策略对象通常是很好的享元（flyweight）”。其中，书中对享元的定义为：
+> 享元是可共享的对象，可以同时在多个上下文中使用。共享是推荐的做法，这样不必在每个新的上下文中（这里是Order实例）中使用相同的策略时不断新建具体策略对象，从而减少消耗。
+
+以此，为了避免“策略”模式的一个缺点（运行时消耗），《设计模式：可复用面向对象软件的基础》的作者建议使用另一个模式，但是代码行数和维护成本都会不断攀升。
+
+在复杂的情况下，需要具体策略维护内部状态，可能需要把 “策略” 和 “享元” 结合起来。但是，具体策略一般没有内部状态，只是处理上下文中的数据，此时一定要使用普通的函数，别去编写只有一个方法的类，再去实现另一个类声明的单函数接口。*函数比用户定义的类的实例轻量，并且因为不会创建实例，所以没必要用享元*。
+
+假设我们想创建一个“元策略”，让它为指定的订单选择最佳折扣，接下来的几节会继续重构，利用函数和模块是对象，使用不同的方法实现这个需求。
+
+#### 最佳选择策略：简单的方式
+
+我们继续使用上面的顾客和购物车，在此基础上添加3个测试：
+`best_promo` 函数计算所有折扣，并返回额度最大的：
+
+```python {cmd continue="20180419164816"}
+promo_func = [fidelity_promo, bulk_item_promo, large_order_promo]
+def best_promo(order):
+    """选择可用的最佳折扣
+    """
+    return max(f(order) for f in promo_func)
+
+print(Order(joe, long_order, best_promo))
+print(Order(joe, banana_cart, best_promo))
+print(Order(ann, cart, best_promo))
+```
+
+上面实例的一个小缺陷：若想添加新的促销策略，要定义相应的函数，还要记得把它添加到 promo_func ，否则新策略不能进入对比。
+
+#### 找出模块中的全部策略
+
+在 Python 中，模块也是一等对象，而且标准库提供了几个处理模块的函数。
+
+- `globals()` : 返回一个字典，表示当前的全局符号表。这个符号表始终指向当前模块（对函数或方法来说，是指定它们的模块，而不是调用它们的模块）
+
+方案1：使用`globals` 函数帮助 best_promo 自动找到其他可用的 *_promo 函数，过程有点曲折：
+```python {cmd continue="20180419164816"}
+promos = [globals()[name] for name in globals()
+    if name.endswith('_promo') and name!='best_promo']
+def best_promo(order):
+    return max(f(order) for f in promos)
+
+print(Order(joe, long_order, best_promo))
+print(Order(joe, banana_cart, best_promo))
+print(Order(ann, cart, best_promo))
+```
+
+收集上有可用促销的另一种方法是，在一个单独的模块中保存上有策略函数，把 `best_promo` 排除在外。
+
+在下面的实例中，最大的变化是内省名为 promotions 的独立模块，构建策略函数列表。注意，要导入 promotions 模块，并提供高阶内省函数的 inspect 模块：
+```python
+import promotions
+
+promos = [func for name,func in inspect.getmembers(
+    promotions, inspect.isfunction)]
+
+def best_promo(order):
+    """选择可用的最佳折扣
+    """
+    return max( f(order) for f in promos )
+```
+
+`inspect.getmembers` 函数用于获取对象的属性。第二个参数使可选的判断条件（一个布尔值函数）。我们使用的是`inspect.isfunction`，只获取模块中的函数。
+
+不过怎么命名策略函数，方法2的`promotions`模块只能包含计算订单折扣的函数。当然，这是对代码的隐形假设，如果有人在 `promotions`模块中使用不同的签名定义函数，那么 `best_promo` 也会尝试将其应用到订单上时就会出错。
+
+我们可以添加更为严格的测试，审查传递给实例的参数，进一步过滤函数。
+
+下一节讨论 “命令” 模式，这个设计模式也常使用单方法类实现，同样也可以换成普通的函数。
+
+### 命令模式
+
+“命令” 设计模式也可以通过将函数作为参数传递而简化。这一模式对类的编排如下：
+![FPfig6_2](/assets/FPfig6_2.png)
+图6-2：菜单驱动的文本编辑器的 UML 类图，使用命令设计模式的实现。各个命令可以有不同的接收者（实现操作的对象）。对`PasteCommand`来说，接收者就是Document，对OpenCommand来说，接收者就是应用程序。
+
+**“命令”模式的目的是解耦调用操作的对象（调用者）和提供实现的对象（接收者）**。在《设计模式：可复用面向对象软件的基础》所列举的实例中，调用者是图形应用程序中的菜单，而接收者是被编辑的文档或者是应用程序自身。
+
+这个模式的做法是，在两者之间放一个 Command 对象，让它实现只有一个方法（execute）的接口，调用接收者中的方法执行所需的操作，这样，调用者无需了解接收者的接口，而且不同的接收者可以适应不同的Command子类。调用者有一个具体的命令，通过调用 execute 方法执行。
+
+Gamma 等人说过：命令模式是回调机制的面向对象的替代品。
+
+我们可以不为调用者提供一个 Command 实例，而是给它一个函数，此时，调用者不用调用 command.execute(),而是直接调用 command() 即可。MacroCommand()可以实现成定义了 `__call__` 方法的类。这样， MacroCommand 的实例就是可调用对象，各自维护一个函数列表，供之后的调用：
+```python
+class MacroCommand:
+    """一个执行一组命令的命令
+    """
+    def __init__(self, commands):
+        self.commands = commands
+
+    def __call__(self):
+        for command in self.commands:
+            command()
+```
 

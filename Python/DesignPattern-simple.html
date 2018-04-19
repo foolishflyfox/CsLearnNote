@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>DesignPattern-simple</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</h1>
+
+<p>设计模式被分为3类，创建型模式、结构型模式、行为型模式。</p>
+<h2 class="mume-header" id="%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F">创建型模式</h2>
+
+<p>创建型模式就是创建对象的模式，抽象了实例化的过程。它帮助一个系统独立于如何创建、组合和表示它的那些对象。关注的是对象的创建。</p>
+<p>社会化的分工越来越细，自然在软件设计方面也是如此。因此，对象的创建和对象的使用分开也就成为了必然趋势。因为对象的创建会消耗掉系统的很多资源，所以单独对对象的创建进行研究，从而能够高效地创建对象就是创建型模式要探讨的问题。</p>
+<h3 class="mume-header" id="%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8Fsimple-factory">简单工厂模式(Simple Factory)</h3>
+
+<h3 class="mume-header" id="%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8Ffactory-method">工厂方法模式(Factory Method)</h3>
+
+<h3 class="mume-header" id="%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8Fabstract-factory">抽象工厂模式(Abstract Factory)</h3>
+
+<h3 class="mume-header" id="%E5%88%9B%E5%BB%BA%E8%80%85%E6%A8%A1%E5%BC%8Fbuilder">创建者模式(Builder)</h3>
+
+<h3 class="mume-header" id="%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8Fprototype">原型模式(Prototype)</h3>
+
+<h3 class="mume-header" id="%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8Fsingleton">单例模式(Singleton)</h3>
+
+<h2 class="mume-header" id="%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F">结构型模式</h2>
+
+<p>结构型模式是为了解决怎样组装现有的类，设计它们的交互方式，从而达到一定的功能目的。结构型模式包容了对很多问题的解决，如扩展性（外观、组成、代理、装饰）、封装（适配器、桥接）。</p>
+<p>在解决了对象的创建问题后，对象的组成以及对象之间的依赖关系就成了开发人员关注的焦点，因为任何设计对象的结构、继承和依赖关系会影响到后续程序的维护性、代码的健壮性、耦合性等。对象结构的设计很容易体现出设计人员的水平。</p>
+<h3 class="mume-header" id="%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F%E9%97%A8%E9%9D%A2%E6%A8%A1%E5%BC%8Ffacade">外观模式/门面模式(Facade)</h3>
+
+<h3 class="mume-header" id="%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8Fadapter">适配器模式(Adapter)</h3>
+
+<h3 class="mume-header" id="%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8Fproxy">代理模式(Proxy)</h3>
+
+<h3 class="mume-header" id="%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8Fdecorator">装饰模式(Decorator)</h3>
+
+<h3 class="mume-header" id="%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8Fbridge">桥接模式(Bridge)</h3>
+
+<h3 class="mume-header" id="%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8Fcomposite">组合模式(Composite)</h3>
+
+<h3 class="mume-header" id="%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8Fflyweight">享元模式(Flyweight)</h3>
+
+<h2 class="mume-header" id="%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F">行为型模式</h2>
+
+<p>行为型模式涉及到算法和对象之间的职责分配，行为模式描述了对象和类的模式，以及它们之间的通信模式，行为模式刻画了在程序运行时难以跟踪的复杂的控制流，可以分为行为类模式和行为对象模式。</p>
+<ol>
+<li>行为类模式：使用继承机制在类之间分派任务；</li>
+<li>行为对象模式：使用对象聚合来分配行为；</li>
+</ol>
+<p>一些行为对象模式描述了一组对等的对象如何相互协作以完成其中任意一个对象都无法完成的任务。</p>
+<h3 class="mume-header" id="%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8Ftemplate-method">模板方法模式(Template Method)</h3>
+
+<h3 class="mume-header" id="%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8Fobserver">观察者模式(Observer)</h3>
+
+<h3 class="mume-header" id="%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8Fstate">状态模式(State)</h3>
+
+<h3 class="mume-header" id="%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8Fstrategy">策略模式(Strategy)</h3>
+
+<h3 class="mume-header" id="%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8Fchain-of-responsibility">职责链模式(Chain of Responsibility)</h3>
+
+<h3 class="mume-header" id="%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8Fcommand">命令模式(Command)</h3>
+
+<h3 class="mume-header" id="%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8Fvisitor">访问者模式(Visitor)</h3>
+
+<h3 class="mume-header" id="%E8%B0%83%E5%81%9C%E8%80%85%E6%A8%A1%E5%BC%8Fmediator">调停者模式(Mediator)</h3>
+
+<h3 class="mume-header" id="%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8Fmemento">备忘录模式(Memento)</h3>
+
+<h3 class="mume-header" id="%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8Fiterator">迭代器模式(Iterator)</h3>
+
+<h3 class="mume-header" id="%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8Finterpreter">解释器模式(Interpreter)</h3>
+
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</a>
+<ul>
+<li><a href="#%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F">创建型模式</a>
+<ul>
+<li><a href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8Fsimple-factory">简单工厂模式(Simple Factory)</a></li>
+<li><a href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8Ffactory-method">工厂方法模式(Factory Method)</a></li>
+<li><a href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8Fabstract-factory">抽象工厂模式(Abstract Factory)</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E8%80%85%E6%A8%A1%E5%BC%8Fbuilder">创建者模式(Builder)</a></li>
+<li><a href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8Fprototype">原型模式(Prototype)</a></li>
+<li><a href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8Fsingleton">单例模式(Singleton)</a></li>
+</ul>
+</li>
+<li><a href="#%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F">结构型模式</a>
+<ul>
+<li><a href="#%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F%E9%97%A8%E9%9D%A2%E6%A8%A1%E5%BC%8Ffacade">外观模式/门面模式(Facade)</a></li>
+<li><a href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8Fadapter">适配器模式(Adapter)</a></li>
+<li><a href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8Fproxy">代理模式(Proxy)</a></li>
+<li><a href="#%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8Fdecorator">装饰模式(Decorator)</a></li>
+<li><a href="#%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8Fbridge">桥接模式(Bridge)</a></li>
+<li><a href="#%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8Fcomposite">组合模式(Composite)</a></li>
+<li><a href="#%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8Fflyweight">享元模式(Flyweight)</a></li>
+</ul>
+</li>
+<li><a href="#%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F">行为型模式</a>
+<ul>
+<li><a href="#%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8Ftemplate-method">模板方法模式(Template Method)</a></li>
+<li><a href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8Fobserver">观察者模式(Observer)</a></li>
+<li><a href="#%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8Fstate">状态模式(State)</a></li>
+<li><a href="#%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8Fstrategy">策略模式(Strategy)</a></li>
+<li><a href="#%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8Fchain-of-responsibility">职责链模式(Chain of Responsibility)</a></li>
+<li><a href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8Fcommand">命令模式(Command)</a></li>
+<li><a href="#%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8Fvisitor">访问者模式(Visitor)</a></li>
+<li><a href="#%E8%B0%83%E5%81%9C%E8%80%85%E6%A8%A1%E5%BC%8Fmediator">调停者模式(Mediator)</a></li>
+<li><a href="#%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8Fmemento">备忘录模式(Memento)</a></li>
+<li><a href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8Fiterator">迭代器模式(Iterator)</a></li>
+<li><a href="#%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8Finterpreter">解释器模式(Interpreter)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>
