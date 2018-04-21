@@ -1981,7 +1981,7 @@ print( Order(joe, cart, LargeOrderPromo()) )
 #### 使用函数实现 “策略” 模式
 
 在上面的例子中，每个具体策略都是一个类，而且都自定义了一个方法，即`discount`。此外，策略实例没有状态（没有实例属性）。其实它看起来像是普通的函数，下面对上面的例子进行重构，把具体策略换成简单的函数，并去掉 Promo 抽象类。
-```python {cmd id="20180419164816" class=line-numbers}
+```python {cmd id="20180420140618"}
 from abc import ABC, abstractmethod
 from collections import namedtuple
 
@@ -2017,7 +2017,8 @@ class Order: # 上下文
     def __repr__(self):
         fmt = 'Order total: {:.2f} due:{:.2f}'
         return fmt.format(self.total(), self.due())
-
+```
+```python {cmd id="20180419164816"  continue="20180420140618" class=line-numbers}
 def fidelity_promo(order):
     """为积分为1000及以上的顾客提供 5%的折扣"""
     return order.total()*.05 if order.customer.fidelity>=1000 else 0
@@ -2149,4 +2150,949 @@ class MacroCommand:
         for command in self.commands:
             command()
 ```
+## 函数装饰器和闭包
+
+> 很多人抱怨，把这个特性命名为“装饰器”不好，主要原因是，这个名词与GoF书使用的不一致。装饰器这个名称可能更适合在编译器领域使用，因为它会遍历并注解语法书。
+
+GoF：是Gang of Four 的缩写，表示《设计模式：可复用面向对象软件的基础》的4名作者。
+
+函数装饰器用于在源码中“标记”函数，以某种方式增强函数的行为，这是一项强大的功能，如要掌握，必须先理解闭包。
+除了在装饰器中有用处外，闭包还是回调式异步编程和函数式编程风格的基础。
+
+### 装饰器基础知识
+
+装饰器是可调用的对象，其参数是另一个函数（被装饰的函数）。装饰器可能会处理被装饰的函数，然后把它返回，或者将其替换成另一个函数或可调用对象。
+
+假如有个名为 decorate 的装饰器：
+```python
+@decorate
+def target():
+    print('running target()')
+```
+上面的代码效果等价于：
+```python
+def target():
+    print('running target()')
+
+target = decorate(target)
+```
+两种写法的最终结果是一样的，上述两个代码片段执行完毕后，得到的target不一定是原来那个target函数，而是decorate(target)返回的函数。
+
+示例：装饰器通常把函数替换成另一个函数：
+```python
+>>> def decorate(func):
+...     def inner():
+...         print('running inner()')
+...     return inner
+... 
+>>> @decorate
+... def target():
+...     print('running target()')
+... 
+>>> target()
+running inner()
+>>> target
+<function decorate.<locals>.inner at 0x10b3ff598>
+```
+严格来说，装饰器只是语法糖。如前所示，装饰器可以像常规的可调用高阶函数那样调用。
+
+总结：装饰器的一大特性是，能把装饰的函数转换成其他函数。第二个特点是，装饰器在加载模块时立即执行。
+
+### Python 何时执行装饰器
+
+```python{cmd}
+registry = []
+
+def register(func):
+    print(f'running register({func.__name__})')
+    registry.append(func)
+    return func
+
+@register
+def f1():
+    print('running f1')
+
+@register
+def f2():
+    print('running f2')
+
+def f3():
+    print('running f3')
+
+def main():
+    print('running main()')
+    print('registry length :', len(registry))
+    f1()
+    f2()
+    f3()
+
+if __name__ == '__main__':
+    main()
+```
+
+总结：函数装饰器在导入模块时立即执行，而被装饰函数只有在明确调用时才运行。这突出了Python程序员所说的导入时和运行时的区别。
+
+考虑到装饰器在真实代码中的常用方式，上面的代码有两个不寻常的地方：
+- 装饰器和被装饰函数在同一个模块中定义。实际情况是，装饰器通常在一个模块中定义，然后应用到其他模块中的函数上；
+- register 装饰器返回的函数与通过参数传入的系统，实际上大多数装饰器都会在内部定义一个函数然后将其返回,并且每次返回的id通常都会不同；
+
+上面那种形式的装饰器也称为 “注册装饰器”。
+
+### 使用修饰器改进“策略”模式
+
+```python {cmd continue="20180420140618"}
+promos = []
+def promotion(promo_func):
+    promos.append(promo_fun)
+    return promo_func
+
+@promotion
+def fidelity_promo(order):
+    """为积分为1000及以上的顾客提供 5%的折扣"""
+    return order.total()*.05 if order.customer.fidelity>=1000 else 0
+
+@promotion
+def bulk_item_promo(order):
+    """单个商品为20个或以上的提供10%的折扣"""
+    discount = 0
+    for item in order.cart:
+        if item.quantity >= 20:
+            discount += item.total() * .1
+    return discount
+
+@promotion
+def large_order_promo(order):
+    """订单中的不同商品达到10个或以上 提供7%的折扣"""
+    if len({item.product for item in order.cart})>=10:
+        return order.total() * .07
+    else:
+        return 0
+
+def best_promo(order):
+    """ 选择可用的最佳折扣
+    """
+    return max(f(order) for f in promos)
+```
+该方案相比于之前，有以下的优点：
+1. 促销策略无需使用特殊的名称（即不一定以 _promo 结尾）
+1. @promotion 装饰器突出了被装饰的函数的作用，便于临时禁用某个促销策略：只需要将装饰器注释掉即可
+1. 促销折扣策略可以在其他模块中定义，在系统中任何地方都可以，只要使用 @promotion 装饰即可。
+
+不过，多数装饰器会修改被装饰的函数，通常，它们会定义一个内部函数，然后将其返回，替换被装饰的函数。使用内部函数的代码几乎都要靠闭包才能正确运行。为了理解闭包，我们要退后一步，先了解 Python中的变量作用域。
+
+### 变量作用域规则
+
+```python
+>>> b = 6
+>>> def f1(a):
+...     print(a)
+...     print(b)
+... 
+>>> f1(3)
+3
+6
+```
+上面的代码不会发生错误，但是下面的代码却会产生错误：
+```python
+>>> b = 6
+>>> def f2(a):
+...     print(a)
+...     print(b)
+...     b = 9
+... 
+>>> f2(3)
+3
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in f2
+UnboundLocalError:local variable 'b' referenced before assignment
+```
+其中第二个 print 都没执行就失败了。
+
+原因：因为在 f2 中，有对 b 进行赋值的语句，所以 Python 编译函数的定义体时认为它是局部变量，但是在 print(b) 之前没有赋值操作，所以找不到该变量。
+
+这不是缺陷，而是设计选择：Python不要求声明变量，但是 **假定在函数定义体中赋值的变量是局部变量**。这比 JavaScript 好多了，JavaScript 也不要求声明变量，但是如果忘记把变量声明为局部变量（使用var），可能会在不知情的情况下获取全局变量。
+
+如果在函数中赋值时，想让解释器把 b 当成全局变量，使用 `global` 声明：
+```python
+>>> b = 6
+>>> def f3(a):
+...     global b
+...     print(a)
+...     print(b)
+...     b = 9
+... 
+>>> f3(3)
+3
+6
+>>> b
+9
+```
+**比较字节码**
+```python
+>>> dis(f1)
+  2           0 LOAD_GLOBAL              0 (print)
+              2 LOAD_FAST                0 (a)
+              4 CALL_FUNCTION            1
+              6 POP_TOP
+
+  3           8 LOAD_GLOBAL              0 (print)
+            # 加载global b
+             10 LOAD_GLOBAL              1 (b) 
+             12 CALL_FUNCTION            1
+             14 POP_TOP
+             16 LOAD_CONST               0 (None)
+             18 RETURN_VALUE
+>>> dis(f2)
+  2           0 LOAD_GLOBAL              0 (print)
+              2 LOAD_FAST                0 (a)
+              4 CALL_FUNCTION            1
+              6 POP_TOP
+
+  3           8 LOAD_GLOBAL              0 (print)
+            # 加载 local b
+             10 LOAD_FAST                1 (b)
+             12 CALL_FUNCTION            1
+             14 POP_TOP
+
+  4          16 LOAD_CONST               1 (9)
+             18 STORE_FAST               1 (b)
+             20 LOAD_CONST               0 (None)
+             22 RETURN_VALUE
+```
+
+### 闭包
+
+在博客圈中，人们有时候会把闭包和匿名函数弄混，这是有历史原因的：在函数内部定义函数不常见，直到开始使用匿名函数才会这样做。而且，只有涉及嵌套函数时才有闭包问题。因此，很多人是同时直到这两个概念的。
+
+其实，闭包指延伸了作用域的函数，其中包含函数定义体中引用、但不在定义体中定义的非全局变量。和函数是不是匿名没有关系，关键是它能访问定义体之外定义的非全局变量。
+
+例子：假如有一个名为 avg 函数，作用是计算不断增加的序列值的均值：
+```python
+>>> avg(10)
+10.0
+>>> avg(11)
+10.5
+>>> avg(12)
+11.0
+```
+实现方式1：
+```python
+class Averager:
+    def __init__(self):
+        self.series = []
+    def __call__(self, new_value):
+        self.series.append(new_value)
+        return sum(self.series)/len(self.series)
+avg = Averager()
+print(avg(10))
+print(avg(11))
+print(avg(12))
+```
+实现方式2：
+```python
+def makeaverager():
+    series = []
+    def averager(new_value):
+        series.append(new_value)
+        return sum(series)/len(series)
+    return averager
+avg = makeaverager()
+print(avg(10))
+print(avg(11))
+print(avg(12))
+```
+以上两种实现方式有共通之处：调用 `Averager()` 或者是 `makeaverager()` 得到一个可调用对象 avg，它会更新历史值，然后计算当前均值。
+
+Averager类实例 avg 的 `series` 其一个属性。而方式 2 中的 `series` 既不是 `avg` 函数的局部变量，也非属性，也不是全局变量，该变量称为 **自由变量（free variable）**，这是一个技术术语，指未在本地作用域中绑定的变量。
+```python
+>>> avg.__code__.co_varnames
+('new_value',)
+>>> avg.__code__.co_freevars
+('series',)
+>>> avg.__closure__[0].cell_contents
+[10, 11, 12]
+```
+总结：闭包是一种函数，它会保留定义函数时存在的自由变量的绑定，这样调用函数时，虽然定义作用域不可用，但是仍能使用那些绑定。
+
+### nonlocal 声明
+前面实现的 `makeaverager` 的效率不高。新方案可以为：
+```python
+def makeaverager():
+    count = 0
+    total = 0
+    def averager(new_value):
+        total += new_value
+        count += 1
+        return total/count
+    return averager
+```
+在调用时发生了错误：
+```python
+>>> avg = makeaverager()
+>>> avg(10)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 5, in averager
+UnboundLocalError: local variable 'total' referenced before assignment
+```
+问题是，当 count 是数字或任何不可变类型时，`count+=1` 语句的作用其实与 `count = count + 1` 是等价的。因此，我们在 averager 的定义体中位 count 赋值了，这会把 count 变成局部变量，total 也是。
+
+为了解决这个问题， Python 3 引入了 nonlocal 声明。它的作用是把变量标记为自由变量，即使在函数中为变量赋予新值，也会变成自由变量。修改后的代码变为
+```python
+def makeaverager():
+    count = 0
+    total = 0
+    def averager(new_value):
+        nonlocal count, total
+        total += new_value
+        count += 1
+        return total/count
+    return averager
+```
+在没有 `nonlocal` 之前的解决方案是将内部函数需要修改的变量（如count、total）存储为可变对象，如字典或简单的实例。
+
+在了解了 Python 闭包之后，就可以使用嵌套函数正式实现修饰器了。
+
+### 实现一个简单额修饰器
+
+一个简单的修饰器，输出函数的运行时间：
+```python {cmd id="20180420155214"}
+import time
+
+def clock(func):
+    def clocked(*args):
+        t0 = time.perf_counter()
+        result = func(*args)
+        elapsed = time.perf_counter()-t0
+        name = func.__name__
+        arg_str = ', '.join(repr(arg) for arg in args)
+        print(f'[{elapsed:.8f}s] {name}({arg_str}) -> {result!r}')
+        return result
+    return clocked
+```
+下面使用 clock 装饰器：
+```python {cmd continue="20180420155214"}
+@clock
+def snooze(seconds):
+    time.sleep(seconds)
+
+@clock
+def factorial(n):
+    return 1 if n < 2 else n*factorial(n-1)
+
+print(f"{'Calling snooze(.123)':*^40s}")
+snooze(.123)
+print(f"{'Calling factorial(6)':*^40s}")
+print(f'6! = {factorial(6)}')
+```
+
+这是装饰器的典型行为：把被装饰的函数替换成新函数，二者接受相同的参数，而且（通常）返回被修饰的函数本该返回的值，同时还会做一些额外操作。
+
+> GoF 的《设计模式：可复用面向对象软件的基础》一书是这样概述 “装饰器” 模式的：“动态地给一个对象添加一些额外的职责。”函数装饰器符合这一说法，但是在实现层面上，Python修饰器与《设计模式》中所描述的“装饰器”没有多少相似之处。
+
+`clock` 装饰器的几个缺点：
+1. 不支持关键字参数
+1. 遮盖了被修饰函数的 `__name__` 和 `__doc__` 属性
+
+下面的实例使用 `functools.wraps` 装饰器吧相关属性从 func 赋值到 clocked 中，此外，该版本还能正确处理关键词参数：
+```python {cmd id="20180420163907"}
+import time
+from functools import wraps
+def clock(func):
+    @wraps(func)
+    def clocked(*args, **kwargs):
+        t0 = time.perf_counter()
+        result = func(*args, **kwargs)
+        elapsed = time.perf_counter()-t0
+        name = func.__name__
+        arg_str = ', '.join(repr(arg) for arg in args)
+        print(f'[{elapsed:.8f}s] {name}({arg_str}) -> {result!r}')
+        return result
+    return clocked
+```
+```python {cmd continue="20180420163907"}
+@clock
+def snooze(seconds):
+    time.sleep(seconds)
+
+@clock
+def factorial(n):
+    return 1 if n < 2 else n*factorial(n-1)
+
+print(snooze.__name__)
+print(factorial.__name__)
+print(factorial(n=2))
+```
+
+### 标准库中的装饰器
+
+Python 内置了 3 个用于装饰方法的函数：property、classmethod 和 staticmethod。
+
+另一个常见的装饰器是 `functools.wraps`，它的作用是协助构建行为良好的装饰器。
+
+标准库中最值得关注的两个装饰器是 `lru_cache` 和全新的 `singledispatch`(Python3.4新增)。这两个装饰器都在 `functools` 模块中定义。
+
+#### 使用 functools.lru_cache 做备忘
+
+`functools.lru_cache` 是非常使用的装饰器，它实现了备忘(memoization)功能。这是一项优化技术，它把耗时的函数的结果保持起来，避免传入系统的参数时重复计算。
+
+LRU三个字母是 “Least Recently Used” 的缩写，表明缓存不会无限制增长，一段时间不用的缓存就会被扔掉。
+
+生成第 n 个斐波那契数这种慢递归函数非常适合使用 lru_cache:
+
+```python {cmd}
+from functools import lru_cache
+import time
+
+def clock(f, *args, **kwargs):
+    t0 = time.perf_counter()
+    r = f(*args, **kwargs)
+    print(f'\n{f.__name__}:')
+    print(f'Result : {r}')
+    print(f'Used : {time.perf_counter()-t0} s')
+def normal_fabonacci(n):
+    return (1 if n <2 else 
+    normal_fabonacci(n-1)+normal_fabonacci(n-2))
+
+# 注意：必须像常规函数那样调用 lru_cache，因为lru_cache
+@lru_cache()
+def lru_fabonacci(n):
+    return (1 if n<2 else
+    lru_fabonacci(n-1)+lru_fabonacci(n-2))
+
+def fabonacci(n):
+    a, b = 1, 1
+    i = 1
+    while(i<n):
+        a, b = a+b, a
+        i += 1
+    return a
+
+clock(normal_fabonacci, 35)
+clock(lru_fabonacci, 35)
+clock(fabonacci, 35)
+```
+
+除了优化递归算法外，lru_cache 在从 Web 中获取信息的应用中也能发挥巨大作用。
+
+特别要注意，lru_cache 可以使用两个可选的参数来配置，它的签名是：
+`functools.lru_cache(maxsize=120, typed=False)`
+maxsize 指定最多存储多少个调用的结果，缓冲满了之后，就得结果会被扔掉，腾出空间。为了得到最佳性能，maxsize 应该设为 2 的幂。
+
+typed 参数如果为True，把不同参数类型得到的结果分开保存，即把通常认为相等的浮点数和整数（如 1 和 1.0）区分开。
+
+另外，因为 lru_cache 使用字典存储结构，而且键根据调用时传入的定位参数和关键字参数创建，所以被 lru_cache 装饰的函数，其所有的参数都必须是可散列的。
+
+#### 单分派泛函数
+
+假设我们在开发一个调试 Web 应用的工具，想生成 HTML，显示不同类型的 Python 对象。
+
+我们可能会编写这样的函数：
+```python
+import html
+
+def htmlize(obj):
+    content = html.escape(repr(obj))
+    return '<pre>{}</pre>'.format(content)
+```
+这个函数适用于任何 Python 类型，但是现在我们想做个扩展，让它使用特别的方式显示某些类型：
+
+- str：把内部的换行符题替换为 '<br>\n'；不适用 <pre>，而是 <p>；
+- int：以十进制和十六进制显示数字
+- list：输出一个HTML列表，根据各个元素的类型进行格式化；
+
+比如：
+```python
+>>> htmlize({1, 2, 3})
+'<pre>{1, 2, 3}<pre>'
+>>> htmlize(abs)
+'<pre>&lt;built-in function abs&gt;</pre>'
+>>> htmlize('Heimlich & Co.\n- a game')
+'<p>Heimlich &amp; Co.<br>\n- a game</p>'
+>>> htmlize(42)
+'<pre>42 (0x2a)</pre>'
+>>> print(htmlize(['alpha', 66, {3, 2, 1}]))
+<ul>
+<li><p>alpha</p></li>
+<li><pre>66 (0x42)</pre></li>
+<li><pre>{1, 2, 3}<pre></li>
+</ul>
+```
+因为 Python 不支持重载方法或函数，所以我们不能使用不同的签名定义 htmlize 的变体，也无法使用不同的方式处理不同的数据类型。
+
+在 Python 中，一种常见的做法是把 htmlize变成一个分派函数，使用一串 if/elif/else，调用专门的函数，如：htmlize_str、htmlize_int 等等。但是这样不便于模块的用户扩展，还显得笨拙：时间一长，分派函数 htmlize 会变得很大，而且它与各个专门函数之间的耦合也很紧密。
+
+Python3.4 新增的 functools.singledispatch 装饰器可以把整体方案拆分成多个模块，甚至可以为你无法修改的类提供专门的函数。使用 @singlepatch 装饰器的普通函数会变成 泛函数（generic function）：根据第一个函数的参数，以不同的方式执行相同操作的一组函数，具体做法为：
+```python
+from functools import singledispatch
+from collections import abc
+import numbers
+import html
+
+@singledispatch
+def htmlize(obj):
+    content = html.escape(repr(obj))
+    return f'<pre>{content}</pre>'
+
+@htmlize.register(str)
+def _(s):
+    return "<p>{}</p>".format(html.escape(
+        s).replace('\n', '<br>\n'))
+
+@htmlize.register(numbers.Integral)
+def _(integer):
+    return f'<pre>{integer} (0x{integer:x})</pre>'
+
+@htmlize.register(tuple)
+@htmlize.register(abc.MutableSequence)
+def _(seq):
+    return "<ul>\n{}\n</ul>".format(
+        '\n'.join(f'<li>{htmlize(i)}</li>' 
+        for i in seq))
+```
+只要可能，注册的专门函数应该处理抽象基类（如numbers.Integral 和 abc.MutableSequence），不要处理具体实现（如 int 和 list）。这样，代码支持的兼容类型更广泛。例如，Python 扩展可以子类化 numbers.Integral，使用固定的位数实现 int 类型。
+
+singledispatch 机制的一个显著特征时，你可以在系统的任何地方和任何模块中注册专门函数。如果后来在新的模块中定义了新的类型，可以轻松添加一个新的专门函数来处理那个类型。
+
+此外，你还可以为不是自己编写的或者不能修改的类添加自定义函数。
+
+> @singledispatch 不是为了把 Java 的那种方法重载带入 Python 。在一个类中，为同一个方法定义多个重载变体，比在一个函数中使用一长串 if/elif/elif/elif 块要更好。但是这两种方案都有缺陷，因为它们让代码单元（类或函数）承担的职责太多。@singledispatch 的优点是支持模块化扩展：各个模块可以为它支持的各个类型注册一个专门函数。
+
+### 叠放装饰器
+
+把 @d1 和 @d2 两个装饰器按顺序应用到 f 函数上，作用相当于 f = d1(d2(f))，即
+```python
+@d1
+@d2
+def f():
+    print('f')
+```
+等价于：
+```python
+def f():
+    print('f')
+
+f = d1(d2(f))
+```
+
+### 参数化装饰器
+
+解析源代码中的装饰器时，Python 把装饰器的函数作为第一个参数传递给装饰器函数。那如何让装饰器接受其他参数呢？答案是：创建一个装饰器工厂函数，把参数传给它，返回一个装饰器，然后再把它应用到要装饰的函数上。
+
+例如有一个简单的 @register 装饰器：
+```python
+registry = []
+
+def register(fun):
+    print(f'running register({fun})')
+    registry.append(fun)
+    return fun
+
+@register
+def f1():
+    print('running f1()')
+
+print('running main()')
+print('registry ->', registry)
+f1()
+```
+
+#### 一个参数化的注册装饰类
+
+为了便于启用或禁用 register 执行的函数注册功能，我们为它提供一个可选的 active 参数，设为 False 时，不注册被装饰的函数。
+
+```python {cmd}
+registry = set()
+
+def register(active=True):
+    def decorate(fun):
+        print(f'running register(active={active})' 
+        f'->decorate({fun.__name__})')
+        if active:
+            registry.add(fun.__name__)
+        else:
+            registry.discard(fun.__name__)
+        return fun
+    return decorate
+
+@register(True)
+def f1():
+    print('running f1()')
+
+@register(False)
+def f2():
+    print('running f2()')
+
+# 即使不传入参数，register也要返回decorate
+# 然后把它应用到被修饰的函数上
+# 等价于 register()(f3)
+@register()
+def f3():
+    print('running f3()')
+
+print(registry)
+
+# 将 f3 名从注册表中删除
+register(False)(f3)
+
+print(registry)
+```
+参数化装饰器的原理相当复杂，我们刚刚讨论的那个比大多数都简单。参数化装饰器通常会把被装饰的函数替换掉，而且结构上需要多一次嵌套。接下来会探讨这种函数金字塔。
+
+#### 参数化 clock 函数
+
+本节再次探讨 clock 装饰器，为它添加一个功能：让用户传入一个格式字符串，控制被装饰函数的输出。
+```python {cmd id="20180421153833"}
+import time
+import functools
+
+DEFAULT_FMT = '[{elapsed:0.8f}s] {name}({args})->{result}'
+
+def clock(fmt=DEFAULT_FMT):
+    def decorate(func):
+        @functools.wraps(func)
+        def clocked(*_args):
+            t0 = time.time()
+            _result = func(*_args)
+            elapsed = time.time() - t0
+            name = func.__name__
+            args = ', '.join(repr(arg) for arg in _args)
+            result = repr(_result)
+            print(fmt.format(**locals()))
+            return _result
+        return clocked
+    return decorate
+```
+使默认的格式化参数：
+```python {cmd continue="20180421153833"}
+@clock()
+def snooze(seconds):
+    time.sleep(seconds)
+print(snooze.__name__)
+for i in range(3):
+    snooze(0.123)
+```
+
+使用新的格式：
+```python {cmd continue="20180421153833"}
+@clock('{name} : {elapsed:.8f} s')
+def snooze(seconds):
+    time.sleep(seconds)
+
+for i in range(3):
+    snooze(.123)
+```
+
+> Granham Dumpleton 和 Lennart Regebro 认为，装饰器最好通过 `__call__` 方法的类实现，而不应该像本章的实例那样通过函数实现。的确，使用非平凡的装饰器更好，但是使用函数解说这个语言特性的基本思想更加容易理解。
+
+## 对象引用、可变性和代码回收
+
+### 变量不是盒子
+
+Python 变量类似于 Java 中的引用式变量，因此最好把它理解为附加在对象上的标注。
+
+因为变量只不过是标注，所以无法阻止为对象贴上多个标注。贴的多个标注就是别名。
+
+#### 标示、相等性、别名
+
+`==` 调用的是对象的 `__eq__` 方法，而 `is` 比较的是对象的 id 。
+
+在变量和单例值之间比较时，应该使用 is。最常见使用 is 检查变量绑定的值是不是 None。
+```python
+x is None
+x is not None
+```
+is 运算符比 == 速度快，因为它不能重载，所以 Python 不用寻找并调用特殊方法，而是直接比较两个整数 ID。
+
+#### 元组的相对不可变性
+
+元组与多数 Python 集合（list、dict、set 等）一样，保存的是对象的引用。如果引用的对象是可变的，即使元组本身不可变，元素依然可变。也就是说，元组的不可变性其指定是 tuple 数据结构的物理内容(即保存的引用)不可变，与引用的对象无关。
+
+> str、bytes、array 等扁平型序列，它们保存的不是应用，而是在连续的内存中保存数据本身（字符、字节、数字）
+
+### 默认做浅复制
+
+复制列表（或多数内置的可变集合）最简单的方式是使用内置的类型构造方法。例如：
+```python
+>>> l1 = [3, [55,44], (7,8,9)]
+>>> l2 = list(l1)
+>>> l2
+[3, [55, 44], (7, 8, 9)]
+>>> l2 == l1
+True
+>>> l2 is l1
+False
+```
+
+然而，构造方法 或 [:] 做的是浅复制（即复制了最外层容器，副本中的元素是源容器中元素的引用）。如果所有元素都是不可变的，那么没有问题，还能节省内存，但是如果有可变元素，可能会导致意想不到的问题。
+```python
+>>> l1 = [3, [55,44], (7,8,9)]
+>>> l2 = list(l1)
+>>> l1.append(100)
+>>> l1[1].remove(55)
+>>> print('l1 :', l1)
+l1 : [3, [44], (7, 8, 9), 100]
+>>> print('l2 :', l2)
+l2 : [3, [44], (7, 8, 9)]
+>>> l2[1] += [33, 22]
+>>> l2[2] += (10, 11)
+>>> print('l1 :', l1)
+l1 : [3, [44, 33, 22], (7, 8, 9), 100]
+>>> print('l2 :', l2)
+l2 : [3, [44, 33, 22], (7, 8, 9, 10, 11)]
+```
+
+**为容易对象做深复制和浅复制**
+
+浅复制没有什么问题，但有时我们需要的是深复制（即副本不共享内部对象的引用）.
+
+为了演示 copy 和 deepcopy 的用法，下面的实例定义了一个简单的类 Bus。这个类表示运载乘客的校车，在中途乘客会上车或下车。
+```python
+class Bus:
+    def __init__(self, passengers=None):
+        if passengers is None:
+            self.passengers = []
+        else:
+            self.passengers = list(passengers)        
+    def pick(self, name):
+        self.passengers.append(name)
+    def drop(self, name):
+        self.passengers.remove(name)
+```
+
+接下来，我们将创建一个 Bus 实例（bus1）和两个副本，一个是浅复制副本（bus2），另一个是深复制副本（bus3），看看在bus1有学生下车后会发生什么：
+```python
+>>> import copy
+>>> bus1 = Bus(['Alice','Bill','Claire','David'])
+>>> bus2 = copy.copy(bus1)
+>>> bus3 = copy.deepcopy(bus1)
+>>> id(bus1), id(bus2), id(bus3)
+(4484073512, 4484073960, 4484074128)
+>>> bus1.drop('Bill')
+>>> bus2.passengers
+['Alice', 'Claire', 'David']
+>>> id(bus1.passengers), id(bus2.passengers), id(bus3.passengers)
+(4484075784, 4484075784, 4484044552)
+>>> bus3.passengers
+['Alice', 'Bill', 'Claire', 'David']
+```
+注意，一般来说，深复制不是一件简单的事。如果对象有循环引用，那么这个朴素的算法会进入无限循环。deepcopy 函数会记住已经复制的对象，因此能够优雅地处理循环引用，如：
+```python
+>>> a = [10, 20]
+>>> b = [a, 30]
+>>> a.append(b)
+>>> a
+[10, 20, [[...], 30]]
+>>> c = copy.deepcopy(a)
+>>> c
+[10, 20, [[...], 30]]
+```
+此外，深复制有时候可能太深。例如，对象可能会引起不该复制的外部资源或单例值。我们可以实现特殊的`__copy__()` 和 `__deepcopy__()`，控制 copy 和 deepcopy 的行为。
+
+通过别名共享对象还能解释 Python 中传递参数的方式，以及使用可变类型作为参数默认值引起的问题，接下来讨论这些问题。
+
+### 函数的参数作为引用时
+
+Python 唯一支持的参数传递是共享传参（call by sharing）。多数面向对象语言都采用这一模式。包括 Ruby、Smalltalk 和 Java。
+
+共享传参指函数的各个形参获得实参中各个引用的副本。也就是说，函数内部的形参是实参的别名。
+
+这种方案的结果是，函数可能会修改作为参数传入的**可变对象**。但是，无法修改那些对象的标识（即不能把一个对象替换成另一个对象）。
+
+```python
+>>> def f(a,b):
+...     a += b
+...     return a
+... 
+>>> x = 1
+>>> y = 2
+>>> f(x, y)
+3
+>>> x, y
+(1, 2)
+>>> a = [1, 2]
+>>> b = [3, 4]
+>>> f(a, b)
+[1, 2, 3, 4]
+>>> a, b
+([1, 2, 3, 4], [3, 4])
+>>> t = (10, 20)
+>>> u = (30, 40)
+>>> f(t, u)
+(10, 20, 30, 40)
+>>> t, u
+((10, 20), (30, 40))
+```
+### 不要使用可变类型作为参数的默认值
+
+可选参数可以有默认值，这是 Python 函数定义的一个很棒的特性,这样我们的API在进化的同时能保证向后的兼容性。然而，我们应该避免使用可变的对象作为参数的默认值。
+
+我们以上面的 Bus 类为基础定义一个新类 HauntedBus，然后修改 `__init__` 方法，我们这一次， passengers 的默认值不是 None，而是 []，这样就不用像之前那样用 if 进行判断了：
+```python {cmd}
+class HauntedBus:
+    """The bus haunted by ghost
+    """
+    def __init__(self, passengers=[]):
+        self.passengers = passengers
+    def pick(self, name):
+        self.passengers.append(name)
+    def drop(self, name):
+        self.passengers.remove(name)
+```
+测试如下：
+```python
+>>> bus1 = HauntedBus(['Alice', 'Bill'])
+>>> bus1.pick('Charlie')
+>>> bus1.drop('Alice')
+>>> bus1.passengers
+['Bill', 'Charlie']
+>>> bus2 = HauntedBus()
+>>> bus2.passengers
+[]
+>>> bus2.pick('Carrie')
+>>> bus2.passengers
+['Carrie']
+>>> bus3 = HauntedBus()
+>>> bus3.passengers
+['Carrie']
+>>> bus3.pick('Dave')
+>>> bus2.passengers
+['Carrie', 'Dave']
+>>> bus2.passengers is bus3.passengers
+True
+```
+问题在于，没有指定初始乘客的 HauntedBus 实例会共享一个乘客列表。
+
+### del 和垃圾回收
+
+> 对象绝不会自动销毁；然而，无法得到对象时，可能会被当做垃圾回收。<br>——Python 语言参考手册中的 Data Model 一章
+
+del 语句删除名称，而不是对象。del 命令可能会导致对象被当做垃圾回收，但是仅当删除的变量保存的是对象的最后一个引用，或者无法得到对象时。重新绑定也可能会使对象的引用数量归零，导致对象被销毁。
+
+在 CPython 中，垃圾回收使用的主要算法是引用计数。实际上，每个对象都会统计有多少引用指向自己。当引用计数归零时，对象立即被销毁：CPython 会在对象上调用 `__del__` 方法（如果定义了），然后释放分配给对象的内存。
+
+演示：没有指向对象的引用时，监视对象生命结束时的情形：
+```python
+>>> import weakref
+>>> s1 = {1, 2, 3}
+>>> s2 = s1
+>>> def bye():
+...     print('Gone   with the wind...')
+... 
+>>> ender = weakref.finalize(s1, bye)
+>>> del s1
+>>> ender.alive
+True
+>>> s2 = 'spam'
+Gone   with the wind...
+>>> ender.alive
+False
+```
+
+### 弱引用
+
+正是因为有引用，对象才会在内存中存在。当对象的引用数量归零后，垃圾回收程序会把对象销毁。但是，有时需要引用对象，而不让对象存在的时间超过所需时间，这经常用在缓存中。
+
+弱引用不会增加对象的引用数量引用的目标对象称为所指对象（referent），因此，我们说弱引用不会妨碍所指对象被当做垃圾回收。
+
+弱引用当对象存在时，返回对象；在被销毁后，返回 None。
+```python
+>>> import weakref
+>>> a_set = {0, 1}
+>>> wref = weakref.ref(a_set)
+>>> wref
+<weakref at 0x10b455688; to 'set' at 0x10b45e048>
+# 调用 wref() 返回的是被引用的对象，{0,1}
+# 因为是控制台会话，所以{0,1}会被绑定给 _ 变量
+>>> wref()
+{0, 1}
+# a_set 不再指向 {0,1} 集合，因此集合的引用数量减一
+# 但是 _ 变量仍然指向它
+>>> a_set = {0, 1, 2}
+# 调用 wref() 依然返回 {0,1}
+>>> wref()
+{0, 1}
+# 计算这个表达式时，{0,1}依然存在，因此 wref()不是None
+# 该表达式后，_ 绑定到结果值 False，{0,1}失去引用
+>>> wref() is None
+False
+# 引用数为0后，wref() 变为 None
+>>> wref() is None
+True
+```
+
+weakre 模块的文档指出：weakref.ref 类其实是底层接口，仅供高级用途使用，多数程序最好使用 weakref 集合和 finalize。也就是说，应该使用 WeakKeyDictionary、WeakValueDictionary、WeakSet和finalize，不要自己动手创建并处理 weakref.ref 实例。
+
+#### WeakValueDictionary 简介
+
+WeakValueDictionary 类实现的是一种可变映射，里面的值是对象的弱引用。被引用的对象在程序中的其他地方被当作垃圾回收后，对应的键会自动从 WeakValueDictionary 中删除，因此，WeakValueDictionary经常用于缓冲。
+
+```python
+class Cheese:
+    def __init__(self, kind):
+        self.kind = kind
+    def __repr__(self):
+        return f'Cheese({self.kind!r})'
+```
+```python
+>>> import weakref
+>>> stock = weakref.WeakValueDictionary()
+>>> catalog = [Cheese('Red Leicester'), Cheese('Tilsit'),
+...     Cheese('Brie'), Cheese('Parmesan')]
+>>> for cheese in catalog:
+...     stock[cheese.kind] = cheese
+... 
+>>> sorted(stock.keys())
+['Brie', 'Parmesan', 'Red Leicester', 'Tilsit']
+>>> del catalog[1]
+>>> sorted(stock.keys())
+['Brie', 'Parmesan', 'Red Leicester']
+>>> del catalog
+>>> sorted(stock.keys())
+['Parmesan']
+>>> del cheese
+>>> sorted(stock.keys())
+[]
+```
+与 WeakValueDictionary 相对应的是 WeakKeyDictionary，后者的键是弱引用：WeakKeyDictionary 实例可以为应用中其他部分拥有的对象附加数据，这样就无需为对象添加属性。这对覆盖属性访问权限的对象尤其重要。
+
+weakref 没开还提供了 WeakSet 类，按照文档的说明，这个类的作用很简单：“保存元素弱引用的集合类。元素没有强引用时，集合会把它删除”。如果一个类需要所有实例，一种好的方案是创建一个 WeakSet类型的类属性，保存实例的引用。
+```python
+>>> class A():pass
+... 
+>>> wk_set = weakref.WeakSet()
+>>> a1 = A()
+>>> wk_set.add(a1)
+>>> len(wk_set)
+1
+>>> a2 = A()
+>>> wk_set.add(a2)
+>>> len(wk_set)
+2
+>>> del a1
+>>> len(wk_set)
+1
+```
+
+#### 弱引用的局限
+
+不是每个 Python 对象都可以作为弱引用的目标（或称所指对象）。基本的 list 和 dict 实例不能作为所指对象，但他们的子类可以轻松解决这个问题：
+```python
+>>> a1 = list(range(5))
+>>> wref = weakref.ref(a1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: cannot create weak reference to 'list' object
+>>> class MyList(list):pass
+... 
+>>> a2 = MyList(range(5))
+>>> wref = weakref.ref(a2)
+>>> wref()
+[0, 1, 2, 3, 4]
+```
+
+set 实例可以作为所指对象，用户定义的类型也没问题。但是，int 和 tuple 实例不能作为弱引用的目标，甚至它们的子类都不行。
+
+这些局限基本上是在 CPython 的实现细节上，在其他 Python 解释其中情况可能不一样。这些局限是内部优化导致的结果。
 
