@@ -2880,13 +2880,7 @@ f1<span class="token punctuation">(</span><span class="token punctuation">)</spa
 register<span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">(</span>f3<span class="token punctuation">)</span>
 
 <span class="token keyword">print</span><span class="token punctuation">(</span>registry<span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">running register(active=True)->decorate(f1)
-running register(active=False)->decorate(f2)
-running register(active=True)->decorate(f3)
-{'f3', 'f1'}
-running register(active=False)->decorate(f3)
-{'f1'}
-</pre></div></div><p>参数化装饰器的原理相当复杂，我们刚刚讨论的那个比大多数都简单。参数化装饰器通常会把被装饰的函数替换掉，而且结构上需要多一次嵌套。接下来会探讨这种函数金字塔。</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>参数化装饰器的原理相当复杂，我们刚刚讨论的那个比大多数都简单。参数化装饰器通常会把被装饰的函数替换掉，而且结构上需要多一次嵌套。接下来会探讨这种函数金字塔。</p>
 <h4 class="mume-header" id="%E5%8F%82%E6%95%B0%E5%8C%96-clock-%E5%87%BD%E6%95%B0">参数化 clock 函数</h4>
 
 <p>本节再次探讨 clock 装饰器，为它添加一个功能：让用户传入一个格式字符串，控制被装饰函数的输出。</p>
@@ -2916,21 +2910,14 @@ DEFAULT_FMT <span class="token operator">=</span> <span class="token string">'[{
 <span class="token keyword">print</span><span class="token punctuation">(</span>snooze<span class="token punctuation">.</span>__name__<span class="token punctuation">)</span>
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     snooze<span class="token punctuation">(</span><span class="token number">0.123</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">snooze
-[0.12672687s] snooze(0.123)->None
-[0.12770700s] snooze(0.123)->None
-[0.12754679s] snooze(0.123)->None
-</pre></div></div><p>使用新的格式：</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>使用新的格式：</p>
 <div class="code-chunk" data-id="code-chunk-id-29" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=29, cmd continue=&amp;amp;quot;20180421153833&amp;amp;quot;}" class="language-python">@clock<span class="token punctuation">(</span><span class="token string">'{name} : {elapsed:.8f} s'</span><span class="token punctuation">)</span>
 <span class="token keyword">def</span> <span class="token function">snooze</span><span class="token punctuation">(</span>seconds<span class="token punctuation">)</span><span class="token punctuation">:</span>
     time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span>seconds<span class="token punctuation">)</span>
 
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     snooze<span class="token punctuation">(</span><span class="token number">.123</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">snooze : 0.12409687 s
-snooze : 0.12818623 s
-snooze : 0.12605500 s
-</pre></div></div><blockquote>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><blockquote>
 <p>Granham Dumpleton 和 Lennart Regebro 认为，装饰器最好通过 <code>__call__</code> 方法的类实现，而不应该像本章的实例那样通过函数实现。的确，使用非平凡的装饰器更好，但是使用函数解说这个语言特性的基本思想更加容易理解。</p>
 </blockquote>
 <h2 class="mume-header" id="%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8-%E5%8F%AF%E5%8F%98%E6%80%A7%E5%92%8C%E4%BB%A3%E7%A0%81%E5%9B%9E%E6%94%B6">对象引用、可变性和代码回收</h2>
@@ -3185,6 +3172,328 @@ TypeError<span class="token punctuation">:</span> cannot create weak reference t
 <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
 </pre><p>set 实例可以作为所指对象，用户定义的类型也没问题。但是，int 和 tuple 实例不能作为弱引用的目标，甚至它们的子类都不行。</p>
 <p>这些局限基本上是在 CPython 的实现细节上，在其他 Python 解释其中情况可能不一样。这些局限是内部优化导致的结果。</p>
+<h2 class="mume-header" id="%E7%AC%A6%E5%90%88-python-%E9%A3%8E%E6%A0%BC%E7%9A%84%E5%AF%B9%E8%B1%A1">符合 Python 风格的对象</h2>
+
+<blockquote>
+<p>绝对不要使用两个前导下划线，这是很烦人的自私行为。 <br>——Ian Bicking，pip、virtualenv 和 Paste 等项目的创建者</p>
+</blockquote>
+<p>得益于 Python 数据模型，自定义类型的行为可以像内置类型那样自然。实现如此自然的行为，靠的不是继承，而是鸭子类型(duck typing)：我们只需要按照预定行为实现对象所需的方法即可。</p>
+<h3 class="mume-header" id="%E5%AF%B9%E8%B1%A1%E8%A1%A8%E7%A4%BA%E5%BD%A2%E5%BC%8F">对象表示形式</h3>
+
+<p>每门面向对象的语言至少都有一种获取对象的字符串表示形式的标准方法。Python 提供了两种方式：</p>
+<ul>
+<li><code>repr()</code>：以便于开发者理解的方式返回对象的字符串表示形式</li>
+<li><code>str()</code>：以便于用户理解的方式返回对象的字符串表示形式</li>
+</ul>
+<p>为了给对象提供其他的表示形式，还会用到两个特殊方法：<code>__bytes__</code> 和 <code>__format__</code> 。<code>__bytes__</code> 方法与 <code>__str__</code> 方法类似：<code>bytes()</code> 函数调用它获取对象的字节序列表示形式，而 <code>__format__</code> 方法会被内置的 <code>format()</code> 函数和 <code>str.format()</code> 方法调用，使用特殊的格式代码显示对象的字符串表示形式。</p>
+<h3 class="mume-header" id="%E5%86%8D%E8%B0%88%E5%90%91%E9%87%8F%E7%B1%BB">再谈向量类</h3>
+
+<p>为了说明用于生成对象表示形式的众多方法，我们将使用一个 Vector2d 类。</p>
+<p>其实现的效果为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v1 <span class="token operator">=</span> Vector2d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">print</span><span class="token punctuation">(</span>v1<span class="token punctuation">.</span>x<span class="token punctuation">,</span> v1<span class="token punctuation">.</span>y<span class="token punctuation">)</span>
+<span class="token number">3.0</span> <span class="token number">4.0</span>
+<span class="token operator">>></span><span class="token operator">></span> x<span class="token punctuation">,</span> y <span class="token operator">=</span> v1
+<span class="token operator">>></span><span class="token operator">></span> x<span class="token punctuation">,</span> y
+<span class="token punctuation">(</span><span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v1
+Vector2d<span class="token punctuation">(</span><span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">)</span>
+<span class="token comment"># 这里使用 eval 是为了演示，实际上使用 copy.copy 更加快速安全</span>
+<span class="token operator">>></span><span class="token operator">></span> v1_clone <span class="token operator">=</span> <span class="token builtin">eval</span><span class="token punctuation">(</span><span class="token builtin">repr</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v1 <span class="token operator">==</span> v1_clone
+<span class="token boolean">True</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">print</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">3.0</span><span class="token punctuation">,</span><span class="token number">4.0</span><span class="token punctuation">)</span>
+<span class="token comment"># 会自动调用 __bytes__ 方法，生成实例的二进制表示形式</span>
+<span class="token operator">>></span><span class="token operator">></span> octets <span class="token operator">=</span> <span class="token builtin">bytes</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> octets
+b<span class="token string">'d\x00\x00\x00\x00\x00\x00\x08@\x00\x00\x00\x00\x00\x00\x10@'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">abs</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span>
+<span class="token number">5.0</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">bool</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">bool</span><span class="token punctuation">(</span>Vector2d<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token boolean">False</span><span class="token punctuation">)</span>
+</pre><p>先思考一下应该如何实现 <code>Vector2d</code> 类。</p>
+<p>实现代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> math
+<span class="token keyword">from</span> array <span class="token keyword">import</span> array
+<span class="token keyword">class</span> <span class="token class-name">Vector2d</span><span class="token punctuation">:</span>
+    <span class="token comment"># typecode 是类属性，在与字节序列相互转换时使用</span>
+    typecode <span class="token operator">=</span> <span class="token string">'d'</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+    <span class="token comment"># 定义了 `__iter__` 方法，把 Vector2d 实例变为可迭代对象，这样才能拆包</span>
+    <span class="token keyword">def</span> <span class="token function">__iter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span> i <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>y<span class="token punctuation">)</span> <span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__repr__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> f<span class="token string">'{type(self).__name__}({self.x!r}, {self.y!r})'</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> f<span class="token string">'({self.x}, {self.y})'</span>
+    <span class="token keyword">def</span> <span class="token function">__bytes__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+    <span class="token keyword">def</span> <span class="token function">__abs__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> math<span class="token punctuation">.</span>hypot<span class="token punctuation">(</span>self<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>y<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__bool__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">bool</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>x<span class="token punctuation">)</span> <span class="token operator">or</span> <span class="token builtin">bool</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>y<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__eq__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> other<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token operator">==</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>other<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__bytes__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span> <span class="token punctuation">(</span><span class="token builtin">bytes</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token builtin">ord</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>typecode<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+            <span class="token builtin">bytes</span><span class="token punctuation">(</span>array<span class="token punctuation">(</span>self<span class="token punctuation">.</span>typecode<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="%E5%A4%87%E9%80%89%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95">备选构造方法</h3>
+
+<p>我们可以把 Vector2d 实例转换成字节序列；同理也应该能从字节序列转换成 Vector2d 实例。其中<code>array.array</code> 有个类方法 <code>.frombytes</code> 正好符合这个条件：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token comment"># 类方法使用 @classmethod 装饰器修饰</span>
+    @<span class="token builtin">classmethod</span>
+    <span class="token comment"># 不传入 self，而是传入 cls 传入类本身</span>
+    <span class="token keyword">def</span> <span class="token function">frombytes</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> octets<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        typecode <span class="token operator">=</span> <span class="token builtin">chr</span><span class="token punctuation">(</span>octets<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        memv <span class="token operator">=</span> <span class="token builtin">memoryview</span><span class="token punctuation">(</span>octets<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>cast<span class="token punctuation">(</span>typecode<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> cls<span class="token punctuation">(</span><span class="token operator">*</span>memv<span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="classmethod-%E5%92%8C-staticmethod">classmethod 和 staticmethod</h3>
+
+<p>Python 教程没有提到 classmethod 装饰器，也没有提到 staticmethod。</p>
+<p><strong>classmethod</strong>：该装饰器用于定义操作类，而不是操作实例的方法。classmethod 改变了调用方法的方式，因此类方法的第一个参数时类本身而不是实例。classmethod 最常见的用途是定义备选构造方法，如之前的 <code>.frombytes</code>。注意<code>.frombytes</code> 最后一行使用 cls 参数构建了一个新实例，即 <code>cls(*memv)</code>。按照约定，类方法的第一个参数名为 cls，不过Python不会介意具体怎么命名。</p>
+<p><strong>staticmethod</strong>：该装饰器也会改变方法的调用方式，但是第一个参数不是特殊的值。<strong>其实静态方法就是普通的函数</strong>，只是碰巧在类的定义体中，并不是在模块层定义。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">Demo</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     @<span class="token builtin">classmethod</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">classmeth</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">return</span> args
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     @<span class="token builtin">staticmethod</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">staticmeth</span><span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">return</span> args
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> Demo<span class="token punctuation">.</span>classmeth<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token string">'__main__.Demo'</span><span class="token operator">></span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> Demo<span class="token punctuation">.</span>classmeth<span class="token punctuation">(</span><span class="token string">'spam'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token string">'__main__.Demo'</span><span class="token operator">></span><span class="token punctuation">,</span> <span class="token string">'spam'</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> Demo<span class="token punctuation">.</span>staticmeth<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> Demo<span class="token punctuation">.</span>staticmeth<span class="token punctuation">(</span><span class="token string">'spam'</span><span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token string">'spam'</span><span class="token punctuation">,</span><span class="token punctuation">)</span>
+</pre><blockquote>
+<p>classmethod 装饰器非常有用，但是我没有见过不得不用 staticmethod 的情况。如果想定义不需要与类交互的函数，那么在模块中定义就好了。有时候，函数虽然不想处理类，但是函数的功能与类密切相关，因此想把它放在近处。即便如此好，在同一模块中的类前面或后面定义函数也就行了。</p>
+</blockquote>
+<p><strong>Python 要想获取一个实例的类对象，可以使用 <code>type(instance)</code></strong></p>
+<h3 class="mume-header" id="%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%98%BE%E7%A4%BA">格式化显示</h3>
+
+<p>内置的 format() 函数和 str.format() 方法把各个类型的格式化方法委托给对应的<code>.__format__(format_spec)</code> 方法。format_spec 是格式说明符，它是：</p>
+<ul>
+<li>format(my_obj, format_spec) 的第二个参数，或者</li>
+<li>str.format() 方法的格式字符串，{} 中代换字段中冒号后面的部分</li>
+</ul>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> br1 <span class="token operator">=</span> <span class="token number">1</span><span class="token operator">/</span><span class="token number">2.34</span>
+<span class="token operator">>></span><span class="token operator">></span> br1
+<span class="token number">0.4273504273504274</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>br1<span class="token punctuation">,</span> <span class="token string">'0.4f'</span><span class="token punctuation">)</span>
+<span class="token string">'0.4274'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token string">'1 BRL = {rate:0.2f} USD'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>rate<span class="token operator">=</span>br1<span class="token punctuation">)</span>
+<span class="token string">'1 BRL = 0.43 USD'</span>
+</pre><p>格式规范微语言为一些内置类型提供了作用的表示代码，比如 b 和 x 分别表示二进制和十六进制的 int 类型，f 表示小数形式的 float 类型：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">)</span>
+<span class="token string">'101010'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token operator">/</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token string">'.1%'</span><span class="token punctuation">)</span>
+<span class="token string">'66.7%'</span>
+</pre><p>格式规范微语言是可扩展的，因为各个类可以自行决定如何解释 format_spec 参数。例如，datetime 模块中的类，它们的 <code>__format__</code> 方法使用的格式代码与 <code>strftime()</code> 函数一样。下面是内置的 format 函数和 str.format 方法的示例：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime
+<span class="token operator">>></span><span class="token operator">></span> now <span class="token operator">=</span> datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>now<span class="token punctuation">,</span> <span class="token string">'%H:%M:%S'</span><span class="token punctuation">)</span>
+<span class="token string">'14:18:40'</span>
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token string">"It's now {now:%I:%M %p}"</span>
+<span class="token string">"It's now 02:18 PM"</span>
+</pre><p>如果类没有定义 <code>__format__</code> 方法，从 object 继承的方法会返回 str(my_object)，我们为 Vector2d 类定义了 <code>__str__</code> 方法，因此可以这样做：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v1 <span class="token operator">=</span> Vector2d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span>
+<span class="token string">'(3.0, 4.0)'</span>
+</pre><p>然而，如果传入格式说明符，<code>object.__format__</code> 方法会抛出 TypeError：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>v1<span class="token punctuation">,</span> <span class="token string">'.3f'</span><span class="token punctuation">)</span>
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+TypeError<span class="token punctuation">:</span> unsupported <span class="token builtin">format</span> string passed to Vector2d<span class="token punctuation">.</span>__format__
+</pre><p>我们将实现自己的微语言来解决这个问题。首先，假定用户提供的格式说明符是用于格式化向量中各个浮点数分量的，我们想要的效果是：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v1 <span class="token operator">=</span> Vector2d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span>
+<span class="token string">'(3.0, 4.0)'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>v1<span class="token punctuation">,</span> <span class="token string">'.2f'</span><span class="token punctuation">)</span>
+<span class="token string">'(3.00, 4.00)'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>v1<span class="token punctuation">,</span> <span class="token string">'.3e'</span><span class="token punctuation">)</span>
+<span class="token string">'(3.000e+00, 4.000e+00)'</span>
+</pre><p>要实现这种输出的 <code>__format__</code> 如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword">def</span> <span class="token function">__format__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> fmt_spec<span class="token operator">=</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        components <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">format</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> fmt_spec<span class="token punctuation">)</span> <span class="token keyword">for</span> c <span class="token keyword">in</span> self<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token string">'({}, {})'</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token operator">*</span>components<span class="token punctuation">)</span>
+</pre><p>下面要在微语言中添加一个自定义的格式代码：如果格式说明符以 'p' 结尾，那么在极坐标中显示向量，即 <code>&lt;r, θ&gt;</code>，其中 <code>r</code> 是模，<code>θ</code> 是弧度。</p>
+<blockquote>
+<p>在自定义的格式代码选择字母时，我会避免使用其他类型用过的字母。在格式规范微语言( <a href="https://docs.python.org/3/library/string.html#formatspec">https://docs.python.org/3/library/string.html#formatspec</a> ) 中我们看到，整数使用的代码有'bodnxXc'，浮点数使用的代码有 'eEfFgGn%'，字符串使用的代码有 's'，因此，我为极坐标选的代码是 'p'。各个类使用自己的方式解释格式代码，在自定义的格式代码中重复使用格式字母不会出错，但是可能会让用户困惑。</p>
+</blockquote>
+<p>对于极坐标而言，模长可以通过 <code>__abs__</code> 获得，因此还需要定义一个 <code>angle</code> 方法，我们使用 <code>math.atan2()</code> 获得角度：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword">def</span> <span class="token function">angle</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> math<span class="token punctuation">.</span>atan2<span class="token punctuation">(</span>self<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>x<span class="token punctuation">)</span>
+</pre><p>这样就可以增强 <code>__format__</code> 方法：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword">def</span> <span class="token function">angle</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> math<span class="token punctuation">.</span>atan2<span class="token punctuation">(</span>self<span class="token punctuation">.</span>y<span class="token punctuation">,</span> self<span class="token punctuation">.</span>x<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__format__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> fmt_spec<span class="token operator">=</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> fmt_spec<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            fmt_spec <span class="token operator">=</span> fmt_spec<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+            coords <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">abs</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>angle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            out_format <span class="token operator">=</span> <span class="token string">'&lt;{}, {}>'</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            coords <span class="token operator">=</span> self
+            out_format <span class="token operator">=</span> <span class="token string">'({}, {})'</span>
+        components <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">format</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> fmt_spec<span class="token punctuation">)</span> <span class="token keyword">for</span> c <span class="token keyword">in</span> coords<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> out_format<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token operator">*</span>components<span class="token punctuation">)</span>
+</pre><p>结果为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>Vector2d<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'p'</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;1.4142135623730951, 0.7853981633974483>'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>Vector2d<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'.3ep'</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;1.414e+00, 7.854e-01>'</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">format</span><span class="token punctuation">(</span>Vector2d<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'.5fp'</span><span class="token punctuation">)</span>
+<span class="token string">'&lt;1.41421, 0.78540>'</span>
+</pre><p>下面介绍如何将 Vector2d 实例变为可散列的，这样就可以构建向量集合，或者将向量当做 dict 的键使用。不过在此之前，必须让向量不可变。</p>
+<h3 class="mume-header" id="%E5%8F%AF%E6%95%A3%E5%88%97%E7%9A%84-vector2d">可散列的 Vector2d</h3>
+
+<p>为了把 Vector2d 实例变成可散列的，必须使用 <code>__hash__</code>方法（还需要 <code>__eq__</code> 方法）。此外还要让向量不可变。</p>
+<p>目前，我们可以为分量赋新值，如 <code>v1.x = 7</code>，Vector2d 类的代码并不阻止这么做。为了使其不可变，需要把 x、y 分量设为只读的：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Vector2d</span><span class="token punctuation">:</span>
+    typecode <span class="token operator">=</span> <span class="token string">'d'</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 使用双前导下划线标记属性为私有</span>
+        self<span class="token punctuation">.</span>__x <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>__y <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+    @<span class="token builtin">property</span>
+    <span class="token keyword">def</span> <span class="token function">x</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__x
+    @<span class="token builtin">property</span>
+    <span class="token keyword">def</span> <span class="token function">y</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>__y
+    <span class="token keyword">def</span> <span class="token function">__iter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>i <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>x<span class="token punctuation">,</span> self<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>注意，我们让这些向量不可变是有原因的，因为这样才能实现 <code>__hash__</code> 方法。这个方法应该返回一个整数，理想情况下，还要考虑对象属性的散列值，因为系统的对象应该具有相同的散列值。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 在 Vector2的类中定义</span>
+<span class="token keyword">def</span> <span class="token function">__hash__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token builtin">hash</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>x<span class="token punctuation">)</span> <span class="token operator">^</span> <span class="token builtin">hash</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>y<span class="token punctuation">)</span>
+</pre><p>添加 <code>__hash__</code> 方法之后，向量变为可散列的了：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v1 <span class="token operator">=</span> Vector2d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v2 <span class="token operator">=</span> Vector2d<span class="token punctuation">(</span><span class="token number">3.1</span><span class="token punctuation">,</span> <span class="token number">4.2</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">hash</span><span class="token punctuation">(</span>v1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">hash</span><span class="token punctuation">(</span>v2<span class="token punctuation">)</span>
+<span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">384307168202284039</span><span class="token punctuation">)</span>
+</pre><blockquote>
+<p>要想创建可散列的类型，不一定要实现特性，也不一定要保护实例属性。只需要正确地实现 <code>__hash__</code> 和 <code>__eq__</code> 方法即可。但是，实例的散列值绝不应该变化，因此我们借机提到只读特性。</p>
+</blockquote>
+<p>如果定义的类型有标量数值，可能还要实现 <code>__init__</code> 和 <code>__float__</code> 属性，以便在某些情况下用于强制类型转换。此外，还有用于支持内置的 <code>complex()</code> 构造函数的 <code>__complex__</code> 方法。</p>
+<h3 class="mume-header" id="python-%E7%9A%84%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E5%8F%97%E4%BF%9D%E6%8A%A4%E7%9A%84%E5%B1%9E%E6%80%A7">Python 的私有属性和受保护的属性</h3>
+
+<p>Python 不能像 Java 那样使用 private 修饰符创建私有属性，但是 Python 有个简单的机制，能避免子类以外覆盖 ”私有“ 属性。</p>
+<p>举个例子。有人编写了一个名为 Dog 的类，这个类的内部用到了 mood 实例属性，但是没有将其开发，现在你创建了 Dog 类的子类：Beagle。如果你在毫不知情的情况下又创建了名为 mood 的实例属性，那么在继承的方法中就会把 Dog 类的 mood 属性覆盖掉。这是一个难以调试的问题。</p>
+<p>为了避免这种情况，如果以 <code>__mode</code> 的形式命名实例属性，Python 会把属性名存入实例的 <code>__dict__</code> 属性中，而且会在前面加上一个下划线和类名。因此，对 Dog 来说，<code>__mood</code> 会变成 <code>_Dog_mood</code>；对Beagle类来说，会变成 <code>_Beagle__mood</code>。这个语言特性叫做名称改写。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v1 <span class="token operator">=</span> Vector2d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v1<span class="token punctuation">.</span>__dict__
+<span class="token punctuation">{</span><span class="token string">'_Vector2d__x'</span><span class="token punctuation">:</span> <span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token string">'_Vector2d__y'</span><span class="token punctuation">:</span> <span class="token number">4.0</span><span class="token punctuation">}</span>
+<span class="token operator">>></span><span class="token operator">></span> v1<span class="token punctuation">.</span>_Vector2d__x
+<span class="token number">3.0</span>
+</pre><p><strong>名称改写是一种安全措施，不能保证万无一失：它的目的是避免意外访问，不能防止故意做错事。</strong></p>
+<p>不是所有的 Python 程序员都喜欢名称改写，也不是所有人都喜欢 <code>self.__x</code> 这种不对称的名称。 有些人不喜欢这种句法，他们约定使用一个下划线前缀编写 “受保护” 的属性（如 self._x）。批评使用双下划线这种改写机制的人认为，应该使用命名约定来规避意外覆盖属性，如 Ian Bicking 认为：</p>
+<blockquote>
+<p>绝对不要使用两个前导下划线，这是很烦人的自私行为。如果担心名称冲突，应该明确使用一种名称改写方式（如 <code>_MyThing_balhblah</code>）。这其实与使用双下划线一样，不过自己定的规则比双下划线易于理解。</p>
+</blockquote>
+<p>Python 解释器不会对使用单个下划线的属性名做特殊处理，不过这是很多 Python 程序员严格遵守的约定，它们不会在类外部访问这种属性。遵守使用一个下划线标记对象的所有属性很容易。</p>
+<h3 class="mume-header" id="%E4%BD%BF%E7%94%A8-__slots__-%E7%B1%BB%E5%B1%9E%E6%80%A7%E8%8A%82%E7%9C%81%E7%A9%BA%E9%97%B4">使用 __slots__ 类属性节省空间</h3>
+
+<p>默认情况下，Python 在各个实例中名为 <code>__dict__</code> 的字典中存储实例属性。为了底层的散列表提升访问速度，字典会消耗大量内存。如果要处理数百万个属性不多的实例，通过 <code>__slots__</code> 类属性，能节省大量内存，方法是让解释器在元组中存储实例属性，而不用字典。</p>
+<blockquote>
+<p>继承自超类的 <code>__slots__</code> 属性没有效果。Python 只会使用各个类中定义的 <code>__slots__</code> 属性。</p>
+</blockquote>
+<p>定义 <code>__slots__</code> 的方式是，创建一个类属性，使用 <code>__slots__</code> 这个名字，并把它的值设为一个字符串构造的可迭代对象，其中各个元素表示各个实例属性。我喜欢使用 元组，因为这样定义的 <code>__slots__</code> 中所含的信息不回变化：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Vector2d</span><span class="token punctuation">:</span>
+    __slots__ <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">'__x'</span><span class="token punctuation">,</span> <span class="token string">'__y'</span><span class="token punctuation">)</span>
+    
+    typecode <span class="token operator">=</span> <span class="token string">'d'</span>
+
+    <span class="token comment"># 下面是各个方法</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</pre><p>在类中定义 <code>__slots__</code> 属性的目的是告诉解释器：“这个类中的所有实例属性都在这里了！”这样，Python会在各个实例中使用类似元组的存储结构存储变量，从而避免使用消耗内存的 <code>__dict__</code> 属性。如果有数百万个实例同时活动，这样能节省大量内存。</p>
+<blockquote>
+<p>在类中定义 <code>__slots__</code> 属性后，实例不能再有 <code>__slots__</code> 中所列名称之外的其他属性。这只是一个副作用，不是 <code>__slots__</code> 存在的真正原因。不要使用 <code>__slots__</code> 属性禁止类的用户新增实例属性。</p>
+</blockquote>
+<p>粗心的优化甚至比提早优化还糟糕。</p>
+<p>此外，还有一个实例属性可能需要注意，即<code>__weakref__</code> 属性，为了让对象支持弱引用，必须有这个属性。用户定义的类中默认有 <code>__weakref__</code> 属性。可是，如果类中定义了 <code>__slots__</code> 属性，而且想把实例作为弱引用的目标，那要把 <code>__weakref__</code> 添加到 <code>__slots__</code> 中。</p>
+<p>综上，<code>__slots__</code> 属性有些需要注意的地方，而且不能滥用，不能使用它限制用户能赋值的属性。处理列表数据时 <code>__slots__</code> 属性最有用，例如 模式固定的数据库记录，以及特大型数据集。</p>
+<p><strong>__slots__的问题</strong></p>
+<p>总之，如果使用得当，<code>__slots__</code> 能够显著节省内存，不过有几点要注意：</p>
+<ul>
+<li>每个子类都要定义 <code>__slots__</code> 属性，因为解释器会忽略继承的 <code>__slots__</code> 属性</li>
+<li>实例只能拥有 <code>__slots__</code> 中列出的属性，除非把<code>__dict__</code> 加入 <code>__slots__</code> 中（这样做就失去了节省内存的功效）</li>
+<li>如果不把 <code>__weakref__</code> 加入 <code>__slots__</code>，实例就不能作为弱引用的目标</li>
+</ul>
+<p>如果你的程序不用处理百万个实例，或许不值得费劲去创建不寻常的类，那就禁止他创建动态属性或不支持弱引用。与其他优化措施一样，仅当权衡当下的需求，并仔细手机资料后证明确实有必要时候，才应该使用 <code>__slots__</code> 属性。</p>
+<h3 class="mume-header" id="%E8%A6%86%E7%9B%96%E7%B1%BB%E5%B1%9E%E6%80%A7">覆盖类属性</h3>
+
+<p>Python 有个独特的特性：类属性可用于为实例属性提供默认值。</p>
+<p>如果为不存在的实例属性复制，会新建实例属性。</p>
+<p>有种修改方法更符合 Python 风格，而且效果持久，也更有针对性。类属性是公开的，因此会被子类基础，于是经常会创建一个子类，只用于定制类的数据属性。</p>
+<p>ShortVector2d 是 Vector2d 的子类，只用于覆盖 typecode 的默认值：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">ShortVector2d</span><span class="token punctuation">(</span>Vector2d<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    typecode <span class="token operator">=</span> <span class="token string">'f'</span>
+</pre><h3 class="mume-header" id="%E6%80%BB%E7%BB%93">总结</h3>
+
+<p>要构建符合 Python 风格的对象，就要观察真正的 Python 对象的行为。</p>
+<h2 class="mume-header" id="%E5%BA%8F%E5%88%97%E7%9A%84%E4%BF%AE%E6%94%B9-%E6%95%A3%E5%88%97%E5%92%8C%E5%88%87%E7%89%87">序列的修改、散列和切片</h2>
+
+<h3 class="mume-header" id="vector-%E7%B1%BB%E7%94%A8%E6%88%B7%E5%AE%9A%E4%B9%89%E7%9A%84%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B">Vector 类：用户定义的序列类型</h3>
+
+<p>我们将使用组合模式实现 Vector 类，而不适用继承。向量的分量存储在浮点数数组中，而且还将实现不可变扁平序列所需的方法。</p>
+<p>不过，在实现序列方法之前，我们要确保 Vector 类与之前定义的 Vector2d 类兼容，除非有些地方让二者兼容没有什么意义。</p>
+<h3 class="mume-header" id="vector%E7%B1%BB%E7%AC%AC1%E7%89%88%E4%B8%8Evector2d%E7%B1%BB%E5%85%BC%E5%AE%B9">Vector类第1版：与Vector2d类兼容</h3>
+
+<p><strong>序列类型的构造方法最好接受可迭代的对象为参数，因为所有内置的序列类型都是这样做的。</strong></p>
+<p>测试 <code>Vector.__init__</code> 和 <code>Vector.__repr__</code> 方法：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3.1</span><span class="token punctuation">,</span> <span class="token number">4.2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3.1</span><span class="token punctuation">,</span> <span class="token number">4.2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> Vector<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token number">5.0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> Vector<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">,</span> <span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> Vector<span class="token punctuation">(</span>Vector2d<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</pre><blockquote>
+<p>如果 Vector 实例的分量超过 6 个，<code>repr()</code> 生成的字符串就会使用 <code>...</code> 省略一部分。包含大量元素的集合类型一定要这么做，因为字符串表示形式是用于调试的（因此不想让大型对象在控制台或日志中输出几千行内容）。使用 <code>reprlib</code> 模块可以生成长度有限的表示形式。</p>
+</blockquote>
+<p>实现方式为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> reprlib
+<span class="token keyword">from</span> array <span class="token keyword">import</span> array
+<span class="token keyword">import</span> math
+<span class="token keyword">class</span> <span class="token class-name">Vector</span><span class="token punctuation">:</span>
+    typecode <span class="token operator">=</span> <span class="token string">'d'</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> components<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_components <span class="token operator">=</span> array<span class="token punctuation">(</span>self<span class="token punctuation">.</span>typecode<span class="token punctuation">,</span> components<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__iter__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">iter</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_components<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__repr__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        components <span class="token operator">=</span> reprlib<span class="token punctuation">.</span><span class="token builtin">repr</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_components<span class="token punctuation">)</span>
+        components <span class="token operator">=</span> components<span class="token punctuation">[</span>components<span class="token punctuation">.</span>index<span class="token punctuation">(</span><span class="token string">'['</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+        <span class="token keyword">return</span> f<span class="token string">'{type(self).__name__}({components})'</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">str</span><span class="token punctuation">(</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__bytes__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token builtin">bytes</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token builtin">ord</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>typecode<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">+</span>  
+            <span class="token builtin">bytes</span><span class="token punctuation">(</span>array<span class="token punctuation">(</span>self<span class="token punctuation">.</span>typecode<span class="token punctuation">,</span> self<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__eq__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> other<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token operator">==</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>other<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__abs__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> math<span class="token punctuation">.</span>sqrt<span class="token punctuation">(</span><span class="token builtin">sum</span><span class="token punctuation">(</span>v<span class="token operator">*</span>v <span class="token keyword">for</span> v <span class="token keyword">in</span> self<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__bool__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">bool</span><span class="token punctuation">(</span><span class="token builtin">abs</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    @<span class="token builtin">classmethod</span>
+    <span class="token keyword">def</span> <span class="token function">frombytes</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> octets<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        typecode <span class="token operator">=</span> <span class="token builtin">chr</span><span class="token punctuation">(</span>octets<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        memv <span class="token operator">=</span> <span class="token builtin">memoryview</span><span class="token punctuation">(</span>octets<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> cls<span class="token punctuation">(</span>memv<span class="token punctuation">.</span>cast<span class="token punctuation">(</span>typecode<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>需要对 <code>reprlib.repr</code> 的方式需要做些说明：这个函数用于生成大型结构或递归结构的安全表示形式，它会限制输出字符串的长度，用 <code>...</code> 表示截断的部分。</p>
+<blockquote>
+<p>调用 <code>repr()</code>函数的目的是调试，因此绝对不能抛出异常。如果 <code>__repr__</code> 方法的实现有问题，那么必须处理，尽量输出有用的内容，让用户能够识别目标对象。</p>
+</blockquote>
+<h3 class="mume-header" id="%E5%8D%8F%E8%AE%AE%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B">协议和鸭子类型</h3>
+
 
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -3370,6 +3679,27 @@ TypeError<span class="token punctuation">:</span> cannot create weak reference t
 <li><a href="#%E5%BC%B1%E5%BC%95%E7%94%A8%E7%9A%84%E5%B1%80%E9%99%90">弱引用的局限</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#%E7%AC%A6%E5%90%88-python-%E9%A3%8E%E6%A0%BC%E7%9A%84%E5%AF%B9%E8%B1%A1">符合 Python 风格的对象</a>
+<ul>
+<li><a href="#%E5%AF%B9%E8%B1%A1%E8%A1%A8%E7%A4%BA%E5%BD%A2%E5%BC%8F">对象表示形式</a></li>
+<li><a href="#%E5%86%8D%E8%B0%88%E5%90%91%E9%87%8F%E7%B1%BB">再谈向量类</a></li>
+<li><a href="#%E5%A4%87%E9%80%89%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95">备选构造方法</a></li>
+<li><a href="#classmethod-%E5%92%8C-staticmethod">classmethod 和 staticmethod</a></li>
+<li><a href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%98%BE%E7%A4%BA">格式化显示</a></li>
+<li><a href="#%E5%8F%AF%E6%95%A3%E5%88%97%E7%9A%84-vector2d">可散列的 Vector2d</a></li>
+<li><a href="#python-%E7%9A%84%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7%E5%92%8C%E5%8F%97%E4%BF%9D%E6%8A%A4%E7%9A%84%E5%B1%9E%E6%80%A7">Python 的私有属性和受保护的属性</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-__slots__-%E7%B1%BB%E5%B1%9E%E6%80%A7%E8%8A%82%E7%9C%81%E7%A9%BA%E9%97%B4">使用 __slots__ 类属性节省空间</a></li>
+<li><a href="#%E8%A6%86%E7%9B%96%E7%B1%BB%E5%B1%9E%E6%80%A7">覆盖类属性</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BA%8F%E5%88%97%E7%9A%84%E4%BF%AE%E6%94%B9-%E6%95%A3%E5%88%97%E5%92%8C%E5%88%87%E7%89%87">序列的修改、散列和切片</a>
+<ul>
+<li><a href="#vector-%E7%B1%BB%E7%94%A8%E6%88%B7%E5%AE%9A%E4%B9%89%E7%9A%84%E5%BA%8F%E5%88%97%E7%B1%BB%E5%9E%8B">Vector 类：用户定义的序列类型</a></li>
+<li><a href="#vector%E7%B1%BB%E7%AC%AC1%E7%89%88%E4%B8%8Evector2d%E7%B1%BB%E5%85%BC%E5%AE%B9">Vector类第1版：与Vector2d类兼容</a></li>
+<li><a href="#%E5%8D%8F%E8%AE%AE%E5%92%8C%E9%B8%AD%E5%AD%90%E7%B1%BB%E5%9E%8B">协议和鸭子类型</a></li>
 </ul>
 </li>
 </ul>
