@@ -3495,3 +3495,166 @@ class Vector:
 > 调用 `repr()`函数的目的是调试，因此绝对不能抛出异常。如果 `__repr__` 方法的实现有问题，那么必须处理，尽量输出有用的内容，让用户能够识别目标对象。
 
 ### 协议和鸭子类型
+
+在第一章中我们说过，在 Python 中创建功能完善的序列无需使用继承，只需实现符合序列协议的方法。不过，这里说的协议是什么？
+
+在面向对象编程中，协议是非正式的接口，只在文档中定义。在代码中不定义。例如：Python 的序列协议只需要 `__len__` 和 `__getitem__` 两个方法。如何类（如 Spam），主要使用标准的签名和语义实现了这两个方法，就能用在任何期待序列的地方。
+
+Spam 是不是哪个类的子类无关紧要，只要提供了所需的方法即可。
+
+```python
+import collections
+
+Card = collections.namedtuple('Card', 'rank suit')
+
+class FrenchDeck:
+    ranks = [str(i) for i in range(2, 11)] + list('JKQA')
+    suits = ['spades', 'diamonds', 'clubs', 'hearts']
+
+    def __init__(self):
+        self._cards = [Card(rank, suit) for suit in self.suits 
+                for randk in self.ranks]
+    
+    def __len__(self):
+        return len(self._cards)
+
+    def __getitem__(self, position):
+        return self._cards[position]
+```
+上面的 `FrenchDeck` 类能充分利用 Python 的很多功能，因为它实现了序列协议，不过代码并没有声明这一点。任何有经验的 Python 程序员只要看一眼就知道它是序列，即便它是 object 的子类也无妨。我们可以说它是序列，因为它的行为像序列，这才是重点。人们称其为 鸭子类型(duck typing)。
+
+协议是非正式的，没有强制力，因此如果你知道类的具体使用场景，通常只需要实现一个协议的部分。例如，为了支持迭代，只需要支持`__iter__`，而不需要支持 `__len__`。
+
+### Vector类第二版：可切片的序列
+
+我们添加 `__len__` 和 `__getitem__` 方法：
+```python
+class Vector:
+    #省略之前部分代码
+    ...
+
+    def __len__(self):
+        return len(self._components)
+    def __getitem__(self, index):
+        return self._components[index]
+```
+
+```python
+>>> v1 = Vector([3, 4, 5])
+>>> len(v1)
+3
+>>> v1[0], v1[-1]
+(3.0, 5.0)
+>>> v7 = Vector(range(7))
+>>> v7[1:4]
+array('d', [1.0, 2.0, 3.0])
+```
+
+可以看到，现在连切片都支持了，不过尚不完美。如果 Vector 实例的切片也是 Vector 实例，而不是 array 就更好了。
+
+**内置的系列类型，切片得到的是各个类型的新实例，而不是其他类型。**
+
+#### 切片原理
+
+```python
+>>> class MySeq:
+...     def __getitem__(self, index):
+...         return index
+... 
+>>> s = MySeq()
+>>> s[1]
+1
+>>> s[1:4]
+slice(1, 4, None)
+>>> s[1:4:2]
+slice(1, 4, 2)
+# 如果 [] 中有逗号，那么 __getitem__ 收到的是元组
+>>> s[1:4:2, 9]
+(slice(1, 4, 2), 9)
+>>> s[1:4:2, 7:9]
+(slice(1, 4, 2), slice(7, 9, None))
+```
+现在我们来仔细看看 slice 本身：
+```python
+# slice 是内置的类型
+>>> slice
+<class 'slice'>
+# slice 有 start、stop、step 数据属性以及 indices 方法
+>>> dir(slice)
+['__class__', '__delattr__', '__dir__', '__doc__', '__eq__', '__format__',
+'__ge__', '__getattribute__', '__gt__', '__hash__', '__init__',
+'__init_subclass__', '__le__', '__lt__', '__ne__', '__new__', 
+'__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__',
+'__str__', '__subclasshook__', 'indices', 'start', 'step', 'stop']
+```
+
+slice 有个 indices 方法有很大的作用，但是鲜为人知。
+
+`S.indices(len) -> (start, stop, stride)` 计算切片S作用于长度为 len 的序列对应的扩展切片的起始(start)、结尾(stop)索引，以及步幅(stride)。超出边界的索引会被截掉，这与常规切片的处理方式一样。
+
+换句话说，indices 方法开发了内置序列实现的棘手逻辑，用于优雅地处理缺失索引和负数索引，以及长度超过目标序列的切片。这个方法会“整顿”元组，把start、stop和stride都变成非负数，而且都落到指定长度序列的边界内。
+```python
+# 'ABCDE'[:10:2] 等价于 'ABCDE'[0:5:2]
+>>> slice(None, 10, 2).indices(5)
+(0, 5, 2)
+# 'ABCDE'[-3::] 等价于 'ABCDE'[2:5:1]
+>>> slice(-3, None, None).indices(5)
+(2, 5, 1)
+```
+
+#### 能处理切片的 `__getitem__`
+
+```python
+    def __len__(self):
+        return len(self._components)
+    def __getitem__(self, index):
+        cls = type(self)
+        if isinstance(index, slice):
+            return cls(self._components[index])
+        elif isinstance(index, numbers.Integral):
+            return cls(self._components[index])
+        else:
+            msg = f'{cls.__name__} indices must be integers'
+            raise TypeError(msg)
+```
+> 大量使用 isinstance 可能表明面向对象设计的不好，不过在 `__getitem__` 方法中使用它处理切片是很合理的。注意，上面的实例中测试使用的是 numbers.Integral，这是一个抽象基类（Abstract Base Class）。在 isinstance 中使用抽象基类做测试能让API更加灵活更容易更新。
+
+
+```python
+import math
+class Vector:
+    typecode = 'd'
+    def __init__(self, components):
+        self._components = array(self.typecode, components)
+    def __iter__(self):
+        return iter(self._components)
+    def __repr__(self):
+        components = reprlib.repr(self._components)
+        components = components[components.index('['):-1]
+        return f'{type(self).__name__}({components})'
+    def __str__(self):
+        return str(tuple(self))
+    def __bytes__(self):
+        return (bytes([ord(self.typecode)]) +  
+            bytes(array(self.typecode, self)) )
+    def __eq__(self, other):
+        return tuple(self)==tuple(other)
+    def __abs__(self):
+        return math.sqrt(sum(v*v for v in self))
+    def __bool__(self):
+        return bool(abs(self))
+    @classmethod
+    def frombytes(cls, octets):
+        typecode = chr(octets[0])
+        memv = memoryview(octets[1:])
+        return cls(memv.cast(typecode))
+    def __len__(self):
+        return len(self._components)
+    def __getitem__(self, index):
+        return self._components[index]
+```
+
+
+
+
+

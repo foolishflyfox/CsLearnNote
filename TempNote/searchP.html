@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>searchP</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <h1 class="mume-header" id="%E9%AD%94%E6%96%B9%E9%97%AE%E9%A2%98%E7%9A%84%E6%B1%82%E8%A7%A3">魔方问题的求解</h1>
+
+<p><strong>姓名 : 丰华彬           学号 : SA17011135 ]</strong></p>
+<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="toc"><div class="input-div"><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><ul>
+<li><a href="#%E9%AD%94%E6%96%B9%E9%97%AE%E9%A2%98%E7%9A%84%E6%B1%82%E8%A7%A3">魔方问题的求解</a>
+<ul>
+<li><a href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0">问题描述</a></li>
+<li><a href="#%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90">状态空间分析</a></li>
+<li><a href="#%E6%A8%A1%E5%9E%8B%E5%BB%BA%E7%AB%8B">模型建立</a></li>
+<li><a href="#%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</a></li>
+<li><a href="#%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">时空复杂度分析</a></li>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95">扩展</a></li>
+</ul>
+</li>
+</ul>
+<h2 class="mume-header" id="%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0">问题描述</h2>
+
+<p>魔方是一种常见的益智游戏，如下图是魔方的一个图片:</p>
+<div align="center">
+<img src="./image/cubes.png">
+<em>图1. 二阶、三阶、四阶、八阶魔方</em>
+</div>
+<p>魔方根据其面上正方体的个数，可以分为多种魔方，上面的魔方从左到右分别是：2阶魔方、3阶魔方、4阶魔方和8阶魔方，通常 2 ~ 11 阶的魔方称为低阶魔方，高于 11 阶的魔方称为高阶魔方 。</p>
+<p>魔方是一个正方体，共有6个面，每个面上的小正方形个数与魔方的阶数相关。例如，3 阶魔方的一个面上有 3×3=9 个正方体，每个正方体的颜色有 6 种可能。</p>
+<p>我们需要解决的问题描述起来非常简单：将一种可能的魔方状态还原为每一个面上的颜色都相同的状态。这里所解决的问题主要是针对 3 阶魔方的求解过程，后面在扩展部分会对 3 阶以上的魔方解决思路进行进一步探讨。</p>
+<h2 class="mume-header" id="%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90">状态空间分析</h2>
+
+<p>该问题是已知初始状态和终止状态，求解一条路径的搜索问题。其中初始状态是打乱的状态，如上图1所示，终止状态为一个有序的正方体，如下图所示：</p>
+<div align="center">
+<img src="./image/cube3_right.png" height="300px">
+</div>
+<p>根据维基百科上的说明，三阶魔方的总变化数是：<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mn>8</mn><mo>!</mo><mo>×</mo><msup><mn>3</mn><mn>8</mn></msup><mo>×</mo><mn>1</mn><mn>2</mn><mo>!</mo><mo>×</mo><msup><mn>2</mn><mrow><mn>1</mn><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mo>×</mo><mn>3</mn></mrow></mfrac><mo>=</mo><mn>4</mn><mn>3</mn><mn>2</mn><mn>5</mn><mn>2</mn><mn>0</mn><mn>0</mn><mn>3</mn><mn>2</mn><mn>7</mn><mn>4</mn><mn>4</mn><mn>8</mn><mn>9</mn><mn>8</mn><mn>5</mn><mn>6</mn><mn>0</mn><mn>0</mn><mn>0</mn><mo>≈</mo><mn>4</mn><mi mathvariant="normal">.</mi><mn>3</mn><mn>3</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mrow><mn>1</mn><mn>9</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\frac{8!\times3^8\times12!\times2^{12}}{2\times2\times3}=43252003274489856000\approx4.33\times10^{19}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.491108em;"></span><span class="strut bottom" style="height:2.260438em;vertical-align:-0.7693300000000001em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.491108em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">3</span></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.2em;"><svg width="400em" height="0.2em" viewBox="0 0 400000 200" preserveAspectRatio="xMinYMin slice"><path d="M0 80H400000 v40H0z M0 80H400000 v40H0z"></path></svg></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">8</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">3</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mord">2</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">4</span><span class="mord">3</span><span class="mord">2</span><span class="mord">5</span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mord">3</span><span class="mord">2</span><span class="mord">7</span><span class="mord">4</span><span class="mord">4</span><span class="mord">8</span><span class="mord">9</span><span class="mord">8</span><span class="mord">5</span><span class="mord">6</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">4</span><span class="mord">.</span><span class="mord">3</span><span class="mord">3</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<blockquote>
+<p>三阶魔方总数的算式是这样得到的：</p>
+<ul>
+<li>8个角块可以互换位置（8!），也可以旋转（3），但不能单独翻转一个角块，所以总共有8!×38/3种变化状态。</li>
+<li>12个边块可以互换位置（12!），也可以翻转（2），但不能单独翻转一个棱块（也就是将其两个面对调），也不能单独交换两棱块的位置，所以总共有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>2</mn><mo>!</mo><mo>×</mo><msup><mn>2</mn><mrow><mn>1</mn><mn>2</mn></mrow></msup><mi mathvariant="normal">/</mi><mo>(</mo><mn>2</mn><mo>×</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">12! \times 2^{12} / (2×2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord">1</span><span class="mord">2</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mord">/</span><span class="mopen">(</span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span></span>种变化状态</li>
+</ul>
+</blockquote>
+<p>而与一个状态相邻的状态表示只旋转一次所得到的状态，共有 12 种，分别为旋转 上、下、左、右、前、后 6个面，乘上 正转、反转两种旋转方式。</p>
+<p>因此，三阶魔方的状态空间为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn><mi mathvariant="normal">.</mi><mn>3</mn><mn>3</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mrow><mn>1</mn><mn>9</mn></mrow></msup></mrow><annotation encoding="application/x-tex">4.33\times10^{19}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">4</span><span class="mord">.</span><span class="mord">3</span><span class="mord">3</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></span>，每个状态有 6 个后继状态，初态为任意的一个状态，目标测试 Goal 为所有面上的正方形颜色相同，路径耗散为从初态到通过目标测试状态所进行状态改变次数。</p>
+<h2 class="mume-header" id="%E6%A8%A1%E5%9E%8B%E5%BB%BA%E7%AB%8B">模型建立</h2>
+
+<p>首先，我们需要建立魔方的物理模型，并将物理模型输入到计算机中表示出来。</p>
+<p>现将3阶魔方分成 27 个小方块，并表上记号，分别标记为：0~26个块，如：</p>
+<div align="center">
+<img src="./image/cuber_num.png" height="300px">
+</div>
+<p>其中的每个小方块都有一个编号，所有多魔方的操作最后都要映射到每一个小方块上，代码如下：</p>
+<p>首先，我们用 Python 语言建立一个魔方的类：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">TOP <span class="token operator">=</span> <span class="token number">0</span>
+BOTTOM <span class="token operator">=</span> <span class="token number">1</span>
+LEFT <span class="token operator">=</span> <span class="token number">2</span>
+RIGHT <span class="token operator">=</span> <span class="token number">3</span>
+FRONT <span class="token operator">=</span> <span class="token number">4</span>
+BACK <span class="token operator">=</span> <span class="token number">5</span>
+<span class="token comment">#上 下 左 右 前 后</span>
+SIDES <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+<span class="token comment"># 旋转方向</span>
+CLOCKWISE <span class="token operator">=</span> <span class="token number">1</span>
+ANTICLOCKWISE <span class="token operator">=</span> <span class="token number">3</span>
+
+BLOCKCHANGE <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+    <span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># NOCOL = 0</span>
+COL1 <span class="token operator">=</span> <span class="token number">0</span>
+COL2 <span class="token operator">=</span> <span class="token number">1</span>
+COL3 <span class="token operator">=</span> <span class="token number">2</span>
+COL4 <span class="token operator">=</span> <span class="token number">3</span>
+COL5 <span class="token operator">=</span> <span class="token number">4</span>
+COL6 <span class="token operator">=</span> <span class="token number">5</span>
+FACES <span class="token operator">=</span> <span class="token punctuation">(</span>
+    <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token comment">#上</span>
+    <span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#下</span>
+    <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#左</span>
+    <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">,</span> <span class="token number">14</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token comment">#右</span>
+    <span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#前</span>
+    <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#后</span>
+<span class="token punctuation">)</span>
+MAGICCHANGE <span class="token operator">=</span> <span class="token punctuation">(</span>
+    <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#上</span>
+    <span class="token punctuation">(</span><span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#左</span>
+    <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">17</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">26</span><span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token comment">#前</span>
+    <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">19</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+<span class="token comment"># 每个小方块对象</span>
+<span class="token keyword">class</span> <span class="token class-name">Block</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    ID <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> cols<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span><span class="token builtin">id</span> <span class="token operator">=</span> Block<span class="token punctuation">.</span>ID
+        Block<span class="token punctuation">.</span>ID <span class="token operator">+=</span> <span class="token number">1</span>
+        self<span class="token punctuation">.</span>cols <span class="token operator">=</span> cols
+    <span class="token keyword">def</span> <span class="token function">rotate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> direction<span class="token punctuation">,</span> bits<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cols <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> BLOCKCHANGE<span class="token punctuation">[</span>direction<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            cols<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>cols<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            index <span class="token operator">=</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> bits<span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">4</span>
+            self<span class="token punctuation">.</span>cols<span class="token punctuation">[</span>BLOCKCHANGE<span class="token punctuation">[</span>direction<span class="token punctuation">]</span><span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> cols<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+        <span class="token comment"># for i in BLOCKCHANGE[direction]:</span>
+        <span class="token comment">#     cols.append(self.cols[i])</span>
+        <span class="token comment"># print self.id, cols</span>
+    <span class="token keyword">def</span> <span class="token function">getCol</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> side<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>cols<span class="token punctuation">[</span>side<span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">setCol</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> side<span class="token punctuation">,</span> col<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>cols<span class="token punctuation">[</span>side<span class="token punctuation">]</span> <span class="token operator">=</span> col
+
+<span class="token keyword">from</span> bidict <span class="token keyword">import</span> bidict
+<span class="token keyword">import</span> copy
+<span class="token keyword">import</span> re
+
+<span class="token keyword">class</span> <span class="token class-name">Magic</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 上(红) 下(橘) 左(蓝) 右(绿) 前(白) 后(黄)</span>
+    color_dir <span class="token operator">=</span> bidict<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token string">'r'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span><span class="token string">'o'</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span><span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">:</span><span class="token string">'g'</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">:</span><span class="token string">'w'</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">:</span><span class="token string">'y'</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    default_blocks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span>COL1<span class="token punctuation">,</span> COL2<span class="token punctuation">,</span> COL3<span class="token punctuation">,</span> COL4<span class="token punctuation">,</span> COL5<span class="token punctuation">,</span> COL6<span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">27</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> init_info<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>blocks <span class="token operator">=</span> <span class="token punctuation">[</span>Block<span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> self<span class="token punctuation">.</span>default_blocks<span class="token punctuation">]</span>
+        <span class="token keyword">if</span> init_info <span class="token operator">!=</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            valid_info <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'(\S)'</span><span class="token punctuation">,</span> init_info<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            top_s <span class="token operator">=</span> <span class="token punctuation">[</span>valid_info<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+            left_s <span class="token operator">=</span> <span class="token punctuation">[</span>valid_info<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">21</span><span class="token punctuation">,</span> <span class="token number">33</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+            front_s <span class="token operator">=</span> <span class="token punctuation">[</span>valid_info<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+            right_s <span class="token operator">=</span> <span class="token punctuation">[</span>valid_info<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">27</span><span class="token punctuation">,</span> <span class="token number">39</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+            back_s <span class="token operator">=</span> <span class="token punctuation">[</span>valid_info<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">18</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+            bottom_s <span class="token operator">=</span> <span class="token punctuation">[</span>valid_info<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">45</span><span class="token punctuation">,</span> <span class="token number">48</span><span class="token punctuation">,</span> <span class="token number">51</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+            self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>TOP<span class="token punctuation">,</span> top_s<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>LEFT<span class="token punctuation">,</span> left_s<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>FRONT<span class="token punctuation">,</span> front_s<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>RIGHT<span class="token punctuation">,</span> right_s<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>BACK<span class="token punctuation">,</span> back_s<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>BOTTOM<span class="token punctuation">,</span> bottom_s<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">get_face_state</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> side<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        tp_str <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>color_dir<span class="token punctuation">[</span>self<span class="token punctuation">.</span>blocks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>getCol<span class="token punctuation">(</span>side<span class="token punctuation">)</span><span class="token punctuation">]</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> FACES<span class="token punctuation">[</span>side<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span>tp_str<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    
+    <span class="token keyword">def</span> <span class="token function">set_face_state</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> side<span class="token punctuation">,</span> states<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i<span class="token punctuation">,</span>j <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>FACES<span class="token punctuation">[</span>side<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>states<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>blocks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>setCol<span class="token punctuation">(</span>side<span class="token punctuation">,</span> self<span class="token punctuation">.</span>color_dir<span class="token punctuation">.</span>inv<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        ret_str <span class="token operator">=</span> <span class="token string">""</span>
+        top_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>TOP<span class="token punctuation">)</span>
+        ret_str <span class="token operator">+=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">' '</span><span class="token operator">*</span><span class="token number">3</span><span class="token operator">+</span>i<span class="token operator">+</span><span class="token string">'\n'</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> top_state<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        left_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>LEFT<span class="token punctuation">)</span>
+        front_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>FRONT<span class="token punctuation">)</span>
+        right_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>RIGHT<span class="token punctuation">)</span>
+        back_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>BACK<span class="token punctuation">)</span>
+        ret_str <span class="token operator">+=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span> i1<span class="token operator">+</span>i2<span class="token operator">+</span>i3<span class="token operator">+</span>i4<span class="token operator">+</span><span class="token string">'\n'</span> <span class="token keyword">for</span> i1<span class="token punctuation">,</span>i2<span class="token punctuation">,</span>i3<span class="token punctuation">,</span>i4 <span class="token keyword">in</span> 
+            <span class="token builtin">zip</span><span class="token punctuation">(</span>left_state<span class="token punctuation">,</span>front_state<span class="token punctuation">,</span>right_state<span class="token punctuation">,</span>back_state<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        bottom_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>BOTTOM<span class="token punctuation">)</span>
+        ret_str <span class="token operator">+=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">' '</span><span class="token operator">*</span><span class="token number">3</span><span class="token operator">+</span>i<span class="token operator">+</span><span class="token string">'\n'</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> bottom_state<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> ret_str
+
+    <span class="token keyword">def</span> <span class="token function">rotate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> side<span class="token punctuation">,</span> direction<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        bits <span class="token operator">=</span> direction
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> FACES<span class="token punctuation">[</span>side<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>blocks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>side<span class="token punctuation">,</span> bits<span class="token punctuation">)</span>
+        blocks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> MAGICCHANGE<span class="token punctuation">[</span>side<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            blocks<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>blocks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            index <span class="token operator">=</span> <span class="token punctuation">(</span>i <span class="token operator">+</span> bits <span class="token operator">*</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">12</span>
+            self<span class="token punctuation">.</span>blocks<span class="token punctuation">[</span>MAGICCHANGE<span class="token punctuation">[</span>side<span class="token punctuation">]</span><span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> blocks<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    init_info <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
+       yyy
+       oro
+       www
+    rorbbgryrggb
+    gbgowrbgboyr
+    oyobggowogbb
+       www
+       ror
+       yyy
+    """</span>
+    <span class="token comment"># 测试 Magic 类</span>
+    <span class="token comment"># 使用init_info设置魔方的初态</span>
+    m <span class="token operator">=</span> Magic<span class="token punctuation">(</span>init_info<span class="token punctuation">)</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"初始时刻魔方状态(展开图)："</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span>
+    <span class="token comment"># 逆时针选择 “前” 面</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"逆时针选择 '前' 面："</span><span class="token punctuation">)</span>
+    m<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>FRONT<span class="token punctuation">,</span> ANTICLOCKWISE<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span>
+</pre><p>输出为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>&#x521D;&#x59CB;&#x65F6;&#x523B;&#x9B54;&#x65B9;&#x72B6;&#x6001;(&#x5C55;&#x5F00;&#x56FE;)&#xFF1A;
+   yyy
+   oro
+   www
+rorbbgryrggb
+gbgowrbgboyr
+oyobggowogbb
+   www
+   ror
+   yyy
+
+&#x9006;&#x65F6;&#x9488;&#x9009;&#x62E9; &apos;&#x524D;&apos; &#x9762;&#xFF1A;
+   yyy
+   oro
+   rbo
+rowgrgwyrggb
+gbwbwgwgboyr
+oywbobwwogbb
+   rgo
+   ror
+   yyy
+</code></pre><h2 class="mume-header" id="%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</h2>
+
+<p>基准搜索算法选择深度优先的搜索策略。其基本思路是计算当前状态与终止状态之间的</p>
+<h2 class="mume-header" id="%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">时空复杂度分析</h2>
+
+<h2 class="mume-header" id="%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</h2>
+
+<h2 class="mume-header" id="%E6%89%A9%E5%B1%95">扩展</h2>
+
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E9%AD%94%E6%96%B9%E9%97%AE%E9%A2%98%E7%9A%84%E6%B1%82%E8%A7%A3">魔方问题的求解</a>
+<ul>
+<li><a href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0">问题描述</a></li>
+<li><a href="#%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90">状态空间分析</a></li>
+<li><a href="#%E6%A8%A1%E5%9E%8B%E5%BB%BA%E7%AB%8B">模型建立</a></li>
+<li><a href="#%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</a></li>
+<li><a href="#%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">时空复杂度分析</a></li>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</a></li>
+<li><a href="#%E6%89%A9%E5%B1%95">扩展</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>
