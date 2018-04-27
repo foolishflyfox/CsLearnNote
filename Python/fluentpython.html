@@ -3591,7 +3591,110 @@ array<span class="token punctuation">(</span><span class="token string">'d'</spa
 </pre><blockquote>
 <p>大量使用 isinstance 可能表明面向对象设计的不好，不过在 <code>__getitem__</code> 方法中使用它处理切片是很合理的。注意，上面的实例中测试使用的是 numbers.Integral，这是一个抽象基类（Abstract Base Class）。在 isinstance 中使用抽象基类做测试能让API更加灵活更容易更新。</p>
 </blockquote>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> math
+<h3 class="mume-header" id="vector-%E7%B1%BB%E7%AC%AC3%E7%89%88%E5%8A%A8%E6%80%81%E5%AD%98%E5%8F%96%E5%B1%9E%E6%80%A7">Vector 类第3版：动态存取属性</h3>
+
+<p>Vector2d 变成 Vector 后，就没办法通过名称访问向量的分量了（如 v.x 和 v.y）。</p>
+<p>我们想额外提供下列句法，用于读取向量的前4个分量：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v <span class="token operator">=</span> Vector<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>x
+<span class="token number">0.0</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>y<span class="token punctuation">,</span> v<span class="token punctuation">.</span>z<span class="token punctuation">,</span> v<span class="token punctuation">.</span>t
+<span class="token punctuation">(</span><span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">,</span> <span class="token number">3.0</span><span class="token punctuation">)</span>
+</pre><p>在 Vector2d 中，我们使用 @property 装饰器将 x 和 y 标记为只读特性，我们可以在 Vector 中编写4个特性，但是这样太麻烦，特殊方法 <code>__getattr__</code> 提供了更好的方法。</p>
+<p>属性查找失败后，解释器会调用 <code>__getattr__</code> 方法。简单来说，对 my_obj.x 表达式，Python 会检查 my_obj 实例有没有名为 x 的属性，如果没有，到类 <code>my_obj.__class__</code> 中查找，如果还是没有，顺着继承树继续查找，如果依旧找不到，调用 my_obj 所属类中定义的 <code>__getattr__</code> 方法，传入 self 和 属性名称的字符串形式（如 'x'）。</p>
+<blockquote>
+<p>属性查找机制比这复杂得多，后面会详细介绍。</p>
+</blockquote>
+<pre data-role="codeBlock" data-info="python" class="language-python">    shortcut_name <span class="token operator">=</span> <span class="token string">'xyzt'</span>
+    <span class="token keyword">def</span> <span class="token function">__getattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cls <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+            pos <span class="token operator">=</span> cls<span class="token punctuation">.</span>shortcut_name<span class="token punctuation">.</span>find<span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token number">0</span><span class="token operator">&lt;=</span>pos<span class="token operator">&lt;</span><span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_components<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> self<span class="token punctuation">[</span>pos<span class="token punctuation">]</span>
+        msg <span class="token operator">=</span> <span class="token string">'{.__name__!r} has no attribute {!r}'</span>
+        <span class="token keyword">raise</span> AttributeError<span class="token punctuation">(</span>msg<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p><code>__getattr__</code> 方法的实现不难，但是这样实现还不够，如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v <span class="token operator">=</span> Vector<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v
+Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">,</span> <span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>x
+<span class="token number">0.0</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">10</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>x
+<span class="token number">10</span>
+<span class="token operator">>></span><span class="token operator">></span> v
+Vector<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">,</span> <span class="token number">3.0</span><span class="token punctuation">,</span> <span class="token number">4.0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+</pre><p>修改：实现 <code>__setattr__</code> 方法：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword">def</span> <span class="token function">__setattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cls <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> name <span class="token keyword">in</span> shortcut_name<span class="token punctuation">:</span>
+                error <span class="token operator">=</span> f<span class="token string">'readonly attributes {name}'</span>
+            <span class="token keyword">elif</span> name<span class="token punctuation">.</span>islower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                error <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">"Can't set attribute 'a'~'z' in "</span> 
+                    f<span class="token string">"{cls.__name__}"</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                error<span class="token operator">=</span><span class="token string">""</span>
+            <span class="token keyword">if</span> error<span class="token punctuation">:</span>
+                <span class="token keyword">raise</span> AttributeError<span class="token punctuation">(</span>error<span class="token punctuation">)</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__setattr__<span class="token punctuation">(</span>name<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+</pre><p>效果为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> v <span class="token operator">=</span> Vector<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>x
+<span class="token number">0.0</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">10</span>
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">51</span><span class="token punctuation">,</span> <span class="token keyword">in</span> __setattr__
+AttributeError<span class="token punctuation">:</span> readonly attributes x
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">1</span>
+Traceback <span class="token punctuation">(</span>most recent call last<span class="token punctuation">)</span><span class="token punctuation">:</span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">1</span><span class="token punctuation">,</span> <span class="token keyword">in</span> <span class="token operator">&lt;</span>module<span class="token operator">></span>
+  File <span class="token string">"&lt;stdin>"</span><span class="token punctuation">,</span> line <span class="token number">51</span><span class="token punctuation">,</span> <span class="token keyword">in</span> __setattr__
+AttributeError<span class="token punctuation">:</span> Can<span class="token string">'t set attribute '</span>a<span class="token string">'~'</span>z' <span class="token keyword">in</span> Vector
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>A <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>xx <span class="token operator">=</span> <span class="token number">2</span>
+<span class="token operator">>></span><span class="token operator">></span> v<span class="token punctuation">.</span>A<span class="token punctuation">,</span> v<span class="token punctuation">.</span>xx
+<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+</pre><p>虽然这个实例不支持为 Vector 分量赋值，但是有个问题要特别注意，多数时候，如果实现了 <code>__getattr__</code> 方法，那么也要定义 <code>__setattr__</code> 方法，以防止对象的行为不一致。</p>
+<p>如果想允许修改分量，可以使用 <code>__setitem__</code> 方法，支持 <code>v[0] = 1.1</code> 这样的复制。不过我们要保持 Vector 是不可变的，因为在下面，我们要把它变为可散列的。</p>
+<h3 class="mume-header" id="vector-%E7%AC%AC4%E7%89%88%E6%95%A3%E5%88%97%E5%92%8C%E5%BF%AB%E9%80%9F%E7%AD%89%E5%80%BC%E6%B5%8B%E8%AF%95">Vector 第4版：散列和快速等值测试</h3>
+
+<p>我们要再次实现 <code>__hash__</code> 方法，加上现有的 <code>__eq__</code> 方法，这会把 Vector 实例编程可散列的对象。</p>
+<p>使用 reduce 函数可以计算 5! :</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> functools <span class="token keyword">import</span> <span class="token builtin">reduce</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">import</span> operator
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">reduce</span><span class="token punctuation">(</span>operator<span class="token punctuation">.</span>mul<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token number">120</span>
+</pre><p>下面的代码展示了计算聚合异或的3种方式：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> n <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     n <span class="token operator">^</span><span class="token operator">=</span> i
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> n
+<span class="token number">1</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">reduce</span><span class="token punctuation">(</span>operator<span class="token punctuation">.</span>xor<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token number">1</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">reduce</span><span class="token punctuation">(</span><span class="token keyword">lambda</span> x<span class="token punctuation">,</span>y<span class="token punctuation">:</span>x<span class="token operator">^</span>y<span class="token punctuation">,</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token number">1</span>
+</pre><p>Vector 的 <code>__hash__</code> 为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword">def</span> <span class="token function">__eq__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> other<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token comment"># 判断是否出现冲突</span>
+        <span class="token keyword">return</span> <span class="token builtin">tuple</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token operator">==</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>other<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__hash__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">reduce</span><span class="token punctuation">(</span>operator<span class="token punctuation">.</span>xor<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">hash</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> self<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><blockquote>
+<p>使用 reduce 函数时，最好提供第三个参数， <code>reduce(funcion, iterable, initializer)</code>，这样能避免异常：“TypeError：reduce() of empty sequence with no initial value”。如果序列为空，initializer 是返回的结果；否则，在规约中使用它作为第一个参数，因此应该使用恒等职，如 +、^、| 来说，initializer 应该是0， 对于 *、&amp;来说，应该是1。</p>
+</blockquote>
+<p>为了提高 <code>__eq__</code> 效率，修改如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword">def</span> <span class="token function">__eq__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> other<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token operator">!=</span><span class="token builtin">len</span><span class="token punctuation">(</span>other<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">False</span>
+        <span class="token keyword">for</span> a<span class="token punctuation">,</span>b <span class="token keyword">in</span> self<span class="token punctuation">,</span>other<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> a<span class="token operator">!=</span>b<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">False</span>
+        <span class="token keyword">return</span> <span class="token boolean">True</span>
+</pre><pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> math
 <span class="token keyword">class</span> <span class="token class-name">Vector</span><span class="token punctuation">:</span>
     typecode <span class="token operator">=</span> <span class="token string">'d'</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> components<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -3622,6 +3725,31 @@ array<span class="token punctuation">(</span><span class="token string">'d'</spa
         <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_components<span class="token punctuation">)</span>
     <span class="token keyword">def</span> <span class="token function">__getitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> index<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">return</span> self<span class="token punctuation">.</span>_components<span class="token punctuation">[</span>index<span class="token punctuation">]</span>
+    shortcut_name <span class="token operator">=</span> <span class="token string">'xyzt'</span>
+    <span class="token keyword">def</span> <span class="token function">__getattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cls <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+            pos <span class="token operator">=</span> cls<span class="token punctuation">.</span>shortcut_name<span class="token punctuation">.</span>find<span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token number">0</span><span class="token operator">&lt;=</span>pos<span class="token operator">&lt;</span><span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>_components<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> self<span class="token punctuation">[</span>pos<span class="token punctuation">]</span>
+        msg <span class="token operator">=</span> <span class="token string">'{.__name__!r} has no attribute {!r}'</span>
+        <span class="token keyword">raise</span> AttributeError<span class="token punctuation">(</span>msg<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__setattr__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cls <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> name <span class="token keyword">in</span> cls<span class="token punctuation">.</span>shortcut_name<span class="token punctuation">:</span>
+                error <span class="token operator">=</span> f<span class="token string">'readonly attributes {name}'</span>
+            <span class="token keyword">elif</span> name<span class="token punctuation">.</span>islower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                error <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">"Can't set attribute 'a'~'z' in "</span> 
+                    f<span class="token string">"{cls.__name__}"</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                error<span class="token operator">=</span><span class="token string">""</span>
+            <span class="token keyword">if</span> error<span class="token punctuation">:</span>
+                <span class="token keyword">raise</span> AttributeError<span class="token punctuation">(</span>error<span class="token punctuation">)</span>
+        <span class="token builtin">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>__setattr__<span class="token punctuation">(</span>name<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__hash__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">reduce</span><span class="token punctuation">(</span>operator<span class="token punctuation">.</span>xor<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">hash</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> self<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        
 </pre>
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -3834,6 +3962,8 @@ array<span class="token punctuation">(</span><span class="token string">'d'</spa
 <li><a href="#%E8%83%BD%E5%A4%84%E7%90%86%E5%88%87%E7%89%87%E7%9A%84-__getitem__">能处理切片的 <code>__getitem__</code></a></li>
 </ul>
 </li>
+<li><a href="#vector-%E7%B1%BB%E7%AC%AC3%E7%89%88%E5%8A%A8%E6%80%81%E5%AD%98%E5%8F%96%E5%B1%9E%E6%80%A7">Vector 类第3版：动态存取属性</a></li>
+<li><a href="#vector-%E7%AC%AC4%E7%89%88%E6%95%A3%E5%88%97%E5%92%8C%E5%BF%AB%E9%80%9F%E7%AD%89%E5%80%BC%E6%B5%8B%E8%AF%95">Vector 第4版：散列和快速等值测试</a></li>
 </ul>
 </li>
 </ul>

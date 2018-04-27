@@ -36,8 +36,8 @@ C=>subroutine: sub
 end=>end
 
 st->A->B
-B(no)->C(right)->A
-B(yes)->end
+B(yes,right)->C(right)->A
+B(no)->end
 ```
 
 

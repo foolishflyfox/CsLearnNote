@@ -14,7 +14,7 @@
       
       
       
-      
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.7.0/flowchart.min.js"></script>
       
 
       <style> 
@@ -240,43 +240,54 @@ code.language-yaml {
       <div class="mume markdown-preview   ">
       <h1 class="mume-header" id="%E9%AD%94%E6%96%B9%E9%97%AE%E9%A2%98%E7%9A%84%E6%B1%82%E8%A7%A3">魔方问题的求解</h1>
 
-<p><strong>姓名 : 丰华彬           学号 : SA17011135 ]</strong></p>
+<p><strong>姓名 : 丰华彬           学号 : SA17011135</strong></p>
 <div class="code-chunk" data-id="code-chunk-id-0" data-cmd="toc"><div class="input-div"><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><ul>
 <li><a href="#%E9%AD%94%E6%96%B9%E9%97%AE%E9%A2%98%E7%9A%84%E6%B1%82%E8%A7%A3">魔方问题的求解</a>
 <ul>
 <li><a href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0">问题描述</a></li>
 <li><a href="#%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90">状态空间分析</a></li>
 <li><a href="#%E6%A8%A1%E5%9E%8B%E5%BB%BA%E7%AB%8B">模型建立</a></li>
-<li><a href="#%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</a></li>
+<li><a href="#%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</a>
+<ul>
+<li><a href="#%E5%9F%BA%E5%87%86%E7%AE%97%E6%B3%95-version1">基准算法-Version1</a></li>
+<li><a href="#%E5%9F%BA%E5%87%86%E7%AE%97%E6%B3%95-version2">基准算法-Version2</a></li>
+</ul>
+</li>
 <li><a href="#%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">时空复杂度分析</a></li>
-<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</a></li>
-<li><a href="#%E6%89%A9%E5%B1%95">扩展</a></li>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</a>
+<ul>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0-1">启发式函数 1</a></li>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0-2">启发式函数 2</a></li>
+<li><a href="#%E4%B8%A4%E7%A7%8D%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E7%9A%84%E6%AF%94%E8%BE%83">两种启发式函数的比较</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 <h2 class="mume-header" id="%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0">问题描述</h2>
 
-<p>魔方是一种常见的益智游戏，如下图是魔方的一个图片:</p>
+<p>魔方是一种常见的益智游戏，如下图是魔方的图片:</p>
 <div align="center">
 <img src="image/cubes.png">
 <em>图1. 二阶、三阶、四阶、八阶魔方</em>
 </div>
 <p>魔方根据其面上正方体的个数，可以分为多种魔方，上面的魔方从左到右分别是：2阶魔方、3阶魔方、4阶魔方和8阶魔方，通常 2 ~ 11 阶的魔方称为低阶魔方，高于 11 阶的魔方称为高阶魔方 。</p>
 <p>魔方是一个正方体，共有6个面，每个面上的小正方形个数与魔方的阶数相关。例如，3 阶魔方的一个面上有 3×3=9 个正方体，每个正方体的颜色有 6 种可能。</p>
-<p>我们需要解决的问题描述起来非常简单：将一种可能的魔方状态还原为每一个面上的颜色都相同的状态。这里所解决的问题主要是针对 3 阶魔方的求解过程，后面在扩展部分会对 3 阶以上的魔方解决思路进行进一步探讨。</p>
+<p>我们需要解决的问题描述起来也非常简单：将一种可能的魔方状态还原为每一个面上的颜色都相同的状态。这里所解决的问题主要是针对 3 阶魔方的求解过程。</p>
 <h2 class="mume-header" id="%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90">状态空间分析</h2>
 
-<p>该问题是已知初始状态和终止状态，求解一条路径的搜索问题。其中初始状态是打乱的状态，如上图1所示，终止状态为一个有序的正方体，如下图所示：</p>
+<p>该问题是已知初始状态和终止状态，求解一条路径的搜索问题。其中初始状态是打乱的状态，如上图1第二个图片所示，终止状态为一个有序的正方体，如下图所示：</p>
 <div align="center">
 <img src="image/cube3_right.png" height="300px">
+<p><em>图2. 问题的终止状态</em></p>
 </div>
 <p>根据维基百科上的说明，三阶魔方的总变化数是：<br>
 <span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mn>8</mn><mo>!</mo><mo>×</mo><msup><mn>3</mn><mn>8</mn></msup><mo>×</mo><mn>1</mn><mn>2</mn><mo>!</mo><mo>×</mo><msup><mn>2</mn><mrow><mn>1</mn><mn>2</mn></mrow></msup></mrow><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mo>×</mo><mn>3</mn></mrow></mfrac><mo>=</mo><mn>4</mn><mn>3</mn><mn>2</mn><mn>5</mn><mn>2</mn><mn>0</mn><mn>0</mn><mn>3</mn><mn>2</mn><mn>7</mn><mn>4</mn><mn>4</mn><mn>8</mn><mn>9</mn><mn>8</mn><mn>5</mn><mn>6</mn><mn>0</mn><mn>0</mn><mn>0</mn><mo>≈</mo><mn>4</mn><mi mathvariant="normal">.</mi><mn>3</mn><mn>3</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mrow><mn>1</mn><mn>9</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\frac{8!\times3^8\times12!\times2^{12}}{2\times2\times3}=43252003274489856000\approx4.33\times10^{19}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.491108em;"></span><span class="strut bottom" style="height:2.260438em;vertical-align:-0.7693300000000001em;"></span><span class="base"><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.491108em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">3</span></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.2em;"><svg width="400em" height="0.2em" viewBox="0 0 400000 200" preserveAspectRatio="xMinYMin slice"><path d="M0 80H400000 v40H0z M0 80H400000 v40H0z"></path></svg></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">8</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">3</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mord">2</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7693300000000001em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">4</span><span class="mord">3</span><span class="mord">2</span><span class="mord">5</span><span class="mord">2</span><span class="mord">0</span><span class="mord">0</span><span class="mord">3</span><span class="mord">2</span><span class="mord">7</span><span class="mord">4</span><span class="mord">4</span><span class="mord">8</span><span class="mord">9</span><span class="mord">8</span><span class="mord">5</span><span class="mord">6</span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≈</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">4</span><span class="mord">.</span><span class="mord">3</span><span class="mord">3</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641079999999999em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">9</span></span></span></span></span></span></span></span></span></span></span></span></span></p>
 <blockquote>
 <p>三阶魔方总数的算式是这样得到的：</p>
 <ul>
-<li>8个角块可以互换位置（8!），也可以旋转（3），但不能单独翻转一个角块，所以总共有8!×38/3种变化状态。</li>
-<li>12个边块可以互换位置（12!），也可以翻转（2），但不能单独翻转一个棱块（也就是将其两个面对调），也不能单独交换两棱块的位置，所以总共有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>2</mn><mo>!</mo><mo>×</mo><msup><mn>2</mn><mrow><mn>1</mn><mn>2</mn></mrow></msup><mi mathvariant="normal">/</mi><mo>(</mo><mn>2</mn><mo>×</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">12! \times 2^{12} / (2×2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord">1</span><span class="mord">2</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mord">/</span><span class="mopen">(</span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span></span>种变化状态</li>
+<li>8个角块可以互换位置（<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn><mo>!</mo></mrow><annotation encoding="application/x-tex">8!</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base"><span class="mord">8</span><span class="mclose">!</span></span></span></span>），也可以旋转（3），但不能单独翻转一个角块，所以总共有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>8</mn><mo>!</mo><mo>×</mo><mn>3</mn><mn>8</mn><mi mathvariant="normal">/</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">8!×38/3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord">8</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">3</span><span class="mord">8</span><span class="mord">/</span><span class="mord">3</span></span></span></span>种变化状态。</li>
+<li>12个边块可以互换位置（<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>2</mn><mo>!</mo></mrow><annotation encoding="application/x-tex">12!</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base"><span class="mord">1</span><span class="mord">2</span><span class="mclose">!</span></span></span></span>），也可以翻转（2），但不能单独翻转一个棱块（也就是将其两个面对调），也不能单独交换两棱块的位置，所以总共有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>2</mn><mo>!</mo><mo>×</mo><msup><mn>2</mn><mrow><mn>1</mn><mn>2</mn></mrow></msup><mi mathvariant="normal">/</mi><mo>(</mo><mn>2</mn><mo>×</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">12! \times 2^{12} / (2×2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord">1</span><span class="mord">2</span><span class="mclose">!</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mord">/</span><span class="mopen">(</span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span></span>种变化状态</li>
 </ul>
 </blockquote>
 <p>而与一个状态相邻的状态表示只旋转一次所得到的状态，共有 12 种，分别为旋转 上、下、左、右、前、后 6个面，乘上 正转、反转两种旋转方式。</p>
@@ -287,6 +298,7 @@ code.language-yaml {
 <p>现将3阶魔方分成 27 个小方块，并表上记号，分别标记为：0~26个块，如：</p>
 <div align="center">
 <img src="image/cuber_num.png" height="300px">
+<p><em>图3. 为魔方的每个方块打上标记</em></p>
 </div>
 <p>其中的每个小方块都有一个编号，所有多魔方的操作最后都要映射到每一个小方块上，代码如下：</p>
 <p>首先，我们用 Python 语言建立一个魔方的类：</p>
@@ -354,6 +366,9 @@ MAGICCHANGE <span class="token operator">=</span> <span class="token punctuation
 <span class="token keyword">from</span> bidict <span class="token keyword">import</span> bidict
 <span class="token keyword">import</span> copy
 <span class="token keyword">import</span> re
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+<span class="token comment"># 用于记录状态变化的结构</span>
+Step <span class="token operator">=</span> namedtuple<span class="token punctuation">(</span><span class="token string">'Step'</span><span class="token punctuation">,</span> <span class="token string">'side direction'</span><span class="token punctuation">)</span>
 
 <span class="token keyword">class</span> <span class="token class-name">Magic</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># 上(红) 下(橘) 左(蓝) 右(绿) 前(白) 后(黄)</span>
@@ -376,6 +391,10 @@ MAGICCHANGE <span class="token operator">=</span> <span class="token punctuation
             self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>RIGHT<span class="token punctuation">,</span> right_s<span class="token punctuation">)</span>
             self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>BACK<span class="token punctuation">,</span> back_s<span class="token punctuation">)</span>
             self<span class="token punctuation">.</span>set_face_state<span class="token punctuation">(</span>BOTTOM<span class="token punctuation">,</span> bottom_s<span class="token punctuation">)</span>
+        <span class="token comment"># 记录所有的操作步骤</span>
+        self<span class="token punctuation">.</span>steps <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token comment"># 记录是否到达终态</span>
+        self<span class="token punctuation">.</span>finished <span class="token operator">=</span> <span class="token boolean">False</span>
 
     <span class="token keyword">def</span> <span class="token function">get_face_state</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> side<span class="token punctuation">)</span><span class="token punctuation">:</span>
         tp_str <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>color_dir<span class="token punctuation">[</span>self<span class="token punctuation">.</span>blocks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>getCol<span class="token punctuation">(</span>side<span class="token punctuation">)</span><span class="token punctuation">]</span>
@@ -385,6 +404,14 @@ MAGICCHANGE <span class="token operator">=</span> <span class="token punctuation
     <span class="token keyword">def</span> <span class="token function">set_face_state</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> side<span class="token punctuation">,</span> states<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">for</span> i<span class="token punctuation">,</span>j <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>FACES<span class="token punctuation">[</span>side<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>states<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
             self<span class="token punctuation">.</span>blocks<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>setCol<span class="token punctuation">(</span>side<span class="token punctuation">,</span> self<span class="token punctuation">.</span>color_dir<span class="token punctuation">.</span>inv<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 测试是否到达终态 传入的参数是一个启发式函数</span>
+    <span class="token keyword">def</span> <span class="token function">test_finish</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> heuristic_fun<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        distance <span class="token operator">=</span> heuristic_fun<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> distance<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">True</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">False</span>
 
     <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
         ret_str <span class="token operator">=</span> <span class="token string">""</span>
@@ -457,13 +484,234 @@ oywbobwwogbb
    yyy
 </code></pre><h2 class="mume-header" id="%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</h2>
 
-<p>基准搜索算法选择深度优先的搜索策略。其基本思路是计算当前状态与终止状态之间的</p>
-<h2 class="mume-header" id="%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">时空复杂度分析</h2>
+<h3 class="mume-header" id="%E5%9F%BA%E5%87%86%E7%AE%97%E6%B3%95-version1">基准算法-Version1</h3>
 
+<p>基准搜索算法选择深度优先的搜索策略。</p>
+<p>其基本思路是计算当前状态与终止状态之间的距离，该距离由后面所说的启发式函数所确定，并比较12种后继状态的距离，使用贪心算法，随机选择一种比当前状态的距离近的后继状态，并进行该动作，如果存在一步后，后继状态的距离比当前距离近，那么最多计算次数为 12。</p>
+<p>如果所有的后继状态都比当前的状态距离远，那么计算 2 步以后的距离，任意选择一个比当前距离近的状态，并施加两步操作，这个过程最多计算次数为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mn>2</mn><mo>×</mo><mn>1</mn><mn>2</mn><mo>=</mo><mn>1</mn><mn>4</mn><mn>4</mn></mrow><annotation encoding="application/x-tex">12\times12=144</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">1</span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">1</span><span class="mord">4</span><span class="mord">4</span></span></span></span> 次。如果所有的 2 步操作都不能减小距离，那么随机进行 10 步任意的操作，以跳出无解的情况，重新开始搜索。</p>
+<p>其流程图为：</p>
+<div class="flow">st=>start: 开始
+
+X=>operation: 计算当前距离 d
+
+H=>condition: d==0?
+
+SetCalcStep=>operation: 设置计算步数 s = 1
+
+JudgeStep=>condition: s&lt=2?
+
+RandomOpt=>subroutine: 随机走10步
+
+A=>operation: 计算后继 s 步
+节点距离di
+
+B=>condition: 存在
+di&ltd?
+
+C=>subroutine: 1、执行距离减小的s步
+2、更新：d = di
+
+D=>condition: 终态?
+
+F=>operation: s = s+1
+
+end=>end: 结束
+
+st->X->H
+H(no)->SetCalcStep->JudgeStep
+H(yes,right)->end
+JudgeStep(yes)->A->B
+B(yes)->C(left)->X
+D(yes)->end
+D(no)->SetCalcStep
+B(no)->F(right)->JudgeStep
+JudgeStep(no)->RandomOpt(right)->X
+</div><div align="center"><em>图4. 算法流程图</em></div>
+<p>可以通过修改判断语句 <code>s&lt;=2?</code> 中的数值，来调整搜索的可用后继的最多步数，增大判断阈值后，搜索的效率可能提高，但是由于时间复杂度随步数指数增加，因此可能会使计算所用的时间增大。</p>
+<p>该基准搜索算法的程序代码为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Magic</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 省略其他部分代码（请查看 模型建立部分代码）</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token keyword">def</span> <span class="token function">search_path</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> heuristic_fun<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">from</span> random <span class="token keyword">import</span> randint
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>finished<span class="token punctuation">:</span>
+            <span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>steps<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+            cur_distance <span class="token operator">=</span> heuristic_fun<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> cur_distance<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>finished <span class="token operator">=</span> <span class="token boolean">True</span>
+                <span class="token keyword">return</span>
+            tmp_s <span class="token operator">=</span> <span class="token number">1</span>
+            find_next <span class="token operator">=</span> <span class="token boolean">False</span>
+            <span class="token keyword">while</span> tmp_s<span class="token operator">&lt;=</span><span class="token number">2</span> <span class="token operator">and</span> find_next<span class="token operator">==</span><span class="token boolean">False</span><span class="token punctuation">:</span>
+                back_opts <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> d<span class="token punctuation">)</span> <span class="token keyword">for</span> s <span class="token keyword">in</span> SIDES <span class="token keyword">for</span> d <span class="token keyword">in</span> DIRECTIONS<span class="token punctuation">]</span>                
+                <span class="token keyword">if</span> tmp_s<span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+                    <span class="token keyword">for</span> opt <span class="token keyword">in</span> back_opts<span class="token punctuation">:</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span><span class="token operator">*</span>opt<span class="token punctuation">)</span>
+                        <span class="token keyword">if</span> heuristic_fun<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">&lt;</span>cur_distance<span class="token punctuation">:</span>
+                            find_next <span class="token operator">=</span> <span class="token boolean">True</span>
+                            self<span class="token punctuation">.</span>steps<span class="token punctuation">.</span>append<span class="token punctuation">(</span>Step<span class="token punctuation">(</span><span class="token operator">*</span>opt<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                            <span class="token keyword">break</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>opt<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token operator">-</span>opt<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                <span class="token keyword">if</span> tmp_s<span class="token operator">==</span><span class="token number">2</span><span class="token punctuation">:</span>
+                    <span class="token keyword">for</span> o1<span class="token punctuation">,</span>o2 <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span>j<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> back_opts 
+					<span class="token keyword">for</span> j <span class="token keyword">in</span> back_opts<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span><span class="token operator">*</span>o1<span class="token punctuation">)</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span><span class="token operator">*</span>o2<span class="token punctuation">)</span>
+                        <span class="token keyword">if</span> heuristic_fun<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">&lt;</span>cur_distance<span class="token punctuation">:</span>
+                            find_next <span class="token operator">=</span> <span class="token boolean">True</span>
+                            self<span class="token punctuation">.</span>steps<span class="token punctuation">.</span>append<span class="token punctuation">(</span>Step<span class="token punctuation">(</span><span class="token operator">*</span>o1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                            self<span class="token punctuation">.</span>steps<span class="token punctuation">.</span>append<span class="token punctuation">(</span>Step<span class="token punctuation">(</span><span class="token operator">*</span>o2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                            <span class="token keyword">break</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>o2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token operator">-</span>o2<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>o1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token operator">-</span>o1<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                tmp_s <span class="token operator">+=</span> <span class="token number">1</span>
+                
+            <span class="token keyword">if</span> find_next<span class="token operator">==</span><span class="token boolean">False</span><span class="token punctuation">:</span>
+                <span class="token comment"># 随机走10步</span>
+                <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    tp_side <span class="token operator">=</span> SIDES<span class="token punctuation">[</span>randint<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>SIDES<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+                    tp_direction <span class="token operator">=</span> DIRECTIONS<span class="token punctuation">[</span>randint<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>DIRECTIONS<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+                    self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>tp_side<span class="token punctuation">,</span> tp_direction<span class="token punctuation">)</span>
+                    self<span class="token punctuation">.</span>steps<span class="token punctuation">.</span>append<span class="token punctuation">(</span>Step<span class="token punctuation">(</span>tp_side<span class="token punctuation">,</span> tp_direction<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>结合后面的启发式函数 1 发现，上述函数总是会在距离为 25 选择随机走10步，导致距离不能降低，需要进行改进；</p>
+<h3 class="mume-header" id="%E5%9F%BA%E5%87%86%E7%AE%97%E6%B3%95-version2">基准算法-Version2</h3>
+
+<p>修改后的流程图为：</p>
+<div class="flow">st=>start: 开始
+
+X=>operation: 计算当前距离 d
+
+H=>condition: d==0?
+
+SetCalcStep=>operation: 设置计算步数 s = 1
+
+JudgeStep=>condition: s&lt=N?
+
+RandomOpt=>subroutine: 回退到之前的X步
+X在代码中设置
+
+A=>operation: 随机生成 M种 s步的操作
+计算这M种 s步的操作的距离 di
+
+B=>condition: 存在
+di&ltd?
+
+C=>subroutine: 1、执行距离减小的s步
+2、更新：d = di
+
+D=>condition: 终态?
+
+F=>operation: s = s+1
+
+end=>end: 结束
+
+st->X->H
+H(no)->SetCalcStep->JudgeStep
+H(yes,right)->end
+JudgeStep(yes)->A->B
+B(yes)->C(left)->X
+D(yes)->end
+D(no)->SetCalcStep
+B(no)->F(right)->JudgeStep
+JudgeStep(no)->RandomOpt(right)->X
+</div><div align="center"><em>图5. 改进的基准算法</em></div>
+<p>在改进的基准算法中加入了随机化和回退的操作，使得路径不会在某个局部最优处处于死循环的位置，其代码如下（省略类中的其他定义）：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token comment"># 获得随机操作序列的生成函数</span>
+    <span class="token keyword">def</span> <span class="token function">get_steps_creator</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> steps_cnt<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">from</span> random <span class="token keyword">import</span> sample
+        <span class="token keyword">def</span> <span class="token function">steps_creator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            max_step <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">,</span> <span class="token number">12</span> <span class="token operator">**</span> steps_cnt <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">)</span>
+            i <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">while</span> i<span class="token operator">&lt;</span>max_step<span class="token punctuation">:</span>
+                <span class="token keyword">yield</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>sample<span class="token punctuation">(</span>SIDES<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>sample<span class="token punctuation">(</span>DIRECTIONS<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
+                    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>steps_cnt<span class="token punctuation">)</span><span class="token punctuation">]</span>
+                i <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> steps_creator
+
+    <span class="token keyword">def</span> <span class="token function">search_path_pro</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> heuristic_fun<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>finished<span class="token punctuation">:</span>
+            <span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>steps<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+            cur_distance <span class="token operator">=</span> heuristic_fun<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>cur_distance<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> cur_distance<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>finished <span class="token operator">=</span> <span class="token boolean">True</span>
+                <span class="token keyword">return</span>
+            tmp_s <span class="token operator">=</span> <span class="token number">1</span>
+            find_next <span class="token operator">=</span> <span class="token boolean">False</span>
+            <span class="token keyword">while</span> find_next<span class="token operator">==</span><span class="token boolean">False</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>steps<span class="token punctuation">)</span> <span class="token operator">and</span> tmp_s<span class="token operator">></span><span class="token number">8</span><span class="token punctuation">:</span>
+                    <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                        last_step <span class="token operator">=</span> self<span class="token punctuation">.</span>steps<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'pop :'</span><span class="token punctuation">,</span> last_step<span class="token punctuation">)</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>last_step<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token operator">-</span>last_step<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                        find_next <span class="token operator">=</span> <span class="token boolean">True</span>
+                    <span class="token keyword">continue</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'tmp_s :'</span><span class="token punctuation">,</span> tmp_s<span class="token punctuation">)</span>
+                steps_creator <span class="token operator">=</span> self<span class="token punctuation">.</span>get_steps_creator<span class="token punctuation">(</span>tmp_s<span class="token punctuation">)</span>
+                <span class="token keyword">for</span> tp_steps <span class="token keyword">in</span> steps_creator<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    <span class="token keyword">for</span> a_step <span class="token keyword">in</span> tp_steps<span class="token punctuation">:</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span><span class="token operator">*</span>a_step<span class="token punctuation">)</span>
+                    <span class="token keyword">if</span> heuristic_fun<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">&lt;</span>cur_distance<span class="token punctuation">:</span>
+                        self<span class="token punctuation">.</span>steps <span class="token operator">+=</span> <span class="token punctuation">[</span>Step<span class="token punctuation">(</span>s<span class="token punctuation">,</span>d<span class="token punctuation">)</span> <span class="token keyword">for</span> s<span class="token punctuation">,</span>d <span class="token keyword">in</span> tp_steps<span class="token punctuation">]</span>
+                        find_next <span class="token operator">=</span> <span class="token boolean">True</span>
+                        <span class="token keyword">break</span>
+                    <span class="token keyword">for</span> r_step <span class="token keyword">in</span> tp_steps<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                        self<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span>r_step<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token operator">-</span>r_step<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                tmp_s <span class="token operator">+=</span> <span class="token number">1</span>
+</pre><h2 class="mume-header" id="%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">时空复杂度分析</h2>
+
+<p>如果从起始状态到终止状态存在一条距离不断减小的路径 P，该路径的长度为 m，则该问题的时间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><msup><mn>2</mn><mi>m</mi></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(12^m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">m</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>。</p>
+<p>由于基准搜索算法选择的是DFS，在小范围内找不到最佳后继节点时(如直接后继状态的距离都大于当前状态的距离)才短暂地使用BFS搜索最佳的后继，如果最多使用BFS搜索 x 步，则空间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><msup><mn>2</mn><mi>x</mi></msup><mo>⋅</mo><mi>m</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(12^x\cdot m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">x</span></span></span></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit">m</span><span class="mclose">)</span></span></span></span>，图4 所示的流程图对应的空间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mn>1</mn><msup><mn>2</mn><mn>2</mn></msup><mo>⋅</mo><mi>m</mi><mo>)</mo><mo>=</mo><mi>O</mi><mo>(</mo><mn>1</mn><mn>4</mn><mn>4</mn><mo>⋅</mo><mi>m</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(12^2\cdot m)=O(144\cdot m)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit">m</span><span class="mclose">)</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord">1</span><span class="mord">4</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit">m</span><span class="mclose">)</span></span></span></span>。</p>
 <h2 class="mume-header" id="%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</h2>
 
-<h2 class="mume-header" id="%E6%89%A9%E5%B1%95">扩展</h2>
+<p>启发式函数主要用于判断后继节点中那个节点是最佳的后继，程序根据所选出的结果执行相应的操作。</p>
+<h3 class="mume-header" id="%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0-1">启发式函数 1</h3>
 
+<p>计算每个面中错误的面的数量，并将所有的数量和相加作为距离，如：</p>
+<div align="center">
+<img src="image/compare1.png" height="250px">
+<p><em>图6. 比较一个面的距离</em></p>
+</div>
+<p>图6 显示了左右两个魔方状态的一个面，其中左边的面中间位置的方块为绿色，因此，认为绿色为该面的主色，右侧为终止状态该面所处的状态。</p>
+<p>计算该面与终止状态的距离时，只需要统计非绿色的方块格式，就上图的情况而言，该面与终态的距离为6。按照相同的方式计算其他5个面的距离，求和之后即为当前状态与终态的距离。</p>
+<p>代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 启发式函数 1</span>
+<span class="token keyword">def</span> <span class="token function">heuristic_1</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        distance <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> side <span class="token keyword">in</span> SIDES<span class="token punctuation">:</span>
+            tp_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>side<span class="token punctuation">)</span>
+            mid_c <span class="token operator">=</span> tp_state<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+            <span class="token keyword">for</span> line <span class="token keyword">in</span> tp_state<span class="token punctuation">:</span>
+                distance <span class="token operator">+=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token operator">-</span>line<span class="token punctuation">.</span>count<span class="token punctuation">(</span>mid_c<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> distance
+</pre><h3 class="mume-header" id="%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0-2">启发式函数 2</h3>
+
+<p>其实在魔方中，有3种位置的方块，分别为 中心块、边块、脚块：</p>
+<div align="center">
+<img src="image/block_type.png" height="200px">
+<em>图7. 中心块、边块、角块</em>
+</div>
+<p>在我们所构建的 Magic 类中，中心块是不动的，而中心块只能沿一个方向旋转（因为不能把中心块转走，所以有一个方向不能动），而角块可以沿两个方向转动。因此，相对而言，边块比角块更加难以到达正确位置，故可以在计算距离时，加大边块相对于角块的权重，代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 启发式函数 2</span>
+    <span class="token keyword">def</span> <span class="token function">heuristic_2</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        distance <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> side <span class="token keyword">in</span> SIDES<span class="token punctuation">:</span>
+            tp_state <span class="token operator">=</span> self<span class="token punctuation">.</span>get_face_state<span class="token punctuation">(</span>side<span class="token punctuation">)</span>
+            mid_c <span class="token operator">=</span> tp_state<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+            corner_c <span class="token operator">=</span> <span class="token number">4</span> <span class="token operator">-</span> <span class="token punctuation">(</span>tp_state<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">+</span> 
+                tp_state<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">(</span>mid_c<span class="token punctuation">)</span>
+            center_c <span class="token operator">=</span> <span class="token number">4</span> <span class="token operator">-</span> <span class="token punctuation">(</span>tp_state<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">+</span> tp_state<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+                <span class="token operator">+</span> tp_state<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count<span class="token punctuation">(</span>mid_c<span class="token punctuation">)</span>
+            distance <span class="token operator">+=</span> corner_c <span class="token operator">+</span> center_c<span class="token operator">*</span><span class="token number">2</span>
+        <span class="token keyword">return</span> distance
+</pre><p>上面的程序将边块的权重设置为脚块的两倍。</p>
+<h3 class="mume-header" id="%E4%B8%A4%E7%A7%8D%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E7%9A%84%E6%AF%94%E8%BE%83">两种启发式函数的比较</h3>
+
+<p>第2中启发式函数更好，因为它运用了魔方的固有特性，使得在计算距离的时候加入了人工的经验，更加容易靠近正确的路径。</p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -472,10 +720,20 @@ oywbobwwogbb
 <li><a href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0">问题描述</a></li>
 <li><a href="#%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90">状态空间分析</a></li>
 <li><a href="#%E6%A8%A1%E5%9E%8B%E5%BB%BA%E7%AB%8B">模型建立</a></li>
-<li><a href="#%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</a></li>
+<li><a href="#%E5%9F%BA%E5%87%86%E6%90%9C%E7%B4%A2%E7%AE%97%E6%B3%95">基准搜索算法</a>
+<ul>
+<li><a href="#%E5%9F%BA%E5%87%86%E7%AE%97%E6%B3%95-version1">基准算法-Version1</a></li>
+<li><a href="#%E5%9F%BA%E5%87%86%E7%AE%97%E6%B3%95-version2">基准算法-Version2</a></li>
+</ul>
+</li>
 <li><a href="#%E6%97%B6%E7%A9%BA%E5%A4%8D%E6%9D%82%E5%BA%A6%E5%88%86%E6%9E%90">时空复杂度分析</a></li>
-<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</a></li>
-<li><a href="#%E6%89%A9%E5%B1%95">扩展</a></li>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E8%AE%BE%E8%AE%A1">启发式函数设计</a>
+<ul>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0-1">启发式函数 1</a></li>
+<li><a href="#%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0-2">启发式函数 2</a></li>
+<li><a href="#%E4%B8%A4%E7%A7%8D%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0%E7%9A%84%E6%AF%94%E8%BE%83">两种启发式函数的比较</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -486,7 +744,20 @@ oywbobwwogbb
     
     
     
-    
+    <script>
+var flowcharts = document.getElementsByClassName('flow')
+for (var i = 0; i < flowcharts.length; i++) {
+  var flow = flowcharts[i]
+  try {
+    var diagram = flowchart.parse(flow.textContent)
+    flow.id = 'flow_' + i
+    flow.innerHTML = ''
+    diagram.drawSVG(flow.id)
+  } catch (error) {
+    flow.innerHTML = '<pre class="language-text">' + error.toString() + '</pre>'
+  }
+}
+</script>
     
     
 <script>

@@ -3619,6 +3619,134 @@ slice 有个 indices 方法有很大的作用，但是鲜为人知。
 ```
 > 大量使用 isinstance 可能表明面向对象设计的不好，不过在 `__getitem__` 方法中使用它处理切片是很合理的。注意，上面的实例中测试使用的是 numbers.Integral，这是一个抽象基类（Abstract Base Class）。在 isinstance 中使用抽象基类做测试能让API更加灵活更容易更新。
 
+### Vector 类第3版：动态存取属性
+
+Vector2d 变成 Vector 后，就没办法通过名称访问向量的分量了（如 v.x 和 v.y）。
+
+我们想额外提供下列句法，用于读取向量的前4个分量：
+```python
+>>> v = Vector(range(10))
+>>> v.x
+0.0
+>>> v.y, v.z, v.t
+(1.0, 2.0, 3.0)
+```
+
+在 Vector2d 中，我们使用 @property 装饰器将 x 和 y 标记为只读特性，我们可以在 Vector 中编写4个特性，但是这样太麻烦，特殊方法 `__getattr__` 提供了更好的方法。
+
+属性查找失败后，解释器会调用 `__getattr__` 方法。简单来说，对 my_obj.x 表达式，Python 会检查 my_obj 实例有没有名为 x 的属性，如果没有，到类 `my_obj.__class__` 中查找，如果还是没有，顺着继承树继续查找，如果依旧找不到，调用 my_obj 所属类中定义的 `__getattr__` 方法，传入 self 和 属性名称的字符串形式（如 'x'）。
+> 属性查找机制比这复杂得多，后面会详细介绍。
+
+```python
+    shortcut_name = 'xyzt'
+    def __getattr__(self, name):
+        cls = type(self)
+        if len(name)==1:
+            pos = cls.shortcut_name.find(name)
+            if 0<=pos<len(self._components):
+                return self[pos]
+        msg = '{.__name__!r} has no attribute {!r}'
+        raise AttributeError(msg.format(cls, name))
+```
+
+`__getattr__` 方法的实现不难，但是这样实现还不够，如下：
+```python
+>>> v = Vector(range(5))
+>>> v
+Vector([0.0, 1.0, 2.0, 3.0, 4.0])
+>>> v.x
+0.0
+>>> v.x = 10
+>>> v.x
+10
+>>> v
+Vector([0.0, 1.0, 2.0, 3.0, 4.0])
+```
+修改：实现 `__setattr__` 方法：
+```python
+    def __setattr__(self, name, value):
+        cls = type(self)
+        if len(name)==1:
+            if name in shortcut_name:
+                error = f'readonly attributes {name}'
+            elif name.islower():
+                error = ("Can't set attribute 'a'~'z' in " 
+                    f"{cls.__name__}")
+            else:
+                error=""
+            if error:
+                raise AttributeError(error)
+        super().__setattr__(name, value)
+```
+效果为：
+```python
+>>> v = Vector(range(5))
+>>> v.x
+0.0
+>>> v.x = 10
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 51, in __setattr__
+AttributeError: readonly attributes x
+>>> v.a = 1
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 51, in __setattr__
+AttributeError: Can't set attribute 'a'~'z' in Vector
+>>> v.A = 1
+>>> v.xx = 2
+>>> v.A, v.xx
+(1, 2)
+```
+
+虽然这个实例不支持为 Vector 分量赋值，但是有个问题要特别注意，多数时候，如果实现了 `__getattr__` 方法，那么也要定义 `__setattr__` 方法，以防止对象的行为不一致。
+
+如果想允许修改分量，可以使用 `__setitem__` 方法，支持 `v[0] = 1.1` 这样的复制。不过我们要保持 Vector 是不可变的，因为在下面，我们要把它变为可散列的。
+
+### Vector 第4版：散列和快速等值测试
+
+我们要再次实现 `__hash__` 方法，加上现有的 `__eq__` 方法，这会把 Vector 实例编程可散列的对象。
+
+使用 reduce 函数可以计算 5! :
+```python
+>>> from functools import reduce
+>>> import operator
+>>> reduce(operator.mul, range(1,6))
+120
+```
+下面的代码展示了计算聚合异或的3种方式：
+```python
+>>> n = 0
+>>> for i in range(1,6):
+...     n ^= i
+... 
+>>> n
+1
+>>> reduce(operator.xor, range(1,6))
+1
+>>> reduce(lambda x,y:x^y, range(1,6))
+1
+```
+Vector 的 `__hash__` 为：
+```python
+    def __eq__(self, other):# 判断是否出现冲突
+        return tuple(self)==tuple(other)
+    def __hash__(self):
+        return reduce(operator.xor, (hash(i) for i in self))
+```
+> 使用 reduce 函数时，最好提供第三个参数， `reduce(funcion, iterable, initializer)`，这样能避免异常：“TypeError：reduce() of empty sequence with no initial value”。如果序列为空，initializer 是返回的结果；否则，在规约中使用它作为第一个参数，因此应该使用恒等职，如 +、^、| 来说，initializer 应该是0， 对于 *、&来说，应该是1。
+
+为了提高 `__eq__` 效率，修改如下：
+```python
+    def __eq__(self, other):
+        if len(self)!=len(other):
+            return False
+        for a,b in self,other:
+            if a!=b:
+                return False
+        return True
+```
+
 
 ```python
 import math
@@ -3652,9 +3780,32 @@ class Vector:
         return len(self._components)
     def __getitem__(self, index):
         return self._components[index]
+    shortcut_name = 'xyzt'
+    def __getattr__(self, name):
+        cls = type(self)
+        if len(name)==1:
+            pos = cls.shortcut_name.find(name)
+            if 0<=pos<len(self._components):
+                return self[pos]
+        msg = '{.__name__!r} has no attribute {!r}'
+        raise AttributeError(msg.format(cls, name))
+    def __setattr__(self, name, value):
+        cls = type(self)
+        if len(name)==1:
+            if name in cls.shortcut_name:
+                error = f'readonly attributes {name}'
+            elif name.islower():
+                error = ("Can't set attribute 'a'~'z' in " 
+                    f"{cls.__name__}")
+            else:
+                error=""
+            if error:
+                raise AttributeError(error)
+        super().__setattr__(name, value)
+    def __hash__(self):
+        return reduce(operator.xor, (hash(i) for i in self))
+        
 ```
-
-
 
 
 
