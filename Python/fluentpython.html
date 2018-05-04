@@ -3694,7 +3694,143 @@ AttributeError<span class="token punctuation">:</span> Can<span class="token str
             <span class="token keyword">if</span> a<span class="token operator">!=</span>b<span class="token punctuation">:</span>
                 <span class="token keyword">return</span> <span class="token boolean">False</span>
         <span class="token keyword">return</span> <span class="token boolean">True</span>
-</pre><pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> math
+</pre><p>上面的程序还可以减少行数：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">    <span class="token keyword">def</span> <span class="token function">__eq__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> other<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token operator">==</span><span class="token builtin">len</span><span class="token punctuation">(</span>other<span class="token punctuation">)</span> <span class="token operator">and</span> 
+            <span class="token builtin">any</span><span class="token punctuation">(</span>i<span class="token operator">==</span>j <span class="token keyword">for</span> i<span class="token punctuation">,</span>j <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span>other<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>出色的 zip 函数：使用 for 循环迭代元素不用处理索引变量，还能避免很多缺陷。其中一个是内置的 zip 函数，使用 zip 函数能轻松地并行迭代两个或更多可迭代对象，它返回的元组可以拆包变成变量。</p>
+<blockquote>
+<p>zip函数的名字取自拉链系结物（zipper fastener），因为这个物品用于把两个拉链边的链牙咬合在一起，这形象地说明了 zip(left, right) 的作用。zip函数与文件压缩没有关系。</p>
+</blockquote>
+<p>zip内置函数的使用示例：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'abc'</span><span class="token punctuation">)</span>
+<span class="token operator">&lt;</span><span class="token builtin">zip</span> <span class="token builtin">object</span> at <span class="token number">0x1046cb548</span><span class="token operator">></span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'abc'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">list</span><span class="token punctuation">(</span><span class="token builtin">zip</span><span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'abc'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">1.1</span><span class="token punctuation">,</span><span class="token number">2.2</span><span class="token punctuation">,</span><span class="token number">3.3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token number">1.1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">,</span> <span class="token number">2.2</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> itertools <span class="token keyword">import</span> zip_longest
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">list</span><span class="token punctuation">(</span>zip_longest<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'abc'</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token number">0.0</span><span class="token punctuation">,</span><span class="token number">1.1</span><span class="token punctuation">,</span><span class="token number">2.2</span><span class="token punctuation">,</span><span class="token number">3.3</span><span class="token punctuation">]</span><span class="token punctuation">,</span>fillvalue<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token number">1.1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">,</span> <span class="token number">2.2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3.3</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+</pre><h3 class="mume-header" id="%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB">延伸阅读</h3>
+
+<p>强大的高阶函数 <code>reduce</code> 也叫合拢、累计、聚合、压缩和注入。</p>
+<h4 class="mume-header" id="%E6%9D%82%E8%B0%88">杂谈</h4>
+
+<p>协议不是 Python 发明的，Smalltalk 团队，也就是 “面向对象”的发明者，使用“协议”这个词表示现在我们称之为接口的特性。某些 Smalltalk 编程环境允许程序员把一组方法标记为协议，但这不过是一种文档，用于辅助导航，语言不对其施加特定措施。</p>
+<p>在 Python 文档中，如果看到“文件类对象”这样的表述，通常说的就是协议。这是一种简短的说法，意思是：“行为基本与文件一致，实现了部分文件接口，满足上下文相关需求的东西。”</p>
+<h2 class="mume-header" id="%E6%8E%A5%E5%8F%A3%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">接口：从协议到抽象基类</h2>
+
+<blockquote>
+<p>抽象类表示接口。<br>——Bjarne Stroustrup，C++之父</p>
+</blockquote>
+<p>本章讨论的话题是接口：从鸭子类型的代表特征动态协议，到使接口更加明确、能验证实现是否符合规定的抽象基类（Abstract Base Class，ABC）。</p>
+<p>Python 语言诞生 15 年后，PYthon2.6 才引入抽象基类。</p>
+<h3 class="mume-header" id="python-%E6%96%87%E5%8C%96%E4%B8%AD%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%8D%8F%E8%AE%AE">Python 文化中的接口和协议</h3>
+
+<p>引入抽象基类之前，Python就已经非常成功了，即便现在也很少有代码使用抽象基类。</p>
+<p>接口在动态类型语言中是怎样运作的呢？首先，基本的事实是，Python语言没有interface关键字，而且除了抽象基类，每个类都有接口：类实现或继承的公开属性（方法或数据属性），包括特殊的方法，如<code>__format__</code>、<code>__getitem__</code> 等。</p>
+<p>按照定义，受保护的属性和私有属性不在接口中：即便是“受保护的”属性，也只是采用命名约定实现（单个前导下划线），私有属性可以轻松地访问，原因也是如此。</p>
+<p>关于接口，这里有个使用的补充定义：对象公开方法的子集，让对象在系统中扮演特定的角色，Python 文档中的“文件类对象”或“可迭代对象”就是这个意思。接口是实现特定角色的方法的集合，这样理解正是 Smalltalk 程序员所说的协议，其他动态语言社区都借鉴了这个术语。协议与继承没有关系，一个类可能会实现多个接口，从而让实例扮演多个角色。</p>
+<p>协议是接口，但不是正式的（只由文档和约定定义），因此协议不能像正式接口那样施加限制（本章后面会说明抽象基类对接口一致性的强制）。一个类可能只实现部分接口，这是允许的。有时，某些 API 只要求“文件类对象”返回字节序列 <code>.read()</code> 方法。在特定的上下文中可能需要其他文件操作方法，也可能不需要。</p>
+<p>序列协议是 Python 最基础的协议之一。即便对象只实现了那个协议中最基本的一部分，解释器也会负责任地处理。</p>
+<h3 class="mume-header" id="python-%E5%96%9C%E6%AC%A2%E5%BA%8F%E5%88%97">Python 喜欢序列</h3>
+
+<p>Python 数据模型的哲学是尽量支持基本协议。对序列来说，即便是最简单的实现，Python 也会力求做到最好。</p>
+<p>下面的 foo 类没有继承 abc.Sequence，而且只实现了协议的一个方法：<code>__getitem__</code>（没有实现<code>__len__</code>），这样也足够访问元素、迭代器和使用 in 运算符了：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">Foo</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">__getitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>         <span class="token keyword">return</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">[</span>pos<span class="token punctuation">]</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> f <span class="token operator">=</span> Foo<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token operator">>></span><span class="token operator">></span> f<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+<span class="token number">10</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">for</span> i <span class="token keyword">in</span> f<span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token number">0</span>
+<span class="token number">10</span>
+<span class="token number">20</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token number">20</span> <span class="token keyword">in</span> f
+<span class="token boolean">True</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token number">15</span> <span class="token keyword">in</span> f
+<span class="token boolean">False</span>
+</pre><p>虽然没有 <code>__iter__</code> 和 <code>__contains__</code> 方法，Python 会调用 <code>__getitem__</code> 方法，设法让迭代器和in运算符可用。</p>
+<p>Python 中的迭代是鸭子类型的一种极端形式：为了迭代对象，解释器会尝试调用两个不同的方法。</p>
+<h3 class="mume-header" id="%E4%BD%BF%E7%94%A8%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81%E5%9C%A8%E8%BF%90%E8%A1%8C%E6%97%B6%E5%AE%9E%E7%8E%B0%E5%8D%8F%E8%AE%AE">使用猴子补丁在运行时实现协议</h3>
+
+<p>特殊方法 <code>__setitem__</code> 为序列元素赋值。</p>
+<p>猴子补丁：在运行时修改类或模块，而不改动源码。猴子补丁很强大，但是打补丁的代码与要打补丁的程序耦合十分紧密，而且往往要处理隐藏和没有文档的部分。</p>
+<h3 class="mume-header" id="alex-martelli-%E7%9A%84%E6%B0%B4%E7%A6%BD">Alex Martelli 的水禽</h3>
+
+<p>对于 Python 来说，鸭子类型基本上是指避免使用 isinstance 检查对象的类型（更别提 type(foo) is bar）这种更糟的检查方式了，这样做没有任何的好处，甚至禁止最简单的继承方式。</p>
+<p>总的来说，鸭子类型在很多情况下十分有用：但是在其他情况下，随着发展，通常有更好的方式。</p>
+<p>其实，抽象基类的本质就是几个特殊方法：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">class</span> <span class="token class-name">Struggle</span><span class="token punctuation">:</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>     <span class="token keyword">def</span> <span class="token function">__len__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token keyword">return</span> <span class="token number">23</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> 
+<span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">from</span> collections <span class="token keyword">import</span> abc
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>Struggle<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> abc<span class="token punctuation">.</span>Sized<span class="token punctuation">)</span>
+<span class="token boolean">True</span>
+</pre><p>可以看出，无需注册，<code>abc.Sized</code> 也能把 Struggle 识别为自己的子类，只要实现了特殊方法 <code>__len__</code> 即可。</p>
+<p>即使是抽象基类，也不能滥用 isinstance 检查，用得多了可能导致代码异味，即表明面向对象设计得不好。在一连串 if/elif/elif 中使用 isinstance 做检查，然后根据对象的类型执行不同的操作，通常是不好的做法；此时应该使用多态，即采用一定的方式定义类，让解释器把调用分派给正确的方法，而不是使用 if/elif/elif 块硬编码分派逻辑。</p>
+<blockquote>
+<p>抽象基类是用于封装框架引用的一般性概念和抽象，例如“一个序列”和“一个确切的数”。基本上不需要自己编写新的抽象基类，只要正确使用现有的抽象基类，就能获得 99.9% 的好处，而不用冒着设计不当导致的巨大风险。</p>
+</blockquote>
+<h3 class="mume-header" id="%E5%AE%9A%E4%B9%89%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E5%AD%90%E7%B1%BB">定义抽象基类的子类</h3>
+
+<p>我们将遵循 Martelli 的建议：先利用现有的抽象基类（collections.MutableSequence） ，然后再斗胆自己定义。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> collections
+Card <span class="token operator">=</span> collections<span class="token punctuation">.</span>namedtuple<span class="token punctuation">(</span><span class="token string">'Card'</span><span class="token punctuation">,</span> <span class="token string">'rank suit'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">FrenchDeck</span><span class="token punctuation">(</span>collections<span class="token punctuation">.</span>MutableSequence<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    ranks <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token builtin">str</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">11</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">+</span><span class="token builtin">list</span><span class="token punctuation">(</span><span class="token string">'JQKA'</span><span class="token punctuation">)</span>
+    suits <span class="token operator">=</span> <span class="token string">'spades diamonds clubs hearts'</span><span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_card <span class="token operator">=</span> <span class="token punctuation">[</span>Card<span class="token punctuation">(</span>i<span class="token punctuation">,</span>j<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> ranks <span class="token keyword">for</span> j <span class="token keyword">in</span> suits<span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">__len__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">__getitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>_card<span class="token punctuation">[</span>pos<span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">__setitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_card<span class="token punctuation">[</span>pos<span class="token punctuation">]</span> <span class="token operator">=</span> value
+    <span class="token comment"># 继承MutableSequence的类必须实现 __delitem__ 方法</span>
+    <span class="token comment"># 这是MutableSequence的一个抽象基类</span>
+    <span class="token keyword">def</span> <span class="token function">__delitem__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pos<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">del</span> self<span class="token punctuation">.</span>_card<span class="token punctuation">[</span>pos<span class="token punctuation">]</span>
+    <span class="token keyword">def</span> <span class="token function">insert</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pos<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>_card<span class="token punctuation">.</span>insert<span class="token punctuation">(</span>pos<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+</pre><blockquote>
+<p>要想实现子类，我们可以覆盖从抽象基类中继承的方法，以更高效的方式重新实现。例如 <code>__contains__</code> 方法会全面扫描序列，可是如果你定义的序列按顺序保存元素，那就可以重新定义 <code>__contains__</code> 方法，使用 <code>bisect</code> 函数做二分查找，从而提升搜索速度。</p>
+</blockquote>
+<p>为了充分使用抽象基类，我们要知道有哪些抽象基类可用。</p>
+<h3 class="mume-header" id="%E6%A0%87%E5%87%86%E5%BA%93%E4%B8%AD%E7%9A%84%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">标准库中的抽象基类</h3>
+
+<p>从 Python2.6 开始，标准库提供了抽象基类，大多数抽象基类在 collections.abc 模块中定义，不过其他地方也有。例如，numbers 和 io 包中有一些抽象基类。但是，collections.abc 中的抽象基类最常用。</p>
+<h4 class="mume-header" id="collectionabc-%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">collection.abc 模块中的抽象基类</h4>
+
+<blockquote>
+<p>标准库中有两个名为abc的模块，这里说的是collections.abc。为了减少加载时间，Python3.4在collections包之外实现了这个模块；另一个 abc 模块就是abc，这里定义的是 abc.ABC 类，每个抽象基类都依赖这个类，但是不用导入它，除非定义新抽象基类。</p>
+</blockquote>
+<p>Python3.4 在 collections.abc 模块中定义了16个抽象基类：<img src="../assets/FPfig11_3.png" alt="11-3"></p>
+<p><strong>Iterable、Container、Sized</strong></p>
+<p>各个集合应该继承这3个抽象基类，或者至少实现兼容的协议。Iterable通过 <code>__iter__</code> 方法支持迭代，Container 通过 <code>__contains__</code> 方法支持 in 运算符，<code>Sized</code> 通过 <code>__len__</code> 方法支持 len() 函数。</p>
+<p><strong>Sequence、Mapping和Set</strong><br>
+这3个是主要的不可变集合类型，而且各自都有可变的子类。</p>
+<p>继 collections.abc 之后，标准库中最有用的抽象基类包是 numbers。</p>
+<h4 class="mume-header" id="%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%95%B0%E5%AD%97%E5%A1%94">抽象基类的数字塔</h4>
+
+<p>numbers 包定义的是“数字塔”（即各个抽象基类的层次结构是线性的），其中 Number 是位于最顶端的超类，随后是 Complex 子类，依次往下，最底端是 Integerl 类。</p>
+<p>如果想检查一个数是不是整数，可以使用 isinstance(x, numbers.Integeral)，这样，代码就能接受 int、bool(int 的子类)，或者外部库使用 numbers 抽象基类注册的其他类型。为了满足检查的需要，你或者你的 API 的用户始终可以把兼容的类型注册为 numbers.Integral 的虚拟子类。</p>
+<p>与之类似，如果一个值可能是浮点数类型，可以使用 isinstance(x, numbers.Real) 检查。这样，代码就能接受 bool/int/float/fractions.Fraction，或者外部库（如 NumPy，它做了相应的注册）提供的非复数类型。</p>
+<blockquote>
+<p>decimal.Decimal 没有注册为 number.Real 的虚拟子类，这有点奇怪，没注册的原因是，如果你的程序需要 Decimal 的精度，要分支与其他低精度数字类型相混淆，尤其是浮点数。</p>
+</blockquote>
+<p>了解了一些现有的抽象基类后，我们将从零开始实现一个抽象基类，然后实际使用，以此实践白鹅类型，这么做的目的不是鼓励每个人都立即开始定义抽象基类，而是教你怎么阅读标准库和其他包中的抽象基类源码。</p>
+<h3 class="mume-header" id="%E5%AE%9A%E4%B9%89%E5%B9%B6%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">定义并使用一个抽象基类</h3>
+
+<p>为了证明有必要定义抽象基类，我们要在框架中找到它的使用场景。想象一下：你要在网站或移动应用中显示随机广告，但是在整个广告清单乱转一遍之前，不重复显示广告。假设我们在构建一个广告管理框架，名为ADAM，它的职责之一是，支持用户提供随机挑选无重复类。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> math
 <span class="token keyword">class</span> <span class="token class-name">Vector</span><span class="token punctuation">:</span>
     typecode <span class="token operator">=</span> <span class="token string">'d'</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> components<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -3964,6 +4100,27 @@ AttributeError<span class="token punctuation">:</span> Can<span class="token str
 </li>
 <li><a href="#vector-%E7%B1%BB%E7%AC%AC3%E7%89%88%E5%8A%A8%E6%80%81%E5%AD%98%E5%8F%96%E5%B1%9E%E6%80%A7">Vector 类第3版：动态存取属性</a></li>
 <li><a href="#vector-%E7%AC%AC4%E7%89%88%E6%95%A3%E5%88%97%E5%92%8C%E5%BF%AB%E9%80%9F%E7%AD%89%E5%80%BC%E6%B5%8B%E8%AF%95">Vector 第4版：散列和快速等值测试</a></li>
+<li><a href="#%E5%BB%B6%E4%BC%B8%E9%98%85%E8%AF%BB">延伸阅读</a>
+<ul>
+<li><a href="#%E6%9D%82%E8%B0%88">杂谈</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%8E%A5%E5%8F%A3%E4%BB%8E%E5%8D%8F%E8%AE%AE%E5%88%B0%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">接口：从协议到抽象基类</a>
+<ul>
+<li><a href="#python-%E6%96%87%E5%8C%96%E4%B8%AD%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%92%8C%E5%8D%8F%E8%AE%AE">Python 文化中的接口和协议</a></li>
+<li><a href="#python-%E5%96%9C%E6%AC%A2%E5%BA%8F%E5%88%97">Python 喜欢序列</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E7%8C%B4%E5%AD%90%E8%A1%A5%E4%B8%81%E5%9C%A8%E8%BF%90%E8%A1%8C%E6%97%B6%E5%AE%9E%E7%8E%B0%E5%8D%8F%E8%AE%AE">使用猴子补丁在运行时实现协议</a></li>
+<li><a href="#alex-martelli-%E7%9A%84%E6%B0%B4%E7%A6%BD">Alex Martelli 的水禽</a></li>
+<li><a href="#%E5%AE%9A%E4%B9%89%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E5%AD%90%E7%B1%BB">定义抽象基类的子类</a></li>
+<li><a href="#%E6%A0%87%E5%87%86%E5%BA%93%E4%B8%AD%E7%9A%84%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">标准库中的抽象基类</a>
+<ul>
+<li><a href="#collectionabc-%E6%A8%A1%E5%9D%97%E4%B8%AD%E7%9A%84%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">collection.abc 模块中的抽象基类</a></li>
+<li><a href="#%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB%E7%9A%84%E6%95%B0%E5%AD%97%E5%A1%94">抽象基类的数字塔</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%9A%E4%B9%89%E5%B9%B6%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E6%8A%BD%E8%B1%A1%E5%9F%BA%E7%B1%BB">定义并使用一个抽象基类</a></li>
 </ul>
 </li>
 </ul>

@@ -3746,6 +3746,183 @@ Vector 的 `__hash__` 为：
                 return False
         return True
 ```
+上面的程序还可以减少行数：
+```python
+    def __eq__(self, other):
+        return (len(self)==len(other) and 
+            any(i==j for i,j in zip(self,other)))
+```
+
+出色的 zip 函数：使用 for 循环迭代元素不用处理索引变量，还能避免很多缺陷。其中一个是内置的 zip 函数，使用 zip 函数能轻松地并行迭代两个或更多可迭代对象，它返回的元组可以拆包变成变量。
+
+> zip函数的名字取自拉链系结物（zipper fastener），因为这个物品用于把两个拉链边的链牙咬合在一起，这形象地说明了 zip(left, right) 的作用。zip函数与文件压缩没有关系。
+
+zip内置函数的使用示例：
+```python
+>>> zip(range(3),'abc')
+<zip object at 0x1046cb548>
+>>> list(zip(range(3), 'abc'))
+[(0, 'a'), (1, 'b'), (2, 'c')]
+>>> list(zip(range(3), 'abc', [0.0,1.1,2.2,3.3]))
+[(0, 'a', 0.0), (1, 'b', 1.1), (2, 'c', 2.2)]
+>>> from itertools import zip_longest
+>>> list(zip_longest(range(3),'abc',[0.0,1.1,2.2,3.3],fillvalue=-1))
+[(0, 'a', 0.0), (1, 'b', 1.1), (2, 'c', 2.2), (-1, -1, 3.3)]
+```
+
+### 延伸阅读
+
+强大的高阶函数 `reduce` 也叫合拢、累计、聚合、压缩和注入。
+
+#### 杂谈
+
+协议不是 Python 发明的，Smalltalk 团队，也就是 “面向对象”的发明者，使用“协议”这个词表示现在我们称之为接口的特性。某些 Smalltalk 编程环境允许程序员把一组方法标记为协议，但这不过是一种文档，用于辅助导航，语言不对其施加特定措施。
+
+在 Python 文档中，如果看到“文件类对象”这样的表述，通常说的就是协议。这是一种简短的说法，意思是：“行为基本与文件一致，实现了部分文件接口，满足上下文相关需求的东西。”
+
+## 接口：从协议到抽象基类
+
+> 抽象类表示接口。<br>——Bjarne Stroustrup，C++之父
+
+本章讨论的话题是接口：从鸭子类型的代表特征动态协议，到使接口更加明确、能验证实现是否符合规定的抽象基类（Abstract Base Class，ABC）。
+
+Python 语言诞生 15 年后，PYthon2.6 才引入抽象基类。
+
+### Python 文化中的接口和协议
+
+引入抽象基类之前，Python就已经非常成功了，即便现在也很少有代码使用抽象基类。
+
+接口在动态类型语言中是怎样运作的呢？首先，基本的事实是，Python语言没有interface关键字，而且除了抽象基类，每个类都有接口：类实现或继承的公开属性（方法或数据属性），包括特殊的方法，如`__format__`、`__getitem__` 等。
+
+按照定义，受保护的属性和私有属性不在接口中：即便是“受保护的”属性，也只是采用命名约定实现（单个前导下划线），私有属性可以轻松地访问，原因也是如此。
+
+关于接口，这里有个使用的补充定义：对象公开方法的子集，让对象在系统中扮演特定的角色，Python 文档中的“文件类对象”或“可迭代对象”就是这个意思。接口是实现特定角色的方法的集合，这样理解正是 Smalltalk 程序员所说的协议，其他动态语言社区都借鉴了这个术语。协议与继承没有关系，一个类可能会实现多个接口，从而让实例扮演多个角色。
+
+协议是接口，但不是正式的（只由文档和约定定义），因此协议不能像正式接口那样施加限制（本章后面会说明抽象基类对接口一致性的强制）。一个类可能只实现部分接口，这是允许的。有时，某些 API 只要求“文件类对象”返回字节序列 `.read()` 方法。在特定的上下文中可能需要其他文件操作方法，也可能不需要。
+
+序列协议是 Python 最基础的协议之一。即便对象只实现了那个协议中最基本的一部分，解释器也会负责任地处理。
+
+### Python 喜欢序列
+
+Python 数据模型的哲学是尽量支持基本协议。对序列来说，即便是最简单的实现，Python 也会力求做到最好。
+
+下面的 foo 类没有继承 abc.Sequence，而且只实现了协议的一个方法：`__getitem__`（没有实现`__len__`），这样也足够访问元素、迭代器和使用 in 运算符了：
+```python
+>>> class Foo:
+...     def __getitem__(self, pos):
+...         return range(0, 30, 10)[pos]
+... 
+>>> f = Foo()
+>>> f[1]
+10
+>>> for i in f:
+...     print(i)
+... 
+0
+10
+20
+>>> 20 in f
+True
+>>> 15 in f
+False
+```
+虽然没有 `__iter__` 和 `__contains__` 方法，Python 会调用 `__getitem__` 方法，设法让迭代器和in运算符可用。
+
+Python 中的迭代是鸭子类型的一种极端形式：为了迭代对象，解释器会尝试调用两个不同的方法。
+
+### 使用猴子补丁在运行时实现协议
+
+特殊方法 `__setitem__` 为序列元素赋值。
+
+猴子补丁：在运行时修改类或模块，而不改动源码。猴子补丁很强大，但是打补丁的代码与要打补丁的程序耦合十分紧密，而且往往要处理隐藏和没有文档的部分。
+
+### Alex Martelli 的水禽
+
+对于 Python 来说，鸭子类型基本上是指避免使用 isinstance 检查对象的类型（更别提 type(foo) is bar）这种更糟的检查方式了，这样做没有任何的好处，甚至禁止最简单的继承方式。
+
+总的来说，鸭子类型在很多情况下十分有用：但是在其他情况下，随着发展，通常有更好的方式。
+
+其实，抽象基类的本质就是几个特殊方法：
+```python
+>>> class Struggle:
+...     def __len__(self):return 23
+... 
+>>> from collections import abc
+>>> isinstance(Struggle(), abc.Sized)
+True
+```
+可以看出，无需注册，`abc.Sized` 也能把 Struggle 识别为自己的子类，只要实现了特殊方法 `__len__` 即可。
+
+即使是抽象基类，也不能滥用 isinstance 检查，用得多了可能导致代码异味，即表明面向对象设计得不好。在一连串 if/elif/elif 中使用 isinstance 做检查，然后根据对象的类型执行不同的操作，通常是不好的做法；此时应该使用多态，即采用一定的方式定义类，让解释器把调用分派给正确的方法，而不是使用 if/elif/elif 块硬编码分派逻辑。
+
+> 抽象基类是用于封装框架引用的一般性概念和抽象，例如“一个序列”和“一个确切的数”。基本上不需要自己编写新的抽象基类，只要正确使用现有的抽象基类，就能获得 99.9% 的好处，而不用冒着设计不当导致的巨大风险。
+
+### 定义抽象基类的子类
+
+我们将遵循 Martelli 的建议：先利用现有的抽象基类（collections.MutableSequence） ，然后再斗胆自己定义。
+
+```python
+import collections
+Card = collections.namedtuple('Card', 'rank suit')
+
+class FrenchDeck(collections.MutableSequence):
+    ranks = [str(i) for i in range(2,11)]+list('JQKA')
+    suits = 'spades diamonds clubs hearts'.split()
+    def __init__(self):
+        self._card = [Card(i,j) for i in ranks for j in suits]
+    def __len__(self):
+        return len(self)
+    def __getitem__(self, pos):
+        return self._card[pos]
+    def __setitem__(self, pos, value):
+        self._card[pos] = value
+    # 继承MutableSequence的类必须实现 __delitem__ 方法
+    # 这是MutableSequence的一个抽象基类
+    def __delitem__(self, pos):
+        del self._card[pos]
+    def insert(self, pos, value):
+        self._card.insert(pos, value)
+```
+> 要想实现子类，我们可以覆盖从抽象基类中继承的方法，以更高效的方式重新实现。例如 `__contains__` 方法会全面扫描序列，可是如果你定义的序列按顺序保存元素，那就可以重新定义 `__contains__` 方法，使用 `bisect` 函数做二分查找，从而提升搜索速度。
+
+为了充分使用抽象基类，我们要知道有哪些抽象基类可用。
+
+### 标准库中的抽象基类
+
+从 Python2.6 开始，标准库提供了抽象基类，大多数抽象基类在 collections.abc 模块中定义，不过其他地方也有。例如，numbers 和 io 包中有一些抽象基类。但是，collections.abc 中的抽象基类最常用。
+
+#### collection.abc 模块中的抽象基类
+
+> 标准库中有两个名为abc的模块，这里说的是collections.abc。为了减少加载时间，Python3.4在collections包之外实现了这个模块；另一个 abc 模块就是abc，这里定义的是 abc.ABC 类，每个抽象基类都依赖这个类，但是不用导入它，除非定义新抽象基类。
+
+Python3.4 在 collections.abc 模块中定义了16个抽象基类：![11-3](/assets/FPfig11_3.png)
+
+**Iterable、Container、Sized**
+
+各个集合应该继承这3个抽象基类，或者至少实现兼容的协议。Iterable通过 `__iter__` 方法支持迭代，Container 通过 `__contains__` 方法支持 in 运算符，`Sized` 通过 `__len__` 方法支持 len() 函数。
+
+**Sequence、Mapping和Set**
+这3个是主要的不可变集合类型，而且各自都有可变的子类。
+
+继 collections.abc 之后，标准库中最有用的抽象基类包是 numbers。
+
+#### 抽象基类的数字塔
+
+numbers 包定义的是“数字塔”（即各个抽象基类的层次结构是线性的），其中 Number 是位于最顶端的超类，随后是 Complex 子类，依次往下，最底端是 Integerl 类。
+
+如果想检查一个数是不是整数，可以使用 isinstance(x, numbers.Integeral)，这样，代码就能接受 int、bool(int 的子类)，或者外部库使用 numbers 抽象基类注册的其他类型。为了满足检查的需要，你或者你的 API 的用户始终可以把兼容的类型注册为 numbers.Integral 的虚拟子类。
+
+与之类似，如果一个值可能是浮点数类型，可以使用 isinstance(x, numbers.Real) 检查。这样，代码就能接受 bool/int/float/fractions.Fraction，或者外部库（如 NumPy，它做了相应的注册）提供的非复数类型。
+
+> decimal.Decimal 没有注册为 number.Real 的虚拟子类，这有点奇怪，没注册的原因是，如果你的程序需要 Decimal 的精度，要分支与其他低精度数字类型相混淆，尤其是浮点数。
+
+了解了一些现有的抽象基类后，我们将从零开始实现一个抽象基类，然后实际使用，以此实践白鹅类型，这么做的目的不是鼓励每个人都立即开始定义抽象基类，而是教你怎么阅读标准库和其他包中的抽象基类源码。
+
+
+### 定义并使用一个抽象基类
+
+为了证明有必要定义抽象基类，我们要在框架中找到它的使用场景。想象一下：你要在网站或移动应用中显示随机广告，但是在整个广告清单乱转一遍之前，不重复显示广告。假设我们在构建一个广告管理框架，名为ADAM，它的职责之一是，支持用户提供随机挑选无重复类。
+
 
 
 ```python
