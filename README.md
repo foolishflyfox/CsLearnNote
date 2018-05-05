@@ -23,6 +23,7 @@
 - [学习人工智能的路线图](/AdvancedAI/AISummary.html) （ [pdf](/assets/AISummary.pdf) ）
 - [人工智能的定义与分类](/AdvancedAI/AIDefine.html)
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](/AdvancedAI/Search.html)
+- [笔记](/AdvancedAI/note.html)
 
 
 
@@ -69,7 +70,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-29 : 770. Basic Calculator IV](/LeetCode/770_BasicCalculatorIV.html)<code class="red">hard hard</code>
 
-- [2018-05-04 : 417. Pacific Atlantic Water Flow](/LeetCode/417_PacificAtlanticWaterFlow.html)
+- [2018-05-04 : 417. Pacific Atlantic Water Flow 扩散策略](/LeetCode/417_PacificAtlanticWaterFlow.html)
+
+- [2018-05-05 : 328. Odd Even Linked List 单项链表整理-Python](/LeetCode/328_OddEvenLinkedList.md)
 
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
