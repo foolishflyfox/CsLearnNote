@@ -46,7 +46,7 @@
 
 ## 心理学
 
-- [《问题背后的心理学》Note](/PsychologyInProblems.html)
+- [《问题背后的心理学》Note](/Psychology/PsychologyInProblems.html)
 
 ## LeetCode
 
