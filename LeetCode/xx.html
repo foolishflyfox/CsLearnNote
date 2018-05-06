@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>PsychologyInProblems</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="%E5%8E%9F%E6%9D%A5%E5%A6%82%E6%AD%A4%E9%97%AE%E9%A2%98%E8%83%8C%E5%90%8E%E7%9A%84%E5%BF%83%E7%90%86%E5%AD%A6-%E7%AC%94%E8%AE%B0">原来如此——问题背后的心理学 (笔记)</h1>
+
+<h2 class="mume-header" id="%E5%9B%9A%E5%BE%92%E5%9B%B0%E5%A2%83">囚徒困境</h2>
+
+<p>有两个涉嫌共同作案偷窃的嫌疑人甲和乙被带进警察局。假定警方对两名犯罪嫌疑人实行隔离关押，隔离审讯，每个犯罪嫌疑人都无法观察到，对方的选择(无法串供)。</p>
+<p>警方怀疑他们作案，但并没有掌握他们作案的确凿证据，于是明确地分别告知两名嫌疑人：对他们犯罪事实的认定及相应的量刑，完全取决于他们自己供认与否。如果一方与警方合作，坦白所做违法之事，而另一方抵赖，招认方将无罪释放，另一方则会被判重刑10年；如果双方都与警方合作共同招认，各被判刑5年；而如果双方均不认罪，因为警察找不到其他证明他们违法的证据，则无罪释放。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>甲-抵赖</strong></th>
+<th><strong>甲坦白</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>乙-抵赖</strong></td>
+<td>甲：无罪<br>乙：无罪</td>
+<td>甲：无罪<br>乙：10年</td>
+</tr>
+<tr>
+<td><strong>乙-坦白</strong></td>
+<td>甲：10年<br>乙：无罪</td>
+<td>甲：5年<br>乙：5年</td>
+</tr>
+</tbody>
+</table>
+<p>最终，甲和乙都选择坦白的可能性最大。</p>
+<blockquote>
+<p>每个人从自己受益最大化出发来考虑问题，最终往往落得两败俱伤的结果。<strong>个人的理性计算，往往会导致集体的非理性结局。</strong> —— 美国数学家图克</p>
+</blockquote>
+<h2 class="mume-header" id="%E8%A7%86%E7%BD%91%E8%86%9C%E6%95%88%E5%BA%94">视网膜效应</h2>
+
+<h3 class="mume-header" id="%E6%A1%88%E4%BE%8B1">案例1</h3>
+
+<p>宋代著名学者苏东坡和佛印和尚是好朋友。</p>
+<p>一天，苏东坡去拜访佛印，与佛印相对打坐。打坐过程中两个人又像往常一样抖了机灵，佛印问苏东坡：“你看我在打坐的时候像什么?”。苏东坡谑心顿生，对佛印开玩笑说：“我看见你是一堆狗屎。你看我像什么呢?”。没想到佛印不但没生气，反而面带微笑地说：“我看你法相好庄严是一尊金佛。”</p>
+<p>苏东坡觉得自己总算占了佛印的便宜，很是高兴。回家以后，苏东坡得意地向妹妹提起这件事。苏小妹说：“哥哥你错了。佛家说‘佛心自现’，你看别人是什么，就表示你自已是什么。</p>
+<h3 class="mume-header" id="%E6%A1%88%E4%BE%8B2">案例2</h3>
+
+<p>每一个人的眼睛，都是跟着心走！</p>
+<p>很多朋友都曾经有过这样的买衣服的经历：夏天快到了，你决定买件颜色特别一点的衣服。因为你发现很多人都买蓝色或黑色的，所以你选择了红色。然而，当你正为自己买到一件与众不同的衣服而沾沾自喜时却突然发现办公楼里、小巷子里，甚至于在小区里，都有许多穿着红衣服的人。</p>
+<p>为什么大家突然间都开始买红色的衣服了呢?</p>
+<p>其实，并不是大家突然间不约而同地买红衣服，而是当你买了一件红衣服以后，对穿红衣服的人特别注意罢了。</p>
+<blockquote>
+<p>一个人的身心状态会影响他的视线，当他面对一种不明的刺激情景时，常常会使隐藏在潜意识中的状态、欲望和动机冲突等暴露出来。<br>
+<strong>每个人都是立足于自己的状态和角度去观察和推论外界的事物，每个人眼里的世界，只不过是他精神世界的投射而已。——瑞士精神病学家罗夏</strong><br>
+所有人面对的问题都大同小异，只不过有些人过度关注于生活中消极的一面，并且把它放大，仿佛在显微镜下生活。他们内心深处的不安全感造成紧张易怒的情绪，从而形成了负面的投射作用。</p>
+</blockquote>
+<h2 class="mume-header" id="%E4%B9%A0%E5%BE%97%E6%80%A7%E6%97%A0%E5%8A%A9">习得性无助</h2>
+
+<p>马戏团中有一头小象，人们把它用绳子绑在一根木桩上。小象的力量比较小，即使再用力也挣脱不开。后来，小象变成了大象，即使是能够轻易地挣脱绳索，它也不再进行尝试。【来自 The West World - Season 2 - Sceond episode】</p>
+<blockquote>
+<p>反复挫折与失败的记忆，会使人丧失信心，习惯于无助和放弃。——美国心理学家塞利格曼</p>
+</blockquote>
+<h2 class="mume-header" id="%E9%9C%8D%E6%A1%91%E6%95%88%E5%BA%94">霍桑效应</h2>
+
+<p>1927年，一群衣冠楚楚的人来到美国芝加哥郊外的一家工厂，开始进行一项长达数年的缜密行动。</p>
+<p>这是一家专门为美国电报电话公司生产电信设备的企业，有比较完善的娱乐设施、医疗制度和养老金制度，但工人们仍然情绪低落，生产状况很不理想。这次填密行动就是试图通过试验来找出其中的原因。项目的主持人哈佛大学教授乔治·艾顿·梅奥和助手们，在两年多的时间里，逐一找工人进行个别谈话达两万余人次。在谈话过程中，他们态度和善，耐心地倾听着工人对厂方的各种意见和不满。这一谈话试验收到了意想不到的结果：工厂的产值大幅度提高。</p>
+<p>1933年，梅奥出版了《工业文明中的社会问题》，对实验进行了总结影响生产效率的根本因素不是工作条件，而是工人自身。 长期以来，工人对工厂的各种管理制度和方法有诸多不满，却无处发泄。“谈话试验”使他们将这些不满都发泄出来，并意识到自己“被关注”，因而归属感顿生，生产效率也有了提高。</p>
+<p>当人受到关注、不良情绪得到宣泄时，学习和交往的效率就会大大提高。社会心理学家将这种奇妙的现象称为“霍桑效应”。<strong>个人的物质利益在调动工作积极性上只具有次要的意义，群体间良好的人际关系才是调动工作积极性的决定性因素。</strong></p>
+<blockquote>
+<p>当人们受到关注，不良情绪得到宣泄时，学习和交往的效率就会大大增加。——哈佛大学教授梅奥</p>
+</blockquote>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E5%8E%9F%E6%9D%A5%E5%A6%82%E6%AD%A4%E9%97%AE%E9%A2%98%E8%83%8C%E5%90%8E%E7%9A%84%E5%BF%83%E7%90%86%E5%AD%A6-%E7%AC%94%E8%AE%B0">原来如此——问题背后的心理学 (笔记)</a>
+<ul>
+<li><a href="#%E5%9B%9A%E5%BE%92%E5%9B%B0%E5%A2%83">囚徒困境</a></li>
+<li><a href="#%E8%A7%86%E7%BD%91%E8%86%9C%E6%95%88%E5%BA%94">视网膜效应</a>
+<ul>
+<li><a href="#%E6%A1%88%E4%BE%8B1">案例1</a></li>
+<li><a href="#%E6%A1%88%E4%BE%8B2">案例2</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B9%A0%E5%BE%97%E6%80%A7%E6%97%A0%E5%8A%A9">习得性无助</a></li>
+<li><a href="#%E9%9C%8D%E6%A1%91%E6%95%88%E5%BA%94">霍桑效应</a></li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>
