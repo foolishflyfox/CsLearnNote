@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>Note</title>
+      <title>PychologyInProblems</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -238,137 +238,91 @@ code.language-yaml {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview   ">
-      <h2 class="mume-header" id="%E7%AC%AC2%E7%AB%A0-%E6%99%BA%E8%83%BDagent">第2章 智能Agent</h2>
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="%E5%8E%9F%E6%9D%A5%E5%A6%82%E6%AD%A4%E9%97%AE%E9%A2%98%E8%83%8C%E5%90%8E%E7%9A%84%E5%BF%83%E7%90%86%E5%AD%A6-%E7%AC%94%E8%AE%B0">原来如此——问题背后的心理学 (笔记)</h1>
 
-<p>环境的特性：</p>
-<ul>
-<li>完全可观察和部分可观察</li>
-<li>单Agent和多Agent</li>
-<li>确定的和随机的：如果环境的下一个状态完全取决于当前状态和Agent执行的动作，就说环境是确定的，否则就是随机的</li>
-<li>片段式和延续式：下一个片段不依赖于眼前的片段称为片段式，如装配汽车，否则就是延续式，如下棋</li>
-<li>静态、动态、半动态：环境在Agent计算过程中会变化，称为环境是动态的，环境、对计算结果的评价不随计算过程变化即为静态，环境不随计算过程变化，但评价随时间变化称为半静态</li>
-<li>离散的与连续的</li>
-<li>已知的与未知的：对默认规则是否已知，例如Agent如果不知道下棋规则，则环境是未知的</li>
-</ul>
+<h2 class="mume-header" id="%E5%9B%9A%E5%BE%92%E5%9B%B0%E5%A2%83">囚徒困境</h2>
+
+<p>有两个涉嫌共同作案偷窃的嫌疑人甲和乙被带进警察局。假定警方对两名犯罪嫌疑人实行隔离关押，隔离审讯，每个犯罪嫌疑人都无法观察到，对方的选择(无法串供)。</p>
+<p>警方怀疑他们作案，但并没有掌握他们作案的确凿证据，于是明确地分别告知两名嫌疑人：对他们犯罪事实的认定及相应的量刑，完全取决于他们自己供认与否。如果一方与警方合作，坦白所做违法之事，而另一方抵赖，招认方将无罪释放，另一方则会被判重刑10年；如果双方都与警方合作共同招认，各被判刑5年；而如果双方均不认罪，因为警察找不到其他证明他们违法的证据，则无罪释放。</p>
 <table>
 <thead>
 <tr>
-<th>Task Environment</th>
-<th>Observable</th>
-<th>Agents</th>
-<th>Deterministic</th>
-<th>Episodic</th>
-<th>Static</th>
-<th>Discrete</th>
+<th></th>
+<th><strong>甲-抵赖</strong></th>
+<th><strong>甲坦白</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Crossword Puzzle</td>
-<td>Fully</td>
-<td>Single</td>
-<td>Deterministic</td>
-<td>Sequential</td>
-<td>Static</td>
-<td>Discrete</td>
+<td><strong>乙-抵赖</strong></td>
+<td>甲：无罪<br>乙：无罪</td>
+<td>甲：无罪<br>乙：10年</td>
 </tr>
 <tr>
-<td>Chess with a clock</td>
-<td>Fully</td>
-<td>Multi</td>
-<td>Deterministic</td>
-<td>Sequential</td>
-<td>Semi</td>
-<td>Discrete</td>
-</tr>
-<tr>
-<td>Poker</td>
-<td>Partial</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Static</td>
-<td>Discrete</td>
-</tr>
-<tr>
-<td>Backgammon</td>
-<td>Fully</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Static</td>
-<td>Discrete</td>
-</tr>
-<tr>
-<td>Taxi Driving</td>
-<td>Partially</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Medical diagnosis</td>
-<td>Partially</td>
-<td>Single</td>
-<td>Sotchastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Image analysis</td>
-<td>Fully</td>
-<td>Single</td>
-<td>Deterministic</td>
-<td>Episodic</td>
-<td>Semi</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Part-picking Robot</td>
-<td>Partially</td>
-<td>Single</td>
-<td>Stochastic</td>
-<td>Episodic</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Refinery Control</td>
-<td>Partial</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Interactive English tutor</td>
-<td>Partial</td>
-<td>Single</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Discrete</td>
+<td><strong>乙-坦白</strong></td>
+<td>甲：10年<br>乙：无罪</td>
+<td>甲：5年<br>乙：5年</td>
 </tr>
 </tbody>
 </table>
-<p>Agent = Architecture + Program</p>
-<p>4 中基本的 Agent 程序：</p>
-<ol>
-<li>简单反射Agent</li>
-<li>基于模型的反射Agent</li>
-<li>基于目标的Agent</li>
-<li>基于效用的Agent</li>
-</ol>
-<p>学习 Agent 被划分为 4 个概念：Critic、Learning Element、Performance element、Problem generator 。</p>
-<p>学习元件否则改进提高，而性能元件否则选择外部行动。性能元件接受感知信息并决策，学习元件利用来自评判元件的反馈评价 Agent 做得如何，并确定应该如何修改性能元件以便将来做得更好。<strong>当设计学习特定技能的Agent时，第一个问题不是“我该如何让 Agent 学到这个技能”，而是“Agent一旦学会了这个技能，需要何种性能元件来行使该能力？”</strong> 评判元件根据固定的性能标准告诉学习元件Agent的运转情况。问题发生器的任务是：建议探索性任务。</p>
+<p>最终，甲和乙都选择坦白的可能性最大。</p>
+<blockquote>
+<p>每个人从自己受益最大化出发来考虑问题，最终往往落得两败俱伤的结果。<strong>个人的理性计算，往往会导致集体的非理性结局。</strong> —— 美国数学家图克</p>
+</blockquote>
+<h2 class="mume-header" id="%E8%A7%86%E7%BD%91%E8%86%9C%E6%95%88%E5%BA%94">视网膜效应</h2>
+
+<h3 class="mume-header" id="%E6%A1%88%E4%BE%8B1">案例1</h3>
+
+<p>宋代著名学者苏东坡和佛印和尚是好朋友。</p>
+<p>一天，苏东坡去拜访佛印，与佛印相对打坐。打坐过程中两个人又像往常一样抖了机灵，佛印问苏东坡：“你看我在打坐的时候像什么?”。苏东坡谑心顿生，对佛印开玩笑说：“我看见你是一堆狗屎。你看我像什么呢?”。没想到佛印不但没生气，反而面带微笑地说：“我看你法相好庄严是一尊金佛。”</p>
+<p>苏东坡觉得自己总算占了佛印的便宜，很是高兴。回家以后，苏东坡得意地向妹妹提起这件事。苏小妹说：“哥哥你错了。佛家说‘佛心自现’，你看别人是什么，就表示你自已是什么。</p>
+<h3 class="mume-header" id="%E6%A1%88%E4%BE%8B2">案例2</h3>
+
+<p>每一个人的眼睛，都是跟着心走！</p>
+<p>很多朋友都曾经有过这样的买衣服的经历：夏天快到了，你决定买件颜色特别一点的衣服。因为你发现很多人都买蓝色或黑色的，所以你选择了红色。然而，当你正为自己买到一件与众不同的衣服而沾沾自喜时却突然发现办公楼里、小巷子里，甚至于在小区里，都有许多穿着红衣服的人。</p>
+<p>为什么大家突然间都开始买红色的衣服了呢?</p>
+<p>其实，并不是大家突然间不约而同地买红衣服，而是当你买了一件红衣服以后，对穿红衣服的人特别注意罢了。</p>
+<blockquote>
+<p>一个人的身心状态会影响他的视线，当他面对一种不明的刺激情景时，常常会使隐藏在潜意识中的状态、欲望和动机冲突等暴露出来。<br>
+<strong>每个人都是立足于自己的状态和角度去观察和推论外界的事物，每个人眼里的世界，只不过是他精神世界的投射而已。——瑞士精神病学家罗夏</strong><br>
+所有人面对的问题都大同小异，只不过有些人过度关注于生活中消极的一面，并且把它放大，仿佛在显微镜下生活。他们内心深处的不安全感造成紧张易怒的情绪，从而形成了负面的投射作用。</p>
+</blockquote>
+<h2 class="mume-header" id="%E4%B9%A0%E5%BE%97%E6%80%A7%E6%97%A0%E5%8A%A9">习得性无助</h2>
+
+<p>马戏团中有一头小象，人们把它用绳子绑在一根木桩上。小象的力量比较小，即使再用力也挣脱不开。后来，小象变成了大象，即使是能够轻易地挣脱绳索，它也不再进行尝试。【来自 The West World - Season 2 - Sceond episode】</p>
+<blockquote>
+<p>反复挫折与失败的记忆，会使人丧失信心，习惯于无助和放弃。——美国心理学家塞利格曼</p>
+</blockquote>
+<h2 class="mume-header" id="%E9%9C%8D%E6%A1%91%E6%95%88%E5%BA%94">霍桑效应</h2>
+
+<p>1927年，一群衣冠楚楚的人来到美国芝加哥郊外的一家工厂，开始进行一项长达数年的缜密行动。</p>
+<p>这是一家专门为美国电报电话公司生产电信设备的企业，有比较完善的娱乐设施、医疗制度和养老金制度，但工人们仍然情绪低落，生产状况很不理想。这次填密行动就是试图通过试验来找出其中的原因。项目的主持人哈佛大学教授乔治·艾顿·梅奥和助手们，在两年多的时间里，逐一找工人进行个别谈话达两万余人次。在谈话过程中，他们态度和善，耐心地倾听着工人对厂方的各种意见和不满。这一谈话试验收到了意想不到的结果：工厂的产值大幅度提高。</p>
+<p>1933年，梅奥出版了《工业文明中的社会问题》，对实验进行了总结影响生产效率的根本因素不是工作条件，而是工人自身。 长期以来，工人对工厂的各种管理制度和方法有诸多不满，却无处发泄。“谈话试验”使他们将这些不满都发泄出来，并意识到自己“被关注”，因而归属感顿生，生产效率也有了提高。</p>
+<p>当人受到关注、不良情绪得到宣泄时，学习和交往的效率就会大大提高。社会心理学家将这种奇妙的现象称为“霍桑效应”。<strong>个人的物质利益在调动工作积极性上只具有次要的意义，群体间良好的人际关系才是调动工作积极性的决定性因素。</strong></p>
+<blockquote>
+<p>当人们受到关注，不良情绪得到宣泄时，学习和交往的效率就会大大增加。——哈佛大学教授梅奥</p>
+</blockquote>
 
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#%E7%AC%AC2%E7%AB%A0-%E6%99%BA%E8%83%BDagent">第2章 智能Agent</a></li>
+<li><a href="#%E5%8E%9F%E6%9D%A5%E5%A6%82%E6%AD%A4%E9%97%AE%E9%A2%98%E8%83%8C%E5%90%8E%E7%9A%84%E5%BF%83%E7%90%86%E5%AD%A6-%E7%AC%94%E8%AE%B0">原来如此——问题背后的心理学 (笔记)</a>
+<ul>
+<li><a href="#%E5%9B%9A%E5%BE%92%E5%9B%B0%E5%A2%83">囚徒困境</a></li>
+<li><a href="#%E8%A7%86%E7%BD%91%E8%86%9C%E6%95%88%E5%BA%94">视网膜效应</a>
+<ul>
+<li><a href="#%E6%A1%88%E4%BE%8B1">案例1</a></li>
+<li><a href="#%E6%A1%88%E4%BE%8B2">案例2</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B9%A0%E5%BE%97%E6%80%A7%E6%97%A0%E5%8A%A9">习得性无助</a></li>
+<li><a href="#%E9%9C%8D%E6%A1%91%E6%95%88%E5%BA%94">霍桑效应</a></li>
+</ul>
+</li>
 </ul>
 </div>
       <a id="sidebar-toc-btn">≡</a>

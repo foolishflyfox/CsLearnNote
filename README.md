@@ -44,6 +44,10 @@
 - [Dot 语言总结](/Editor/DotLanguage.html)
 - [各种常用图的绘制](/Editor/CommonGraph.html)
 
+## 心理学
+
+- [《问题背后的心理学》Note](/PsychologyInProblems.html)
+
 ## LeetCode
 
 LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。下面是题目的一些解答:
@@ -72,7 +76,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-04 : 417. Pacific Atlantic Water Flow 扩散策略](/LeetCode/417_PacificAtlanticWaterFlow.html)
 
-- [2018-05-05 : 328. Odd Even Linked List 单项链表整理-Python](/LeetCode/328_OddEvenLinkedList.md)
+- [2018-05-05 : 328. Odd Even Linked List 单项链表整理-Python](/LeetCode/328_OddEvenLinkedList.html)
+
+- [2018-05-06 : 443. String Compression](/LeetCode/443_String_Compression.html)
 
 ## 正在编写
 - [note01.html](/anyfile/note01.html)

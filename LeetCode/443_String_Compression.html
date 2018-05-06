@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>Note</title>
+      <title>443_String_Compression</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -238,137 +238,94 @@ code.language-yaml {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview   ">
-      <h2 class="mume-header" id="%E7%AC%AC2%E7%AB%A0-%E6%99%BA%E8%83%BDagent">第2章 智能Agent</h2>
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="443-string-compression">443. String Compression</h1>
 
-<p>环境的特性：</p>
+<blockquote>
+<p><a href="https://leetcode.com/problems/string-compression/description/">https://leetcode.com/problems/string-compression/description/</a></p>
+</blockquote>
+<h2 class="mume-header" id="discription">Discription</h2>
+
+<p>Given an array of characters, compress it <a href="https://en.wikipedia.org/wiki/In-place_algorithm">in-place</a>.</p>
+<p>The length after compression must always be smaller than or equal to the original array.</p>
+<p>Every element of the array should be a <strong>character</strong> (not int) of length 1.</p>
+<p>After you are done <strong>modifying the input array</strong> <a href="https://en.wikipedia.org/wiki/In-place_algorithm">in-place</a>, return the new length of the array.</p>
+<p><strong>Follow up</strong>:<br>
+Could you solve it using only O(1) extra space?</p>
+<p><strong>Example 1</strong>:</p>
+<blockquote>
+<p><strong>Input:</strong><br>
+[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;,&quot;c&quot;,&quot;c&quot;]<br>
+<strong>Output:</strong><br>
+Return 6, and the first 6 characters of the input array should be: [&quot;a&quot;,&quot;2&quot;,&quot;b&quot;,&quot;2&quot;,&quot;c&quot;,&quot;3&quot;]<br>
+<strong>Explanation:</strong><br>
+&quot;aa&quot; is replaced by &quot;a2&quot;. &quot;bb&quot; is replaced by &quot;b2&quot;. &quot;ccc&quot; is replaced by &quot;c3&quot;.</p>
+</blockquote>
+<p><strong>Example 2</strong>:</p>
+<blockquote>
+<p><strong>Input:</strong><br>
+[&quot;a&quot;]<br>
+<strong>Output:</strong><br>
+Return 1, and the first 1 characters of the input array should be: [&quot;a&quot;]<br>
+<strong>Explanation:</strong><br>
+Nothing is replaced.</p>
+</blockquote>
+<p><strong>Example 3</strong>:</p>
+<blockquote>
+<p><strong>Input:</strong><br>
+[&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;]<br>
+<strong>Output:</strong><br>
+Return 4, and the first 4 characters of the input array should be: [&quot;a&quot;,&quot;b&quot;,&quot;1&quot;,&quot;2&quot;].<br>
+<strong>Explanation:</strong><br>
+Since the character &quot;a&quot; does not repeat, it is not compressed. &quot;bbbbbbbbbbbb&quot; is replaced by &quot;b12&quot;.<br>
+Notice each digit has it's own entry in the array.</p>
+</blockquote>
+<p><strong>Note:</strong></p>
 <ul>
-<li>完全可观察和部分可观察</li>
-<li>单Agent和多Agent</li>
-<li>确定的和随机的：如果环境的下一个状态完全取决于当前状态和Agent执行的动作，就说环境是确定的，否则就是随机的</li>
-<li>片段式和延续式：下一个片段不依赖于眼前的片段称为片段式，如装配汽车，否则就是延续式，如下棋</li>
-<li>静态、动态、半动态：环境在Agent计算过程中会变化，称为环境是动态的，环境、对计算结果的评价不随计算过程变化即为静态，环境不随计算过程变化，但评价随时间变化称为半静态</li>
-<li>离散的与连续的</li>
-<li>已知的与未知的：对默认规则是否已知，例如Agent如果不知道下棋规则，则环境是未知的</li>
+<li>All characters have an ASCII value in <code>[35, 126]</code>.</li>
+<li><code>1 &lt;= len(chars) &lt;= 1000</code>.</li>
 </ul>
-<table>
-<thead>
-<tr>
-<th>Task Environment</th>
-<th>Observable</th>
-<th>Agents</th>
-<th>Deterministic</th>
-<th>Episodic</th>
-<th>Static</th>
-<th>Discrete</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Crossword Puzzle</td>
-<td>Fully</td>
-<td>Single</td>
-<td>Deterministic</td>
-<td>Sequential</td>
-<td>Static</td>
-<td>Discrete</td>
-</tr>
-<tr>
-<td>Chess with a clock</td>
-<td>Fully</td>
-<td>Multi</td>
-<td>Deterministic</td>
-<td>Sequential</td>
-<td>Semi</td>
-<td>Discrete</td>
-</tr>
-<tr>
-<td>Poker</td>
-<td>Partial</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Static</td>
-<td>Discrete</td>
-</tr>
-<tr>
-<td>Backgammon</td>
-<td>Fully</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Static</td>
-<td>Discrete</td>
-</tr>
-<tr>
-<td>Taxi Driving</td>
-<td>Partially</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Medical diagnosis</td>
-<td>Partially</td>
-<td>Single</td>
-<td>Sotchastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Image analysis</td>
-<td>Fully</td>
-<td>Single</td>
-<td>Deterministic</td>
-<td>Episodic</td>
-<td>Semi</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Part-picking Robot</td>
-<td>Partially</td>
-<td>Single</td>
-<td>Stochastic</td>
-<td>Episodic</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Refinery Control</td>
-<td>Partial</td>
-<td>Multi</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Continuous</td>
-</tr>
-<tr>
-<td>Interactive English tutor</td>
-<td>Partial</td>
-<td>Single</td>
-<td>Stochastic</td>
-<td>Sequential</td>
-<td>Dynamic</td>
-<td>Discrete</td>
-</tr>
-</tbody>
-</table>
-<p>Agent = Architecture + Program</p>
-<p>4 中基本的 Agent 程序：</p>
-<ol>
-<li>简单反射Agent</li>
-<li>基于模型的反射Agent</li>
-<li>基于目标的Agent</li>
-<li>基于效用的Agent</li>
-</ol>
-<p>学习 Agent 被划分为 4 个概念：Critic、Learning Element、Performance element、Problem generator 。</p>
-<p>学习元件否则改进提高，而性能元件否则选择外部行动。性能元件接受感知信息并决策，学习元件利用来自评判元件的反馈评价 Agent 做得如何，并确定应该如何修改性能元件以便将来做得更好。<strong>当设计学习特定技能的Agent时，第一个问题不是“我该如何让 Agent 学到这个技能”，而是“Agent一旦学会了这个技能，需要何种性能元件来行使该能力？”</strong> 评判元件根据固定的性能标准告诉学习元件Agent的运转情况。问题发生器的任务是：建议探索性任务。</p>
+<h2 class="mume-header" id="solution">Solution</h2>
 
+<pre data-role="codeBlock" data-info="python {class=&amp;amp;quot;line-numbers&amp;amp;quot;}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">compress</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> chars<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type chars: List[str]
+        :rtype: int
+        """</span>
+        length <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>chars<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> length<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token number">0</span>
+        count <span class="token operator">=</span> <span class="token number">1</span>
+        i <span class="token operator">=</span> <span class="token number">1</span>
+        modify_pt <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">while</span> i <span class="token operator">&lt;=</span> length<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> i<span class="token operator">==</span>length <span class="token operator">or</span> chars<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">!=</span>chars<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                chars<span class="token punctuation">[</span>modify_pt<span class="token punctuation">]</span> <span class="token operator">=</span> chars<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+                modify_pt <span class="token operator">+=</span> <span class="token number">1</span>
+                <span class="token keyword">if</span> count<span class="token operator">></span><span class="token number">1</span><span class="token punctuation">:</span>
+                    <span class="token keyword">for</span> s <span class="token keyword">in</span> <span class="token builtin">str</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                        chars<span class="token punctuation">[</span>modify_pt<span class="token punctuation">]</span> <span class="token operator">=</span> s
+                        modify_pt <span class="token operator">+=</span> <span class="token number">1</span>
+                    count <span class="token operator">=</span> <span class="token number">1</span>
+                i <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                count <span class="token operator">+=</span> <span class="token number">1</span>
+                i <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> modify_pt
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre>
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#%E7%AC%AC2%E7%AB%A0-%E6%99%BA%E8%83%BDagent">第2章 智能Agent</a></li>
+<li><a href="#443-string-compression">443. String Compression</a>
+<ul>
+<li><a href="#discription">Discription</a></li>
+<li><a href="#solution">Solution</a></li>
+</ul>
+</li>
 </ul>
 </div>
       <a id="sidebar-toc-btn">≡</a>

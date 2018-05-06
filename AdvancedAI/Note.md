@@ -23,7 +23,7 @@ export_on_save:
 |Backgammon|Fully|Multi|Stochastic|Sequential|Static|Discrete|
 |Taxi Driving|Partially|Multi|Stochastic|Sequential|Dynamic|Continuous|
 |Medical diagnosis|Partially|Single|Sotchastic|Sequential|Dynamic|Continuous|
-|Image analysis|Fully|Single|Determinstic|Episodic|Semi|Continuous|
+|Image analysis|Fully|Single|Deterministic|Episodic|Semi|Continuous|
 |Part-picking Robot|Partially|Single|Stochastic|Episodic|Dynamic|Continuous|
 |Refinery Control|Partial|Multi|Stochastic|Sequential|Dynamic|Continuous|
 |Interactive English tutor|Partial|Single|Stochastic|Sequential|Dynamic|Discrete|
@@ -35,4 +35,10 @@ Agent = Architecture + Program
 1. 基于模型的反射Agent
 1. 基于目标的Agent
 1. 基于效用的Agent
+
+学习 Agent 被划分为 4 个概念：Critic、Learning Element、Performance element、Problem generator 。
+
+学习元件否则改进提高，而性能元件否则选择外部行动。性能元件接受感知信息并决策，学习元件利用来自评判元件的反馈评价 Agent 做得如何，并确定应该如何修改性能元件以便将来做得更好。**当设计学习特定技能的Agent时，第一个问题不是“我该如何让 Agent 学到这个技能”，而是“Agent一旦学会了这个技能，需要何种性能元件来行使该能力？”** 评判元件根据固定的性能标准告诉学习元件Agent的运转情况。问题发生器的任务是：建议探索性任务。
+
+
 
