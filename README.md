@@ -80,8 +80,6 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-06 : 443. String Compression](/LeetCode/443_String_Compression.html)
 
-- [《问题背后的心理学》Note](/LeetCode/xx.html)
-
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
 - [note02.html](/anyfile/note02.html)
