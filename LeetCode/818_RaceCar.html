@@ -403,7 +403,7 @@ code.language-yaml {
 </pre><p>该算法比前面的块很多了，但是在 LeetCode 中测试的时候，在目标值为 5478 的时候还是超时了。</p>
 <h2 class="mume-header" id="solution5-%E5%89%AA%E6%9E%9D">Solution5 -- 剪枝</h2>
 
-<p>去除了位置<code>pos</code>与<code>target相反的状态</code>，以及 <code>speed</code> &gt; 'target*2' 的状态，最终通过测试的代码为：</p>
+<p>去除了位置<code>pos</code>与<code>target相反的状态</code>，以及 <code>speed</code> &gt; <code>target*2</code> 的状态，最终通过测试的代码为：</p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">racecar</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">"""

@@ -179,7 +179,7 @@ class Solution:
 
 ## Solution5 -- 剪枝
 
-去除了位置`pos`与`target相反的状态`，以及 `speed` > 'target*2' 的状态，最终通过测试的代码为：
+去除了位置`pos`与`target相反的状态`，以及 `speed` > `target*2` 的状态，最终通过测试的代码为：
 ```python
 class Solution:
     def racecar(self, target):
