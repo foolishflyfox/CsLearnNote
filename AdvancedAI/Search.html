@@ -265,20 +265,20 @@ code.language-yaml {
 <li><code>delete_node(n)</code> : 输出节点<code>n</code></li>
 </ul>
 <p>下面，我们用Python语言实现一个具有上述方法的图：</p>
-<div class="code-chunk" data-id="GraphDefine" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd .line-numbers id=&amp;amp;quot;GraphDefine&amp;amp;quot;}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Graph</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># directed 指定是否为有向图</span>
+<div class="code-chunk" data-id="GraphDefine" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=0, cmd .line-numbers id=&amp;amp;quot;GraphDefine&amp;amp;quot;}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Graph</span><span class="token punctuation">:</span>
+    <span class="token comment"># directed 指定是否为有向图</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> directed<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
         self<span class="token punctuation">.</span>directed <span class="token operator">=</span> directed
-        <span class="token comment" spellcheck="true"># 存放入边</span>
+        <span class="token comment"># 存放入边</span>
         self<span class="token punctuation">.</span>in_edges <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-        <span class="token comment" spellcheck="true"># 存放出边</span>
+        <span class="token comment"># 存放出边</span>
         self<span class="token punctuation">.</span>out_edges <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-        <span class="token comment" spellcheck="true">#存放所有的边信息</span>
+        <span class="token comment">#存放所有的边信息</span>
         self<span class="token punctuation">.</span>edges <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 
         self<span class="token punctuation">.</span>nodes <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
             
-    <span class="token comment" spellcheck="true"># 注意: n_name 是字符串, 之间不能有 - 符</span>
+    <span class="token comment"># 注意: n_name 是字符串, 之间不能有 - 符</span>
     <span class="token keyword">def</span> <span class="token function">insert_node</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> n_name<span class="token punctuation">,</span> info<span class="token operator">=</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
         self<span class="token punctuation">.</span>nodes<span class="token punctuation">[</span>n_name<span class="token punctuation">]</span> <span class="token operator">=</span> info<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
@@ -317,8 +317,8 @@ code.language-yaml {
             <span class="token keyword">for</span> n2_name <span class="token keyword">in</span> self<span class="token punctuation">.</span>out_edges<span class="token punctuation">[</span>n_name<span class="token punctuation">]</span><span class="token punctuation">:</span>
                 <span class="token keyword">del</span> self<span class="token punctuation">.</span>edges<span class="token punctuation">[</span>n_name<span class="token operator">+</span><span class="token string">"-"</span><span class="token operator">+</span>n2_name<span class="token punctuation">]</span>
             <span class="token keyword">del</span> self<span class="token punctuation">.</span>out_edges
-    <span class="token comment" spellcheck="true"># 自动按照 dot language 输出图的格式</span>
-    <span class="token comment" spellcheck="true"># 复制后通过dot language进行渲染即可实现可视化</span>
+    <span class="token comment"># 自动按照 dot language 输出图的格式</span>
+    <span class="token comment"># 复制后通过dot language进行渲染即可实现可视化</span>
     <span class="token keyword">def</span> <span class="token function">to_dot</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> n_info_names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"label"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> e_info_names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"label"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
         str_prefix <span class="token operator">=</span> <span class="token string">'    '</span>
         <span class="token keyword">if</span> self<span class="token punctuation">.</span>directed<span class="token punctuation">:</span>
@@ -331,22 +331,22 @@ code.language-yaml {
             str_info <span class="token operator">=</span> <span class="token string">""</span>
             <span class="token keyword">for</span> iname <span class="token keyword">in</span> n_info_names<span class="token punctuation">:</span>
                 <span class="token keyword">if</span> iname <span class="token keyword">in</span> self<span class="token punctuation">.</span>nodes<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">:</span>
-                    str_info <span class="token operator">+=</span> str<span class="token punctuation">(</span>self<span class="token punctuation">.</span>nodes<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">[</span>iname<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">";"</span>
-            <span class="token keyword">if</span> len<span class="token punctuation">(</span>str_info<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    str_info <span class="token operator">+=</span> <span class="token builtin">str</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>nodes<span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">[</span>iname<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">";"</span>
+            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>str_info<span class="token punctuation">)</span><span class="token punctuation">:</span>
                 str_info <span class="token operator">=</span> <span class="token string">"label=\""</span><span class="token operator">+</span>str_info<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">+</span><span class="token string">"\""</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"{0}{1} [{2}]"</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>str_prefix<span class="token punctuation">,</span> n<span class="token punctuation">,</span> str_info<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"{0}{1} [{2}]"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>str_prefix<span class="token punctuation">,</span> n<span class="token punctuation">,</span> str_info<span class="token punctuation">)</span><span class="token punctuation">)</span>
         <span class="token keyword">for</span> e <span class="token keyword">in</span> self<span class="token punctuation">.</span>edges<span class="token punctuation">:</span>
             str_info <span class="token operator">=</span> <span class="token string">""</span>
             <span class="token keyword">for</span> ename <span class="token keyword">in</span> e_info_names<span class="token punctuation">:</span>
                 <span class="token keyword">if</span> ename <span class="token keyword">in</span> self<span class="token punctuation">.</span>edges<span class="token punctuation">[</span>e<span class="token punctuation">]</span><span class="token punctuation">:</span>
-                    str_info <span class="token operator">+=</span> str<span class="token punctuation">(</span>self<span class="token punctuation">.</span>edges<span class="token punctuation">[</span>e<span class="token punctuation">]</span><span class="token punctuation">[</span>ename<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">";"</span>
-            <span class="token keyword">if</span> len<span class="token punctuation">(</span>str_info<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    str_info <span class="token operator">+=</span> <span class="token builtin">str</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>edges<span class="token punctuation">[</span>e<span class="token punctuation">]</span><span class="token punctuation">[</span>ename<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">";"</span>
+            <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>str_info<span class="token punctuation">)</span><span class="token punctuation">:</span>
                 str_info <span class="token operator">=</span> <span class="token string">"label=\""</span><span class="token operator">+</span>str_info<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">+</span><span class="token string">"\""</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"{0}{1}[{2}]"</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>str_prefix<span class="token punctuation">,</span> 
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"{0}{1}[{2}]"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>str_prefix<span class="token punctuation">,</span> 
                     link_str<span class="token punctuation">.</span>join<span class="token punctuation">(</span>e<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">"-"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> str_info<span class="token punctuation">)</span><span class="token punctuation">)</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"}"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>下面我们用上面的类构建一个边权相等的无向图：</p>
-<div class="code-chunk" data-id="graphNW" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;GraphDefine&amp;amp;quot; id=&amp;amp;quot;graphNW&amp;amp;quot;}" class="language-python">graph <span class="token operator">=</span> Graph<span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>下面我们用上面的类构建一个边权相等的无向图：</p>
+<div class="code-chunk" data-id="graphNW" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=1, cmd continue=&amp;amp;quot;GraphDefine&amp;amp;quot; id=&amp;amp;quot;graphNW&amp;amp;quot;}" class="language-python">graph <span class="token operator">=</span> Graph<span class="token punctuation">(</span><span class="token boolean">False</span><span class="token punctuation">)</span>
 graph<span class="token punctuation">.</span>insert_node<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token string">"label"</span><span class="token punctuation">:</span><span class="token string">"Dunwich"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 graph<span class="token punctuation">.</span>insert_node<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token string">"label"</span><span class="token punctuation">:</span><span class="token string">"Blaxhall"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 graph<span class="token punctuation">.</span>insert_node<span class="token punctuation">(</span><span class="token string">"H"</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token string">"label"</span><span class="token punctuation">:</span><span class="token string">"Harwich"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
@@ -368,36 +368,7 @@ graph<span class="token punctuation">.</span>insert_edge<span class="token punct
 
 graph<span class="token punctuation">.</span>to_dot<span class="token punctuation">(</span>n_info_names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'label'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
                e_info_names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'v'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">strict graph G{
-    D [label="Dunwich"]
-    B [label="Blaxhall"]
-    H [label="Harwich"]
-    F [label="Feering"]
-    T [label="Tiptree"]
-    C [label="Clacton"]
-    M [label="Maldon"]
-    D--B[label="1"]
-    B--D[label="1"]
-    D--M[label="1"]
-    M--D[label="1"]
-    D--H[label="1"]
-    H--D[label="1"]
-    B--H[label="1"]
-    H--B[label="1"]
-    B--F[label="1"]
-    F--B[label="1"]
-    F--T[label="1"]
-    T--F[label="1"]
-    C--T[label="1"]
-    T--C[label="1"]
-    T--M[label="1"]
-    M--T[label="1"]
-    M--C[label="1"]
-    C--M[label="1"]
-    H--F[label="1"]
-    F--H[label="1"]
-}
-</pre></div></div><p>通过 <code>dot</code> 引擎进行渲染后的图形为：</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>通过 <code>dot</code> 引擎进行渲染后的图形为：</p>
 <p engine="dot"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -525,7 +496,7 @@ graph<span class="token punctuation">.</span>to_dot<span class="token punctuatio
     nodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
     path<span class="token punctuation">[</span>n_start<span class="token punctuation">]</span> <span class="token operator">=</span> n_start
     nodes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>n_start<span class="token punctuation">)</span>
-    <span class="token keyword">while</span> len<span class="token punctuation">(</span>nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
         cur_n <span class="token operator">=</span> nodes<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
         <span class="token keyword">for</span> tmp_n <span class="token keyword">in</span> g<span class="token punctuation">.</span>out_edges<span class="token punctuation">[</span>cur_n<span class="token punctuation">]</span><span class="token punctuation">:</span>
             <span class="token keyword">if</span> path<span class="token punctuation">[</span>tmp_n<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">""</span><span class="token punctuation">:</span>
@@ -550,7 +521,7 @@ graph<span class="token punctuation">.</span>to_dot<span class="token punctuatio
     nodes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
     path<span class="token punctuation">[</span>n_start<span class="token punctuation">]</span> <span class="token operator">=</span> n_start
     nodes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>n_start<span class="token punctuation">)</span>
-    <span class="token keyword">while</span> len<span class="token punctuation">(</span>nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
         cur_n <span class="token operator">=</span> nodes<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
         <span class="token keyword">for</span> tmp_n <span class="token keyword">in</span> g<span class="token punctuation">.</span>out_edges<span class="token punctuation">[</span>cur_n<span class="token punctuation">]</span><span class="token punctuation">:</span>
             <span class="token keyword">if</span> path<span class="token punctuation">[</span>tmp_n<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">""</span><span class="token punctuation">:</span>
@@ -581,7 +552,7 @@ graph<span class="token punctuation">.</span>to_dot<span class="token punctuatio
 <h3 class="mume-header" id="%E6%9C%89%E6%9D%83%E5%9B%BE%E7%9A%84%E8%B7%AF%E5%BE%84%E6%90%9C%E7%B4%A2">有权图的路径搜索</h3>
 
 <p>下面我们构建一个有向的图：</p>
-<div class="code-chunk" data-id="code-chunk-id-2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {cmd continue=&amp;amp;quot;GraphDefine&amp;amp;quot;}" class="language-python">digraph <span class="token operator">=</span> Graph<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<div class="code-chunk" data-id="code-chunk-id-2" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=2, cmd continue=&amp;amp;quot;GraphDefine&amp;amp;quot;}" class="language-python">digraph <span class="token operator">=</span> Graph<span class="token punctuation">(</span><span class="token punctuation">)</span>
 digraph<span class="token punctuation">.</span>insert_node<span class="token punctuation">(</span><span class="token string">'D'</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token string">"label"</span><span class="token punctuation">:</span><span class="token string">"Dunwich"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 digraph<span class="token punctuation">.</span>insert_node<span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token string">"label"</span><span class="token punctuation">:</span><span class="token string">"Blaxhall"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 digraph<span class="token punctuation">.</span>insert_node<span class="token punctuation">(</span><span class="token string">"H"</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token string">"label"</span><span class="token punctuation">:</span><span class="token string">"Harwich"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
@@ -601,25 +572,7 @@ digraph<span class="token punctuation">.</span>insert_edge<span class="token pun
 digraph<span class="token punctuation">.</span>insert_edge<span class="token punctuation">(</span><span class="token string">'M'</span><span class="token punctuation">,</span><span class="token string">'C'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token string">'v'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 digraph<span class="token punctuation">.</span>to_dot<span class="token punctuation">(</span>n_info_names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'label'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
                e_info_names<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'v'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">digraph G{
-    D [label="Dunwich"]
-    B [label="Blaxhall"]
-    H [label="Harwich"]
-    F [label="Feering"]
-    T [label="Tiptree"]
-    C [label="Clacton"]
-    M [label="Maldon"]
-    D->B[label="15"]
-    D->H[label="35"]
-    B->H[label="22"]
-    B->F[label="37"]
-    F->T[label="6"]
-    H->T[label="27"]
-    C->T[label="66"]
-    T->M[label="28"]
-    M->C[label="1"]
-}
-</pre></div></div><p>对应的图形为：</p>
+</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"></div></div><p>对应的图形为：</p>
 <p engine="circo"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -743,7 +696,7 @@ digraph<span class="token punctuation">.</span>to_dot<span class="token punctuat
 <p>迪杰斯特拉算法用于寻找有权图中一个节点到另一个节点的最短路径。</p>
 <p>迪杰斯特拉算法是从终点开始倒着寻找起点。</p>
 <pre data-role="codeBlock" data-info="python {.line-numbers}" class="language-python line-numbers"><span class="token keyword">def</span> <span class="token function">dijkstra</span><span class="token punctuation">(</span>g<span class="token punctuation">,</span> n_start<span class="token punctuation">,</span> n_end<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    path <span class="token operator">=</span> <span class="token punctuation">{</span>n_name<span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"next_node"</span><span class="token punctuation">:</span><span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">"distance"</span><span class="token punctuation">:</span>float<span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+    path <span class="token operator">=</span> <span class="token punctuation">{</span>n_name<span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">"next_node"</span><span class="token punctuation">:</span><span class="token string">""</span><span class="token punctuation">,</span> <span class="token string">"distance"</span><span class="token punctuation">:</span><span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
                     <span class="token string">"selected"</span><span class="token punctuation">:</span><span class="token boolean">False</span><span class="token punctuation">}</span> <span class="token keyword">for</span> n_name <span class="token keyword">in</span> g<span class="token punctuation">.</span>nodes<span class="token punctuation">}</span>
     path<span class="token punctuation">[</span>n_end<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
     path<span class="token punctuation">[</span>n_end<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'selected'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">True</span>
@@ -760,7 +713,7 @@ digraph<span class="token punctuation">.</span>to_dot<span class="token punctuat
         cur_pos <span class="token operator">=</span> <span class="token string">""</span>
         <span class="token keyword">for</span> tp_node <span class="token keyword">in</span> path<span class="token punctuation">:</span>
             n_info <span class="token operator">=</span> path<span class="token punctuation">[</span>tp_node<span class="token punctuation">]</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">not</span> n_info<span class="token punctuation">[</span><span class="token string">'selected'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">and</span> n_info<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token operator">!=</span>float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">not</span> n_info<span class="token punctuation">[</span><span class="token string">'selected'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">and</span> n_info<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token operator">!=</span><span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
                 <span class="token keyword">if</span> cur_pos<span class="token operator">==</span><span class="token string">""</span> <span class="token operator">or</span> n_info<span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token operator">&lt;</span>path<span class="token punctuation">[</span>cur_pos<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'distance'</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
                     cur_pos <span class="token operator">=</span> tp_node
         <span class="token keyword">if</span> cur_pos<span class="token punctuation">:</span>
@@ -782,7 +735,7 @@ digraph<span class="token punctuation">.</span>to_dot<span class="token punctuat
 
 <pre data-role="codeBlock" data-info="python {.line-numbers}" class="language-python line-numbers"><span class="token keyword">def</span> <span class="token function">floyd</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span><span class="token punctuation">:</span>
     path_matrix <span class="token operator">=</span> <span class="token punctuation">{</span>n1<span class="token punctuation">:</span><span class="token punctuation">{</span>
-            n2<span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">'next'</span><span class="token punctuation">:</span><span class="token string">''</span><span class="token punctuation">,</span><span class="token string">'d'</span><span class="token punctuation">:</span>float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">}</span> 
+            n2<span class="token punctuation">:</span><span class="token punctuation">{</span><span class="token string">'next'</span><span class="token punctuation">:</span><span class="token string">''</span><span class="token punctuation">,</span><span class="token string">'d'</span><span class="token punctuation">:</span><span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">}</span> 
             <span class="token keyword">for</span> n2 <span class="token keyword">in</span> g<span class="token punctuation">.</span>nodes<span class="token punctuation">}</span> 
         <span class="token keyword">for</span> n1 <span class="token keyword">in</span> g<span class="token punctuation">.</span>nodes<span class="token punctuation">}</span>
     <span class="token keyword">for</span> i <span class="token keyword">in</span> g<span class="token punctuation">.</span>nodes<span class="token punctuation">:</span>
@@ -801,10 +754,10 @@ digraph<span class="token punctuation">.</span>to_dot<span class="token punctuat
                     path_matrix<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'d'</span><span class="token punctuation">]</span> <span class="token operator">=</span> jmp_d
                     path_matrix<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'next'</span><span class="token punctuation">]</span> <span class="token operator">=</span> k
     <span class="token keyword">return</span> path_matrix
-<span class="token comment" spellcheck="true"># 从矩阵中取出指定的路径</span>
+<span class="token comment"># 从矩阵中取出指定的路径</span>
 <span class="token keyword">def</span> <span class="token function">get_path</span><span class="token punctuation">(</span>path_matrix<span class="token punctuation">,</span> n_start<span class="token punctuation">,</span> n_end<span class="token punctuation">,</span> manual_call<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> path_matrix<span class="token punctuation">[</span>n_start<span class="token punctuation">]</span><span class="token punctuation">[</span>n_end<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'d'</span><span class="token punctuation">]</span> <span class="token operator">==</span> float<span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"No path from {0} to {1}"</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>n_start<span class="token punctuation">,</span> n_end<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> path_matrix<span class="token punctuation">[</span>n_start<span class="token punctuation">]</span><span class="token punctuation">[</span>n_end<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'d'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"No path from {0} to {1}"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>n_start<span class="token punctuation">,</span> n_end<span class="token punctuation">)</span><span class="token punctuation">)</span>
     
     <span class="token keyword">if</span> path_matrix<span class="token punctuation">[</span>n_start<span class="token punctuation">]</span><span class="token punctuation">[</span>n_end<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">'next'</span><span class="token punctuation">]</span><span class="token operator">==</span>n_end<span class="token punctuation">:</span>
         <span class="token keyword">return</span> <span class="token punctuation">[</span>n_start<span class="token punctuation">,</span> n_end<span class="token punctuation">]</span>
@@ -868,19 +821,6 @@ path_m <span class="token operator">=</span> floyd<span class="token punctuation
     
     
     
-    <script>
-(function bindTaskListEvent() {
-  var taskListItemCheckboxes = document.body.getElementsByClassName('task-list-item-checkbox')
-  for (var i = 0; i < taskListItemCheckboxes.length; i++) {
-    var checkbox = taskListItemCheckboxes[i]
-    var li = checkbox.parentElement
-    if (li.tagName !== 'LI') li = li.parentElement
-    if (li.tagName === 'LI') {
-      li.classList.add('task-list-item')
-    }
-  }
-}())    
-</script>
     
 <script>
 

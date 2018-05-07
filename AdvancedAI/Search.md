@@ -111,7 +111,7 @@ class Graph:
         print("}")
 ```
 
-下面我们用上面的类构建一个边权相等的无向图：
+下面我们用上面的类构建一个边权相等的无向图：
 ```python {cmd continue="GraphDefine" id="graphNW"}
 graph = Graph(False)
 graph.insert_node('D',{"label":"Dunwich"})
