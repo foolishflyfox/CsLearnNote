@@ -25,7 +25,7 @@
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](/AdvancedAI/Search.html)
 - [搜索的一个经典例子](/LeetCode/818_RaceCar.md)
 - [A\* 算法-8数码问题](/AdvancedAI/EightDigit.html)
-- [笔记](/AdvancedAI/note.html)
+- [笔记](/AdvancedAI/Note.html)
 
 
 ## 版本管理部分
