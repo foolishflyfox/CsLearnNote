@@ -66,5 +66,26 @@ Agent = Architecture + Program
 
 一般来说，当搜索空间较大并且不知道解所在深度时，迭代加深的深度优先搜索是首选的无信息搜索方法。
 
+**无信息搜索策略对比**
+|Criterion|BFS|Uniform Cost|DFS|Depth Limited|Iterative Deepening|Bidirectional|
+|---|---|---|---|---|---|---|---|
+|Complete?|Yes|Yes|No|No|Yes|Yes|
+|Time|$O(b^d)$||$O(b^m)$|$O(b^l)$|$O(b^d)$|$O(b^{d/2})$|
+|Space|$O(b^d)$||$O(mb)$|$O(bl)$|$O(bd)$|$O(b^{d/2})$|
+|Optimal?|Yes|Yes|No|No|Yes|Yes|
 
+$b$ 表示分支因子；$d$ 表示最浅解的深度；$m$ 表示搜索树的最大深度；$l$ 表示深度界限；右上角的含义：$^a$ 当b有限时是完备的；$^b$若对正数 $\epsilon$ 有单步代价 $\ge\epsilon$，则是完备的；$c$ 当单步代价相同时算法最优；$^d$ 当双向都使用宽度优先搜索；
 
+**贪婪最佳优先搜索(greedy best-first search)**：试图扩展离目标最近的节点，理由是这样可能可以很快找到解，因此它只用启发式信息：$f(n)=h(n)$。
+
+贪婪最佳优先搜索与深度优先搜索类似，即使是有限状态空间，它也是不完备的。
+
+**A\* 搜索**是最为人所知的最佳优先搜索。它对节点的评估结合了 g(n)，即 $f(n) = g(n) + h(n)$
+
+A\* 搜索既是完备的也是最优的。
+
+保证最优的条件：可采纳性和一致性。可采纳启发式是指它才不会过高估计到达目标的代价。一致性（有时也称为单调性）是指设有三个点A、B、C，它们满足：$cost(A\rightarrow C) \le cost(A\rightarrow B)+cost(B\rightarrow C)$，这是一般的三角不等式。
+
+可采纳的启发式自然是乐观的，因为它们认为的解决问题所花代价比实际代价小。
+
+剪枝：无需检验就直接把它们从考虑中排除——在AI的很多领域中都是很重要的。
