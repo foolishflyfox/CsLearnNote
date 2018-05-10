@@ -25,6 +25,7 @@
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](/AdvancedAI/Search.html)
 - [搜索的一个经典例子](/LeetCode/818_RaceCar.md)
 - [A\* 算法-8数码问题](/AdvancedAI/EightDigit.html)
+- [超越经典搜索](/AdvancedAI/BeyondClassicSearch.html)
 - [笔记](/AdvancedAI/Note.html)
 
 
@@ -82,9 +83,12 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-06 : 443. String Compression](/LeetCode/443_String_Compression.html)
 
 - [2018-05-07 : 818. Race Car](/LeetCode/818_RaceCar.md) **经典：BFS、递归、迭代加长搜索**
-- [2018-05-08 : 53. Maximum Subarray 寻找和最小的子串](/LeetCode/53_MaximumSubarray.html)
+
+- [2018-05-08 : 53. Maximum Subarray 寻找和最大的子串](/LeetCode/53_MaximumSubarray.html)
 
 - [2018-05-09 : 404. Sum of Left Leaves 树的递归遍历](/LeetCode/404_SumofLeftLeaves.html)
+
+- [2018-05-10 : 525. Contiguous Array 寻找元素个数相同的最大子串](/LeetCode/525_ContiguousArray.html)
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
 - [note02.html](/anyfile/note02.html)
