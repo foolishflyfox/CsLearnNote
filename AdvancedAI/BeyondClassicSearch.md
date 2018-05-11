@@ -294,10 +294,34 @@ def simulated_annealing(n, speed=1):
 
 结果为：
 ```
-CPU times: user 2.57 s, sys: 5.94 ms, total: 2.58 s
-Wall time: 2.58 s
+CPU times: user 1.42 s, sys: 4.9 ms, total: 1.42 s
+Wall time: 1.43 s
 [out] : 0
 ```
-平均速度在2s左右，比之前的重启迭代深度要快很多，速度快是因为`speed`参数设置为了100，下面看看在`speed=100`时查找正确的概率：
+平均速度在1.5s左右，比之前的重启迭代深度要快很多，速度快是因为`speed`参数设置为了100，下面看看在`speed=100`时查找正确的概率：
+```python
+c = Counter(simulated_annealing(50,100)[0] for _ in range(20))
+print(c[0]/sum(c.values()))
+```
+结果是：`1.0`；可见，模拟退火的正确概率也非常高。
 
+如果speed非常大时，模拟退火会退化为首选爬山法，速度会大大提高，但是，获得解的概率将会降低。获得正确解的概率测试如下：
+```python
+c = Counter(simulated_annealing(8,)[0] for _ in range(50))
+print(c[0]/sum(c.values()))
+c = Counter(simulated_annealing(8,10)[0] for _ in range(100))
+print(c[0]/sum(c.values()))
+c = Counter(simulated_annealing(8,100)[0] for _ in range(100))
+print(c[0]/sum(c.values()))
+c = Counter(simulated_annealing(8,1000)[0] for _ in range(100))
+print(c[0]/sum(c.values()))
+```
+结果为：
+```
+1.0
+0.53
+0.48
+0.37
+```
+可见速度和正确性是一对矛盾体，速度越快，正确性就越低。
 

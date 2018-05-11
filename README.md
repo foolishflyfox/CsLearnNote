@@ -21,6 +21,7 @@
 这部分内容是根据 “高级人工智能” 课程的总结。
 
 - [学习人工智能的路线图](/AdvancedAI/AISummary.html) （ [pdf](/assets/AISummary.pdf) ）
+- [各种算法之间的关系图](/AdvancedAI/AlgorithmRelations.html)
 - [人工智能的定义与分类](/AdvancedAI/AIDefine.html)
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](/AdvancedAI/Search.html)
 - [搜索的一个经典例子](/LeetCode/818_RaceCar.md)

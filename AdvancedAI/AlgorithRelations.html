@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>AlgorithRelations</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<h1 class="mume-header" id="%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB%E5%9B%BE">各种算法之间的关系图</h1>
+
+<p><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.40.1 (20161225.0304)
+ -->
+<!-- Title: %0 Pages: 1 -->
+<svg width="612pt" height="625pt" viewBox="0.00 0.00 611.83 625.20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 621.2)">
+<title>%0</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-621.2 607.8296,-621.2 607.8296,4 -4,4"></polygon>
+<text text-anchor="middle" x="301.9148" y="-8.2" font-family="Times,serif" font-size="14.00" fill="#000000">Algorithm Relationships</text>
+<!-- root -->
+<g id="node1" class="node">
+<title>root</title>
+<path fill="none" stroke="#000000" d="M12,-313.3C12,-313.3 49.6708,-313.3 49.6708,-313.3 55.6708,-313.3 61.6708,-319.3 61.6708,-325.3 61.6708,-325.3 61.6708,-337.3 61.6708,-337.3 61.6708,-343.3 55.6708,-349.3 49.6708,-349.3 49.6708,-349.3 12,-349.3 12,-349.3 6,-349.3 0,-343.3 0,-337.3 0,-337.3 0,-325.3 0,-325.3 0,-319.3 6,-313.3 12,-313.3"></path>
+<text text-anchor="middle" x="30.8354" y="-328" font-family="Times,serif" font-size="12.00" fill="#000000">搜索算法</text>
+</g>
+<!-- search_path -->
+<g id="node2" class="node">
+<title>search_path</title>
+<path fill="none" stroke="#000000" d="M120.236,-368.9C120.236,-368.9 164.1072,-368.9 164.1072,-368.9 170.1072,-368.9 176.1072,-374.9 176.1072,-380.9 176.1072,-380.9 176.1072,-393.7 176.1072,-393.7 176.1072,-399.7 170.1072,-405.7 164.1072,-405.7 164.1072,-405.7 120.236,-405.7 120.236,-405.7 114.236,-405.7 108.236,-399.7 108.236,-393.7 108.236,-393.7 108.236,-380.9 108.236,-380.9 108.236,-374.9 114.236,-368.9 120.236,-368.9"></path>
+<text text-anchor="middle" x="142.1716" y="-390.9" font-family="Times,serif" font-size="12.00" fill="#000000">已知目标,</text>
+<text text-anchor="middle" x="142.1716" y="-376.5" font-family="Times,serif" font-size="12.00" fill="#000000">寻找路径</text>
+</g>
+<!-- root&#45;&gt;search_path -->
+<g id="edge1" class="edge">
+<title>root&#45;&gt;search_path</title>
+<path fill="none" stroke="#afd275" d="M61.8487,-346.8991C73.8969,-352.9591 87.8759,-359.9903 100.762,-366.4718"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="104.6266" cy="-368.4155" rx="4" ry="4"></ellipse>
+</g>
+<!-- search_aim -->
+<g id="node3" class="node">
+<title>search_aim</title>
+<path fill="none" stroke="#000000" d="M110.6708,-285.9C110.6708,-285.9 173.6724,-285.9 173.6724,-285.9 179.6724,-285.9 185.6724,-291.9 185.6724,-297.9 185.6724,-297.9 185.6724,-310.7 185.6724,-310.7 185.6724,-316.7 179.6724,-322.7 173.6724,-322.7 173.6724,-322.7 110.6708,-322.7 110.6708,-322.7 104.6708,-322.7 98.6708,-316.7 98.6708,-310.7 98.6708,-310.7 98.6708,-297.9 98.6708,-297.9 98.6708,-291.9 104.6708,-285.9 110.6708,-285.9"></path>
+<text text-anchor="middle" x="142.1716" y="-307.9" font-family="Times,serif" font-size="12.00" fill="#000000">目标未知,</text>
+<text text-anchor="middle" x="142.1716" y="-293.5" font-family="Times,serif" font-size="12.00" fill="#000000">寻找最优解</text>
+</g>
+<!-- root&#45;&gt;search_aim -->
+<g id="edge2" class="edge">
+<title>root&#45;&gt;search_aim</title>
+<path fill="none" stroke="#afd275" d="M61.8487,-323.779C70.7843,-321.612 80.782,-319.1875 90.6082,-316.8046"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="94.5409" cy="-315.8509" rx="4" ry="4"></ellipse>
+</g>
+<!-- path_blind -->
+<g id="node4" class="node">
+<title>path_blind</title>
+<path fill="none" stroke="#000000" d="M244.836,-524.3C244.836,-524.3 274.836,-524.3 274.836,-524.3 280.836,-524.3 286.836,-530.3 286.836,-536.3 286.836,-536.3 286.836,-548.3 286.836,-548.3 286.836,-554.3 280.836,-560.3 274.836,-560.3 274.836,-560.3 244.836,-560.3 244.836,-560.3 238.836,-560.3 232.836,-554.3 232.836,-548.3 232.836,-548.3 232.836,-536.3 232.836,-536.3 232.836,-530.3 238.836,-524.3 244.836,-524.3"></path>
+<text text-anchor="middle" x="259.836" y="-539" font-family="Times,serif" font-size="12.00" fill="#000000">盲搜索</text>
+</g>
+<!-- search_path&#45;&gt;path_blind -->
+<g id="edge3" class="edge">
+<title>search_path&#45;&gt;path_blind</title>
+<path fill="none" stroke="#afd275" d="M156.3647,-405.9966C177.5038,-433.8433 217.2956,-486.2613 240.8961,-517.3504"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="243.5394" cy="-520.8324" rx="4" ry="4"></ellipse>
+</g>
+<!-- path_info -->
+<g id="node5" class="node">
+<title>path_info</title>
+<path fill="none" stroke="#000000" d="M234.6724,-368.9C234.6724,-368.9 284.9996,-368.9 284.9996,-368.9 290.9996,-368.9 296.9996,-374.9 296.9996,-380.9 296.9996,-380.9 296.9996,-393.7 296.9996,-393.7 296.9996,-399.7 290.9996,-405.7 284.9996,-405.7 284.9996,-405.7 234.6724,-405.7 234.6724,-405.7 228.6724,-405.7 222.6724,-399.7 222.6724,-393.7 222.6724,-393.7 222.6724,-380.9 222.6724,-380.9 222.6724,-374.9 228.6724,-368.9 234.6724,-368.9"></path>
+<text text-anchor="middle" x="259.836" y="-390.9" font-family="Times,serif" font-size="12.00" fill="#000000">有信息搜索;</text>
+<text text-anchor="middle" x="259.836" y="-376.5" font-family="Times,serif" font-size="12.00" fill="#000000">info=g+h</text>
+</g>
+<!-- search_path&#45;&gt;path_info -->
+<g id="edge4" class="edge">
+<title>search_path&#45;&gt;path_info</title>
+<path fill="none" stroke="#afd275" d="M176.205,-387.3C188.1198,-387.3 201.6957,-387.3 214.3928,-387.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="218.5835" cy="-387.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- aim_enum -->
+<g id="node14" class="node">
+<title>aim_enum</title>
+<path fill="none" stroke="#000000" d="M244.836,-300.3C244.836,-300.3 274.836,-300.3 274.836,-300.3 280.836,-300.3 286.836,-306.3 286.836,-312.3 286.836,-312.3 286.836,-324.3 286.836,-324.3 286.836,-330.3 280.836,-336.3 274.836,-336.3 274.836,-336.3 244.836,-336.3 244.836,-336.3 238.836,-336.3 232.836,-330.3 232.836,-324.3 232.836,-324.3 232.836,-312.3 232.836,-312.3 232.836,-306.3 238.836,-300.3 244.836,-300.3"></path>
+<text text-anchor="middle" x="259.836" y="-315" font-family="Times,serif" font-size="12.00" fill="#000000">枚举</text>
+</g>
+<!-- search_aim&#45;&gt;aim_enum -->
+<g id="edge14" class="edge">
+<title>search_aim&#45;&gt;aim_enum</title>
+<path fill="none" stroke="#afd275" d="M185.9855,-309.5131C198.7266,-311.0291 212.4749,-312.6649 224.615,-314.1093"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="228.7586" cy="-314.6023" rx="4" ry="4"></ellipse>
+</g>
+<!-- aim_backtrace -->
+<g id="node15" class="node">
+<title>aim_backtrace</title>
+<path fill="none" stroke="#000000" d="M244.836,-245.3C244.836,-245.3 274.836,-245.3 274.836,-245.3 280.836,-245.3 286.836,-251.3 286.836,-257.3 286.836,-257.3 286.836,-269.3 286.836,-269.3 286.836,-275.3 280.836,-281.3 274.836,-281.3 274.836,-281.3 244.836,-281.3 244.836,-281.3 238.836,-281.3 232.836,-275.3 232.836,-269.3 232.836,-269.3 232.836,-257.3 232.836,-257.3 232.836,-251.3 238.836,-245.3 244.836,-245.3"></path>
+<text text-anchor="middle" x="259.836" y="-260" font-family="Times,serif" font-size="12.00" fill="#000000">回溯</text>
+</g>
+<!-- search_aim&#45;&gt;aim_backtrace -->
+<g id="edge15" class="edge">
+<title>search_aim&#45;&gt;aim_backtrace</title>
+<path fill="none" stroke="#afd275" d="M185.9855,-289.0331C198.8491,-284.5508 212.7394,-279.7108 224.9648,-275.4508"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="228.9534" cy="-274.061" rx="4" ry="4"></ellipse>
+</g>
+<!-- aim_climb -->
+<g id="node17" class="node">
+<title>aim_climb</title>
+<path fill="none" stroke="#000000" d="M244.836,-135.3C244.836,-135.3 274.836,-135.3 274.836,-135.3 280.836,-135.3 286.836,-141.3 286.836,-147.3 286.836,-147.3 286.836,-159.3 286.836,-159.3 286.836,-165.3 280.836,-171.3 274.836,-171.3 274.836,-171.3 244.836,-171.3 244.836,-171.3 238.836,-171.3 232.836,-165.3 232.836,-159.3 232.836,-159.3 232.836,-147.3 232.836,-147.3 232.836,-141.3 238.836,-135.3 244.836,-135.3"></path>
+<text text-anchor="middle" x="259.836" y="-150" font-family="Times,serif" font-size="12.00" fill="#000000">爬山法</text>
+</g>
+<!-- search_aim&#45;&gt;aim_climb -->
+<g id="edge16" class="edge">
+<title>search_aim&#45;&gt;aim_climb</title>
+<path fill="none" stroke="#afd275" d="M156.5996,-285.7844C177.7088,-258.6948 217.0521,-208.205 240.6004,-177.9852"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="243.1989" cy="-174.6505" rx="4" ry="4"></ellipse>
+</g>
+<!-- blind_BFS -->
+<g id="node6" class="node">
+<title>blind_BFS</title>
+<path fill="none" stroke="#000000" d="M377.725,-579.9C377.725,-579.9 437.2058,-579.9 437.2058,-579.9 443.2058,-579.9 449.2058,-585.9 449.2058,-591.9 449.2058,-591.9 449.2058,-604.7 449.2058,-604.7 449.2058,-610.7 443.2058,-616.7 437.2058,-616.7 437.2058,-616.7 377.725,-616.7 377.725,-616.7 371.725,-616.7 365.725,-610.7 365.725,-604.7 365.725,-604.7 365.725,-591.9 365.725,-591.9 365.725,-585.9 371.725,-579.9 377.725,-579.9"></path>
+<text text-anchor="middle" x="407.4654" y="-601.9" font-family="Times,serif" font-size="12.00" fill="#000000">BFS</text>
+<text text-anchor="middle" x="407.4654" y="-587.5" font-family="Times,serif" font-size="12.00" fill="#000000">空间复杂度大</text>
+</g>
+<!-- path_blind&#45;&gt;blind_BFS -->
+<g id="edge5" class="edge">
+<title>path_blind&#45;&gt;blind_BFS</title>
+<path fill="none" stroke="#afd275" d="M287.0484,-552.6711C295.9551,-556.0624 305.8982,-559.8451 314.9996,-563.3 328.9457,-568.594 344.0793,-574.3272 357.9868,-579.5912"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="361.8307" cy="-581.0459" rx="4" ry="4"></ellipse>
+<text text-anchor="middle" x="330.5508" y="-578.5" font-family="Times,serif" font-size="14.00" fill="#000000">FIFO</text>
+</g>
+<!-- blind_DFS -->
+<g id="node7" class="node">
+<title>blind_DFS</title>
+<path fill="none" stroke="#000000" d="M392.4654,-523.9C392.4654,-523.9 422.4654,-523.9 422.4654,-523.9 428.4654,-523.9 434.4654,-529.9 434.4654,-535.9 434.4654,-535.9 434.4654,-548.7 434.4654,-548.7 434.4654,-554.7 428.4654,-560.7 422.4654,-560.7 422.4654,-560.7 392.4654,-560.7 392.4654,-560.7 386.4654,-560.7 380.4654,-554.7 380.4654,-548.7 380.4654,-548.7 380.4654,-535.9 380.4654,-535.9 380.4654,-529.9 386.4654,-523.9 392.4654,-523.9"></path>
+<text text-anchor="middle" x="407.4654" y="-545.9" font-family="Times,serif" font-size="12.00" fill="#000000">DFS</text>
+<text text-anchor="middle" x="407.4654" y="-531.5" font-family="Times,serif" font-size="12.00" fill="#000000">不完备</text>
+</g>
+<!-- path_blind&#45;&gt;blind_DFS -->
+<g id="edge6" class="edge">
+<title>path_blind&#45;&gt;blind_DFS</title>
+<path fill="none" stroke="#afd275" d="M286.9135,-542.3C310.8742,-542.3 345.9964,-542.3 372.1568,-542.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="376.31" cy="-542.3" rx="4" ry="4"></ellipse>
+<text text-anchor="middle" x="330.5508" y="-546.5" font-family="Times,serif" font-size="14.00" fill="#000000">FILO</text>
+</g>
+<!-- info_AStar -->
+<g id="node10" class="node">
+<title>info_AStar</title>
+<path fill="none" stroke="#000000" d="M389.6986,-467.9C389.6986,-467.9 425.2322,-467.9 425.2322,-467.9 431.2322,-467.9 437.2322,-473.9 437.2322,-479.9 437.2322,-479.9 437.2322,-492.7 437.2322,-492.7 437.2322,-498.7 431.2322,-504.7 425.2322,-504.7 425.2322,-504.7 389.6986,-504.7 389.6986,-504.7 383.6986,-504.7 377.6986,-498.7 377.6986,-492.7 377.6986,-492.7 377.6986,-479.9 377.6986,-479.9 377.6986,-473.9 383.6986,-467.9 389.6986,-467.9"></path>
+<text text-anchor="middle" x="407.4654" y="-489.9" font-family="Times,serif" font-size="12.00" fill="#000000">A*</text>
+<text text-anchor="middle" x="407.4654" y="-475.5" font-family="Times,serif" font-size="12.00" fill="#000000">g=g, h=h</text>
+</g>
+<!-- path_info&#45;&gt;info_AStar -->
+<g id="edge7" class="edge">
+<title>path_info&#45;&gt;info_AStar</title>
+<path fill="none" stroke="#afd275" d="M286.7181,-405.8705C307.7023,-420.3023 337.6377,-440.7493 364.102,-458.3 366.5619,-459.9314 369.1066,-461.6064 371.6736,-463.287"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="375.1268" cy="-465.5377" rx="4" ry="4"></ellipse>
+</g>
+<!-- info_Greed -->
+<g id="node11" class="node">
+<title>info_Greed</title>
+<path fill="none" stroke="#000000" d="M389.6986,-411.9C389.6986,-411.9 425.2322,-411.9 425.2322,-411.9 431.2322,-411.9 437.2322,-417.9 437.2322,-423.9 437.2322,-423.9 437.2322,-436.7 437.2322,-436.7 437.2322,-442.7 431.2322,-448.7 425.2322,-448.7 425.2322,-448.7 389.6986,-448.7 389.6986,-448.7 383.6986,-448.7 377.6986,-442.7 377.6986,-436.7 377.6986,-436.7 377.6986,-423.9 377.6986,-423.9 377.6986,-417.9 383.6986,-411.9 389.6986,-411.9"></path>
+<text text-anchor="middle" x="407.4654" y="-433.9" font-family="Times,serif" font-size="12.00" fill="#000000">Greed,</text>
+<text text-anchor="middle" x="407.4654" y="-419.5" font-family="Times,serif" font-size="12.00" fill="#000000">g=0, h=h</text>
+</g>
+<!-- path_info&#45;&gt;info_Greed -->
+<g id="edge8" class="edge">
+<title>path_info&#45;&gt;info_Greed</title>
+<path fill="none" stroke="#afd275" d="M297.0891,-398.1507C319.3031,-404.621 347.4274,-412.8127 369.7268,-419.3079"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="373.8166" cy="-420.4991" rx="4" ry="4"></ellipse>
+</g>
+<!-- info_BFS -->
+<g id="node12" class="node">
+<title>info_BFS</title>
+<path fill="none" stroke="#000000" d="M378.7012,-355.9C378.7012,-355.9 436.2296,-355.9 436.2296,-355.9 442.2296,-355.9 448.2296,-361.9 448.2296,-367.9 448.2296,-367.9 448.2296,-380.7 448.2296,-380.7 448.2296,-386.7 442.2296,-392.7 436.2296,-392.7 436.2296,-392.7 378.7012,-392.7 378.7012,-392.7 372.7012,-392.7 366.7012,-386.7 366.7012,-380.7 366.7012,-380.7 366.7012,-367.9 366.7012,-367.9 366.7012,-361.9 372.7012,-355.9 378.7012,-355.9"></path>
+<text text-anchor="middle" x="407.4654" y="-377.9" font-family="Times,serif" font-size="12.00" fill="#000000">BFS,</text>
+<text text-anchor="middle" x="407.4654" y="-363.5" font-family="Times,serif" font-size="12.00" fill="#000000">g=g, h=1 or 0</text>
+</g>
+<!-- path_info&#45;&gt;info_BFS -->
+<g id="edge9" class="edge">
+<title>path_info&#45;&gt;info_BFS</title>
+<path fill="none" stroke="#afd275" d="M297.0891,-384.0196C315.7076,-382.38 338.4779,-380.3749 358.4906,-378.6126"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="362.6028" cy="-378.2506" rx="4" ry="4"></ellipse>
+</g>
+<!-- info_DFS -->
+<g id="node13" class="node">
+<title>info_DFS</title>
+<path fill="none" stroke="#000000" d="M378.7012,-299.9C378.7012,-299.9 436.2296,-299.9 436.2296,-299.9 442.2296,-299.9 448.2296,-305.9 448.2296,-311.9 448.2296,-311.9 448.2296,-324.7 448.2296,-324.7 448.2296,-330.7 442.2296,-336.7 436.2296,-336.7 436.2296,-336.7 378.7012,-336.7 378.7012,-336.7 372.7012,-336.7 366.7012,-330.7 366.7012,-324.7 366.7012,-324.7 366.7012,-311.9 366.7012,-311.9 366.7012,-305.9 372.7012,-299.9 378.7012,-299.9"></path>
+<text text-anchor="middle" x="407.4654" y="-321.9" font-family="Times,serif" font-size="12.00" fill="#000000">DFS</text>
+<text text-anchor="middle" x="407.4654" y="-307.5" font-family="Times,serif" font-size="12.00" fill="#000000">g=0, h=1 or 0</text>
+</g>
+<!-- path_info&#45;&gt;info_DFS -->
+<g id="edge10" class="edge">
+<title>path_info&#45;&gt;info_DFS</title>
+<path fill="none" stroke="#afd275" d="M297.0891,-369.8884C316.3362,-360.8926 340.0202,-349.823 360.508,-340.2473"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="364.2736" cy="-338.4873" rx="4" ry="4"></ellipse>
+</g>
+<!-- blind_IDS -->
+<g id="node9" class="node">
+<title>blind_IDS</title>
+<path fill="none" stroke="#000000" d="M512.4036,-579.3C512.4036,-579.3 579.2548,-579.3 579.2548,-579.3 585.2548,-579.3 591.2548,-585.3 591.2548,-591.3 591.2548,-591.3 591.2548,-603.3 591.2548,-603.3 591.2548,-609.3 585.2548,-615.3 579.2548,-615.3 579.2548,-615.3 512.4036,-615.3 512.4036,-615.3 506.4036,-615.3 500.4036,-609.3 500.4036,-603.3 500.4036,-603.3 500.4036,-591.3 500.4036,-591.3 500.4036,-585.3 506.4036,-579.3 512.4036,-579.3"></path>
+<text text-anchor="middle" x="545.8292" y="-594" font-family="Times,serif" font-size="12.00" fill="#000000">迭代加深搜索</text>
+</g>
+<!-- blind_BFS&#45;&gt;blind_IDS -->
+<g id="edge11" class="edge">
+<title>blind_BFS&#45;&gt;blind_IDS</title>
+<path fill="none" stroke="#afd275" d="M449.3546,-597.9973C462.7855,-597.9002 477.8509,-597.7913 492.0117,-597.689"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="496.2258" cy="-597.6585" rx="4" ry="4"></ellipse>
+</g>
+<!-- blind_LimitD -->
+<g id="node8" class="node">
+<title>blind_LimitD</title>
+<path fill="none" stroke="#000000" d="M513.735,-524.3C513.735,-524.3 577.9234,-524.3 577.9234,-524.3 583.9234,-524.3 589.9234,-530.3 589.9234,-536.3 589.9234,-536.3 589.9234,-548.3 589.9234,-548.3 589.9234,-554.3 583.9234,-560.3 577.9234,-560.3 577.9234,-560.3 513.735,-560.3 513.735,-560.3 507.735,-560.3 501.735,-554.3 501.735,-548.3 501.735,-548.3 501.735,-536.3 501.735,-536.3 501.735,-530.3 507.735,-524.3 513.735,-524.3"></path>
+<text text-anchor="middle" x="545.8292" y="-539" font-family="Times,serif" font-size="12.00" fill="#000000">深度受限搜索</text>
+</g>
+<!-- blind_DFS&#45;&gt;blind_LimitD -->
+<g id="edge13" class="edge">
+<title>blind_DFS&#45;&gt;blind_LimitD</title>
+<path fill="none" stroke="#afd275" d="M434.4718,-542.3C451.1993,-542.3 473.2463,-542.3 493.3064,-542.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="497.4657" cy="-542.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- blind_DFS&#45;&gt;blind_IDS -->
+<g id="edge12" class="edge">
+<title>blind_DFS&#45;&gt;blind_IDS</title>
+<path fill="none" stroke="#afd275" d="M434.4718,-553.0351C451.069,-559.6326 472.9033,-568.3117 492.8375,-576.2356"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="496.6524" cy="-577.7521" rx="4" ry="4"></ellipse>
+</g>
+<!-- bt_lv -->
+<g id="node16" class="node">
+<title>bt_lv</title>
+<path fill="none" stroke="#000000" d="M376.102,-245.3C376.102,-245.3 438.8288,-245.3 438.8288,-245.3 444.8288,-245.3 450.8288,-251.3 450.8288,-257.3 450.8288,-257.3 450.8288,-269.3 450.8288,-269.3 450.8288,-275.3 444.8288,-281.3 438.8288,-281.3 438.8288,-281.3 376.102,-281.3 376.102,-281.3 370.102,-281.3 364.102,-275.3 364.102,-269.3 364.102,-269.3 364.102,-257.3 364.102,-257.3 364.102,-251.3 370.102,-245.3 376.102,-245.3"></path>
+<text text-anchor="middle" x="407.4654" y="-260" font-family="Times,serif" font-size="12.00" fill="#000000">LV+Backtrace</text>
+</g>
+<!-- aim_backtrace&#45;&gt;bt_lv -->
+<g id="edge17" class="edge">
+<title>aim_backtrace&#45;&gt;bt_lv</title>
+<path fill="none" stroke="#afd275" d="M286.9135,-263.3C306.1991,-263.3 332.7154,-263.3 355.9697,-263.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="360.0417" cy="-263.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- climb_best -->
+<g id="node18" class="node">
+<title>climb_best</title>
+<path fill="none" stroke="#000000" d="M385.9654,-190.3C385.9654,-190.3 428.9654,-190.3 428.9654,-190.3 434.9654,-190.3 440.9654,-196.3 440.9654,-202.3 440.9654,-202.3 440.9654,-214.3 440.9654,-214.3 440.9654,-220.3 434.9654,-226.3 428.9654,-226.3 428.9654,-226.3 385.9654,-226.3 385.9654,-226.3 379.9654,-226.3 373.9654,-220.3 373.9654,-214.3 373.9654,-214.3 373.9654,-202.3 373.9654,-202.3 373.9654,-196.3 379.9654,-190.3 385.9654,-190.3"></path>
+<text text-anchor="middle" x="407.4654" y="-205" font-family="Times,serif" font-size="12.00" fill="#000000">最优后继</text>
+</g>
+<!-- aim_climb&#45;&gt;climb_best -->
+<g id="edge18" class="edge">
+<title>aim_climb&#45;&gt;climb_best</title>
+<path fill="none" stroke="#afd275" d="M286.9135,-163.3878C309.092,-171.6506 340.8334,-183.4759 366.1789,-192.9185"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="370.0734" cy="-194.3694" rx="4" ry="4"></ellipse>
+</g>
+<!-- climb_possibility -->
+<g id="node19" class="node">
+<title>climb_possibility</title>
+<path fill="none" stroke="#000000" d="M388.9654,-135.3C388.9654,-135.3 425.9654,-135.3 425.9654,-135.3 431.9654,-135.3 437.9654,-141.3 437.9654,-147.3 437.9654,-147.3 437.9654,-159.3 437.9654,-159.3 437.9654,-165.3 431.9654,-171.3 425.9654,-171.3 425.9654,-171.3 388.9654,-171.3 388.9654,-171.3 382.9654,-171.3 376.9654,-165.3 376.9654,-159.3 376.9654,-159.3 376.9654,-147.3 376.9654,-147.3 376.9654,-141.3 382.9654,-135.3 388.9654,-135.3"></path>
+<text text-anchor="middle" x="407.4654" y="-150" font-family="Times,serif" font-size="12.00" fill="#000000">概率后继</text>
+</g>
+<!-- aim_climb&#45;&gt;climb_possibility -->
+<g id="edge19" class="edge">
+<title>aim_climb&#45;&gt;climb_possibility</title>
+<path fill="none" stroke="#afd275" d="M286.9135,-153.3C309.8226,-153.3 342.9351,-153.3 368.6624,-153.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="372.7336" cy="-153.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- climb_first -->
+<g id="node20" class="node">
+<title>climb_first</title>
+<path fill="none" stroke="#000000" d="M381.634,-80.3C381.634,-80.3 433.2968,-80.3 433.2968,-80.3 439.2968,-80.3 445.2968,-86.3 445.2968,-92.3 445.2968,-92.3 445.2968,-104.3 445.2968,-104.3 445.2968,-110.3 439.2968,-116.3 433.2968,-116.3 433.2968,-116.3 381.634,-116.3 381.634,-116.3 375.634,-116.3 369.634,-110.3 369.634,-104.3 369.634,-104.3 369.634,-92.3 369.634,-92.3 369.634,-86.3 375.634,-80.3 381.634,-80.3"></path>
+<text text-anchor="middle" x="407.4654" y="-95" font-family="Times,serif" font-size="12.00" fill="#000000">首优后继</text>
+</g>
+<!-- aim_climb&#45;&gt;climb_first -->
+<g id="edge20" class="edge">
+<title>aim_climb&#45;&gt;climb_first</title>
+<path fill="none" stroke="#afd275" d="M286.9135,-143.2122C307.7946,-135.4328 337.1525,-124.4954 361.6685,-115.3619"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="365.6928" cy="-113.8626" rx="4" ry="4"></ellipse>
+</g>
+<!-- climb_simu_anneal -->
+<g id="node22" class="node">
+<title>climb_simu_anneal</title>
+<path fill="none" stroke="#000000" d="M387.1366,-25.3C387.1366,-25.3 427.7942,-25.3 427.7942,-25.3 433.7942,-25.3 439.7942,-31.3 439.7942,-37.3 439.7942,-37.3 439.7942,-49.3 439.7942,-49.3 439.7942,-55.3 433.7942,-61.3 427.7942,-61.3 427.7942,-61.3 387.1366,-61.3 387.1366,-61.3 381.1366,-61.3 375.1366,-55.3 375.1366,-49.3 375.1366,-49.3 375.1366,-37.3 375.1366,-37.3 375.1366,-31.3 381.1366,-25.3 387.1366,-25.3"></path>
+<text text-anchor="middle" x="407.4654" y="-40" font-family="Times,serif" font-size="12.00" fill="#000000">模拟退火</text>
+</g>
+<!-- aim_climb&#45;&gt;climb_simu_anneal -->
+<g id="edge24" class="edge">
+<title>aim_climb&#45;&gt;climb_simu_anneal</title>
+<path fill="none" stroke="#afd275" d="M281.7501,-135.0924C302.5393,-118.0549 334.8607,-92.1706 364.102,-71.3 366.582,-69.5299 369.1681,-67.7362 371.7885,-65.9562"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="375.429" cy="-63.5243" rx="4" ry="4"></ellipse>
+</g>
+<!-- climb_reset -->
+<g id="node21" class="node">
+<title>climb_reset</title>
+<path fill="none" stroke="#000000" d="M499.8288,-134.9C499.8288,-134.9 591.8296,-134.9 591.8296,-134.9 597.8296,-134.9 603.8296,-140.9 603.8296,-146.9 603.8296,-146.9 603.8296,-159.7 603.8296,-159.7 603.8296,-165.7 597.8296,-171.7 591.8296,-171.7 591.8296,-171.7 499.8288,-171.7 499.8288,-171.7 493.8288,-171.7 487.8288,-165.7 487.8288,-159.7 487.8288,-159.7 487.8288,-146.9 487.8288,-146.9 487.8288,-140.9 493.8288,-134.9 499.8288,-134.9"></path>
+<text text-anchor="middle" x="545.8292" y="-156.9" font-family="Times,serif" font-size="12.00" fill="#000000">随机重启爬山法</text>
+<text text-anchor="middle" x="545.8292" y="-142.5" font-family="Times,serif" font-size="12.00" fill="#000000">解决完备性问题</text>
+</g>
+<!-- climb_best&#45;&gt;climb_reset -->
+<g id="edge21" class="edge">
+<title>climb_best&#45;&gt;climb_reset</title>
+<path fill="none" stroke="#afd275" d="M441.313,-194.8455C456.507,-188.8058 474.8093,-181.5306 491.8235,-174.7674"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="495.8173" cy="-173.1799" rx="4" ry="4"></ellipse>
+</g>
+<!-- climb_possibility&#45;&gt;climb_reset -->
+<g id="edge22" class="edge">
+<title>climb_possibility&#45;&gt;climb_reset</title>
+<path fill="none" stroke="#afd275" d="M438.1728,-153.3C450.4659,-153.3 465.1355,-153.3 479.6302,-153.3"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="483.6486" cy="-153.3" rx="4" ry="4"></ellipse>
+</g>
+<!-- climb_first&#45;&gt;climb_reset -->
+<g id="edge23" class="edge">
+<title>climb_first&#45;&gt;climb_reset</title>
+<path fill="none" stroke="#afd275" d="M445.6402,-113.4746C459.9384,-119.1582 476.4646,-125.7274 491.9203,-131.8711"></path>
+<ellipse fill="#afd275" stroke="#afd275" cx="495.6902" cy="-133.3696" rx="4" ry="4"></ellipse>
+</g>
+</g>
+</svg>
+</p><p>根据是否存储访问过的状态分类：</p>
+<ul>
+<li>存储访问过的状态：图搜索，速度块，需要占用更多内存，推荐。</li>
+<li>不存储访问过的状态：树搜索，速度慢，占用内存少</li>
+</ul>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E5%90%84%E7%A7%8D%E7%AE%97%E6%B3%95%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB%E5%9B%BE">各种算法之间的关系图</a></li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>
