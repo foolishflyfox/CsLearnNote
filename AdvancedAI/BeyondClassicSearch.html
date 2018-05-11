@@ -407,7 +407,7 @@ Wall time: 1.18 s
 <p>贪婪算法很快朝着解的方向进展，因为它很容易改善一个坏的状态。</p>
 <p>爬山法又有很多的变形，变换在于选择上山的路径上：</p>
 <ul>
-<li><strong>随机爬山法</strong>：在上山移动中随机选择下一步，被选中的概率随着上山移动的陡峭长度不同而不同；</li>
+<li><strong>随机爬山法</strong>：在上山移动中随机选择下一步，被选中的概率随着上山移动的陡峭程度不同而不同；</li>
 <li><strong>首选爬山法</strong>：随机地生成后继节点直到生成一个优于当前节点的后继，这个算法在后继节点很多的时候是个好策略。</li>
 </ul>
 <p>下面使用首选爬山法对其进行测试：</p>
@@ -429,6 +429,70 @@ CPU times: user 413 ms, sys: 3.41 ms, total: 417 ms
 Wall time: 427 ms
 </code></pre><p>将时间限制在了半秒以内，性能大大提升！而且当 n 的值越大，首选爬山法的优势越明显。该方法获得 100 皇后的一个解也就用了 6 s 左右。</p>
 <p>NP难解通常有指数级数目的局部极大值。尽管如此，经过少数随机重启的搜索之后还是能找到一个合理的较好的局部最大值。</p>
+<h3 class="mume-header" id="%E6%B5%8B%E8%AF%95%E4%B8%80%E6%AC%A1%E6%88%90%E5%8A%9F%E7%9A%84%E5%87%86%E7%A1%AE%E7%8E%87">测试一次成功的准确率</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">c <span class="token operator">=</span> Counter<span class="token punctuation">(</span>hill_climbing_empress<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span> lower_height<span class="token punctuation">)</span> 
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">,</span> c<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">/</span><span class="token builtin">sum</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+c <span class="token operator">=</span> Counter<span class="token punctuation">(</span>hill_climbing_empress<span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span> lowest_height<span class="token punctuation">)</span> 
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">,</span> c<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">/</span><span class="token builtin">sum</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>values<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><pre data-role="codeBlock" data-info="" class="language-"><code>Counter({1: 108, 2: 55, 0: 36, 3: 1}) 
+ 0.18
+
+Counter({1: 91, 0: 60, 2: 45, 3: 4}) 
+ 0.3
+</code></pre><p>通过类似的多次试验也发现，使用选择最优爬山法比首选爬山法的一次成功的可能性大一点，不过两者都不是很高。而 LV+Backtrace 的算法的一次准确率几乎为1。</p>
+<h3 class="mume-header" id="%E9%9A%8F%E6%9C%BA%E9%87%8D%E5%90%AF%E7%88%AC%E5%B1%B1%E6%B3%95">随机重启爬山法</h3>
+
+<p>为了保证函数调用成功的概率为1，可以使用随机重启爬山法，即如果在非最优时结束，则重新初始化进行计算：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">def</span> <span class="token function">stochastic_reset_empress</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> get_lowh<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        low_v <span class="token operator">=</span> hill_climbing_empress<span class="token punctuation">(</span>n<span class="token punctuation">,</span> get_lowh<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> low_v<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+    <span class="token keyword">return</span> low_v
+<span class="token operator">%</span>time stochastic_reset_empress<span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> lower_height<span class="token punctuation">)</span>
+</pre><p>结果为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">CPU times<span class="token punctuation">:</span> user <span class="token number">4.97</span> s<span class="token punctuation">,</span> sys<span class="token punctuation">:</span> <span class="token number">9.91</span> ms<span class="token punctuation">,</span> total<span class="token punctuation">:</span> <span class="token number">4.98</span> s
+Wall time<span class="token punctuation">:</span> <span class="token number">5</span> s
+<span class="token punctuation">[</span>out<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token number">0</span>
+</pre><p>现在解决了可能返回失败的情况，不过性能比之前的几百毫秒低很多，那能否保证正确性的同时，保证效率呢？</p>
+<h3 class="mume-header" id="%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E6%90%9C%E7%B4%A2">模拟退火搜索</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> math
+<span class="token keyword">from</span> itertools <span class="token keyword">import</span> combinations
+<span class="token keyword">def</span> <span class="token function">simulated_annealing</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span> speed<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    cur_state <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+    low_v <span class="token operator">=</span> <span class="token boolean">None</span>
+    successor_swap <span class="token operator">=</span> <span class="token builtin">list</span><span class="token punctuation">(</span>combinations<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">while</span> low_v<span class="token operator">==</span><span class="token boolean">None</span> <span class="token operator">or</span> low_v<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">:</span>
+        tp_swap <span class="token operator">=</span> successor_swap<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+        <span class="token keyword">while</span> <span class="token builtin">len</span><span class="token punctuation">(</span>tp_swap<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            r <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>tp_swap<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            p1<span class="token punctuation">,</span> p2 <span class="token operator">=</span> tp_swap<span class="token punctuation">[</span>r<span class="token punctuation">]</span>
+            <span class="token keyword">del</span> tp_swap<span class="token punctuation">[</span>r<span class="token punctuation">]</span>
+            tp_state <span class="token operator">=</span> cur_state<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+            tp_state<span class="token punctuation">[</span>p1<span class="token punctuation">]</span><span class="token punctuation">,</span>tp_state<span class="token punctuation">[</span>p2<span class="token punctuation">]</span> <span class="token operator">=</span> tp_state<span class="token punctuation">[</span>p2<span class="token punctuation">]</span><span class="token punctuation">,</span>tp_state<span class="token punctuation">[</span>p1<span class="token punctuation">]</span>
+            tp_v <span class="token operator">=</span> calc_height<span class="token punctuation">(</span>tp_state<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> low_v<span class="token operator">==</span><span class="token boolean">None</span> <span class="token operator">or</span> low_v<span class="token operator">></span>tp_v<span class="token punctuation">:</span>
+                low_v<span class="token punctuation">,</span> cur_state <span class="token operator">=</span> tp_v<span class="token punctuation">,</span> tp_state
+                <span class="token keyword">break</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token comment"># 通过修改 random.uniform(0, speed) 中speed的值</span>
+                <span class="token comment"># 设置退火的速率，speed越大，求解速度越快，不过得到解的概率下降</span>
+                <span class="token keyword">if</span> random<span class="token punctuation">.</span>uniform<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span>speed<span class="token punctuation">)</span> <span class="token operator">&lt;=</span> math<span class="token punctuation">.</span>e<span class="token operator">**</span><span class="token punctuation">(</span><span class="token punctuation">(</span>low_v<span class="token operator">-</span>tp_v<span class="token punctuation">)</span><span class="token operator">/</span>low_v<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    low_v<span class="token punctuation">,</span> cur_state <span class="token operator">=</span> tp_v<span class="token punctuation">,</span> tp_state
+                    <span class="token keyword">break</span>
+    <span class="token keyword">return</span> low_v<span class="token punctuation">,</span> cur_state
+
+<span class="token operator">%</span>time simulated_annealing<span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+</pre><p>结果为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>CPU times: user 2.57 s, sys: 5.94 ms, total: 2.58 s
+Wall time: 2.58 s
+[out] : 0
+</code></pre><p>平均速度在2s左右，比之前的重启迭代深度要快很多，速度快是因为<code>speed</code>参数设置为了100，下面看看在<code>speed=100</code>时查找正确的概率：</p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -439,6 +503,9 @@ Wall time: 427 ms
 <li><a href="#%E5%9B%9E%E9%A1%BE%E5%85%AB%E7%9A%87%E5%90%8E%E9%97%AE%E9%A2%98%E7%9A%84%E6%B1%82%E6%89%80%E6%9C%89%E8%A7%A3">回顾八皇后问题的求所有解</a></li>
 <li><a href="#%E4%BD%BF%E7%94%A8-lvbacktrace-%E6%B1%82%E8%A7%A3%E4%B8%80%E4%B8%AA%E8%A7%A3">使用 LV+backtrace 求解一个解</a></li>
 <li><a href="#%E4%BD%BF%E7%94%A8%E7%88%AC%E5%B1%B1%E6%B3%95%E6%B1%82%E8%A7%A3%E4%B8%80%E4%B8%AA%E8%A7%A3">使用爬山法求解一个解</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95%E4%B8%80%E6%AC%A1%E6%88%90%E5%8A%9F%E7%9A%84%E5%87%86%E7%A1%AE%E7%8E%87">测试一次成功的准确率</a></li>
+<li><a href="#%E9%9A%8F%E6%9C%BA%E9%87%8D%E5%90%AF%E7%88%AC%E5%B1%B1%E6%B3%95">随机重启爬山法</a></li>
+<li><a href="#%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB%E6%90%9C%E7%B4%A2">模拟退火搜索</a></li>
 </ul>
 </li>
 </ul>

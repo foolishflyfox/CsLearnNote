@@ -192,7 +192,7 @@ Wall time: 1.18 s
 贪婪算法很快朝着解的方向进展，因为它很容易改善一个坏的状态。
 
 爬山法又有很多的变形，变换在于选择上山的路径上：
-- **随机爬山法**：在上山移动中随机选择下一步，被选中的概率随着上山移动的陡峭长度不同而不同；
+- **随机爬山法**：在上山移动中随机选择下一步，被选中的概率随着上山移动的陡峭程度不同而不同；
 - **首选爬山法**：随机地生成后继节点直到生成一个优于当前节点的后继，这个算法在后继节点很多的时候是个好策略。
 
 下面使用首选爬山法对其进行测试：
@@ -219,4 +219,85 @@ Wall time: 427 ms
 将时间限制在了半秒以内，性能大大提升！而且当 n 的值越大，首选爬山法的优势越明显。该方法获得 100 皇后的一个解也就用了 6 s 左右。
 
 NP难解通常有指数级数目的局部极大值。尽管如此，经过少数随机重启的搜索之后还是能找到一个合理的较好的局部最大值。
+
+### 测试一次成功的准确率
+
+```python
+c = Counter(hill_climbing_empress(16, lower_height) 
+    for i in range(200))
+print(c, '\n', c[0]/sum(c.values()))
+
+c = Counter(hill_climbing_empress(16, lowest_height) 
+    for i in range(200))
+print(c, '\n', c[0]/sum(c.values()))
+```
+```
+Counter({1: 108, 2: 55, 0: 36, 3: 1}) 
+ 0.18
+
+Counter({1: 91, 0: 60, 2: 45, 3: 4}) 
+ 0.3
+```
+通过类似的多次试验也发现，使用选择最优爬山法比首选爬山法的一次成功的可能性大一点，不过两者都不是很高。而 LV+Backtrace 的算法的一次准确率几乎为1。
+
+### 随机重启爬山法
+
+为了保证函数调用成功的概率为1，可以使用随机重启爬山法，即如果在非最优时结束，则重新初始化进行计算：
+```python
+def stochastic_reset_empress(n, get_lowh):
+    for i in range(10):
+        low_v = hill_climbing_empress(n, get_lowh)
+        if low_v==0:
+            break
+    return low_v
+%time stochastic_reset_empress(50, lower_height)
+```
+结果为：
+```python
+CPU times: user 4.97 s, sys: 9.91 ms, total: 4.98 s
+Wall time: 5 s
+[out] : 0
+```
+现在解决了可能返回失败的情况，不过性能比之前的几百毫秒低很多，那能否保证正确性的同时，保证效率呢？
+
+### 模拟退火搜索
+
+```python
+import math
+from itertools import combinations
+def simulated_annealing(n, speed=1):
+    cur_state = random.sample(range(n), n)
+    low_v = None
+    successor_swap = list(combinations(range(n), 2))
+    while low_v==None or low_v!=0:
+        tp_swap = successor_swap[:]
+        while len(tp_swap):
+            r = random.sample(range(len(tp_swap)), 1)[0]
+            p1, p2 = tp_swap[r]
+            del tp_swap[r]
+            tp_state = cur_state[:]
+            tp_state[p1],tp_state[p2] = tp_state[p2],tp_state[p1]
+            tp_v = calc_height(tp_state)
+            if low_v==None or low_v>tp_v:
+                low_v, cur_state = tp_v, tp_state
+                break
+            else:
+                # 通过修改 random.uniform(0, speed) 中speed的值
+                # 设置退火的速率，speed越大，求解速度越快，不过得到解的概率下降
+                if random.uniform(0,speed) <= math.e**((low_v-tp_v)/low_v):
+                    low_v, cur_state = tp_v, tp_state
+                    break
+    return low_v, cur_state
+
+%time simulated_annealing(50, 100)[0]
+```
+
+结果为：
+```
+CPU times: user 2.57 s, sys: 5.94 ms, total: 2.58 s
+Wall time: 2.58 s
+[out] : 0
+```
+平均速度在2s左右，比之前的重启迭代深度要快很多，速度快是因为`speed`参数设置为了100，下面看看在`speed=100`时查找正确的概率：
+
 
