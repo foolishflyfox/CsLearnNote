@@ -28,7 +28,8 @@
 - [超越经典搜索](/AdvancedAI/BeyondClassicSearch.html)
 - [笔记](/AdvancedAI/Note.html)
 
-> 图书下载：链接: > <https://pan.baidu.com/s/1jERNSyFqL_KvEW3fN1gP-A>
+> 图书下载：链接: 
+> <https://pan.baidu.com/s/1jERNSyFqL_KvEW3fN1gP-A>
 > 密码:3wmx
 
 ## 版本管理部分
