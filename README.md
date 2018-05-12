@@ -27,6 +27,7 @@
 - [搜索的一个经典例子](/LeetCode/818_RaceCar.md)
 - [A\* 算法-8数码问题](/AdvancedAI/EightDigit.html)
 - [超越经典搜索](/AdvancedAI/BeyondClassicSearch.html)
+- [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](/AdvancedAI/TSP_genetic.html)
 - [笔记](/AdvancedAI/Note.html)
 
 > 图书下载：链接: 
