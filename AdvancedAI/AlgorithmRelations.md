@@ -37,6 +37,7 @@ digraph{
     climb_first [label="首优后继"]
     climb_reset [label="随机重启爬山法\n解决完备性问题"]
     climb_simu_anneal [label="模拟退火"]
+    climb_local_beam [label="局部束搜索"]
 
     root->search_path,search_aim
     search_path->path_blind,path_info
@@ -49,6 +50,7 @@ digraph{
     aim_backtrace->bt_lv
     aim_climb->climb_best,climb_possibility,climb_first->climb_reset
     aim_climb->climb_simu_anneal
+    aim_climb->climb_local_beam
 }
 ```
 根据是否存储访问过的状态分类：

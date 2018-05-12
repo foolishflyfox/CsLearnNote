@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>TSP_genetic</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<blockquote>
+<p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
+</blockquote>
+<h1 class="mume-header" id="%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E8%AE%A1%E7%AE%97%E6%97%85%E8%A1%8C%E5%95%86%E9%97%AE%E9%A2%98">遗传算法计算旅行商问题</h1>
+
+<p>如下表所示，为一组中国城市的经纬度信息，现在要求从北京出发，旅行一圈，最后回到北京。这个过程中，同一个城市不能经过两次，两个城市之间的距离计算直接用经纬度作为坐标，求两者的欧拉距离即可：</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>城市名</th>
+<th>东经</th>
+<th>北纬</th>
+<th>编号</th>
+<th>城市名</th>
+<th>东经</th>
+<th>北纬</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>北京</td>
+<td>116.46</td>
+<td>39.92</td>
+<td>18</td>
+<td>南京</td>
+<td>118.78</td>
+<td>32.04</td>
+</tr>
+<tr>
+<td>2</td>
+<td>天津</td>
+<td>117.2</td>
+<td>39.13</td>
+<td>19</td>
+<td>合肥</td>
+<td>117.27</td>
+<td>31.86</td>
+</tr>
+<tr>
+<td>3</td>
+<td>上海</td>
+<td>121.48</td>
+<td>31.22</td>
+<td>20</td>
+<td>杭州</td>
+<td>120.19</td>
+<td>30.26</td>
+</tr>
+<tr>
+<td>4</td>
+<td>重庆</td>
+<td>106.54</td>
+<td>29.59</td>
+<td>21</td>
+<td>福州</td>
+<td>119.3</td>
+<td>26.08</td>
+</tr>
+<tr>
+<td>5</td>
+<td>拉萨</td>
+<td>91.11</td>
+<td>29.97</td>
+<td>22</td>
+<td>南昌</td>
+<td>115.89</td>
+<td>28.68</td>
+</tr>
+<tr>
+<td>6</td>
+<td>乌鲁木齐</td>
+<td>87.68</td>
+<td>43.77</td>
+<td>23</td>
+<td>长沙</td>
+<td>113</td>
+<td>28.21</td>
+</tr>
+<tr>
+<td>7</td>
+<td>银川</td>
+<td>106.27</td>
+<td>38.47</td>
+<td>24</td>
+<td>武汉</td>
+<td>114.31</td>
+<td>30.52</td>
+</tr>
+<tr>
+<td>8</td>
+<td>呼和浩特</td>
+<td>111.65</td>
+<td>40.82</td>
+<td>25</td>
+<td>广州</td>
+<td>113.23</td>
+<td>23.16</td>
+</tr>
+<tr>
+<td>9</td>
+<td>南宁</td>
+<td>108.33</td>
+<td>22.84</td>
+<td>26</td>
+<td>台北</td>
+<td>121.5</td>
+<td>25.05</td>
+</tr>
+<tr>
+<td>10</td>
+<td>哈尔滨</td>
+<td>126.63</td>
+<td>45.75</td>
+<td>27</td>
+<td>海口</td>
+<td>110.35</td>
+<td>20.02</td>
+</tr>
+<tr>
+<td>11</td>
+<td>长春</td>
+<td>125.35</td>
+<td>43.88</td>
+<td>28</td>
+<td>兰州</td>
+<td>103.73</td>
+<td>36.03</td>
+</tr>
+<tr>
+<td>12</td>
+<td>沈阳</td>
+<td>123.38</td>
+<td>41.8</td>
+<td>29</td>
+<td>西安</td>
+<td>108.95</td>
+<td>34.27</td>
+</tr>
+<tr>
+<td>13</td>
+<td>石家庄</td>
+<td>114.48</td>
+<td>38.03</td>
+<td>30</td>
+<td>成都</td>
+<td>104.06</td>
+<td>30.67</td>
+</tr>
+<tr>
+<td>14</td>
+<td>太原</td>
+<td>112.53</td>
+<td>37.87</td>
+<td>31</td>
+<td>贵阳</td>
+<td>106.71</td>
+<td>26.57</td>
+</tr>
+<tr>
+<td>15</td>
+<td>西宁</td>
+<td>101.74</td>
+<td>36.56</td>
+<td>32</td>
+<td>昆明</td>
+<td>102.73</td>
+<td>25.04</td>
+</tr>
+<tr>
+<td>16</td>
+<td>济南</td>
+<td>117</td>
+<td>36.65</td>
+<td>33</td>
+<td>香港</td>
+<td>114.1</td>
+<td>22.2</td>
+</tr>
+<tr>
+<td>17</td>
+<td>郑州</td>
+<td>113.6</td>
+<td>34.76</td>
+<td>34</td>
+<td>澳门</td>
+<td>113.33</td>
+<td>22.13</td>
+</tr>
+</tbody>
+</table>
+<h2 class="mume-header" id="%E6%9A%B4%E5%8A%9B%E6%9E%9A%E4%B8%BE">暴力枚举</h2>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">cities <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">116.46</span><span class="token punctuation">,</span> <span class="token number">39.92</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">117.2</span><span class="token punctuation">,</span> <span class="token number">39.13</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">121.48</span><span class="token punctuation">,</span> <span class="token number">31.22</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">106.54</span><span class="token punctuation">,</span> <span class="token number">29.59</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">91.11</span><span class="token punctuation">,</span> <span class="token number">29.97</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">87.68</span><span class="token punctuation">,</span> <span class="token number">43.77</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">106.27</span><span class="token punctuation">,</span> <span class="token number">38.47</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">111.65</span><span class="token punctuation">,</span> <span class="token number">40.82</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">108.33</span><span class="token punctuation">,</span> <span class="token number">22.84</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">126.63</span><span class="token punctuation">,</span> <span class="token number">45.75</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">125.35</span><span class="token punctuation">,</span> <span class="token number">43.88</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">123.38</span><span class="token punctuation">,</span> <span class="token number">41.8</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">114.48</span><span class="token punctuation">,</span> <span class="token number">38.03</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">112.53</span><span class="token punctuation">,</span> <span class="token number">37.87</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">101.74</span><span class="token punctuation">,</span> <span class="token number">36.56</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">117.0</span><span class="token punctuation">,</span> <span class="token number">36.65</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">113.6</span><span class="token punctuation">,</span> <span class="token number">34.76</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">118.78</span><span class="token punctuation">,</span><span class="token number">32.04</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">117.27</span><span class="token punctuation">,</span><span class="token number">31.86</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">120.19</span><span class="token punctuation">,</span><span class="token number">30.26</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">119.3</span><span class="token punctuation">,</span><span class="token number">26.08</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">115.89</span><span class="token punctuation">,</span><span class="token number">28.68</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">113.0</span><span class="token punctuation">,</span><span class="token number">28.21</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">114.31</span><span class="token punctuation">,</span><span class="token number">30.52</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">113.23</span><span class="token punctuation">,</span><span class="token number">23.16</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">121.5</span><span class="token punctuation">,</span><span class="token number">25.05</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">110.35</span><span class="token punctuation">,</span><span class="token number">20.02</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">103.73</span><span class="token punctuation">,</span><span class="token number">36.03</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">108.95</span><span class="token punctuation">,</span><span class="token number">34.27</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">104.06</span><span class="token punctuation">,</span><span class="token number">30.67</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">106.71</span><span class="token punctuation">,</span><span class="token number">26.57</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">102.73</span><span class="token punctuation">,</span><span class="token number">25.04</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">(</span><span class="token number">114.1</span><span class="token punctuation">,</span><span class="token number">22.2</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">113.33</span><span class="token punctuation">,</span><span class="token number">22.13</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+
+<span class="token keyword">from</span> itertools <span class="token keyword">import</span> permutations
+<span class="token keyword">import</span> math
+
+<span class="token comment"># 使用枚举方式计算路径</span>
+<span class="token keyword">def</span> <span class="token function">enum_TSP</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    paths <span class="token operator">=</span> permutations<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    shortest_path <span class="token operator">=</span> <span class="token boolean">None</span>
+    shortest_miles <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">for</span> path <span class="token keyword">in</span> paths<span class="token punctuation">:</span>
+        cur_miles <span class="token operator">=</span> <span class="token number">0</span>
+        path <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token builtin">list</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+        pre_pos <span class="token operator">=</span> cities<span class="token punctuation">[</span>path<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> path<span class="token punctuation">:</span>
+            cur_miles <span class="token operator">+=</span> math<span class="token punctuation">.</span>hypot<span class="token punctuation">(</span>pre_pos<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">-</span>cities<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                   pre_pos<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">-</span>cities<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            pre_pos <span class="token operator">=</span> cities<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+        <span class="token keyword">if</span> shortest_miles<span class="token operator">==</span><span class="token boolean">None</span> <span class="token operator">or</span> shortest_miles<span class="token operator">></span>cur_miles<span class="token punctuation">:</span>
+            shortest_miles <span class="token operator">=</span> cur_miles
+            shortest_path <span class="token operator">=</span> path
+    <span class="token keyword">return</span> shortest_miles<span class="token punctuation">,</span> shortest_path
+<span class="token keyword">import</span> time
+pre_running <span class="token operator">=</span> <span class="token number">100000</span>
+<span class="token comment"># 测试随着城市个数的增加，计算时间的变化</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t1 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    miles<span class="token punctuation">,</span> path <span class="token operator">=</span> enum_TSP<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    t2 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running:{:g}s x{:.3f}, miles:{}"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>
+        t2<span class="token operator">-</span>t1<span class="token punctuation">,</span> <span class="token punctuation">(</span>t2<span class="token operator">-</span>t1<span class="token punctuation">)</span><span class="token operator">/</span>pre_running<span class="token punctuation">,</span> miles<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    pre_running <span class="token operator">=</span> t2<span class="token operator">-</span>t1
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+</pre><p>测试结果为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>running:3.60012e-05s x0.000, miles:0.0
+running:1.09673e-05s x0.305, miles:2.164901845350049
+running:8.82149e-06s x0.804, miles:20.120564493919822
+running:2.21729e-05s x2.514, miles:39.42664606580856
+running:4.91142e-05s x2.215, miles:67.77227033726385
+running:0.000365973s x7.451, miles:83.7957265568911
+running:0.00200295s x5.473, miles:84.38275768767652
+running:0.0180061s x8.990, miles:84.85443680089674
+running:0.14526s x8.067, miles:92.40225788702355
+running:1.16235s x8.002, miles:110.34594071307717
+running:12.7086s x10.934, miles:110.43467064772815
+running:148.912s x11.717, miles:110.6873206900153
+
+[0, 1, 11, 10, 9, 2, 8, 3, 4, 5, 6, 7]
+</code></pre><p>可以看出，随着节点个数的增加，时间复杂度不仅仅是以指数方式增大，而是以阶乘的方式增大。其中在有 12 个节点的时候用时就达到了149 s。</p>
+<h2 class="mume-header" id="%E7%88%AC%E5%B1%B1%E6%B3%95%E8%A7%A3tsp%E9%97%AE%E9%A2%98">爬山法解TSP问题</h2>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> itertools <span class="token keyword">import</span> combinations
+<span class="token keyword">def</span> <span class="token function">climb_TSP</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    shortest_path <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                        <span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+    shortest_miles <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        swap_poses <span class="token operator">=</span> combinations<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> p1<span class="token punctuation">,</span> p2 <span class="token keyword">in</span> swap_poses<span class="token punctuation">:</span>
+            tp_path <span class="token operator">=</span> shortest_path<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+            tp_path<span class="token punctuation">[</span>p1<span class="token punctuation">]</span><span class="token punctuation">,</span>tp_path<span class="token punctuation">[</span>p2<span class="token punctuation">]</span><span class="token operator">=</span>tp_path<span class="token punctuation">[</span>p2<span class="token punctuation">]</span><span class="token punctuation">,</span>tp_path<span class="token punctuation">[</span>p1<span class="token punctuation">]</span>
+            tp_miles <span class="token operator">=</span> <span class="token number">0</span>
+            pre_pos <span class="token operator">=</span> cities<span class="token punctuation">[</span>tp_path<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+            <span class="token keyword">for</span> p <span class="token keyword">in</span> tp_path<span class="token punctuation">:</span>
+                tp_miles <span class="token operator">+=</span> math<span class="token punctuation">.</span>hypot<span class="token punctuation">(</span>pre_pos<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">-</span>cities<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                      pre_pos<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">-</span>cities<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                pre_pos <span class="token operator">=</span> cities<span class="token punctuation">[</span>p<span class="token punctuation">]</span>
+            <span class="token keyword">if</span> shortest_miles <span class="token operator">==</span> <span class="token boolean">None</span> <span class="token operator">or</span> shortest_miles<span class="token operator">></span>tp_miles<span class="token punctuation">:</span>
+                shortest_path <span class="token operator">=</span> tp_path
+                shortest_miles <span class="token operator">=</span> tp_miles
+                <span class="token keyword">break</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+    <span class="token keyword">return</span> shortest_miles<span class="token punctuation">,</span> shortest_path
+
+pre_running <span class="token operator">=</span> <span class="token number">100000</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t1 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    miles2<span class="token punctuation">,</span> path2 <span class="token operator">=</span> climb_TSP<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    t2 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running:{:g}s x{:.3f}, miles:{}"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>
+        t2<span class="token operator">-</span>t1<span class="token punctuation">,</span> <span class="token punctuation">(</span>t2<span class="token operator">-</span>t1<span class="token punctuation">)</span><span class="token operator">/</span>pre_running<span class="token punctuation">,</span> miles2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    pre_running <span class="token operator">=</span> t2<span class="token operator">-</span>t1
+    
+<span class="token keyword">print</span><span class="token punctuation">(</span>path2<span class="token punctuation">)</span>
+</pre><p>结果为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>running:0.000128031s x0.000, miles:None
+running:8.4877e-05s x0.663, miles:None
+running:5.79357e-05s x0.683, miles:20.120564493919822
+running:3.71933e-05s x0.642, miles:39.42664606580856
+running:3.79086e-05s x1.019, miles:67.77227033726385
+running:5.72205e-05s x1.509, miles:83.7957265568911
+running:0.000101805s x1.779, miles:90.23282899625877
+running:0.000200272s x1.967, miles:92.9941998469688
+running:0.000232935s x1.163, miles:110.87183854597784
+running:0.000420094s x1.803, miles:120.62660128330911
+running:0.000742197s x1.767, miles:138.46718712299258
+running:0.00130606s x1.760, miles:143.51666000899704
+running:0.00225902s x1.730, miles:120.78177282473035
+running:0.00282788s x1.252, miles:130.2100894627685
+running:0.00347209s x1.228, miles:128.65765074239675
+running:0.00546694s x1.575, miles:130.04736168607283
+running:0.00604486s x1.106, miles:167.5561666681788
+running:0.00989723s x1.637, miles:145.36418380202562
+running:0.0146728s x1.483, miles:134.8147803710913
+running:0.00706196s x0.481, miles:135.03955265179337
+running:0.011061s x1.566, miles:154.7739169038902
+running:0.0297201s x2.687, miles:147.92296705350185
+running:0.00878906s x0.296, miles:156.82077414333395
+running:0.0464067s x5.280, miles:161.4439643821685
+running:0.0416319s x0.897, miles:159.0443171682327
+running:0.022413s x0.538, miles:168.03001602322684
+running:0.0185859s x0.829, miles:189.1730535664609
+running:0.0593841s x3.195, miles:156.24074812942845
+running:0.0345321s x0.582, miles:183.37720511542645
+running:0.0417631s x1.209, miles:198.23621578039857
+running:0.114813s x2.749, miles:176.3954187817255
+running:0.0456481s x0.398, miles:194.21122328178666
+running:0.105248s x2.306, miles:184.54587357258475
+[0, 11, 10, 9, 7, 6, 5, 4, 14, 27, 29, 31, 8, 26, 22, 23, 21, 18, 
+17, 15, 1, 12, 13, 16, 28, 3, 30, 24, 32, 20, 25, 19, 2]
+</code></pre><p>虽然并不是最优的解，但是速度非常快。用枚举法解全部的34个城市的最短路径，总共有 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>3</mn><mn>3</mn><mo>!</mo><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">33!/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord">3</span><span class="mord">3</span><span class="mclose">!</span><span class="mord">/</span><span class="mord">2</span></span></span></span>中情况，一共大约有<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn><mi mathvariant="normal">.</mi><mn>3</mn><mn>4</mn><mo>×</mo><mn>1</mn><msup><mn>0</mn><mrow><mn>3</mn><mn>6</mn></mrow></msup></mrow><annotation encoding="application/x-tex">4.34\times 10^{36}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:0.897438em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">4</span><span class="mord">.</span><span class="mord">3</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span>中情况，这要迭代非常长的时间，而使用爬山法几乎是瞬间解决。并且在测试中也能看出，耗时时间随城市个数的增多并没有明显的变化！</p>
+<h3 class="mume-header" id="%E5%B1%80%E9%83%A8%E6%9D%9F%E6%90%9C%E7%B4%A2%E8%A7%A3tsp%E9%97%AE%E9%A2%98">局部束搜索解TSP问题</h3>
+
+<p>为了提高准确性，可以使用局部束搜索。</p>
+<p>局部束搜索(local beam search)算法记录k个状态而不是只记录一个。它从k个随机生成的状态开始，每一步全部k个状态的所有后继全部被生成。如果其中有一个是目标状态，算法停止，否则从整个后继列表中选择k个最佳的后继，重复该过程：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> random <span class="token keyword">import</span> sample
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+<span class="token keyword">from</span> itertools <span class="token keyword">import</span> combinations
+<span class="token keyword">import</span> math
+<span class="token keyword">import</span> time
+<span class="token keyword">def</span> <span class="token function">local_beam_search</span><span class="token punctuation">(</span>cities<span class="token punctuation">,</span> best_n<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">class</span> <span class="token class-name">BeamNode</span><span class="token punctuation">:</span>
+        <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> miles<span class="token punctuation">,</span> path<span class="token punctuation">,</span> best<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>miles<span class="token punctuation">,</span> self<span class="token punctuation">.</span>path<span class="token punctuation">,</span> self<span class="token punctuation">.</span>best <span class="token operator">=</span> miles<span class="token punctuation">,</span> path<span class="token punctuation">,</span> best
+            
+    beamnodes <span class="token operator">=</span> <span class="token punctuation">[</span>BeamNode<span class="token punctuation">(</span><span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+</span> sample<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token boolean">False</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>best_n<span class="token punctuation">)</span>
+    <span class="token punctuation">]</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        <span class="token comment"># 查询是否每个状态都达到局部最优</span>
+        <span class="token keyword">if</span> <span class="token builtin">all</span><span class="token punctuation">(</span>bn<span class="token punctuation">.</span>best <span class="token keyword">for</span> bn <span class="token keyword">in</span> beamnodes<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+        <span class="token comment"># 扩展所有节点</span>
+        <span class="token keyword">for</span> bn <span class="token keyword">in</span> beamnodes<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> bn<span class="token punctuation">.</span>best<span class="token punctuation">:</span>
+                <span class="token keyword">continue</span>
+            swap_poses <span class="token operator">=</span> combinations<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+            bn<span class="token punctuation">.</span>best <span class="token operator">=</span> <span class="token boolean">True</span>
+            <span class="token keyword">for</span> p1<span class="token punctuation">,</span> p2 <span class="token keyword">in</span> swap_poses<span class="token punctuation">:</span>
+                tp_path <span class="token operator">=</span> bn<span class="token punctuation">.</span>path<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+                tp_path<span class="token punctuation">[</span>p1<span class="token punctuation">]</span><span class="token punctuation">,</span>tp_path<span class="token punctuation">[</span>p2<span class="token punctuation">]</span><span class="token operator">=</span>tp_path<span class="token punctuation">[</span>p2<span class="token punctuation">]</span><span class="token punctuation">,</span>tp_path<span class="token punctuation">[</span>p1<span class="token punctuation">]</span>
+                tp_miles <span class="token operator">=</span> <span class="token number">0</span>
+                pre_pos <span class="token operator">=</span> cities<span class="token punctuation">[</span>tp_path<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+                <span class="token keyword">for</span> p <span class="token keyword">in</span> tp_path<span class="token punctuation">:</span>
+                    tp_miles <span class="token operator">+=</span> math<span class="token punctuation">.</span>hypot<span class="token punctuation">(</span>pre_pos<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">-</span>cities<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                          pre_pos<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">-</span>cities<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                    pre_pos <span class="token operator">=</span> cities<span class="token punctuation">[</span>p<span class="token punctuation">]</span>
+                <span class="token keyword">if</span> bn<span class="token punctuation">.</span>miles<span class="token operator">></span>tp_miles<span class="token punctuation">:</span>
+                    beamnodes<span class="token punctuation">.</span>append<span class="token punctuation">(</span>BeamNode<span class="token punctuation">(</span>tp_miles<span class="token punctuation">,</span> tp_path<span class="token punctuation">,</span> <span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    bn<span class="token punctuation">.</span>best <span class="token operator">=</span> <span class="token boolean">False</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>best_n<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> beamnodes<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>best<span class="token operator">==</span><span class="token boolean">False</span><span class="token punctuation">:</span>
+                <span class="token keyword">del</span> beamnodes<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+        <span class="token comment"># 选出最优的 best_n 个节点</span>
+        beamnodes<span class="token punctuation">.</span>sort<span class="token punctuation">(</span>key<span class="token operator">=</span><span class="token keyword">lambda</span> b<span class="token punctuation">:</span>b<span class="token punctuation">.</span>miles<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>beamnodes<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> beamnodes<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>path<span class="token operator">==</span>beamnodes<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>path<span class="token punctuation">:</span>
+                <span class="token keyword">del</span> beamnodes<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+        <span class="token keyword">del</span> beamnodes<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+        best_n <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>beamnodes<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> beamnodes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>miles<span class="token punctuation">,</span> beamnodes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>path
+
+pre_running <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">'inf'</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    t1 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    miles2<span class="token punctuation">,</span> path2 <span class="token operator">=</span> local_beam_search<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    t2 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"running:{:g}s x{:.3f}, miles:{}"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>
+        t2<span class="token operator">-</span>t1<span class="token punctuation">,</span> <span class="token punctuation">(</span>t2<span class="token operator">-</span>t1<span class="token punctuation">)</span><span class="token operator">/</span>pre_running<span class="token punctuation">,</span> miles2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    pre_running <span class="token operator">=</span> t2<span class="token operator">-</span>t1
+    
+<span class="token keyword">print</span><span class="token punctuation">(</span>path2<span class="token punctuation">)</span>
+</pre><p>结果为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>running:7.48634e-05s x0.000, miles:inf
+running:7.29561e-05s x0.975, miles:inf
+running:8.70228e-05s x1.193, miles:20.120564493919822
+running:0.000158072s x1.816, miles:39.42664606580856
+running:0.000221968s x1.404, miles:67.77227033726385
+running:0.000431061s x1.942, miles:83.7957265568911
+running:0.000889063s x2.062, miles:84.38275768767652
+running:0.00160718s x1.808, miles:84.85443680089674
+running:0.00238991s x1.487, miles:92.40225788702355
+running:0.00335908s x1.406, miles:110.34594071307717
+running:0.00487185s x1.450, miles:110.43467064772817
+running:0.0100112s x2.055, miles:111.91943722100244
+running:0.0141709s x1.416, miles:115.27612040426075
+running:0.0150173s x1.060, miles:118.9279691330789
+running:0.016886s x1.124, miles:119.27996032620133
+running:0.018244s x1.080, miles:126.3965354302179
+running:0.0457778s x2.509, miles:143.58039833664745
+running:0.055361s x1.209, miles:125.11183077490266
+running:0.0537369s x0.971, miles:141.39768644347023
+running:0.0799038s x1.487, miles:154.85828287334604
+running:0.075743s x0.948, miles:145.43479934323378
+running:0.0898211s x1.186, miles:143.2601436882673
+running:0.154215s x1.717, miles:137.84251152248925
+running:0.160292s x1.039, miles:143.95827860841806
+running:0.143059s x0.892, miles:170.27043482125828
+running:0.160734s x1.124, miles:168.0657839286054
+running:0.271459s x1.689, miles:155.54801477059112
+running:0.294802s x1.086, miles:172.8256552857249
+running:0.456344s x1.548, miles:156.53323014375658
+running:0.374575s x0.821, miles:181.16572038726045
+running:0.431593s x1.152, miles:172.18639557903106
+running:0.540651s x1.253, miles:180.10136689637474
+running:0.667963s x1.235, miles:206.67581783187333
+[0, 15, 20, 25, 32, 26, 31, 4, 5, 9, 10, 11, 2, 19, 17, 18, 21, 29, 14, 27, 6, 7, 13, 12, 16, 23, 22, 24, 8, 30, 3, 28, 1]
+</code></pre><p>局部束搜索的时间复杂度也非常低。和爬山法一样，并不能保证路径最优，下面来计算一下 100 次 24城市路径规划，使用束搜索比首优爬山法更好的比例：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">sum</span><span class="token punctuation">(</span>climb_TSP<span class="token punctuation">(</span>cities<span class="token punctuation">)</span><span class="token operator">>=</span>local_beam_search<span class="token punctuation">(</span>cities<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token number">79</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">sum</span><span class="token punctuation">(</span>climb_TSP<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">>=</span>local_beam_search<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">15</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token number">87</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">sum</span><span class="token punctuation">(</span>climb_TSP<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">>=</span>local_beam_search<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">12</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token number">84</span>
+<span class="token operator">>></span><span class="token operator">></span> <span class="token builtin">sum</span><span class="token punctuation">(</span>climb_TSP<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">>=</span>local_beam_search<span class="token punctuation">(</span>cities<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">8</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token number">98</span>
+</pre><p>可以看出，差不多有 80% 以上的概率是使用局部束搜索路径要小于等于首优爬山法。</p>
+<h3 class="mume-header" id="%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E8%A7%A3%E5%86%B3tsp%E9%97%AE%E9%A2%98">遗传算法解决TSP问题</h3>
+
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E8%AE%A1%E7%AE%97%E6%97%85%E8%A1%8C%E5%95%86%E9%97%AE%E9%A2%98">遗传算法计算旅行商问题</a>
+<ul>
+<li><a href="#%E6%9A%B4%E5%8A%9B%E6%9E%9A%E4%B8%BE">暴力枚举</a></li>
+<li><a href="#%E7%88%AC%E5%B1%B1%E6%B3%95%E8%A7%A3tsp%E9%97%AE%E9%A2%98">爬山法解TSP问题</a>
+<ul>
+<li><a href="#%E5%B1%80%E9%83%A8%E6%9D%9F%E6%90%9C%E7%B4%A2%E8%A7%A3tsp%E9%97%AE%E9%A2%98">局部束搜索解TSP问题</a></li>
+<li><a href="#%E9%81%97%E4%BC%A0%E7%AE%97%E6%B3%95%E8%A7%A3%E5%86%B3tsp%E9%97%AE%E9%A2%98">遗传算法解决TSP问题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>

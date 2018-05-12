@@ -97,6 +97,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-11 : 95. Unique Binary Search Trees II 搜索二叉树、递归](/LeetCode/95_UniqueBSTII.html)
 
+- [2018-05-12 : 466. Count The Repetitions](/LeetCode/466_CountTheRepetitions.html)<code class="red">hard hard</code>偏数学
+
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
 - [note02.html](/anyfile/note02.html)
