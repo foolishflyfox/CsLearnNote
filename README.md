@@ -100,6 +100,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-12 : 466. Count The Repetitions](/LeetCode/466_CountTheRepetitions.html)<code class="red">hard hard</code>偏数学
 
+- [2018-05-13 : 832. Flipping an Image](/LeetCode/832_FlippinganImage.html)
+
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
 - [note02.html](/anyfile/note02.html)

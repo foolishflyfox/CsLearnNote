@@ -182,21 +182,27 @@ from collections import namedtuple
 from itertools import combinations
 import math
 import time
-def local_beam_search(cities, best_n=5):
+def genetic_lbs(cities):
     class BeamNode:
         def __init__(self, miles, path, best):
             self.miles, self.path, self.best = miles, path, best
-            
+    def calc_miles(path):
+        pre_pos = cities[path[-1]]
+        tp_miles = 0
+        for p in path:
+            tp_miles += math.hypot(pre_pos[0]-cities[p][0],
+                                  pre_pos[1]-cities[p][1])
+            pre_pos = cities[p]
+        return tp_miles
     beamnodes = [BeamNode(float('inf'),
         [0] + sample(range(1,len(cities)),len(cities)-1),
         False) for i in range(best_n)
     ]
     while True:
-        # 查询是否每个状态都达到局部最优
         if all(bn.best for bn in beamnodes):
             break
-        # 扩展所有节点
-        for bn in beamnodes[:5]:
+        origin_len = len(beamnodes)
+        for bn in beamnodes[:best_n]:
             if bn.best:
                 continue
             swap_poses = combinations(range(1, len(cities)), 2)
@@ -204,25 +210,18 @@ def local_beam_search(cities, best_n=5):
             for p1, p2 in swap_poses:
                 tp_path = bn.path[:]
                 tp_path[p1],tp_path[p2]=tp_path[p2],tp_path[p1]
-                tp_miles = 0
-                pre_pos = cities[tp_path[-1]]
-                for p in tp_path:
-                    tp_miles += math.hypot(pre_pos[0]-cities[p][0],
-                                          pre_pos[1]-cities[p][1])
-                    pre_pos = cities[p]
+                tp_miles = calc_miles(tp_path)
                 if bn.miles>tp_miles:
                     beamnodes.append(BeamNode(tp_miles, tp_path, False))
                     bn.best = False
-        for i in range(best_n-1, -1, -1):
+        for i in range(origin_len-1, -1, -1):
             if beamnodes[i].best==False:
                 del beamnodes[i]
-        # 选出最优的 best_n 个节点
         beamnodes.sort(key=lambda b:b.miles)
         for i in range(len(beamnodes)-1,0,-1):
             if beamnodes[i].path==beamnodes[i-1].path:
                 del beamnodes[i]
-        del beamnodes[5:]
-        best_n = len(beamnodes)
+        del beamnodes[best_n:]
     return beamnodes[0].miles, beamnodes[0].path
 
 pre_running = float('inf')
@@ -238,40 +237,41 @@ print(path2)
 ```
 结果为：
 ```
-running:7.48634e-05s x0.000, miles:inf
-running:7.29561e-05s x0.975, miles:inf
-running:8.70228e-05s x1.193, miles:20.120564493919822
-running:0.000158072s x1.816, miles:39.42664606580856
-running:0.000221968s x1.404, miles:67.77227033726385
-running:0.000431061s x1.942, miles:83.7957265568911
-running:0.000889063s x2.062, miles:84.38275768767652
-running:0.00160718s x1.808, miles:84.85443680089674
-running:0.00238991s x1.487, miles:92.40225788702355
-running:0.00335908s x1.406, miles:110.34594071307717
-running:0.00487185s x1.450, miles:110.43467064772817
-running:0.0100112s x2.055, miles:111.91943722100244
-running:0.0141709s x1.416, miles:115.27612040426075
-running:0.0150173s x1.060, miles:118.9279691330789
-running:0.016886s x1.124, miles:119.27996032620133
-running:0.018244s x1.080, miles:126.3965354302179
-running:0.0457778s x2.509, miles:143.58039833664745
-running:0.055361s x1.209, miles:125.11183077490266
-running:0.0537369s x0.971, miles:141.39768644347023
-running:0.0799038s x1.487, miles:154.85828287334604
-running:0.075743s x0.948, miles:145.43479934323378
-running:0.0898211s x1.186, miles:143.2601436882673
-running:0.154215s x1.717, miles:137.84251152248925
-running:0.160292s x1.039, miles:143.95827860841806
-running:0.143059s x0.892, miles:170.27043482125828
-running:0.160734s x1.124, miles:168.0657839286054
-running:0.271459s x1.689, miles:155.54801477059112
-running:0.294802s x1.086, miles:172.8256552857249
-running:0.456344s x1.548, miles:156.53323014375658
-running:0.374575s x0.821, miles:181.16572038726045
-running:0.431593s x1.152, miles:172.18639557903106
-running:0.540651s x1.253, miles:180.10136689637474
-running:0.667963s x1.235, miles:206.67581783187333
-[0, 15, 20, 25, 32, 26, 31, 4, 5, 9, 10, 11, 2, 19, 17, 18, 21, 29, 14, 27, 6, 7, 13, 12, 16, 23, 22, 24, 8, 30, 3, 28, 1]
+running:7.29561e-05s x0.000, miles:inf
+running:9.89437e-05s x1.356, miles:inf
+running:8.86917e-05s x0.896, miles:20.120564493919822
+running:0.000219822s x2.478, miles:39.42664606580856
+running:0.000298023s x1.356, miles:67.77227033726385
+running:0.000684023s x2.295, miles:83.7957265568911
+running:0.00104809s x1.532, miles:84.38275768767652
+running:0.00150609s x1.437, miles:84.85443680089674
+running:0.00251985s x1.673, miles:92.40225788702355
+running:0.0036428s x1.446, miles:110.34594071307717
+running:0.00780702s x2.143, miles:110.43467064772815
+running:0.00751591s x0.963, miles:110.6873206900153
+running:0.0108171s x1.439, miles:112.50512934569768
+running:0.0183601s x1.697, miles:121.9956838975673
+running:0.022723s x1.238, miles:123.33870849212809
+running:0.0264652s x1.165, miles:119.96267356436316
+running:0.0486362s x1.838, miles:128.4628063591761
+running:0.057281s x1.178, miles:122.9663639327066
+running:0.0813909s x1.421, miles:124.25486091521238
+running:0.065707s x0.807, miles:126.92932595500943
+running:0.117161s x1.783, miles:133.13654831413592
+running:0.0891521s x0.761, miles:150.30627405004412
+running:0.155648s x1.746, miles:145.05216884825373
+running:0.208064s x1.337, miles:143.00049220059273
+running:0.278815s x1.340, miles:146.96940451967586
+running:0.178803s x0.641, miles:164.6820308199761
+running:0.287737s x1.609, miles:165.3623236641076
+running:0.382443s x1.329, miles:158.89294601333305
+running:0.492631s x1.288, miles:162.3182291669556
+running:0.362232s x0.735, miles:170.8874003412022
+running:0.474879s x1.311, miles:190.41522653837592
+running:0.619453s x1.304, miles:183.8387589057086
+running:0.524256s x0.846, miles:181.1192640226694
+[0, 15, 18, 17, 11, 10, 9, 2, 19, 25, 20, 30, 3, 29, 31, 8, 26, 32, 24, 22, 21, 
+23, 16, 12, 13, 28, 27, 14, 4, 5, 6, 7, 1]
 ```
 局部束搜索的时间复杂度也非常低。和爬山法一样，并不能保证路径最优，下面来计算一下 100 次 24城市路径规划，使用束搜索比首优爬山法更好的比例：
 ```python
@@ -286,7 +286,135 @@ running:0.667963s x1.235, miles:206.67581783187333
 ```
 可以看出，差不多有 80% 以上的概率是使用局部束搜索路径要小于等于首优爬山法。
 
-### 遗传算法解决TSP问题
+### 遗传算法+局部束搜索解决TSP问题
+
+在局部束搜索选出最优的若干个后继之后，再进行杂交，并选出其中的最优解决方案：
+```python
+def genetic_lbs(cities, best_n=5):
+    class BeamNode:
+        def __init__(self, miles, path, best):
+            self.miles, self.path, self.best = miles, path, best
+    def calc_miles(path):
+        pre_pos = cities[path[-1]]
+        tp_miles = 0
+        for p in path:
+            tp_miles += math.hypot(pre_pos[0]-cities[p][0],
+                                  pre_pos[1]-cities[p][1])
+            pre_pos = cities[p]
+        return tp_miles
+    beamnodes = [BeamNode(float('inf'),
+        [0] + sample(range(1,len(cities)),len(cities)-1),
+        False) for i in range(best_n)
+    ]
+    while True:
+        if all(bn.best for bn in beamnodes):
+            break
+        origin_len = len(beamnodes)
+        for bn in beamnodes[:best_n]:
+            if bn.best:
+                continue
+            swap_poses = combinations(range(1, len(cities)), 2)
+            bn.best = True
+            for p1, p2 in swap_poses:
+                tp_path = bn.path[:]
+                tp_path[p1],tp_path[p2]=tp_path[p2],tp_path[p1]
+                tp_miles = calc_miles(tp_path)
+                if bn.miles>tp_miles:
+                    beamnodes.append(BeamNode(tp_miles, tp_path, False))
+                    bn.best = False
+        for i in range(origin_len-1, -1, -1):
+            if beamnodes[i].best==False:
+                del beamnodes[i]
+        beamnodes.sort(key=lambda b:b.miles)
+        for i in range(len(beamnodes)-1,0,-1):
+            if beamnodes[i].path==beamnodes[i-1].path:
+                del beamnodes[i]
+        # 添加遗传算法部分
+        cur_len = len(beamnodes)
+        for i in range(cur_len):
+            if i >= best_n:break
+            for j in range(i+1, cur_len):
+                if i+j>=best_n:break
+                for k in range(best_n-i-j):
+                    # 基因交叉
+                    cut_pos = int(random.uniform(0,1)*len(cities))
+                    gene1 = beamnodes[i].path[:cut_pos]
+                    for c in beamnodes[j].path:
+                        if c not in gene1:
+                            gene1.append(c)
+                    gene2 = beamnodes[j].path[:cut_pos]
+                    for c in beamnodes[i].path:
+                        if c not in gene2:
+                            gene2.append(c)
+                    for gn in (gene1, gene2):
+                        beamnodes.append(BeamNode(calc_miles(gn), gn, False))
+        beamnodes.sort(key=lambda b:b.miles)
+        del beamnodes[best_n:]
+    return beamnodes[0].miles, beamnodes[0].path
+
+pre_running = float('inf')
+for i in range(1,len(cities)):
+    t1 = time.time()
+    miles2, path3 = genetic_lbs(cities[:i])
+    t2 = time.time()
+    print("running:{:g}s x{:.3f}, miles:{}".format(
+        t2-t1, (t2-t1)/pre_running, miles2))
+    pre_running = t2-t1
+    
+print(path3)
+```
+结果为：
+```
+running:9.5129e-05s x0.000, miles:inf
+running:8.29697e-05s x0.872, miles:inf
+running:0.000273943s x3.302, miles:20.120564493919822
+running:0.000831842s x3.037, miles:39.42664606580856
+running:0.000684977s x0.823, miles:67.77227033726385
+running:0.000576019s x0.841, miles:83.7957265568911
+running:0.000691891s x1.201, miles:84.38275768767652
+running:0.00138283s x1.999, miles:84.85443680089674
+running:0.00311399s x2.252, miles:101.54320632553853
+running:0.00338936s x1.088, miles:110.34594071307717
+running:0.00417089s x1.231, miles:110.43467064772815
+running:0.00690198s x1.655, miles:110.6873206900153
+running:0.00783372s x1.135, miles:118.61179311561754
+running:0.0127091s x1.622, miles:125.54503467705224
+running:0.0181692s x1.430, miles:115.47317097786926
+running:0.0524771s x2.888, miles:127.99464841246441
+running:0.0240021s x0.457, miles:135.89117182524507
+running:0.0254512s x1.060, miles:143.12942423600904
+running:0.0353081s x1.387, miles:127.72028423981939
+running:0.045733s x1.295, miles:145.73380010213987
+running:0.114953s x2.514, miles:127.16247007489218
+running:0.0783792s x0.682, miles:135.87874295493916
+running:0.0925252s x1.180, miles:154.53409753509217
+running:0.10963s x1.185, miles:159.3709471133312
+running:0.113485s x1.035, miles:142.36697765621736
+running:0.189174s x1.667, miles:159.40344686112726
+running:0.148898s x0.787, miles:167.4007401838031
+running:0.254782s x1.711, miles:163.03971670099799
+running:0.171009s x0.671, miles:172.40526500119958
+running:0.332591s x1.945, miles:180.41696043718437
+running:0.325376s x0.978, miles:168.22927920930735
+running:0.352742s x1.084, miles:182.87656455613865
+running:0.574277s x1.628, miles:180.18837936035655
+[0, 1, 7, 14, 5, 4, 31, 30, 8, 26, 32, 24, 22, 23, 16, 15, 12, 13, 6, 27, 29, 3, 
+28, 18, 19, 2, 25, 20, 21, 17, 11, 10, 9]
+```
+
+下面再测试一下解决方案的效果是否得到提高：
+```python
+>>> sum(local_beam_search(cities)>=genetic_lbs(cities) for i in range(100))
+40
+>>> sum(local_beam_search(cities[:12])>=genetic_lbs(cities[:12]) for i in range(100))
+39
+>>> sum(local_beam_search(cities[:15])>=genetic_lbs(cities[:15]) for i in range(100))
+39
+>>> sum(local_beam_search(cities[:8])>=genetic_lbs(cities[:8]) for i in range(100))
+40
+```
+在这个实例中，添加了遗传算法之后，结果居然变差了。但是，并不是说遗传算法不行，而是遗传算法不适合这个问题。
+
 
 
 

@@ -294,7 +294,53 @@ Return:<br>
         <span class="token keyword">return</span> cnt<span class="token operator">//</span>n2
 </pre><p>优点：算法简单<br>
 缺点：时间复杂度为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><mi>n</mi><mo>∗</mo><mi>l</mi><mi>e</mi><mi>n</mi><mo>(</mo><mi>s</mi><mn>1</mn><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n*len(s1))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit" style="margin-right:0.01968em;">l</span><span class="mord mathit">e</span><span class="mord mathit">n</span><span class="mopen">(</span><span class="mord mathit">s</span><span class="mord">1</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span></p>
-<h3 class="mume-header" id="solution-2">Solution-2</h3>
+<h3 class="mume-header" id="solution-2">solution-2</h3>
+
+<p>找到一个循环点，使得两个位置比较的时候，重复循环：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">getMaxRepetitions</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s1<span class="token punctuation">,</span> n1<span class="token punctuation">,</span> s2<span class="token punctuation">,</span> n2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token builtin">set</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token operator">&lt;=</span><span class="token builtin">set</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token number">0</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span><span class="token builtin">set</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token operator">*</span>n1<span class="token operator">//</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token operator">*</span>n2<span class="token punctuation">)</span>
+        record <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        index1 <span class="token operator">=</span> <span class="token number">0</span>
+        p1 <span class="token operator">=</span> p2 <span class="token operator">=</span> <span class="token number">0</span>
+        s2_cnt <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">while</span> index1 <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token operator">*</span>n1<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span> <span class="token operator">not</span> <span class="token keyword">in</span> record<span class="token punctuation">:</span>
+                record<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                record<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token keyword">break</span>
+            index1 <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> s1<span class="token punctuation">[</span>p1<span class="token punctuation">]</span><span class="token operator">==</span>s2<span class="token punctuation">[</span>p2<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                p2 <span class="token operator">+=</span> <span class="token number">1</span>
+            p1 <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> p1<span class="token operator">==</span><span class="token builtin">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">:</span>p1<span class="token operator">=</span><span class="token number">0</span>
+            <span class="token keyword">if</span> p2<span class="token operator">==</span><span class="token builtin">len</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                p2<span class="token operator">=</span><span class="token number">0</span>
+                s2_cnt <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> s2_cnt<span class="token operator">//</span>n2
+        loop_node <span class="token operator">=</span> record<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+        c_0 <span class="token operator">=</span> record<span class="token punctuation">.</span>index<span class="token punctuation">(</span>loop_node<span class="token punctuation">)</span>
+        loop_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>record<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>c_0
+        s2_ps <span class="token operator">=</span> <span class="token punctuation">[</span>i<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> record<span class="token punctuation">[</span>c_0<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+        loop_s2_cnt <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span><span class="token punctuation">[</span>s2_ps<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s2_ps<span class="token punctuation">)</span><span class="token punctuation">)</span> 
+                  <span class="token keyword">if</span> i<span class="token operator">&lt;</span><span class="token number">1</span> <span class="token operator">or</span> s2_ps<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">!=</span>s2_ps<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">//</span><span class="token builtin">len</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span>
+        loop_cnt <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token operator">*</span>n1<span class="token operator">-</span>index1<span class="token punctuation">)</span><span class="token operator">//</span>loop_len
+        s2_cnt <span class="token operator">+=</span> loop_cnt <span class="token operator">*</span> loop_s2_cnt
+        index1 <span class="token operator">+=</span> loop_cnt <span class="token operator">*</span> loop_len
+        <span class="token keyword">while</span> index1 <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token operator">*</span>n1<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> s1<span class="token punctuation">[</span>index1<span class="token operator">%</span><span class="token builtin">len</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">==</span>s2<span class="token punctuation">[</span>p2<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                p2 <span class="token operator">+=</span> <span class="token number">1</span>
+            index1 <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> p2<span class="token operator">==</span><span class="token builtin">len</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                s2_cnt <span class="token operator">+=</span> <span class="token number">1</span>
+                p2 <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">return</span> s2_cnt <span class="token operator">//</span> n2
+</pre><h3 class="mume-header" id="solution-3">Solution-3</h3>
 
 <p>The main idea is to find a circle. A circle means m rounds of s1 has a subarray of n rounds of s2, and at the meantime starting from the same point of s1.</p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -335,7 +381,8 @@ Return:<br>
 <li><a href="#solutions">Solutions</a>
 <ul>
 <li><a href="#solution-1">Solution-1</a></li>
-<li><a href="#solution-2">Solution-2</a></li>
+<li><a href="#solution-2">solution-2</a></li>
+<li><a href="#solution-3">Solution-3</a></li>
 </ul>
 </li>
 </ul>

@@ -38,6 +38,8 @@ digraph{
     climb_reset [label="随机重启爬山法\n解决完备性问题"]
     climb_simu_anneal [label="模拟退火"]
     climb_local_beam [label="局部束搜索"]
+    aim_genetic [label="遗传算法"]
+    genetic_lbs [label="遗传-局部束搜索"]
 
     root->search_path,search_aim
     search_path->path_blind,path_info
@@ -46,11 +48,12 @@ digraph{
     path_info->info_AStar,info_Greed,info_BFS,info_DFS
     blind_BFS,blind_DFS->blind_IDS
     blind_DFS->blind_LimitD
-    search_aim->aim_enum,aim_backtrace,aim_climb
+    search_aim->aim_enum,aim_backtrace,aim_climb,aim_genetic
     aim_backtrace->bt_lv
     aim_climb->climb_best,climb_possibility,climb_first->climb_reset
     aim_climb->climb_simu_anneal
     aim_climb->climb_local_beam
+    aim_genetic,climb_local_beam->genetic_lbs
 }
 ```
 根据是否存储访问过的状态分类：

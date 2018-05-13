@@ -58,7 +58,56 @@ class Solution:
 优点：算法简单
 缺点：时间复杂度为$O(n*len(s1))$
 
-### Solution-2
+### solution-2
+
+找到一个循环点，使得两个位置比较的时候，重复循环：
+```python
+class Solution(object):
+    def getMaxRepetitions(self, s1, n1, s2, n2):
+        if not set(s2)<=set(s1):
+            return 0
+        if len(set(s1))==1:
+            return len(s1)*n1//(len(s2)*n2)
+        record = []
+        index1 = 0
+        p1 = p2 = 0
+        s2_cnt = 0
+        while index1 < len(s1)*n1:
+            if (p1, p2) not in record:
+                record.append((p1, p2))
+            else:
+                record.append((p1, p2))
+                break
+            index1 += 1
+            if s1[p1]==s2[p2]:
+                p2 += 1
+            p1 += 1
+            if p1==len(s1):p1=0
+            if p2==len(s2):
+                p2=0
+                s2_cnt += 1
+        else:
+            return s2_cnt//n2
+        loop_node = record[-1]
+        c_0 = record.index(loop_node)
+        loop_len = len(record)-1-c_0
+        s2_ps = [i[1] for i in record[c_0:]]
+        loop_s2_cnt = (len([s2_ps[i] for i in range(len(s2_ps)) 
+                  if i<1 or s2_ps[i]!=s2_ps[i-1]]) - 1)//len(s2)
+        loop_cnt = (len(s1)*n1-index1)//loop_len
+        s2_cnt += loop_cnt * loop_s2_cnt
+        index1 += loop_cnt * loop_len
+        while index1 < len(s1)*n1:
+            if s1[index1%len(s1)]==s2[p2]:
+                p2 += 1
+            index1 += 1
+            if p2==len(s2):
+                s2_cnt += 1
+                p2 = 0
+        return s2_cnt // n2
+```
+
+### Solution-3
 
 The main idea is to find a circle. A circle means m rounds of s1 has a subarray of n rounds of s2, and at the meantime starting from the same point of s1.
 
