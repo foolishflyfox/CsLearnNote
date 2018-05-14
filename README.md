@@ -28,6 +28,7 @@
 - [A\* 算法-8数码问题](/AdvancedAI/EightDigit.html)
 - [超越经典搜索](/AdvancedAI/BeyondClassicSearch.html)
 - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](/AdvancedAI/TSP_genetic.html)
+- [对抗搜索 - 五子棋游戏对抗](/AdvancedAI/AdversarialSearch.html)
 - [笔记](/AdvancedAI/Note.html)
 
 > 图书下载：链接: 
@@ -101,6 +102,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-12 : 466. Count The Repetitions](/LeetCode/466_CountTheRepetitions.html)<code class="red">hard hard</code>偏数学
 
 - [2018-05-13 : 832. Flipping an Image](/LeetCode/832_FlippinganImage.html)
+
+- [2018-05-14 : 263. Ugly Number](/LeetCode/263_UglyNumber.html)
 
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
