@@ -12,9 +12,9 @@
 # 计算机科学技术--资料汇总
 > 本项目的博客地址为：<https://foolishflyfox.github.io/CsLearnNote/>
 
-## Kaggle Tutorial
+## Linux
 
-本部分是在学习通过实践学习人工智能过程中的笔记。主要是通过参与 kaggle 大赛的形式对机器学习、数据挖掘等内容进行深入理解。
+- [Linux命令备忘](/Linux/LinuxCommand.html)
 
 ## 高级人工智能
 
@@ -104,6 +104,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-13 : 832. Flipping an Image](/LeetCode/832_FlippinganImage.html)
 
 - [2018-05-14 : 263. Ugly Number](/LeetCode/263_UglyNumber.html)
+
+- [2018-05-15 : 575. Distribute Candies](/LeetCode/575_DistributeCandies.html)
 
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
