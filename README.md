@@ -107,6 +107,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-15 : 575. Distribute Candies](/LeetCode/575_DistributeCandies.html)
 
+- [2018-05-16 : 698. Partition to K Equal Sum Subsets](/LeetCode/698_PartitiontoKEqualSumSubsets.html) **动态规划**
+
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
 - [note02.html](/anyfile/note02.html)

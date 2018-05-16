@@ -459,6 +459,7 @@ You&apos;re failure, do better next time!
 <pre data-role="codeBlock" data-info="python {class=&amp;amp;quot;line-numbers&amp;amp;quot;}" class="language-python line-numbers"><span class="token keyword">import</span> re
 <span class="token keyword">import</span> copy
 <span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+<span class="token keyword">import</span> time
 
 <span class="token keyword">class</span> <span class="token class-name">PutChessError</span><span class="token punctuation">(</span>Exception<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">pass</span>
@@ -510,9 +511,9 @@ Action <span class="token operator">=</span> namedtuple<span class="token punctu
                 self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>min_score
                 <span class="token keyword">break</span>
             <span class="token keyword">if</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
-                <span class="token keyword">if</span> <span class="token string">'o'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token string">'o'</span><span class="token operator">*</span>self<span class="token punctuation">.</span><span class="token punctuation">(</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
                     self<span class="token punctuation">.</span>score <span class="token operator">-=</span> <span class="token number">1</span>
-                <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'o'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'o'</span><span class="token operator">*</span>self<span class="token punctuation">.</span><span class="token punctuation">(</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
                     self<span class="token punctuation">.</span>score <span class="token operator">-=</span> <span class="token number">1</span>
         <span class="token keyword">if</span> self<span class="token punctuation">.</span>score<span class="token operator">&lt;=</span>self<span class="token punctuation">.</span>min_score <span class="token operator">or</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
             <span class="token keyword">return</span>
@@ -526,7 +527,6 @@ Action <span class="token operator">=</span> namedtuple<span class="token punctu
         <span class="token keyword">for</span> case <span class="token keyword">in</span> self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">:</span>
             <span class="token keyword">if</span> case<span class="token punctuation">.</span>score <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>score<span class="token punctuation">:</span>
                 self<span class="token punctuation">.</span>score <span class="token operator">=</span> case<span class="token punctuation">.</span>score
-        <span class="token comment"># 清理列表降低空间复杂度</span>
         self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
                 
     <span class="token keyword">def</span> <span class="token function">maxJudge</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> depth<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -536,9 +536,9 @@ Action <span class="token operator">=</span> namedtuple<span class="token punctu
                 self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>max_score
                 <span class="token keyword">break</span>
             <span class="token keyword">if</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
-                <span class="token keyword">if</span> <span class="token string">'x'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token string">'x'</span><span class="token operator">*</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
                     self<span class="token punctuation">.</span>score <span class="token operator">+=</span> <span class="token number">1</span>
-                <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'x'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'x'</span><span class="token operator">*</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
                     self<span class="token punctuation">.</span>score <span class="token operator">+=</span> <span class="token number">1</span>
         <span class="token keyword">if</span> self<span class="token punctuation">.</span>score<span class="token operator">>=</span>self<span class="token punctuation">.</span>max_score <span class="token operator">or</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
             <span class="token keyword">return</span>
@@ -658,7 +658,10 @@ Action <span class="token operator">=</span> namedtuple<span class="token punctu
             <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
             <span class="token keyword">break</span>
         <span class="token comment"># 机器落子</span>
+        t0 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
         board<span class="token punctuation">.</span>doMinMaxAction<span class="token punctuation">(</span>calc_depth<span class="token punctuation">)</span>
+        t1 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'Machine Thinking : {t1-t0} s'</span><span class="token punctuation">)</span>
         winner <span class="token operator">=</span> judgeFinished<span class="token punctuation">(</span>board<span class="token punctuation">)</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
         <span class="token keyword">if</span> winner<span class="token punctuation">:</span>
@@ -670,38 +673,770 @@ Action <span class="token operator">=</span> namedtuple<span class="token punctu
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"You're failure, do better next time!"</span><span class="token punctuation">)</span>
     <span class="token keyword">else</span><span class="token punctuation">:</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"This game is draw"</span><span class="token punctuation">)</span>
-tic_tac_toe<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>运行效果：</p>
+tic_tac_toe<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>运行效果：</p>
 <pre data-role="codeBlock" data-info="" class="language-"><code>--- Machine chess:x   Man Chess:o ---
-
-   0 1 2
-0  x - -
-1  - - -
-2  - - -
-Input (row, column) :0,1
-   0 1 2
-0  x o x
-1  - - -
-2  - - -
-Input (row, column) :1,1
-   0 1 2
-0  x o x
-1  - o -
-2  - x -
-Input (row, column) :1,0
-   0 1 2
-0  x o x
-1  o o x
-2  - x -
+   0 1 2 3 4
+0  x - - - -
+1  - - - - -
+2  - - - - -
+3  - - - - -
+4  - - - - -
 Input (row, column) :2,2
-   0 1 2
-0  x o x
-1  o o x
-2  x x o
+Machine Thinking : 15.443007946014404 s
+   0 1 2 3 4
+0  x x - - -
+1  - - - - -
+2  - - o - -
+3  - - - - -
+4  - - - - -
+Input (row, column) :0,2
+Machine Thinking : 10.637631893157959 s
+   0 1 2 3 4
+0  x x o x -
+1  - - - - -
+2  - - o - -
+3  - - - - -
+4  - - - - -
+Input (row, column) :1,2
+Machine Thinking : 6.827928066253662 s
+   0 1 2 3 4
+0  x x o x x
+1  - - o - -
+2  - - o - -
+3  - - - - -
+4  - - - - -
+Input (row, column) :3,2
+Machine Thinking : 4.019567012786865 s
+   0 1 2 3 4
+0  x x o x x
+1  - - o - -
+2  - - o - -
+3  - - o - -
+4  - - x - -
+Input (row, column) :bye
 This game is draw
 </code></pre><h3 class="mume-header" id="%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-1">性能分析</h3>
 
-<p>在 3×3 的棋盘上，如果有9个空位，需要预测3步，则需要展开节点数为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>9</mn><mo>×</mo><mn>8</mn><mo>+</mo><mn>9</mn><mo>×</mo><mn>8</mn><mo>×</mo><mn>7</mn><mo>=</mo><mn>5</mn><mn>8</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">1+9 + 9\times8 + 9\times8\times7=586</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">1</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">9</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">9</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">8</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">9</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">8</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">7</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">5</span><span class="mord">8</span><span class="mord">6</span></span></span></span>，如果是 8×8 的棋盘，如果有64 个空位，需要预测3步，则需要展开节点数为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mo>+</mo><mn>6</mn><mn>4</mn><mo>+</mo><mn>6</mn><mn>4</mn><mo>×</mo><mn>6</mn><mn>3</mn><mo>+</mo><mn>6</mn><mn>4</mn><mo>×</mo><mn>6</mn><mn>3</mn><mo>×</mo><mn>6</mn><mn>2</mn><mo>=</mo><mn>2</mn><mn>5</mn><mn>4</mn><mn>0</mn><mn>8</mn><mn>1</mn></mrow><annotation encoding="application/x-tex">1+64+64\times63+64\times63\times62=254081</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">1</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">3</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">3</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">2</span><span class="mord">5</span><span class="mord">4</span><span class="mord">0</span><span class="mord">8</span><span class="mord">1</span></span></span></span>。n×n 的棋盘，需要预测 k 步，一步决策的 时间复杂度 大约为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mrow><mn>2</mn><mi>k</mi></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^{2k})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.849108em;"></span><span class="strut bottom" style="height:1.099108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathit mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 次，也是指数级的增长，这样的开销完全不适用，不过该算法仍然可以作为对博弈进行数学分析和设计实用算法的基础。因为在程序中一次性生成所有的后继，并且在判断后及时清理，因此该算法的空间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span>，空间复杂度并不大。</p>
+<p>在 3×3 的棋盘上，如果有9个空位，需要预测3步，则需要展开节点数为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>9</mn><mo>×</mo><mn>8</mn><mo>+</mo><mn>9</mn><mo>×</mo><mn>8</mn><mo>×</mo><mn>7</mn><mo>=</mo><mn>5</mn><mn>8</mn><mn>6</mn></mrow><annotation encoding="application/x-tex">1+9 + 9\times8 + 9\times8\times7=586</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">1</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">9</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">9</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">8</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">9</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">8</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">7</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">5</span><span class="mord">8</span><span class="mord">6</span></span></span></span>，如果是 8×8 的棋盘，如果有64 个空位，需要预测3步，则需要展开节点数为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>1</mn><mo>+</mo><mn>6</mn><mn>4</mn><mo>+</mo><mn>6</mn><mn>4</mn><mo>×</mo><mn>6</mn><mn>3</mn><mo>+</mo><mn>6</mn><mn>4</mn><mo>×</mo><mn>6</mn><mn>3</mn><mo>×</mo><mn>6</mn><mn>2</mn><mo>=</mo><mn>2</mn><mn>5</mn><mn>4</mn><mn>0</mn><mn>8</mn><mn>1</mn></mrow><annotation encoding="application/x-tex">1+64+64\times63+64\times63\times62=254081</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">1</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">3</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">4</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">3</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">6</span><span class="mord">2</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">2</span><span class="mord">5</span><span class="mord">4</span><span class="mord">0</span><span class="mord">8</span><span class="mord">1</span></span></span></span>。n×n 的棋盘，需要预测 k 步，一步决策的 时间复杂度 大约为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mrow><mn>2</mn><mi>k</mi></mrow></msup><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^{2k})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.849108em;"></span><span class="strut bottom" style="height:1.099108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.849108em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathit mtight" style="margin-right:0.03148em;">k</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 次，也是指数级的增长，从实验中的 <code>Machine Thinking</code> 的时间可以看出，每次规划都花费了大量的时间，这样的开销完全不适用，不过该算法仍然可以作为对博弈进行数学分析和设计实用算法的基础。因为在程序中一次性生成所有的后继，并且在判断后及时清理，因此该算法的空间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>k</mi><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord mathit" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span>，空间复杂度并不大。</p>
+<h2 class="mume-header" id="alpha-beta-%E5%89%AA%E6%9E%9D"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>α</mi><mo>−</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha-\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.0037em;">α</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit" style="margin-right:0.05278em;">β</span></span></span></span> 剪枝</h2>
+
+<p>极小极大值搜索的问题是必须检查的游戏状态数目随着博弈的进行呈现指数级增长，虽然指数增长无法消除，不过我们还是可以使用剪枝的办法有效地将其减半。</p>
+<p><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>α</mi><mo>−</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha-\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.0037em;">α</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit" style="margin-right:0.05278em;">β</span></span></span></span> 剪枝的伪代码为：</p>
+<pre data-role="codeBlock" data-info="javascript" class="language-javascript"><span class="token keyword">function</span> <span class="token function">ALPHA_BETA_Search</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> returns an action
+    v <span class="token operator">&lt;</span><span class="token operator">-</span> <span class="token constant">MAX</span><span class="token punctuation">.</span><span class="token constant">VALUE</span><span class="token punctuation">(</span>state<span class="token punctuation">,</span> <span class="token operator">-</span>inf<span class="token punctuation">,</span> <span class="token operator">+</span>inf<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> the action <span class="token keyword">in</span> <span class="token function">Actions</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token keyword">with</span> value v
+
+<span class="token keyword">function</span> <span class="token constant">MAX_VALUE</span><span class="token punctuation">(</span>state<span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span> returns a utility value
+    <span class="token keyword">if</span> <span class="token constant">TERMINAL_TEST</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> then <span class="token keyword">return</span> <span class="token constant">UTILITY</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span>
+    v <span class="token operator">=</span> <span class="token operator">-</span>inf
+    <span class="token keyword">for</span> each a <span class="token keyword">in</span> <span class="token constant">ACTIONS</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token keyword">do</span>
+        v <span class="token operator">&lt;</span><span class="token operator">-</span> <span class="token constant">MAX</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token constant">MIN_VALUE</span><span class="token punctuation">(</span><span class="token constant">RESULT</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> v <span class="token operator">>=</span> beta then <span class="token keyword">return</span> v
+        alpha <span class="token operator">&lt;</span><span class="token operator">-</span> <span class="token constant">MAX</span><span class="token punctuation">(</span>alpha<span class="token punctuation">,</span> v<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> v
+
+<span class="token keyword">function</span> <span class="token constant">MIN_VALUE</span><span class="token punctuation">(</span>state<span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span> returns a utility value
+    <span class="token keyword">if</span> <span class="token constant">TERMINAL_TEST</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> then <span class="token keyword">return</span> <span class="token constant">UTILITY</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span>
+    v <span class="token operator">&lt;</span><span class="token operator">-</span> <span class="token operator">+</span>inf
+    <span class="token keyword">for</span> each a <span class="token keyword">in</span> <span class="token constant">ACTIONS</span><span class="token punctuation">(</span><span class="token constant">RESULT</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span>
+        v <span class="token operator">&lt;</span><span class="token operator">-</span> <span class="token constant">MIN</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token constant">MAX_VALUE</span><span class="token punctuation">(</span><span class="token constant">RESULT</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> v <span class="token operator">&lt;=</span> alpha then <span class="token keyword">return</span> v
+        beta <span class="token operator">&lt;</span><span class="token operator">-</span> <span class="token constant">MIN</span><span class="token punctuation">(</span>beta<span class="token punctuation">,</span> v<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> v
+</pre><p>代码主要修改了原来的 <code>minJudge</code>、<code>minJudge</code> 和 <code>doMinMaxAction</code> 3 个函数：</p>
+<pre data-role="codeBlock" data-info="python {class=&amp;amp;quot;line-numbers&amp;amp;quot;}" class="language-python line-numbers"><span class="token keyword">import</span> re
+<span class="token keyword">import</span> copy
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+<span class="token keyword">import</span> time
+
+<span class="token keyword">class</span> <span class="token class-name">PutChessError</span><span class="token punctuation">(</span>Exception<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">pass</span>
+
+Action <span class="token operator">=</span> namedtuple<span class="token punctuation">(</span><span class="token string">'Action'</span><span class="token punctuation">,</span> <span class="token string">'pos chess'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">TicTacToeBoard</span><span class="token punctuation">:</span>
+    max_score <span class="token operator">=</span> <span class="token number">1000</span>
+    min_score <span class="token operator">=</span> <span class="token number">0</span>
+    mid_score <span class="token operator">=</span> <span class="token punctuation">(</span>max_score<span class="token operator">+</span>min_score<span class="token punctuation">)</span><span class="token operator">//</span><span class="token number">2</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pre_state<span class="token punctuation">,</span> action<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> win_cnt<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+                machine_first<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> win_cnt <span class="token operator">==</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>win_cnt <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>pre_state<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>win_cnt <span class="token operator">=</span> win_cnt
+        self<span class="token punctuation">.</span>state <span class="token operator">=</span> copy<span class="token punctuation">.</span>deepcopy<span class="token punctuation">(</span>pre_state<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sub_cases <span class="token operator">=</span> <span class="token boolean">None</span>
+        self<span class="token punctuation">.</span>machine_first <span class="token operator">=</span> machine_first
+        <span class="token keyword">if</span> action<span class="token operator">!=</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>executeAction<span class="token punctuation">(</span>action<span class="token punctuation">)</span>
+            
+    <span class="token keyword">def</span> <span class="token function">executeAction</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> action<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        p0<span class="token punctuation">,</span> p1 <span class="token operator">=</span> action<span class="token punctuation">.</span>pos
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>p0<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">or</span> p1<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">or</span> p0<span class="token operator">>=</span>st_len <span class="token operator">or</span> p1<span class="token operator">>=</span>st_len <span class="token operator">or</span>
+            self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>p0<span class="token punctuation">]</span><span class="token punctuation">[</span>p1<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> PutChessError<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>p0<span class="token punctuation">]</span><span class="token punctuation">[</span>p1<span class="token punctuation">]</span> <span class="token operator">=</span> action<span class="token punctuation">.</span>chess
+        
+    <span class="token keyword">def</span> <span class="token function">getAllLines</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>j<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> j <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span>i<span class="token punctuation">]</span> 
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token operator">-</span>j<span class="token punctuation">]</span>
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> 
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span><span class="token punctuation">(</span>j<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span>
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        
+    <span class="token keyword">def</span> <span class="token function">minJudge</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> depth<span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>mid_score
+        <span class="token keyword">for</span> line <span class="token keyword">in</span> self<span class="token punctuation">.</span>getAllLines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token string">'o'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>min_score
+                <span class="token keyword">break</span>
+            <span class="token keyword">if</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token string">'o'</span><span class="token operator">*</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                    self<span class="token punctuation">.</span>score <span class="token operator">-=</span> <span class="token number">1</span>
+                <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'o'</span><span class="token operator">*</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                    self<span class="token punctuation">.</span>score <span class="token operator">-=</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>score<span class="token operator">&lt;=</span>self<span class="token punctuation">.</span>min_score <span class="token operator">or</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>max_score
+        self<span class="token punctuation">.</span>sub_cases <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> action <span class="token keyword">in</span> self<span class="token punctuation">.</span>getValidActions<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            sub_case <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">,</span> action<span class="token punctuation">,</span>
+                        self<span class="token punctuation">.</span>win_cnt<span class="token punctuation">,</span> self<span class="token punctuation">.</span>machine_first<span class="token punctuation">)</span>
+            sub_case<span class="token punctuation">.</span>maxJudge<span class="token punctuation">(</span>depth<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>score <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> sub_case<span class="token punctuation">.</span>score<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>append<span class="token punctuation">(</span>sub_case<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>score <span class="token operator">&lt;=</span> alpha<span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
+            beta <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> beta<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                
+    <span class="token keyword">def</span> <span class="token function">maxJudge</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> depth<span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>mid_score
+        <span class="token keyword">for</span> line <span class="token keyword">in</span> self<span class="token punctuation">.</span>getAllLines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token string">'x'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>max_score
+                <span class="token keyword">break</span>
+            <span class="token keyword">if</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> <span class="token string">'x'</span><span class="token operator">*</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                    self<span class="token punctuation">.</span>score <span class="token operator">+=</span> <span class="token number">1</span>
+                <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'x'</span><span class="token operator">*</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                    self<span class="token punctuation">.</span>score <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>score<span class="token operator">>=</span>self<span class="token punctuation">.</span>max_score <span class="token operator">or</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>min_score
+        self<span class="token punctuation">.</span>sub_cases <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> action <span class="token keyword">in</span> self<span class="token punctuation">.</span>getValidActions<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            sub_case <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">,</span> action<span class="token punctuation">,</span>
+                        self<span class="token punctuation">.</span>win_cnt<span class="token punctuation">,</span> self<span class="token punctuation">.</span>machine_first<span class="token punctuation">)</span>
+            sub_case<span class="token punctuation">.</span>minJudge<span class="token punctuation">(</span>depth<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>score <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> sub_case<span class="token punctuation">.</span>score<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>score <span class="token operator">>=</span> beta<span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
+            alpha <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> alpha<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>append<span class="token punctuation">(</span>sub_case<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> case <span class="token keyword">in</span> self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> case<span class="token punctuation">.</span>sub_cases<span class="token punctuation">:</span>
+                case<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                
+    <span class="token keyword">def</span> <span class="token function">doMinMaxAction</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> depth<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>maxJudge<span class="token punctuation">(</span>depth<span class="token punctuation">,</span> self<span class="token punctuation">.</span>min_score<span class="token punctuation">,</span> self<span class="token punctuation">.</span>max_score<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> sub_case <span class="token keyword">in</span> self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>score <span class="token operator">==</span> sub_case<span class="token punctuation">.</span>score<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>state <span class="token operator">=</span> sub_case<span class="token punctuation">.</span>state
+                <span class="token keyword">break</span>
+
+    <span class="token keyword">def</span> <span class="token function">judge</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            lines <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>j<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> j <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span>i<span class="token punctuation">]</span> 
+                                 <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token operator">-</span>j<span class="token punctuation">]</span>
+                                 <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> 
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span><span class="token punctuation">(</span>j<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span>
+                           <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">for</span> line <span class="token keyword">in</span> lines<span class="token punctuation">:</span>
+                <span class="token keyword">for</span> c <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    <span class="token keyword">if</span> c<span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                        <span class="token keyword">return</span> c
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> c <span class="token keyword">in</span> i<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> c<span class="token operator">==</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+                    <span class="token keyword">return</span> <span class="token string">'-'</span>
+        <span class="token comment"># 和棋状态</span>
+        <span class="token keyword">return</span> <span class="token string">'$'</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        str_lines <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        str_lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'   '</span><span class="token operator">+</span><span class="token string">' '</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            str_lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span>f<span class="token string">'{i:&lt;3}'</span> <span class="token operator">+</span> <span class="token string">' '</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token string">'\n'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>str_lines<span class="token punctuation">)</span>
+    
+    <span class="token keyword">def</span> <span class="token function">getValidActions</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cnt_x <span class="token operator">=</span> cnt_o <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> row <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> c <span class="token keyword">in</span> row<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> c<span class="token operator">==</span><span class="token string">'x'</span><span class="token punctuation">:</span>cnt_x<span class="token operator">+=</span><span class="token number">1</span>
+                <span class="token keyword">if</span> c<span class="token operator">==</span><span class="token string">'o'</span><span class="token punctuation">:</span>cnt_o<span class="token operator">+=</span><span class="token number">1</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+                    <span class="token keyword">if</span> cnt_o <span class="token operator">></span> cnt_x<span class="token punctuation">:</span>
+                        <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'x'</span><span class="token punctuation">)</span>
+                    <span class="token keyword">if</span> cnt_o <span class="token operator">&lt;</span> cnt_x<span class="token punctuation">:</span>
+                        <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span>
+                    <span class="token keyword">if</span> cnt_o <span class="token operator">==</span> cnt_x<span class="token punctuation">:</span>
+                        <span class="token keyword">if</span> self<span class="token punctuation">.</span>machine_first<span class="token punctuation">:</span>
+                            <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'x'</span><span class="token punctuation">)</span>
+                        <span class="token keyword">else</span><span class="token punctuation">:</span>
+                            <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">tic_tac_toe</span><span class="token punctuation">(</span>board_width <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">,</span> win_cnt<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> machine_first<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+               calc_depth<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">judgeFinished</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        judge_result <span class="token operator">=</span> board<span class="token punctuation">.</span>judge<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">None</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'x'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">'Machine'</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'o'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">'Man'</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'$'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">'Nobody'</span>
+            
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'--- Machine chess:x   Man Chess:o ---\n'</span><span class="token punctuation">)</span>
+    board_array <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'-'</span><span class="token punctuation">]</span><span class="token operator">*</span>board_width <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>board_width<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    board <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">if</span> machine_first<span class="token punctuation">:</span>
+        board <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>board_array<span class="token punctuation">,</span> win_cnt<span class="token operator">=</span>win_cnt<span class="token punctuation">)</span>
+        board<span class="token punctuation">.</span>doMinMaxAction<span class="token punctuation">(</span>calc_depth<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+    winner <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        <span class="token comment"># 人落子</span>
+        man_input <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token string">"Input (row, column) :"</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> man_input <span class="token operator">==</span> <span class="token string">'bye'</span><span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+        man_input <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>r<span class="token string">'\(|\)'</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">,</span> man_input<span class="token punctuation">)</span>
+        row<span class="token punctuation">,</span> column <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> man_input<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> board<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+            board <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>board_array<span class="token punctuation">,</span>Action<span class="token punctuation">(</span><span class="token punctuation">(</span>row<span class="token punctuation">,</span> column<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                   win_cnt<span class="token operator">=</span>win_cnt<span class="token punctuation">,</span>machine_first<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">try</span><span class="token punctuation">:</span>
+                board<span class="token punctuation">.</span>executeAction<span class="token punctuation">(</span>Action<span class="token punctuation">(</span><span class="token punctuation">(</span>row<span class="token punctuation">,</span> column<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">except</span> PutChessError<span class="token punctuation">:</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Inputed pos invalid, put input pos again."</span><span class="token punctuation">)</span>
+                <span class="token keyword">continue</span>
+<span class="token comment">#         print(board)</span>
+        <span class="token comment"># 判断人是否赢了</span>
+        winner <span class="token operator">=</span> judgeFinished<span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> winner<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+            <span class="token keyword">break</span>
+        <span class="token comment"># 机器落子</span>
+        t0 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        board<span class="token punctuation">.</span>doMinMaxAction<span class="token punctuation">(</span>calc_depth<span class="token punctuation">)</span>
+        t1 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'Machine Thinking : {t1-t0} s'</span><span class="token punctuation">)</span>
+        winner <span class="token operator">=</span> judgeFinished<span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> winner<span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+        
+    <span class="token keyword">if</span> winner<span class="token operator">==</span><span class="token string">'Man'</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Congratulations, you win the game!'</span><span class="token punctuation">)</span>
+    <span class="token keyword">elif</span> winner<span class="token operator">==</span><span class="token string">'Machine'</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"You're failure, do better next time!"</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"This game is draw"</span><span class="token punctuation">)</span>
+tic_tac_toe<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>与普通的极大极小值搜索进行系统的实验进行对比实验：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>--- Machine chess:x   Man Chess:o ---
+   0 1 2 3 4
+0  x - - - -
+1  - - - - -
+2  - - - - -
+3  - - - - -
+4  - - - - -
+Input (row, column) :2,2
+Machine Thinking : 0.10620284080505371 s
+   0 1 2 3 4
+0  x x - - -
+1  - - - - -
+2  - - o - -
+3  - - - - -
+4  - - - - -
+Input (row, column) :0,2
+Machine Thinking : 0.0905296802520752 s
+   0 1 2 3 4
+0  x x o x -
+1  - - - - -
+2  - - o - -
+3  - - - - -
+4  - - - - -
+Input (row, column) :1,2
+Machine Thinking : 0.07415509223937988 s
+   0 1 2 3 4
+0  x x o x x
+1  - - o - -
+2  - - o - -
+3  - - - - -
+4  - - - - -
+Input (row, column) :3,2
+Machine Thinking : 0.3078148365020752 s
+   0 1 2 3 4
+0  x x o x x
+1  - - o - -
+2  - - o - -
+3  - - o - -
+4  - - x - -
+Input (row, column) :bye
+This game is draw
+</code></pre><p>可以看出，结果运行结果比之前的块了10倍左右，效果非常明显。</p>
+<h2 class="mume-header" id="%E5%AD%A4%E7%AB%8B%E7%82%B9%E5%89%AA%E6%9E%9D%E6%9B%B4%E6%96%B0%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0">孤立点剪枝+更新启发式函数</h2>
+
+<p>前面的决策还是很不明智，比如明明不能连成5子，但是机器还在那个方向上放子。我们通过更新 <code>maxJudge</code> 和 <code>minJudge</code> 的启发式函数时决策更加智能。</p>
+<p>因为代码较长，只贴出 <code>maxJudge</code> 和 <code>minJudge</code> 的函数，替换到上面的代码中就可进行试验：</p>
+<pre data-role="codeBlock" data-info="python {class=&amp;amp;quot;line-numbers&amp;amp;quot;}" class="language-python line-numbers"><span class="token comment">### import re</span>
+<span class="token comment">### import re</span>
+<span class="token comment">### import re</span>
+<span class="token keyword">import</span> copy
+<span class="token keyword">from</span> collections <span class="token keyword">import</span> namedtuple
+<span class="token keyword">import</span> time
+
+<span class="token keyword">class</span> <span class="token class-name">PutChessError</span><span class="token punctuation">(</span>Exception<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">pass</span>
+
+Action <span class="token operator">=</span> namedtuple<span class="token punctuation">(</span><span class="token string">'Action'</span><span class="token punctuation">,</span> <span class="token string">'pos chess'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">class</span> <span class="token class-name">TicTacToeBoard</span><span class="token punctuation">:</span>
+    max_score <span class="token operator">=</span> <span class="token number">1000</span>
+    min_score <span class="token operator">=</span> <span class="token number">0</span>
+    mid_score <span class="token operator">=</span> <span class="token punctuation">(</span>max_score<span class="token operator">+</span>min_score<span class="token punctuation">)</span><span class="token operator">//</span><span class="token number">2</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> pre_state<span class="token punctuation">,</span> action<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> win_cnt<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+                machine_first<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> win_cnt <span class="token operator">==</span> <span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>win_cnt <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>pre_state<span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>win_cnt <span class="token operator">=</span> win_cnt
+        self<span class="token punctuation">.</span>state <span class="token operator">=</span> copy<span class="token punctuation">.</span>deepcopy<span class="token punctuation">(</span>pre_state<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sub_cases <span class="token operator">=</span> <span class="token boolean">None</span>
+        self<span class="token punctuation">.</span>machine_first <span class="token operator">=</span> machine_first
+        <span class="token keyword">if</span> action<span class="token operator">!=</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>executeAction<span class="token punctuation">(</span>action<span class="token punctuation">)</span>
+            
+    <span class="token keyword">def</span> <span class="token function">executeAction</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> action<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        p0<span class="token punctuation">,</span> p1 <span class="token operator">=</span> action<span class="token punctuation">.</span>pos
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>p0<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">or</span> p1<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">or</span> p0<span class="token operator">>=</span>st_len <span class="token operator">or</span> p1<span class="token operator">>=</span>st_len <span class="token operator">or</span>
+            self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>p0<span class="token punctuation">]</span><span class="token punctuation">[</span>p1<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">raise</span> PutChessError<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>p0<span class="token punctuation">]</span><span class="token punctuation">[</span>p1<span class="token punctuation">]</span> <span class="token operator">=</span> action<span class="token punctuation">.</span>chess
+        
+    <span class="token keyword">def</span> <span class="token function">getAllLines</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>j<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> j <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span>i<span class="token punctuation">]</span> 
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token operator">-</span>j<span class="token punctuation">]</span>
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> 
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">yield</span> <span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span><span class="token punctuation">(</span>j<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span>
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            
+    <span class="token keyword">def</span> <span class="token function">heuristicFunc</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> line<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">//</span><span class="token number">2</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>win_cnt<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token string">'o'</span><span class="token operator">*</span>i<span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">-=</span> i
+            <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'o'</span><span class="token operator">*</span>i <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">-=</span> i
+            <span class="token keyword">if</span> <span class="token string">'x'</span><span class="token operator">*</span>i<span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">+=</span> i
+            <span class="token keyword">if</span> <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'x'</span><span class="token operator">*</span>i <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">+=</span> i
+                
+    <span class="token keyword">def</span> <span class="token function">getChessCnt</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cnt <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> row <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> c <span class="token keyword">in</span> row<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> c<span class="token operator">!=</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+                    cnt <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> cnt
+    
+    <span class="token keyword">def</span> <span class="token function">isIsolateOpt</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> action<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        moves <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+        opt_pos <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span>action<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">+</span>mov<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> action<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">+</span>mov<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
+                   <span class="token keyword">for</span> mov <span class="token keyword">in</span> moves<span class="token punctuation">]</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> pos <span class="token keyword">in</span> opt_pos<span class="token punctuation">:</span>
+            r<span class="token punctuation">,</span> c <span class="token operator">=</span> pos
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>r<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">or</span> c<span class="token operator">&lt;</span><span class="token number">0</span> <span class="token operator">or</span> r<span class="token operator">>=</span>st_len <span class="token operator">or</span> c<span class="token operator">>=</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">continue</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token punctuation">[</span>c<span class="token punctuation">]</span><span class="token operator">!=</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">False</span>
+        <span class="token keyword">return</span> <span class="token boolean">True</span>
+            
+    
+    <span class="token keyword">def</span> <span class="token function">minJudge</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> depth<span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>mid_score
+        <span class="token keyword">for</span> line <span class="token keyword">in</span> self<span class="token punctuation">.</span>getAllLines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token string">'x'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>max_score
+                <span class="token keyword">break</span>
+            <span class="token keyword">if</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>heuristicFunc<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>score<span class="token operator">>=</span>self<span class="token punctuation">.</span>max_score <span class="token operator">or</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>max_score
+        self<span class="token punctuation">.</span>sub_cases <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        cur_chess_cnt <span class="token operator">=</span> self<span class="token punctuation">.</span>getChessCnt<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> action <span class="token keyword">in</span> self<span class="token punctuation">.</span>getValidActions<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> cur_chess_cnt <span class="token operator">></span> <span class="token number">1</span> <span class="token operator">and</span> self<span class="token punctuation">.</span>isIsolateOpt<span class="token punctuation">(</span>action<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">continue</span>
+            sub_case <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">,</span> action<span class="token punctuation">,</span>
+                        self<span class="token punctuation">.</span>win_cnt<span class="token punctuation">,</span> self<span class="token punctuation">.</span>machine_first<span class="token punctuation">)</span>
+            sub_case<span class="token punctuation">.</span>maxJudge<span class="token punctuation">(</span>depth<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>score <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> sub_case<span class="token punctuation">.</span>score<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>append<span class="token punctuation">(</span>sub_case<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>score <span class="token operator">&lt;=</span> alpha<span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
+            beta <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> beta<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                
+    <span class="token keyword">def</span> <span class="token function">maxJudge</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> depth<span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>mid_score
+        <span class="token keyword">for</span> line <span class="token keyword">in</span> self<span class="token punctuation">.</span>getAllLines<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">'o'</span><span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line <span class="token operator">or</span> 
+            <span class="token string">'-'</span><span class="token operator">+</span><span class="token string">'o'</span><span class="token operator">*</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>win_cnt<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token string">'-'</span> <span class="token keyword">in</span> line<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>min_score
+                <span class="token keyword">break</span>
+            <span class="token keyword">if</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>heuristicFunc<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>score<span class="token operator">&lt;=</span>self<span class="token punctuation">.</span>min_score <span class="token operator">or</span> depth<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>score <span class="token operator">=</span> self<span class="token punctuation">.</span>min_score
+        self<span class="token punctuation">.</span>sub_cases <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        cur_chess_cnt <span class="token operator">=</span> self<span class="token punctuation">.</span>getChessCnt<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> action <span class="token keyword">in</span> self<span class="token punctuation">.</span>getValidActions<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> cur_chess_cnt <span class="token operator">></span> <span class="token number">1</span> <span class="token operator">and</span> self<span class="token punctuation">.</span>isIsolateOpt<span class="token punctuation">(</span>action<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">continue</span>
+            sub_case <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">,</span> action<span class="token punctuation">,</span>
+                        self<span class="token punctuation">.</span>win_cnt<span class="token punctuation">,</span> self<span class="token punctuation">.</span>machine_first<span class="token punctuation">)</span>
+            sub_case<span class="token punctuation">.</span>minJudge<span class="token punctuation">(</span>depth<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> alpha<span class="token punctuation">,</span> beta<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>score <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> sub_case<span class="token punctuation">.</span>score<span class="token punctuation">)</span>
+            self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>append<span class="token punctuation">(</span>sub_case<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>score <span class="token operator">>=</span> beta<span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
+            alpha <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>score<span class="token punctuation">,</span> alpha<span class="token punctuation">)</span>
+            
+        <span class="token keyword">for</span> case <span class="token keyword">in</span> self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> case<span class="token punctuation">.</span>sub_cases<span class="token punctuation">:</span>
+                case<span class="token punctuation">.</span>sub_cases<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                
+    <span class="token keyword">def</span> <span class="token function">doMinMaxAction</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> depth<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>maxJudge<span class="token punctuation">(</span>depth<span class="token punctuation">,</span> self<span class="token punctuation">.</span>min_score<span class="token punctuation">,</span> self<span class="token punctuation">.</span>max_score<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> sub_case <span class="token keyword">in</span> self<span class="token punctuation">.</span>sub_cases<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> self<span class="token punctuation">.</span>score <span class="token operator">==</span> sub_case<span class="token punctuation">.</span>score<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>state <span class="token operator">=</span> sub_case<span class="token punctuation">.</span>state
+                <span class="token keyword">break</span>
+
+    <span class="token keyword">def</span> <span class="token function">judge</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            lines <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>j<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token keyword">for</span> j <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token operator">-</span>i<span class="token punctuation">]</span> 
+                                 <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token operator">-</span>j<span class="token punctuation">]</span>
+                                 <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token operator">-</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> 
+                            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">[</span>st_len<span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span><span class="token punctuation">(</span>j<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span>
+                           <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">for</span> line <span class="token keyword">in</span> lines<span class="token punctuation">:</span>
+                <span class="token keyword">for</span> c <span class="token keyword">in</span> <span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    <span class="token keyword">if</span> c<span class="token operator">*</span>self<span class="token punctuation">.</span>win_cnt <span class="token keyword">in</span> line<span class="token punctuation">:</span>
+                        <span class="token keyword">return</span> c
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> c <span class="token keyword">in</span> i<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> c<span class="token operator">==</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+                    <span class="token keyword">return</span> <span class="token string">'-'</span>
+        <span class="token comment"># 和棋状态</span>
+        <span class="token keyword">return</span> <span class="token string">'$'</span>
+    <span class="token keyword">def</span> <span class="token function">__str__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        str_lines <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        str_lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token string">'   '</span><span class="token operator">+</span><span class="token string">' '</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            str_lines<span class="token punctuation">.</span>append<span class="token punctuation">(</span>f<span class="token string">'{i:&lt;3}'</span> <span class="token operator">+</span> <span class="token string">' '</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token string">'\n'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>str_lines<span class="token punctuation">)</span>
+    
+    <span class="token keyword">def</span> <span class="token function">getValidActions</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cnt_x <span class="token operator">=</span> cnt_o <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> row <span class="token keyword">in</span> self<span class="token punctuation">.</span>state<span class="token punctuation">:</span>
+            <span class="token keyword">for</span> c <span class="token keyword">in</span> row<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> c<span class="token operator">==</span><span class="token string">'x'</span><span class="token punctuation">:</span>cnt_x<span class="token operator">+=</span><span class="token number">1</span>
+                <span class="token keyword">if</span> c<span class="token operator">==</span><span class="token string">'o'</span><span class="token punctuation">:</span>cnt_o<span class="token operator">+=</span><span class="token number">1</span>
+        st_len <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>state<span class="token punctuation">)</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>st_len<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> self<span class="token punctuation">.</span>state<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+                    <span class="token keyword">if</span> cnt_o <span class="token operator">></span> cnt_x<span class="token punctuation">:</span>
+                        <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'x'</span><span class="token punctuation">)</span>
+                    <span class="token keyword">if</span> cnt_o <span class="token operator">&lt;</span> cnt_x<span class="token punctuation">:</span>
+                        <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span>
+                    <span class="token keyword">if</span> cnt_o <span class="token operator">==</span> cnt_x<span class="token punctuation">:</span>
+                        <span class="token keyword">if</span> self<span class="token punctuation">.</span>machine_first<span class="token punctuation">:</span>
+                            <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'x'</span><span class="token punctuation">)</span>
+                        <span class="token keyword">else</span><span class="token punctuation">:</span>
+                            <span class="token keyword">yield</span> Action<span class="token punctuation">(</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> j<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">tic_tac_toe</span><span class="token punctuation">(</span>board_width <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">,</span> win_cnt<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> machine_first<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span>
+               calc_depth<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">judgeFinished</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        judge_result <span class="token operator">=</span> board<span class="token punctuation">.</span>judge<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'-'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">None</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'x'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">'Machine'</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'o'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">'Man'</span>
+        <span class="token keyword">if</span> judge_result<span class="token operator">==</span><span class="token string">'$'</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">'Nobody'</span>
+            
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'--- Machine chess:x   Man Chess:o ---\n'</span><span class="token punctuation">)</span>
+    board_array <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">'-'</span><span class="token punctuation">]</span><span class="token operator">*</span>board_width <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>board_width<span class="token punctuation">)</span><span class="token punctuation">]</span>
+    board <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">if</span> machine_first<span class="token punctuation">:</span>
+        board <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>board_array<span class="token punctuation">,</span> win_cnt<span class="token operator">=</span>win_cnt<span class="token punctuation">)</span>
+        board<span class="token punctuation">.</span>executeAction<span class="token punctuation">(</span>Action<span class="token punctuation">(</span><span class="token punctuation">(</span>board_width<span class="token operator">//</span><span class="token number">2</span><span class="token punctuation">,</span> board_width<span class="token operator">//</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'x'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment">#         board.doMinMaxAction(calc_depth)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+    winner <span class="token operator">=</span> <span class="token boolean">None</span>
+    <span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+        <span class="token comment"># 人落子</span>
+        man_input <span class="token operator">=</span> <span class="token builtin">input</span><span class="token punctuation">(</span><span class="token string">"Input (row, column) :"</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> man_input <span class="token operator">==</span> <span class="token string">'bye'</span><span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+        man_input <span class="token operator">=</span> re<span class="token punctuation">.</span>sub<span class="token punctuation">(</span>r<span class="token string">'\(|\)'</span><span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">,</span> man_input<span class="token punctuation">)</span>
+        row<span class="token punctuation">,</span> column <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> man_input<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> board<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+            board <span class="token operator">=</span> TicTacToeBoard<span class="token punctuation">(</span>board_array<span class="token punctuation">,</span>Action<span class="token punctuation">(</span><span class="token punctuation">(</span>row<span class="token punctuation">,</span> column<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                                   win_cnt<span class="token operator">=</span>win_cnt<span class="token punctuation">,</span>machine_first<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">try</span><span class="token punctuation">:</span>
+                board<span class="token punctuation">.</span>executeAction<span class="token punctuation">(</span>Action<span class="token punctuation">(</span><span class="token punctuation">(</span>row<span class="token punctuation">,</span> column<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">except</span> PutChessError<span class="token punctuation">:</span>
+                <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Inputed pos invalid, put input pos again."</span><span class="token punctuation">)</span>
+                <span class="token keyword">continue</span>
+<span class="token comment">#         print(board)</span>
+        <span class="token comment"># 判断人是否赢了</span>
+        winner <span class="token operator">=</span> judgeFinished<span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> winner<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+            <span class="token keyword">break</span>
+        <span class="token comment"># 机器落子</span>
+        t0 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        board<span class="token punctuation">.</span>doMinMaxAction<span class="token punctuation">(</span>calc_depth<span class="token punctuation">)</span>
+        t1 <span class="token operator">=</span> time<span class="token punctuation">.</span>time<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'Machine Thinking : {t1-t0} s'</span><span class="token punctuation">)</span>
+        winner <span class="token operator">=</span> judgeFinished<span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span>board<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> winner<span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+        
+    <span class="token keyword">if</span> winner<span class="token operator">==</span><span class="token string">'Man'</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Congratulations, you win the game!'</span><span class="token punctuation">)</span>
+    <span class="token keyword">elif</span> winner<span class="token operator">==</span><span class="token string">'Machine'</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"You're failure, do better next time!"</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"This game is draw"</span><span class="token punctuation">)</span>
+tic_tac_toe<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token boolean">True</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>大家可以代码写入两个文件，通过 vscode 或 beyond compare 等对比根据进行对比查看。上述代码不仅优化了启发式函数，而且加入了孤立点剪枝，进一步加速了运算速度。</p>
+<p>试验效果为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>--- Machine chess:x   Man Chess:o ---
+
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - - - - - -
+3  - - - - - - - -
+4  - - - - x - - -
+5  - - - - - - - -
+6  - - - - - - - -
+7  - - - - - - - -
+Input (row, column) :3,3
+Machine Thinking : 1.0809872150421143 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - - - - - -
+3  - - - o x - - -
+4  - - - - x - - -
+5  - - - - - - - -
+6  - - - - - - - -
+7  - - - - - - - -
+Input (row, column) :2,4
+Machine Thinking : 2.6504628658294678 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - - o - - -
+3  - - - o x - - -
+4  - - x - x - - -
+5  - - - - - - - -
+6  - - - - - - - -
+7  - - - - - - - -
+Input (row, column) :4,3
+Machine Thinking : 2.451833963394165 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - x o - - -
+3  - - - o x - - -
+4  - - x o x - - -
+5  - - - - - - - -
+6  - - - - - - - -
+7  - - - - - - - -
+Input (row, column) :4,5
+Machine Thinking : 5.607155084609985 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - x o - - -
+3  - - x o x - - -
+4  - - x o x o - -
+5  - - - - - - - -
+6  - - - - - - - -
+7  - - - - - - - -
+Input (row, column) :5,3
+Machine Thinking : 8.986511945724487 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - x o - - -
+3  - - x o x - - -
+4  - x x o x o - -
+5  - - - o - - - -
+6  - - - - - - - -
+7  - - - - - - - -
+Input (row, column) :5,0
+Machine Thinking : 7.310142993927002 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - x o - - -
+3  - - x o x - - -
+4  - x x o x o - -
+5  o - x o - - - -
+6  - - - - - - - -
+7  - - - - - - - -
+Input (row, column) :6,2
+Machine Thinking : 4.588731050491333 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - - - - -
+2  - - - x o - - -
+3  - - x o x - - -
+4  - x x o x o - -
+5  o - x o - - - -
+6  - - o x - - - -
+7  - - - - - - - -
+Input (row, column) :3,0
+Machine Thinking : 5.667893886566162 s
+   0 1 2 3 4 5 6 7
+0  - - - - - - - -
+1  - - - - x - - -
+2  - - - x o - - -
+3  o - x o x - - -
+4  - x x o x o - -
+5  o - x o - - - -
+6  - - o x - - - -
+7  - - - - - - - -
+Input (row, column) :0,5
+Machine Thinking : 9.12896203994751 s
+   0 1 2 3 4 5 6 7
+0  - - - - - o - -
+1  - - x - x - - -
+2  - - - x o - - -
+3  o - x o x - - -
+4  - x x o x o - -
+5  o - x o - - - -
+6  - - o x - - - -
+7  - - - - - - - -
+Input (row, column) :2,2
+Machine Thinking : 7.826042890548706 s
+   0 1 2 3 4 5 6 7
+0  - - - - - o - -
+1  - - x x x - - -
+2  - - o x o - - -
+3  o - x o x - - -
+4  - x x o x o - -
+5  o - x o - - - -
+6  - - o x - - - -
+7  - - - - - - - -
+Input (row, column) :1,5
+Machine Thinking : 4.286202907562256 s
+   0 1 2 3 4 5 6 7
+0  - - - - - o - -
+1  - x x x x o - -
+2  - - o x o - - -
+3  o - x o x - - -
+4  - x x o x o - -
+5  o - x o - - - -
+6  - - o x - - - -
+7  - - - - - - - -
+Input (row, column) :1,0
+Machine Thinking : 5.429880142211914 s
+   0 1 2 3 4 5 6 7
+0  - - - - - o - -
+1  o x x x x o - -
+2  x - o x o - - -
+3  o - x o x - - -
+4  - x x o x o - -
+5  o - x o - - - -
+6  - - o x - - - -
+7  - - - - - - - -
+Input (row, column) :bye
+This game is draw
+</code></pre><p>哈哈，终于有种和正常人下棋的感觉了，而且感觉棋力和我差不多。看起来需要后面的增强学习的方式进行训练后，才能超越代码编写者的下棋水平。</p>
+<h2 class="mume-header" id="%E6%80%BB%E7%BB%93">总结</h2>
+
+<h3 class="mume-header" id="%E8%BF%90%E7%AE%97%E9%80%9F%E5%BA%A6">运算速度</h3>
+
+<ul>
+<li>博弈树：一次性生成所有情况，并按照获胜的概率选择行动，缺点是空间复杂度和时间复杂度都非常大，不实用。<br>
+<br></li>
+<li>极大极小搜索：模拟人的行为，只需要估计当前情况下的接下来几步，时间复杂度和空间复杂度都比博弈树要小一些，不过还是不实用。<br>
+<br></li>
+<li><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>α</mi><mo>−</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha-\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.0037em;">α</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit" style="margin-right:0.05278em;">β</span></span></span></span> 剪枝，降低时间复杂度<br>
+<br></li>
+<li>孤立点剪枝，降低时间复杂度</li>
+</ul>
+<h3 class="mume-header" id="%E5%86%B3%E7%AD%96%E8%A1%8C%E4%B8%BA">决策行为</h3>
+
+<p>通过优化启发式函数来获得更好的行为。</p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -717,6 +1452,14 @@ This game is draw
 <ul>
 <li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1">代码实现</a></li>
 <li><a href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90-1">性能分析</a></li>
+</ul>
+</li>
+<li><a href="#alpha-beta-%E5%89%AA%E6%9E%9D"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>α</mi><mo>−</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha-\beta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.0037em;">α</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord mathit" style="margin-right:0.05278em;">β</span></span></span></span> 剪枝</a></li>
+<li><a href="#%E5%AD%A4%E7%AB%8B%E7%82%B9%E5%89%AA%E6%9E%9D%E6%9B%B4%E6%96%B0%E5%90%AF%E5%8F%91%E5%BC%8F%E5%87%BD%E6%95%B0">孤立点剪枝+更新启发式函数</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a>
+<ul>
+<li><a href="#%E8%BF%90%E7%AE%97%E9%80%9F%E5%BA%A6">运算速度</a></li>
+<li><a href="#%E5%86%B3%E7%AD%96%E8%A1%8C%E4%B8%BA">决策行为</a></li>
 </ul>
 </li>
 </ul>
