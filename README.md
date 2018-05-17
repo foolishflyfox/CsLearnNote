@@ -89,7 +89,7 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-06 : 443. String Compression](https://foolishflyfox.github.io/CsLearnNote/LeetCode/443_String_Compression.html)
 
-- [2018-05-07 : 818. Race Car](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.md) **经典：BFS、递归、迭代加长搜索**
+- [2018-05-07 : 818. Race Car](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html) **经典：BFS、递归、迭代加长搜索**
 
 - [2018-05-08 : 53. Maximum Subarray 寻找和最大的子串](https://foolishflyfox.github.io/CsLearnNote/LeetCode/53_MaximumSubarray.html)
 
