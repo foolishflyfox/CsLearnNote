@@ -1,8 +1,3 @@
----
-export_on_save:
- html: true
----
-
 <style>
   code.local_r {
       background-color:#f8f2f4;
