@@ -24,7 +24,7 @@
 - [各种算法之间的关系图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AlgorithmRelations.html)
 - [人工智能的定义与分类](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDefine.html)
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
-- [搜索的一个经典例子](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.md)
+- [搜索的一个经典例子](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
 - [A\* 算法-8数码问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/EightDigit.html)
 - [超越经典搜索](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
 - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
