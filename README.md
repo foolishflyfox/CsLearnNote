@@ -1,3 +1,8 @@
+---
+export_on_save:
+ html: true
+---
+
 <style>
   code.local_r {
       background-color:#f8f2f4;
@@ -108,6 +113,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-15 : 575. Distribute Candies](/LeetCode/575_DistributeCandies.html)
 
 - [2018-05-16 : 698. Partition to K Equal Sum Subsets](/LeetCode/698_PartitiontoKEqualSumSubsets.html) **动态规划**
+
+- [2018-05-16 : 32. Longest Valid Parentheses](/LeetCode/32_LongestValidParentheses.html)
 
 ## 正在编写
 - [note01.html](/anyfile/note01.html)
