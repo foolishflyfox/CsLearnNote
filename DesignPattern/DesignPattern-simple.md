@@ -16,6 +16,65 @@ export_on_save:
 
 ### 简单工厂模式(Simple Factory)
 
+当需要针对上下文的具体情况创建指定类型的实例时，可以将创建实例的过程放到某个统一的代码处（可以是类的方法或者函数），对应的上下文的地方只需要调用该方法/函数就可以获取到它们希望的实例，工厂模式的优点：
+
+- 统一管理，便于修改
+- 调用代码简洁
+
+再次强调：工厂模式生产出来的可以是函数、实例甚至是类。生产这些的可以是类方法、实例方法、函数。
+
+例子：
+```python {class="line-numbers"}
+# 操作符工厂
+import operator
+import re
+        
+def getOptFunc(opt_name):
+    opt_dict = {
+        '+' : operator.add,
+        '-' : operator.sub,
+        '*' : operator.mul,
+        '/' : operator.truediv,
+        '^' : lambda a,b:a**b,
+    }
+    return opt_dict[opt_name]
+    
+    
+# 应用例子 : 计算字符表达式
+def calc_str_expression(str_express):
+    # 创建符号的正则表达式
+    opt_rank = {')':0, '+':1, '-':1, '*':2, '/':2, '^':3, '(':10}
+    opt_reg = r'([\+|\-|\*|/|\^|\(|\)])'
+    num_reg = r'(\d+\.?\d*)'
+    item_reg = re.compile(opt_reg+'|'+num_reg)
+    opt_stack = []
+    num_stack = []
+    str_express = f'({str_express})'
+    for i in item_reg.finditer(str_express):
+        i = i.groups()
+        if i[1]:
+            # 匹配到操作符处理
+            num_stack.append(float(i[1]))
+        else:
+            while (len(opt_stack) and opt_stack[-1]!='('
+                   and opt_rank[i[0]]<=opt_rank[opt_stack[-1]]):
+                b = num_stack.pop()
+                a = num_stack.pop()
+                # 使用工厂模式获取操作函数
+                opt_fun = getOptFunc(opt_stack.pop())
+                num_stack.append(opt_fun(a, b))
+            opt_stack.append(i[0])
+            if opt_stack[-1]==')':
+                del opt_stack[-2:]
+
+    return num_stack[-1]
+calc_str_expression("11+(7+ 1.5*4^2-5 )/2")
+```
+上面代码涉及到的知识点：
+- 正则表达式的使用
+- 字符串表达式的计算算法(主要是栈)，算法主要是逆波兰式
+- 工厂模式创建操作符函数
+
 ### 工厂方法模式(Factory Method)
 
 ### 抽象工厂模式(Abstract Factory)

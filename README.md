@@ -24,7 +24,9 @@
 - [各种算法之间的关系图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AlgorithmRelations.html)
 - [人工智能的定义与分类](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDefine.html)
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
-- [搜索的一个经典例子](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
+- 搜索的经典例子
+    - [爬山法/模拟退火/重启爬山](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
+    - [爬山法/局部束搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
 - [A\* 算法-8数码问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/EightDigit.html)
 - [超越经典搜索](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
 - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
@@ -52,6 +54,10 @@
 - [Huoty's Blog : Linux 下 grep 命令的正则表达式规范](http://kuanghy.github.io/2015/10/26/grep-regex)
 - [Dot 语言总结](https://foolishflyfox.github.io/CsLearnNote/Editor/DotLanguage.html)
 - [各种常用图的绘制](https://foolishflyfox.github.io/CsLearnNote/Editor/CommonGraph.html)
+
+## 设计模式
+
+- [设计模式实践](https://foolishflyfox.github.io/CsLearnNote/DesignPattern/DesignPattern-simple.html)
 
 ## 心理学
 
@@ -109,7 +115,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-16 : 698. Partition to K Equal Sum Subsets](https://foolishflyfox.github.io/CsLearnNote/LeetCode/698_PartitiontoKEqualSumSubsets.html) **动态规划**
 
-- [2018-05-16 : 32. Longest Valid Parentheses](https://foolishflyfox.github.io/CsLearnNote/LeetCode/32_LongestValidParentheses.html)
+- [2018-05-17 : 32. Longest Valid Parentheses](https://foolishflyfox.github.io/CsLearnNote/LeetCode/32_LongestValidParentheses.html)
+
+- [2018-05-18 : 72. Edit Distance](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)

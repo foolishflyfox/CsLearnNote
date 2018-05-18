@@ -243,6 +243,9 @@ code.language-yaml {
 <span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
 <hr class="title_separator">
 <br>
+<blockquote>
+<p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
+</blockquote>
 <h1 class="mume-header" id="%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">设计模式</h1>
 
 <p>设计模式被分为3类，创建型模式、结构型模式、行为型模式。</p>
@@ -252,6 +255,63 @@ code.language-yaml {
 <p>社会化的分工越来越细，自然在软件设计方面也是如此。因此，对象的创建和对象的使用分开也就成为了必然趋势。因为对象的创建会消耗掉系统的很多资源，所以单独对对象的创建进行研究，从而能够高效地创建对象就是创建型模式要探讨的问题。</p>
 <h3 class="mume-header" id="%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8Fsimple-factory">简单工厂模式(Simple Factory)</h3>
 
+<p>当需要针对上下文的具体情况创建指定类型的实例时，可以将创建实例的过程放到某个统一的代码处（可以是类的方法或者函数），对应的上下文的地方只需要调用该方法/函数就可以获取到它们希望的实例，工厂模式的优点：</p>
+<ul>
+<li>统一管理，便于修改</li>
+<li>调用代码简洁</li>
+</ul>
+<p>再次强调：工厂模式生产出来的可以是函数、实例甚至是类。生产这些的可以是类方法、实例方法、函数。</p>
+<p>例子：</p>
+<pre data-role="codeBlock" data-info="python {class=&amp;amp;quot;line-numbers&amp;amp;quot;}" class="language-python line-numbers"><span class="token comment"># 操作符工厂</span>
+<span class="token keyword">import</span> operator
+<span class="token keyword">import</span> re
+        
+<span class="token keyword">def</span> <span class="token function">getOptFunc</span><span class="token punctuation">(</span>opt_name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    opt_dict <span class="token operator">=</span> <span class="token punctuation">{</span>
+        <span class="token string">'+'</span> <span class="token punctuation">:</span> operator<span class="token punctuation">.</span>add<span class="token punctuation">,</span>
+        <span class="token string">'-'</span> <span class="token punctuation">:</span> operator<span class="token punctuation">.</span>sub<span class="token punctuation">,</span>
+        <span class="token string">'*'</span> <span class="token punctuation">:</span> operator<span class="token punctuation">.</span>mul<span class="token punctuation">,</span>
+        <span class="token string">'/'</span> <span class="token punctuation">:</span> operator<span class="token punctuation">.</span>truediv<span class="token punctuation">,</span>
+        <span class="token string">'^'</span> <span class="token punctuation">:</span> <span class="token keyword">lambda</span> a<span class="token punctuation">,</span>b<span class="token punctuation">:</span>a<span class="token operator">**</span>b<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> opt_dict<span class="token punctuation">[</span>opt_name<span class="token punctuation">]</span>
+    
+    
+<span class="token comment"># 应用例子 : 计算字符表达式</span>
+<span class="token keyword">def</span> <span class="token function">calc_str_expression</span><span class="token punctuation">(</span>str_express<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 创建符号的正则表达式</span>
+    opt_rank <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">')'</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">'+'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'-'</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'*'</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'^'</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'('</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">}</span>
+    opt_reg <span class="token operator">=</span> r<span class="token string">'([\+|\-|\*|/|\^|\(|\)])'</span>
+    num_reg <span class="token operator">=</span> r<span class="token string">'(\d+\.?\d*)'</span>
+    item_reg <span class="token operator">=</span> re<span class="token punctuation">.</span><span class="token builtin">compile</span><span class="token punctuation">(</span>opt_reg<span class="token operator">+</span><span class="token string">'|'</span><span class="token operator">+</span>num_reg<span class="token punctuation">)</span>
+    opt_stack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    num_stack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    str_express <span class="token operator">=</span> f<span class="token string">'({str_express})'</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> item_reg<span class="token punctuation">.</span>finditer<span class="token punctuation">(</span>str_express<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        i <span class="token operator">=</span> i<span class="token punctuation">.</span>groups<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> i<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+            <span class="token comment"># 匹配到操作符处理</span>
+            num_stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token builtin">float</span><span class="token punctuation">(</span>i<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>opt_stack<span class="token punctuation">)</span> <span class="token operator">and</span> opt_stack<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">!=</span><span class="token string">'('</span>
+                   <span class="token operator">and</span> opt_rank<span class="token punctuation">[</span>i<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span>opt_rank<span class="token punctuation">[</span>opt_stack<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                b <span class="token operator">=</span> num_stack<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                a <span class="token operator">=</span> num_stack<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token comment"># 使用工厂模式获取操作函数</span>
+                opt_fun <span class="token operator">=</span> getOptFunc<span class="token punctuation">(</span>opt_stack<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                num_stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span>opt_fun<span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            opt_stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> opt_stack<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">')'</span><span class="token punctuation">:</span>
+                <span class="token keyword">del</span> opt_stack<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+
+    <span class="token keyword">return</span> num_stack<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+calc_str_expression<span class="token punctuation">(</span><span class="token string">"11+(7+ 1.5*4^2-5 )/2"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>上面代码涉及到的知识点：</p>
+<ul>
+<li>正则表达式的使用</li>
+<li>字符串表达式的计算算法(主要是栈)，算法主要是逆波兰式</li>
+<li>工厂模式创建操作符函数</li>
+</ul>
 <h3 class="mume-header" id="%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8Ffactory-method">工厂方法模式(Factory Method)</h3>
 
 <h3 class="mume-header" id="%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8Fabstract-factory">抽象工厂模式(Abstract Factory)</h3>
