@@ -115,9 +115,11 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-16 : 698. Partition to K Equal Sum Subsets](https://foolishflyfox.github.io/CsLearnNote/LeetCode/698_PartitiontoKEqualSumSubsets.html) **动态规划**
 
-- [2018-05-17 : 32. Longest Valid Parentheses](https://foolishflyfox.github.io/CsLearnNote/LeetCode/32_LongestValidParentheses.html)
+- [2018-05-17 : 32. Longest Valid Parentheses 动态规划](https://foolishflyfox.github.io/CsLearnNote/LeetCode/32_LongestValidParentheses.html)
 
-- [2018-05-18 : 72. Edit Distance](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
+- [2018-05-18 : 72. Edit Distance 动态规划 递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
+
+- [2018-05-19 : 64. Minimum Path Sum 一致代价搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/64_MinimumPathSum.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)

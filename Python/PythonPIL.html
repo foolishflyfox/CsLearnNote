@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>PythonPIL</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<blockquote>
+<p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
+</blockquote>
+<h1 class="mume-header" id="python%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%BA%93pil">Python图像处理库PIL</h1>
+
+<p>PIL（Python Image Library）用于对图像的处理。该库对众多的图片格式提供支持，图像在内存中高效地存储，并且提供了众多的图像处理函数。</p>
+<p>该库主要提供了3方面的功能：</p>
+<ul>
+<li>图片的存储</li>
+<li>图片的显示</li>
+<li>图片的处理</li>
+</ul>
+<h2 class="mume-header" id="%E4%BD%BF%E7%94%A8image%E7%B1%BB">使用Image类</h2>
+
+<p>在 PIL 中，最核心的类当属 <code>Image</code> 了。你可以通过多种方式创建 <code>Image</code> 类的实例，比如加载一个图片、处理另一个Image实例、或者直接从0开始创建。</p>
+<h3 class="mume-header" id="%E5%8A%A0%E8%BD%BD%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87">加载一个图片</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image
+im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"logo_mid.png"</span><span class="token punctuation">)</span>
+</pre><p>如果成功，该函数将会返回一个 <code>Image</code> 对象，你可以使用实例属性对所加载的图片进行测试：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token operator">>></span><span class="token operator">></span> <span class="token keyword">print</span><span class="token punctuation">(</span>im<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">,</span> im<span class="token punctuation">.</span>size<span class="token punctuation">,</span> im<span class="token punctuation">.</span>mode<span class="token punctuation">)</span>
+PNG <span class="token punctuation">(</span><span class="token number">256</span><span class="token punctuation">,</span> <span class="token number">256</span><span class="token punctuation">)</span> RGBA
+</pre><ul>
+<li><code>im.format</code> : 源文件的格式，如 PNG/JPEG/PPM/BMP 等，如果你的 im 文件并不是从文件加载而来，该属性为 None<br>
+<br></li>
+<li><code>im.size</code> : 一个2元组，分别表示图片的宽度和高度<br>
+<br></li>
+<li><code>im.mode</code> : 说明了图片的通道数和通道名，同时也说明了每个像素的类型和深度，通常来说，<strong>L</strong>（Luminance） 表示灰度图，<strong>RGB</strong> 表示彩色图，<strong>CMYK</strong> 表示印刷四分色图</li>
+</ul>
+<p>如果图片不能打开（可能是由于指定的路径不是一个图片文件），将会抛出一个 <code>IOError</code> 异常。</p>
+<p><strong>注意：open 之后并没有将图片实际加载到内存中，只是读取了图片文件的头，只有真正设计到图片内容的操作才会去真正获取图片像素信息，所以如果只想获取图片的长和宽，直接用 open 就可以了，就算超大的图片也不会浪费内存。</strong></p>
+<p>获取了 <code>Image</code> 实例后，就可以对其进行操作了，如可以通过 <code>im.show()</code> 对其进行显示。</p>
+<h3 class="mume-header" id="%E5%9B%BE%E7%89%87%E7%9A%84%E8%AF%BB%E5%86%99">图片的读写</h3>
+
+<ul>
+<li><code>Image.open</code> : 打开图片文件，返回的是<code>PIL.Image.Image</code> 类型的一个实例</li>
+<li><code>im.save</code> : 保存图片，如果没有提供 <code>format</code> 参数，将按照文件名的后缀指定的格式保存文件</li>
+</ul>
+<h3 class="mume-header" id="%E5%89%AA%E5%88%87-%E7%B2%98%E8%B4%B4-%E5%90%88%E5%B9%B6">剪切-粘贴-合并</h3>
+
+<p><code>Image</code> 类中包含了对图片的区域进行处理的方法。我们可以通过 <code>crop()</code> 方法从图片中抽出一个子矩形区域。</p>
+<h4 class="mume-header" id="%E5%A4%8D%E5%88%B6%E5%AD%90%E7%9F%A9%E5%BD%A2">复制子矩形</h4>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">box <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token operator">+</span><span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token operator">+</span><span class="token number">30</span><span class="token punctuation">)</span>
+region <span class="token operator">=</span> im<span class="token punctuation">.</span>crop<span class="token punctuation">(</span>box<span class="token punctuation">)</span>
+</pre><p><code>region</code> 通过一个4元组(left, upper, right, lower)指定。PIL将图片左上角的点的坐标设为<code>(0, 0)</code>。上面的代码中，<code>region</code> 的宽度和高度为 <code>40, 30</code>。</p>
+<h4 class="mume-header" id="%E5%A4%84%E7%90%86%E5%AD%90%E5%8C%BA%E5%9F%9F%E5%B9%B6%E5%9B%9E%E8%B4%B4">处理子区域并回贴</h4>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">region <span class="token operator">=</span> region<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>Image<span class="token punctuation">.</span>ROTATE_180<span class="token punctuation">)</span>
+im<span class="token punctuation">.</span>paste<span class="token punctuation">(</span>region<span class="token punctuation">,</span> box<span class="token punctuation">)</span>
+</pre><p>在使用 <code>paste</code> 方法时要注意<code>region</code> 的尺寸和<code>box</code>所指定的相同。另外 <code>region</code> 不能扩展到 <code>im</code> 之外。另外，<code>region</code> 的模式不一定要和 <code>im</code> 的模式一致，若不一致，将会对其进行自动转换。</p>
+<h4 class="mume-header" id="%E5%9B%BE%E7%89%87%E6%BB%9A%E5%8A%A8">图片滚动</h4>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image
+im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"logo_mid.png"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">roll</span><span class="token punctuation">(</span>image<span class="token punctuation">,</span> delta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    xsize<span class="token punctuation">,</span> ysize <span class="token operator">=</span> image<span class="token punctuation">.</span>size
+    delta <span class="token operator">%=</span> xsize
+    <span class="token keyword">if</span> delta<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> image
+    part1 <span class="token operator">=</span> image<span class="token punctuation">.</span>crop<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> delta<span class="token punctuation">,</span> ysize<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    part2 <span class="token operator">=</span> image<span class="token punctuation">.</span>crop<span class="token punctuation">(</span><span class="token punctuation">(</span>delta<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> xsize<span class="token punctuation">,</span> ysize<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    part1<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># PIL 4.2.1 貌似可以去掉</span>
+    part2<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    image<span class="token punctuation">.</span>paste<span class="token punctuation">(</span>part2<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> xsize<span class="token operator">-</span>delta<span class="token punctuation">,</span> ysize<span class="token punctuation">)</span><span class="token punctuation">,</span> part2<span class="token punctuation">)</span>
+    image<span class="token punctuation">.</span>paste<span class="token punctuation">(</span>part1<span class="token punctuation">,</span> <span class="token punctuation">(</span>xsize<span class="token operator">-</span>delta<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> xsize<span class="token punctuation">,</span> ysize<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> image
+roll<span class="token punctuation">(</span>im<span class="token punctuation">,</span> <span class="token number">75</span><span class="token punctuation">)</span>
+</pre><p><code>paste</code> 方法有一个 <code>mask</code> 参数。对于RGBA的图像，如果 paste 的第一个参数<code>im</code> 和第三个参数 <code>mask</code> 相同，表示只粘贴有颜色的部分，而不粘贴无颜色的部分。</p>
+<p>上面代码的结果为：</p>
+<div align="center">
+<img src="assets/20180519114957.png">
+</div>
+<h4 class="mume-header" id="splitmerge">split/merge</h4>
+
+<p>PIL 对于多通道的图片，如RGB图片，可以分别对其中的某个通道进行操作。<code>split</code> 方法创建一系列的新图片，每个图片包含了一个通道。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 将 mode 为 rgba 的 png 分成多个通道</span>
+r<span class="token punctuation">,</span>g<span class="token punctuation">,</span>b<span class="token punctuation">,</span>a <span class="token operator">=</span> im<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>其中 <code>a</code> 通道的分量为：</p>
+<div align="center">
+<img src="assets/20180519160304.png">
+</div>
+<p>alpha 通道通常用作不透明度，其值为0表示完全透明(transparent)，255表示完全不透明(opaque)。</p>
+<p>对于单通道的图片，<code>split()</code> 直接返回该图片。</p>
+<p>可以通过 <code>merge</code> 方法将通道合成：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">im <span class="token operator">=</span> Image<span class="token punctuation">.</span>merge<span class="token punctuation">(</span><span class="token string">'RGBA'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>r<span class="token punctuation">,</span>g<span class="token punctuation">,</span>b<span class="token punctuation">,</span>a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>可以通过将不同的图片 <code>merge</code>：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">dog_im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'dog.jpeg'</span><span class="token punctuation">)</span>
+leaf_im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'leaf.png'</span><span class="token punctuation">)</span>
+r<span class="token punctuation">,</span> g<span class="token punctuation">,</span> b<span class="token punctuation">,</span> a <span class="token operator">=</span> leaf_im<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+dog_in_leaf <span class="token operator">=</span> Image<span class="token punctuation">.</span>merge<span class="token punctuation">(</span><span class="token string">"RGBA"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token operator">*</span>dog_im<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p><code>dog_in_leaf</code> 的效果为：</p>
+<div align="center">
+<img src="assets/20180519170306.png">
+</div>
+<h2 class="mume-header" id="%E5%87%A0%E4%BD%95%E5%8F%98%E6%8D%A2">几何变换</h2>
+
+<p><code>PIL.Image.Image</code> 类包含了 <code>resize</code> 和 <code>rotate</code> 操作对图片进行几何变换。其中 <code>resize</code> 需要给出一个tuple类型的参数作为新的大小，<code>rotate</code> 需要给出一个角度，图片会安装该角度进行逆时针旋转。</p>
+<h3 class="mume-header" id="resize">resize</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">mini_im <span class="token operator">=</span> im<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>图片变为：</p>
+<div align="center">
+<img src="assets/20180519162206.png">
+</div>
+<h3 class="mume-header" id="rotate">rotate</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">rotate45_im <span class="token operator">=</span> im<span class="token punctuation">.</span>rotate<span class="token punctuation">(</span><span class="token number">45</span><span class="token punctuation">)</span>
+</pre><p>图片变为：</p>
+<div align="center">
+<img src="assets/20180519162536.png">
+</div>
+<p>图片旋转90度，既可以用 <code>im.rotate(90)</code> 方法，也可以用<code>im.transpose(Image.ROTATE_90)</code> 方法。</p>
+<h3 class="mume-header" id="%E5%9B%BE%E7%89%87%E5%8F%98%E4%BD%8D">图片变位</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">out <span class="token operator">=</span> im<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>Image<span class="token punctuation">.</span>FLIP_LEFT_RIGHT<span class="token punctuation">)</span> <span class="token comment"># 左右翻转</span>
+out <span class="token operator">=</span> im<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>Image<span class="token punctuation">.</span>FLIP_TOP_BOTTOM<span class="token punctuation">)</span> <span class="token comment"># 上下翻转</span>
+out <span class="token operator">=</span> im<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>Image<span class="token punctuation">.</span>ROTATE_90<span class="token punctuation">)</span>       <span class="token comment"># 旋转 90°</span>
+out <span class="token operator">=</span> im<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>Image<span class="token punctuation">.</span>ROTATE_180<span class="token punctuation">)</span>      <span class="token comment"># 旋转 180°</span>
+out <span class="token operator">=</span> im<span class="token punctuation">.</span>transpose<span class="token punctuation">(</span>Image<span class="token punctuation">.</span>ROTATE_270<span class="token punctuation">)</span>      <span class="token comment"># 旋转 270°</span>
+</pre><h2 class="mume-header" id="%E9%A2%9C%E8%89%B2%E5%8F%98%E6%8D%A2">颜色变换</h2>
+
+<h3 class="mume-header" id="mode-%E8%BD%AC%E5%8F%98">mode 转变</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python">im_L <span class="token operator">=</span> im<span class="token punctuation">.</span>convert<span class="token punctuation">(</span><span class="token string">'L'</span><span class="token punctuation">)</span>
+</pre><p>将 <code>im</code> 的 <code>mode</code> 转变为 <code>L</code>，原来可能是 <code>RGB</code>或<code>RGBA</code>。</p>
+<p>注意，不能将 mode 为 <code>RGBA</code> 的图片保存为 <code>jpeg</code>，可以通过两种方法进行保存：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># method 1 : convert mode to RGB, then save</span>
+im<span class="token punctuation">.</span>convert<span class="token punctuation">(</span><span class="token string">'RGB'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'im.jpeg'</span><span class="token punctuation">)</span>
+<span class="token comment"># method 1 : split RGBA -> merge RGB -> save</span>
+r<span class="token punctuation">,</span> g<span class="token punctuation">,</span> b<span class="token punctuation">,</span> a <span class="token operator">=</span> im<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+Image<span class="token punctuation">.</span>merge<span class="token punctuation">(</span><span class="token string">'RGB'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>r<span class="token punctuation">,</span>g<span class="token punctuation">,</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'im.jpeg'</span><span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="%E5%9B%BE%E7%89%87%E7%89%B9%E6%95%88%E6%93%8D%E4%BD%9C">图片特效操作</h3>
+
+<p>Image实例的<code>filter</code>方法可以实现修图效果：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> ImageFilter
+im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'logo_mid.png'</span><span class="token punctuation">)</span>
+im <span class="token operator">=</span> im<span class="token punctuation">.</span>resize<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">128</span><span class="token punctuation">,</span> <span class="token number">128</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>BLUR<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">"f_blur.png"</span><span class="token punctuation">)</span> <span class="token comment"># 模糊化</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>CONTOUR<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">"f_contour.png"</span><span class="token punctuation">)</span> <span class="token comment"># 获取轮廓</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>DETAIL<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">"f_detail.png"</span><span class="token punctuation">)</span> <span class="token comment"># 获取细节</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>EDGE_ENHANCE<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">"f_edge_enhance.png"</span><span class="token punctuation">)</span> <span class="token comment"># 增强细节</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>EDGE_ENHANCE_MORE<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">"f_edge_enhance_more.png"</span><span class="token punctuation">)</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>EMBOSS<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'f_emboss.png'</span><span class="token punctuation">)</span> <span class="token comment"># 浮雕化</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>FIND_EDGES<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'f_edges.png'</span><span class="token punctuation">)</span> <span class="token comment"># 获取边缘</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>SHARPEN<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'f_sharpen.png'</span><span class="token punctuation">)</span> <span class="token comment"># 锐化</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>SMOOTH<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'f_smooth.png'</span><span class="token punctuation">)</span> <span class="token comment"># 平滑</span>
+im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>SMOOTH_MORE<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'f_smooth_more.png'</span><span class="token punctuation">)</span>
+</pre><div align="center">
+<img src="assets/filter.png">
+</div>
+<h3 class="mume-header" id="%E5%83%8F%E7%B4%A0%E6%93%8D%E4%BD%9C">像素操作</h3>
+
+<p>可以通过<code>point</code>对每个像素进行操作，如：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">im<span class="token punctuation">.</span>point<span class="token punctuation">(</span><span class="token keyword">lambda</span> i<span class="token punctuation">:</span>i<span class="token operator">*</span><span class="token number">1.5</span><span class="token punctuation">)</span>
+</pre><p>将图片颜色调亮，效果：</p>
+<div align="center">
+<img src="assets/20180519222008.png">
+</div>
+<p>可以通过 <code>crop</code>、<code>point</code>、<code>paste</code>的结合，对指定的区域进行操作。</p>
+<h3 class="mume-header" id="%E5%AF%B9%E7%89%B9%E5%AE%9A%E9%80%9A%E9%81%93%E6%93%8D%E4%BD%9C">对特定通道操作</h3>
+
+<p>将图片像素点中蓝色通道为值<code>&gt;100</code>的所有像素，蓝色分量保留，红绿分量去除：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">source <span class="token operator">=</span> im<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
+R<span class="token punctuation">,</span> G<span class="token punctuation">,</span> B<span class="token punctuation">,</span> A <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span>
+<span class="token comment"># select regions where blue is less than 100</span>
+mask <span class="token operator">=</span> source<span class="token punctuation">[</span>B<span class="token punctuation">]</span><span class="token punctuation">.</span>point<span class="token punctuation">(</span><span class="token keyword">lambda</span> i<span class="token punctuation">:</span>i<span class="token operator">&lt;</span><span class="token number">100</span> <span class="token operator">and</span> <span class="token number">255</span><span class="token punctuation">)</span>
+<span class="token comment"># process the red band and green band</span>
+out_r <span class="token operator">=</span> source<span class="token punctuation">[</span>R<span class="token punctuation">]</span><span class="token punctuation">.</span>point<span class="token punctuation">(</span><span class="token keyword">lambda</span> i<span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">)</span>
+out_g <span class="token operator">=</span> source<span class="token punctuation">[</span>G<span class="token punctuation">]</span><span class="token punctuation">.</span>point<span class="token punctuation">(</span><span class="token keyword">lambda</span> i<span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment"># paste the processed band back, but only where blue was &lt; 100</span>
+source<span class="token punctuation">[</span>R<span class="token punctuation">]</span><span class="token punctuation">.</span>paste<span class="token punctuation">(</span>out_r<span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">,</span> mask<span class="token punctuation">)</span>
+source<span class="token punctuation">[</span>G<span class="token punctuation">]</span><span class="token punctuation">.</span>paste<span class="token punctuation">(</span>out_g<span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">,</span> mask<span class="token punctuation">)</span>
+<span class="token comment"># bulid a new multiband image</span>
+Image<span class="token punctuation">.</span>merge<span class="token punctuation">(</span>im<span class="token punctuation">.</span>mode<span class="token punctuation">,</span> source<span class="token punctuation">)</span>
+</pre><p>结果为：</p>
+<div align="center">
+<img src="assets/20180519224616.png">
+</div>
+<h3 class="mume-header" id="%E6%9B%B4%E5%A4%9A%E6%95%88%E6%9E%9C">更多效果</h3>
+
+<p>你可以使用 <a href="https://pillow.readthedocs.io/en/5.1.x/reference/ImageEnhance.html#module-PIL.ImageEnhance">ImageEnhance</a> 模块进行更高级的图片处理。</p>
+<p>例如，你可以改变对比度、亮度、颜色平衡、锐化等。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> ImageEnhance
+enh <span class="token operator">=</span> ImageEnhance<span class="token punctuation">.</span>Brightness<span class="token punctuation">(</span>im<span class="token punctuation">)</span>
+<span class="token comment"># 40% less brightness</span>
+enh<span class="token punctuation">.</span>enhance<span class="token punctuation">(</span><span class="token number">0.6</span><span class="token punctuation">)</span>
+</pre><div align="center">
+<img src="assets/20180519225342.png">
+</div>
+<h2 class="mume-header" id="%E5%8A%A8%E7%94%BB%E5%9B%BE%E5%83%8F">动画图像</h2>
+
+<p>PIL 提供了基本的方法使用户能够处理动图。支持的动图包括：FLI/FLC，GIF 和一些专业的格式。TIFF 文件可以包含多于一个的帧。</p>
+<h3 class="mume-header" id="%E8%AF%BB%E5%8F%96%E5%8A%A8%E5%9B%BE">读取动图</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image
+
+im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'animation.gif'</span><span class="token punctuation">)</span>
+im<span class="token punctuation">.</span>seek<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment"># 跳到第一秒的位置</span>
+
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token keyword">while</span> <span class="token number">1</span><span class="token punctuation">:</span>
+        im<span class="token punctuation">.</span>seek<span class="token punctuation">(</span>im<span class="token punctuation">.</span>tell<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token comment"># do something to im</span>
+<span class="token keyword">except</span> EOFError<span class="token punctuation">:</span>
+    <span class="token keyword">pass</span> <span class="token comment"># end of sequence</span>
+</pre><p>在读取动图结束的时候，<code>seek</code> 函数将会弹出一个 <code>EOFError</code> 异常。</p>
+<p>你也可以通过迭代器进行遍历：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> ImageSequence
+<span class="token keyword">for</span> frame <span class="token keyword">in</span> ImageSequence<span class="token punctuation">.</span>Iterator<span class="token punctuation">(</span>im<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># do something to frame</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</pre><h3 class="mume-header" id="%E6%B7%BB%E5%8A%A0%E6%A0%87%E8%AE%B0">添加标记</h3>
+
+<p>PIL 允许你对图片添加文本、图表等标记：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image
+<span class="token keyword">from</span> PIL <span class="token keyword">import</span> PSDraw
+
+im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">"hopper.ppm"</span><span class="token punctuation">)</span>
+title <span class="token operator">=</span> <span class="token string">"hopper"</span>
+box <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">*</span><span class="token number">72</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token operator">*</span><span class="token number">72</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token operator">*</span><span class="token number">72</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token operator">*</span><span class="token number">72</span><span class="token punctuation">)</span> <span class="token comment"># in points</span>
+
+ps <span class="token operator">=</span> PSDraw<span class="token punctuation">.</span>PSDraw<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># default is sys.stdout</span>
+ps<span class="token punctuation">.</span>begin_document<span class="token punctuation">(</span>title<span class="token punctuation">)</span>
+
+<span class="token comment"># draw the image (75 dpi)</span>
+ps<span class="token punctuation">.</span>image<span class="token punctuation">(</span>box<span class="token punctuation">,</span> im<span class="token punctuation">,</span> <span class="token number">75</span><span class="token punctuation">)</span>
+ps<span class="token punctuation">.</span>rectangle<span class="token punctuation">(</span>box<span class="token punctuation">)</span>
+
+<span class="token comment"># draw title</span>
+ps<span class="token punctuation">.</span>setfont<span class="token punctuation">(</span><span class="token string">"HelveticaNarrow-Bold"</span><span class="token punctuation">,</span> <span class="token number">36</span><span class="token punctuation">)</span>
+ps<span class="token punctuation">.</span>text<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">*</span><span class="token number">72</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token operator">*</span><span class="token number">72</span><span class="token punctuation">)</span><span class="token punctuation">,</span> title<span class="token punctuation">)</span>
+
+ps<span class="token punctuation">.</span>end_document<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="%E6%9B%B4%E5%A4%9A%E7%9A%84%E8%AF%BB%E5%8F%96%E6%96%B9%E5%BC%8F">更多的读取方式</h3>
+
+<p>除了通过 <code>open</code> 打开一个文件外，你也可以传入一个文件对象，该对象必须实现了 <code>read()</code>、<code>seek()</code> 和 <code>tell()</code> 方法，并且要以二进制的方式打开。</p>
+<h4 class="mume-header" id="%E4%BB%8E%E5%8E%8B%E7%BC%A9%E5%8C%85%E4%B8%AD%E6%8F%90%E5%8F%96">从压缩包中提取</h4>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> PIL <span class="token keyword">import</span> Image<span class="token punctuation">,</span> TarIO
+
+fp <span class="token operator">=</span> TarIO<span class="token punctuation">.</span>TarIO<span class="token punctuation">(</span><span class="token string">"Tests/images/hopper.tar"</span><span class="token punctuation">,</span> <span class="token string">"hopper.jpg"</span><span class="token punctuation">)</span>
+im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span>fp<span class="token punctuation">)</span>
+</pre>
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#python%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%BA%93pil">Python图像处理库PIL</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8image%E7%B1%BB">使用Image类</a>
+<ul>
+<li><a href="#%E5%8A%A0%E8%BD%BD%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87">加载一个图片</a></li>
+<li><a href="#%E5%9B%BE%E7%89%87%E7%9A%84%E8%AF%BB%E5%86%99">图片的读写</a></li>
+<li><a href="#%E5%89%AA%E5%88%87-%E7%B2%98%E8%B4%B4-%E5%90%88%E5%B9%B6">剪切-粘贴-合并</a>
+<ul>
+<li><a href="#%E5%A4%8D%E5%88%B6%E5%AD%90%E7%9F%A9%E5%BD%A2">复制子矩形</a></li>
+<li><a href="#%E5%A4%84%E7%90%86%E5%AD%90%E5%8C%BA%E5%9F%9F%E5%B9%B6%E5%9B%9E%E8%B4%B4">处理子区域并回贴</a></li>
+<li><a href="#%E5%9B%BE%E7%89%87%E6%BB%9A%E5%8A%A8">图片滚动</a></li>
+<li><a href="#splitmerge">split/merge</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%87%A0%E4%BD%95%E5%8F%98%E6%8D%A2">几何变换</a>
+<ul>
+<li><a href="#resize">resize</a></li>
+<li><a href="#rotate">rotate</a></li>
+<li><a href="#%E5%9B%BE%E7%89%87%E5%8F%98%E4%BD%8D">图片变位</a></li>
+</ul>
+</li>
+<li><a href="#%E9%A2%9C%E8%89%B2%E5%8F%98%E6%8D%A2">颜色变换</a>
+<ul>
+<li><a href="#mode-%E8%BD%AC%E5%8F%98">mode 转变</a></li>
+<li><a href="#%E5%9B%BE%E7%89%87%E7%89%B9%E6%95%88%E6%93%8D%E4%BD%9C">图片特效操作</a></li>
+<li><a href="#%E5%83%8F%E7%B4%A0%E6%93%8D%E4%BD%9C">像素操作</a></li>
+<li><a href="#%E5%AF%B9%E7%89%B9%E5%AE%9A%E9%80%9A%E9%81%93%E6%93%8D%E4%BD%9C">对特定通道操作</a></li>
+<li><a href="#%E6%9B%B4%E5%A4%9A%E6%95%88%E6%9E%9C">更多效果</a></li>
+</ul>
+</li>
+<li><a href="#%E5%8A%A8%E7%94%BB%E5%9B%BE%E5%83%8F">动画图像</a>
+<ul>
+<li><a href="#%E8%AF%BB%E5%8F%96%E5%8A%A8%E5%9B%BE">读取动图</a></li>
+<li><a href="#%E6%B7%BB%E5%8A%A0%E6%A0%87%E8%AE%B0">添加标记</a></li>
+<li><a href="#%E6%9B%B4%E5%A4%9A%E7%9A%84%E8%AF%BB%E5%8F%96%E6%96%B9%E5%BC%8F">更多的读取方式</a>
+<ul>
+<li><a href="#%E4%BB%8E%E5%8E%8B%E7%BC%A9%E5%8C%85%E4%B8%AD%E6%8F%90%E5%8F%96">从压缩包中提取</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>
