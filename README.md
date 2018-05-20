@@ -15,6 +15,7 @@
 ## Linux
 
 - [Linux命令备忘](https://foolishflyfox.github.io/CsLearnNote/Linux/LinuxCommand.html)
+- [用Python写常用工具](https://foolishflyfox.github.io/CsLearnNote/Linux/PythonScriptTool.html)
 
 ## 高级人工智能
 
@@ -56,9 +57,9 @@
 - [Dot 语言总结](https://foolishflyfox.github.io/CsLearnNote/Editor/DotLanguage.html)
 - [各种常用图的绘制](https://foolishflyfox.github.io/CsLearnNote/Editor/CommonGraph.html)
 
-## 设计模式
+<!-- ## 设计模式
 
-- [设计模式实践](https://foolishflyfox.github.io/CsLearnNote/DesignPattern/DesignPattern-simple.html)
+- [设计模式实践](https://foolishflyfox.github.io/CsLearnNote/DesignPattern/DesignPattern-simple.html) -->
 
 ## 心理学
 
@@ -121,6 +122,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-18 : 72. Edit Distance 动态规划 递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
 
 - [2018-05-19 : 64. Minimum Path Sum 一致代价搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/64_MinimumPathSum.html)
+
+- [2018-05-20 : 226. Invert Binary Tree 二叉树遍历](/LeetCode/226_InvertBinaryTree.html) <code class="green">easy</code>
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)

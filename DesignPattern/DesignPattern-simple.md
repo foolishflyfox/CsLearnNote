@@ -121,6 +121,43 @@ calc_str_expression("11+(7+ 1.5*4^2-5 )/2")
 
 ### 策略模式(Strategy)
 
+要求：写一个商场收银函数，输入产品价格和数量，输出需要收取的费用。
+
+```python
+def calcExpenditrue(unit_price, amount):
+    return unit_price * amount
+```
+
+现在来了新的要求：
+- 有会员卡打 8 折
+- 节日的话，100元以内部分打7折，高于100元部分打九折
+- 上述两者优惠同时成立时，选择优惠力度大的
+
+```python
+def calcExpenditure(unit_price, amount, user, date):
+def calcExpenditure(unit_price, amount, user, date):
+    origin_expenditure = unit_price*amount
+
+    vip_expenditure = origin_expenditure*0.8
+
+    if origin_expenditure <= 100:
+        holiday_expenditure = origin_expenditure * 0.7
+    else:
+        holiday_expenditure = 70+(origin_expenditure-100)*0.9
+    final_expenditure = origin_expenditure
+    
+    if user.isvip() and not date.isholiday():
+        final_expenditure = vip_expenditure
+    if not user.isvip() and date.isholiday():
+        final_expenditure = holiday_expenditure
+    if user.isvip() and date.isholiday():
+        final_expenditure = min(vip_expenditure, holiday_expenditure)
+    
+    return final_expenditure
+```
+看起来代码还是有点复杂，不简洁，也还能将就，不过现在又来了新的策略：妇女节的时候全体女士可以享受折上折的9折，这下好了，要大改了！
+
+
 ### 职责链模式(Chain of Responsibility)
 
 ### 命令模式(Command)

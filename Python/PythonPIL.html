@@ -392,7 +392,7 @@ im<span class="token punctuation">.</span><span class="token builtin">filter</sp
 im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>SMOOTH<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'f_smooth.png'</span><span class="token punctuation">)</span> <span class="token comment"># 平滑</span>
 im<span class="token punctuation">.</span><span class="token builtin">filter</span><span class="token punctuation">(</span>ImageFilter<span class="token punctuation">.</span>SMOOTH_MORE<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'f_smooth_more.png'</span><span class="token punctuation">)</span>
 </pre><div align="center">
-<img src="assets/filter.png">
+<img src="assets/filter.jpg">
 </div>
 <h3 class="mume-header" id="%E5%83%8F%E7%B4%A0%E6%93%8D%E4%BD%9C">像素操作</h3>
 
@@ -405,7 +405,7 @@ im<span class="token punctuation">.</span><span class="token builtin">filter</sp
 <p>可以通过 <code>crop</code>、<code>point</code>、<code>paste</code>的结合，对指定的区域进行操作。</p>
 <h3 class="mume-header" id="%E5%AF%B9%E7%89%B9%E5%AE%9A%E9%80%9A%E9%81%93%E6%93%8D%E4%BD%9C">对特定通道操作</h3>
 
-<p>将图片像素点中蓝色通道为值<code>&gt;100</code>的所有像素，蓝色分量保留，红绿分量去除：</p>
+<p>将图片像素点中蓝色通道为值<code>&lt;100</code>的所有像素，蓝色分量保留，红绿分量去除：</p>
 <pre data-role="codeBlock" data-info="python" class="language-python">source <span class="token operator">=</span> im<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token punctuation">)</span>
 R<span class="token punctuation">,</span> G<span class="token punctuation">,</span> B<span class="token punctuation">,</span> A <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span>
 <span class="token comment"># select regions where blue is less than 100</span>
@@ -486,7 +486,25 @@ ps<span class="token punctuation">.</span>end_document<span class="token punctua
 
 fp <span class="token operator">=</span> TarIO<span class="token punctuation">.</span>TarIO<span class="token punctuation">(</span><span class="token string">"Tests/images/hopper.tar"</span><span class="token punctuation">,</span> <span class="token string">"hopper.jpg"</span><span class="token punctuation">)</span>
 im <span class="token operator">=</span> Image<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span>fp<span class="token punctuation">)</span>
-</pre>
+</pre><h2 class="mume-header" id="pil%E5%92%8Cnumpy%E4%BA%92%E6%93%8D%E4%BD%9C">PIL和Numpy互操作</h2>
+
+<p>还是以前面的要求做实验：将图片像素点中蓝色通道为值<code>&lt;100</code>的所有像素，蓝色分量保留，红绿分量去除</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+im_array <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>im<span class="token punctuation">)</span>
+b_array <span class="token operator">=</span> im_array<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span>
+<span class="token comment"># process red band and green band</span>
+im_array<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>b_array<span class="token operator">&lt;</span><span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+im_array<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span>b_array<span class="token operator">&lt;</span><span class="token number">100</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token comment"># 改变原图</span>
+<span class="token comment"># im.putdata(im_array)</span>
+<span class="token comment"># 创建新图</span>
+p_im <span class="token operator">=</span> Image<span class="token punctuation">.</span>fromarray<span class="token punctuation">(</span>im_array<span class="token punctuation">)</span>
+</pre><p>得到的图片和之前的类似：</p>
+<div align="center">
+<img src="assets/20180519224616.png">
+</div>
+而且，通常来说使用 numpy 对图片的处理速度要比用 PIL 中的方法要快很多！
+
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#python%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86%E5%BA%93pil">Python图像处理库PIL</a>
@@ -532,6 +550,7 @@ im <span class="token operator">=</span> Image<span class="token punctuation">.<
 </li>
 </ul>
 </li>
+<li><a href="#pil%E5%92%8Cnumpy%E4%BA%92%E6%93%8D%E4%BD%9C">PIL和Numpy互操作</a></li>
 </ul>
 </li>
 </ul>

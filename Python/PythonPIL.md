@@ -197,7 +197,7 @@ im.filter(ImageFilter.SMOOTH).save('f_smooth.png') # 平滑
 im.filter(ImageFilter.SMOOTH_MORE).save('f_smooth_more.png')
 ```
 <div align="center">
-<img src="/Python/assets/filter.png">
+<img src="/Python/assets/filter.jpg">
 </div>
 
 ### 像素操作
@@ -214,7 +214,7 @@ im.point(lambda i:i*1.5)
 可以通过 `crop`、`point`、`paste`的结合，对指定的区域进行操作。
 
 ### 对特定通道操作
-将图片像素点中蓝色通道为值`>100`的所有像素，蓝色分量保留，红绿分量去除：
+将图片像素点中蓝色通道为值`<100`的所有像素，蓝色分量保留，红绿分量去除：
 ```python
 source = im.split()
 R, G, B, A = 0, 1, 2, 3
@@ -317,3 +317,26 @@ from PIL import Image, TarIO
 fp = TarIO.TarIO("Tests/images/hopper.tar", "hopper.jpg")
 im = Image.open(fp)
 ```
+
+## PIL和Numpy互操作
+
+还是以前面的要求做实验：将图片像素点中蓝色通道为值`<100`的所有像素，蓝色分量保留，红绿分量去除
+
+```python
+import numpy as np
+im_array = np.array(im)
+b_array = im_array[:,:,2]
+# process red band and green band
+im_array[:,:,0][b_array<100] = 0
+im_array[:,:,1][b_array<100] = 0
+# 改变原图
+# im.putdata(im_array)
+# 创建新图
+p_im = Image.fromarray(im_array)
+```
+得到的图片和之前的类似：
+<div align="center">
+<img src="/Python/assets/20180519224616.png" />
+</div>
+而且，通常来说使用 numpy 对图片的处理速度要比用 PIL 中的方法要快很多！
+

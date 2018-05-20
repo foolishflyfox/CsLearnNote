@@ -356,6 +356,36 @@ calc_str_expression<span class="token punctuation">(</span><span class="token st
 
 <h3 class="mume-header" id="%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8Fstrategy">策略模式(Strategy)</h3>
 
+<p>要求：写一个商场收银函数，输入产品价格和数量，输出需要收取的费用。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">def</span> <span class="token function">calcExpenditrue</span><span class="token punctuation">(</span>unit_price<span class="token punctuation">,</span> amount<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> unit_price <span class="token operator">*</span> amount
+</pre><p>现在来了新的要求：</p>
+<ul>
+<li>有会员卡打 8 折</li>
+<li>节日的话，100元以内部分打7折，高于100元部分打九折</li>
+<li>上述两者优惠同时成立时，选择优惠力度大的</li>
+</ul>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">def</span> <span class="token function">calcExpenditure</span><span class="token punctuation">(</span>unit_price<span class="token punctuation">,</span> amount<span class="token punctuation">,</span> user<span class="token punctuation">,</span> date<span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token keyword">def</span> <span class="token function">calcExpenditure</span><span class="token punctuation">(</span>unit_price<span class="token punctuation">,</span> amount<span class="token punctuation">,</span> user<span class="token punctuation">,</span> date<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    origin_expenditure <span class="token operator">=</span> unit_price<span class="token operator">*</span>amount
+
+    vip_expenditure <span class="token operator">=</span> origin_expenditure<span class="token operator">*</span><span class="token number">0.8</span>
+
+    <span class="token keyword">if</span> origin_expenditure <span class="token operator">&lt;=</span> <span class="token number">100</span><span class="token punctuation">:</span>
+        holiday_expenditure <span class="token operator">=</span> origin_expenditure <span class="token operator">*</span> <span class="token number">0.7</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        holiday_expenditure <span class="token operator">=</span> <span class="token number">70</span><span class="token operator">+</span><span class="token punctuation">(</span>origin_expenditure<span class="token operator">-</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">0.9</span>
+    final_expenditure <span class="token operator">=</span> origin_expenditure
+    
+    <span class="token keyword">if</span> user<span class="token punctuation">.</span>isvip<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">and</span> <span class="token operator">not</span> date<span class="token punctuation">.</span>isholiday<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        final_expenditure <span class="token operator">=</span> vip_expenditure
+    <span class="token keyword">if</span> <span class="token operator">not</span> user<span class="token punctuation">.</span>isvip<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">and</span> date<span class="token punctuation">.</span>isholiday<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        final_expenditure <span class="token operator">=</span> holiday_expenditure
+    <span class="token keyword">if</span> user<span class="token punctuation">.</span>isvip<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">and</span> date<span class="token punctuation">.</span>isholiday<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        final_expenditure <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>vip_expenditure<span class="token punctuation">,</span> holiday_expenditure<span class="token punctuation">)</span>
+    
+    <span class="token keyword">return</span> final_expenditure
+</pre><p>看起来代码还是有点复杂，不简洁，也还能将就，不过现在又来了新的策略：妇女节的时候全体女士可以享受折上折的9折，这下好了，要大改了！</p>
 <h3 class="mume-header" id="%E8%81%8C%E8%B4%A3%E9%93%BE%E6%A8%A1%E5%BC%8Fchain-of-responsibility">职责链模式(Chain of Responsibility)</h3>
 
 <h3 class="mume-header" id="%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8Fcommand">命令模式(Command)</h3>

@@ -248,27 +248,78 @@ code.language-yaml {
 </blockquote>
 <h1 class="mume-header" id="%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB">机器学习-图像识别</h1>
 
+<blockquote>
+<p>参考：<a href="http://blog.sciencenet.cn/blog-360646-465608.html">matlab 中的 colormap</a>、<a href="https://blog.csdn.net/shuke1991/article/details/50462580">利用 matplotlib 中 imshow 函数绘图</a></p>
+</blockquote>
 <p>本篇博客主要演示如何训练机器识别出圆形、正方形、三角形等的图形。</p>
-<h2 class="mume-header" id="%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E8%BD%AC%E6%8D%A2">图像与数组的转换</h2>
+<h2 class="mume-header" id="%E6%95%B0%E7%BB%84%E7%9A%84%E6%98%BE%E7%A4%BA">数组的显示</h2>
 
-<p>可以使用 Python 的 PIL(Python Imaging Library) 进行 图片&lt;--&gt;数组 的转换。</p>
-<h3 class="mume-header" id="%E5%9B%BE%E7%89%87-%E6%95%B0%E7%BB%84">图片-&gt;数组</h3>
+<p>创建一个的数组：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">tp <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0.01</span><span class="token punctuation">)</span>
+x<span class="token punctuation">,</span> y <span class="token operator">=</span> np<span class="token punctuation">.</span>meshgrid<span class="token punctuation">(</span>tp<span class="token punctuation">,</span> tp<span class="token punctuation">)</span>
+digit_a <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token operator">**</span><span class="token number">2</span><span class="token operator">+</span>y<span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">.5</span>
+</pre><p>对该数组以各种 <code>cmap</code> 进行可视化：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> matplotlib
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<span class="token keyword">def</span> <span class="token function">show_array</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">,</span> cmap<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    plt<span class="token punctuation">.</span>subplot<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span>cmap<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> cmap <span class="token punctuation">:</span> plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>a<span class="token punctuation">,</span> cmap<span class="token punctuation">)</span>
+    <span class="token keyword">else</span> <span class="token punctuation">:</span> plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+    plt<span class="token punctuation">.</span>axis<span class="token punctuation">(</span><span class="token string">'off'</span><span class="token punctuation">)</span>
 
-<div class="code-chunk" data-id="code-chunk-id-0" data-cmd="python"><div class="input-div"><pre data-role="codeBlock" data-info="python {code_chunk_offset=0, cmd matplotlib=true}" class="language-python"><span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
-</pre><div class="btn-group"><div class="run-btn btn"><span>▶︎</span></div><div class="run-all-btn btn">all</div></div><div class="status">running...</div></div><div class="output-div"><pre class="language-text">hello,world
-</pre></div></div><h3 class="mume-header" id="%E6%95%B0%E7%BB%84-%E5%9B%BE%E7%89%87">数组-&gt;图片</h3>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># 默认情况</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token comment"># gray 最小值-黑色 最大值-白色 </span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'gray'</span><span class="token punctuation">)</span>
+<span class="token comment"># binary 最小值-白色 最大值-黑色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'binary'</span><span class="token punctuation">)</span>
+<span class="token comment"># flag 包含红色、白色、绿色和黑色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'flag'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># cool 包含青绿色和品红色的阴影色, 冷色调</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'cool'</span><span class="token punctuation">)</span>
+<span class="token comment"># hot 从黑色平滑过度到红色、橙色和黄色的背景色，然后到白色，红外成像</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'hot'</span><span class="token punctuation">)</span>
+<span class="token comment"># jet 从蓝色到红色，中间经过青绿色、黄色和橙色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'jet'</span><span class="token punctuation">)</span>
+<span class="token comment"># hsv 从红色，变化到黄色、绿色、青绿色、品红色，返回到红色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'hsv'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+
+<span class="token comment"># pink 柔和的桃红色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'pink'</span><span class="token punctuation">)</span>
+<span class="token comment"># prism 重复这六种颜色：红色、橙色、黄色、绿色、蓝色和紫色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'prism'</span><span class="token punctuation">)</span>
+<span class="token comment"># bone 具有较高的蓝色成分的灰度色图</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'bone'</span><span class="token punctuation">)</span>
+<span class="token comment"># copper 从黑色平滑过渡到亮铜色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'copper'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token comment"># spring 包含品红色和黄色的阴影颜色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'spring'</span><span class="token punctuation">)</span>
+<span class="token comment"># summer 包含绿色和黄色的阴影颜色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'summer'</span><span class="token punctuation">)</span>
+<span class="token comment"># autumn 从红色平滑变化到橙色，然后到黄色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'autumn'</span><span class="token punctuation">)</span>
+<span class="token comment"># winter 包含蓝色和绿色的阴影色</span>
+show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'winter'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>效果为：<br>
+<img src="assets/cmap.jpg" alt=""></p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0-%E5%9B%BE%E5%83%8F%E8%AF%86%E5%88%AB">机器学习-图像识别</a>
 <ul>
-<li><a href="#%E5%9B%BE%E5%83%8F%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E8%BD%AC%E6%8D%A2">图像与数组的转换</a>
-<ul>
-<li><a href="#%E5%9B%BE%E7%89%87-%E6%95%B0%E7%BB%84">图片-&gt;数组</a></li>
-<li><a href="#%E6%95%B0%E7%BB%84-%E5%9B%BE%E7%89%87">数组-&gt;图片</a></li>
-</ul>
-</li>
+<li><a href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%98%BE%E7%A4%BA">数组的显示</a></li>
 </ul>
 </li>
 </ul>
