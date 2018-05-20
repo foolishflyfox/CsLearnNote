@@ -47,6 +47,7 @@
 ## Python 编程语言
 
 - [Python Imaging Library 图像处理模块的使用](https://foolishflyfox.github.io/CsLearnNote/Python/PythonPIL.html)
+- [数据可视化](https://foolishflyfox.github.io/CsLearnNote/Python/DataVisualization.html)
 - [Python cookbook](https://foolishflyfox.github.io/CsLearnNote/Python/PythonUsage.html)
 - [Fluent Python](https://foolishflyfox.github.io/CsLearnNote/Python/fluentpython.html)
 

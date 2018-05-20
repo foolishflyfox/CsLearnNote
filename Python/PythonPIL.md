@@ -340,3 +340,5 @@ p_im = Image.fromarray(im_array)
 </div>
 而且，通常来说使用 numpy 对图片的处理速度要比用 PIL 中的方法要快很多！
 
+
+
