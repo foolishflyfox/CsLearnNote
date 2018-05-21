@@ -124,7 +124,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-19 : 64. Minimum Path Sum 一致代价搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/64_MinimumPathSum.html)
 
-- [2018-05-20 : 226. Invert Binary Tree 二叉树遍历](/LeetCode/226_InvertBinaryTree.html) <code class="green">easy</code>
+- [2018-05-20 : 226. Invert Binary Tree 二叉树遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/226_InvertBinaryTree.html) <code class="green">easy</code>
+
+- [2018-05-21 : 49. Group Anagrams](https://foolishflyfox.github.io/CsLearnNote/LeetCode/49_GroupAnagrams.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
