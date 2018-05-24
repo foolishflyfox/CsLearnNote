@@ -21,6 +21,7 @@
 
 这部分内容是根据 “高级人工智能” 课程的总结。
 
+- [AI 代码集](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDemoCode.html)
 - [学习人工智能的路线图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AISummary.html) （ [pdf](https://foolishflyfox.github.io/CsLearnNote/assets/AISummary.pdf) ）
 - [各种算法之间的关系图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AlgorithmRelations.html)
 - [人工智能的定义与分类](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDefine.html)
@@ -127,6 +128,10 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-20 : 226. Invert Binary Tree 二叉树遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/226_InvertBinaryTree.html) <code class="green">easy</code>
 
 - [2018-05-21 : 49. Group Anagrams](https://foolishflyfox.github.io/CsLearnNote/LeetCode/49_GroupAnagrams.html)
+
+- [2018-05-22 : 451. Sort Characters By Frequency](https://foolishflyfox.github.io/CsLearnNote/LeetCode/451_SortCharactersByFrequency.html)
+
+- [2018-05-23 : 338. Counting Bits](https://foolishflyfox.github.io/CsLearnNote/LeetCode/338_CountingBits.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
