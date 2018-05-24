@@ -25,6 +25,8 @@
 - [学习人工智能的路线图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AISummary.html) （ [pdf](https://foolishflyfox.github.io/CsLearnNote/assets/AISummary.pdf) ）
 - [各种算法之间的关系图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AlgorithmRelations.html)
 - [人工智能的定义与分类](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDefine.html)
+- 花书：深度学习
+    - [第五章 机器学习基础](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Deeplearning/chapter5.html)
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
 - 搜索的经典例子
     - [爬山法/模拟退火/重启爬山](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
@@ -132,6 +134,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-22 : 451. Sort Characters By Frequency](https://foolishflyfox.github.io/CsLearnNote/LeetCode/451_SortCharactersByFrequency.html)
 
 - [2018-05-23 : 338. Counting Bits](https://foolishflyfox.github.io/CsLearnNote/LeetCode/338_CountingBits.html)
+
+- [2018-05-24 : 162. Find Peak Element 递归 对数时间复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/162_FindPeakElement.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
