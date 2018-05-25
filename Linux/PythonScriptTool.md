@@ -124,23 +124,30 @@ for i in range(file1_index, len(sys.argv)):
     except OSError:
         print(f"OSError : file {sys.argv[i]} may not an image!")
         exit()
-    ims.append(im)
     if process_mode=='v':
         if width==None:
-            width = im.size[0]
+            min_size = width = im.size[0]
         elif width != im.size[0]:
-            print(f"{sys.argv[i]} width isn't equal to {sys.argv[file1_index]}")
-            exit()
+            print(f"{sys.argv[i]} width isn't equal to {sys.argv[file1_index]}"+
+                "\n,it will merge as the minimum width")
+            min_size = min(min_size, im.size[0])
+            # exit()
     else:
         if height==None:
-            height = im.size[1]
+            min_size = height = im.size[1]
         elif height != im.size[1]:
-            print(f"{sys.argv[i]} height isn't equal to {sys.argv[file1_index]}")
-            exit()
+            print(f"{sys.argv[i]} height isn't equal to {sys.argv[file1_index]}"+
+                ",it will merge as the minimum height")
+            min_size = min(min_size, im.size[1])               
+            # exit()
+    im = np.array(im)
+    ims.append(im)
 
 if process_mode=='v':
+    ims =  [im[:, :min_size, :] for im in ims]
     merge_im = np.vstack(tuple(ims))
 else:
+    ims = [im[:min_size, :, :] for im in ims]
     merge_im = np.hstack(tuple(ims))
 
 Image.fromarray(merge_im).save("merged"+postfix)

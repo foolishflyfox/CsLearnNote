@@ -238,7 +238,7 @@ code.language-yaml {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview   ">
-      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+      <p><img src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></p>
 <p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
 <span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
 <hr class="title_separator">
@@ -345,23 +345,30 @@ width<span class="token punctuation">,</span> height <span class="token operator
     <span class="token keyword">except</span> OSError<span class="token punctuation">:</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"OSError : file {sys.argv[i]} may not an image!"</span><span class="token punctuation">)</span>
         exit<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    ims<span class="token punctuation">.</span>append<span class="token punctuation">(</span>im<span class="token punctuation">)</span>
     <span class="token keyword">if</span> process_mode<span class="token operator">==</span><span class="token string">'v'</span><span class="token punctuation">:</span>
         <span class="token keyword">if</span> width<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
-            width <span class="token operator">=</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            min_size <span class="token operator">=</span> width <span class="token operator">=</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
         <span class="token keyword">elif</span> width <span class="token operator">!=</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{sys.argv[i]} width isn't equal to {sys.argv[file1_index]}"</span><span class="token punctuation">)</span>
-            exit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{sys.argv[i]} width isn't equal to {sys.argv[file1_index]}"</span><span class="token operator">+</span>
+                <span class="token string">"\n,it will merge as the minimum width"</span><span class="token punctuation">)</span>
+            min_size <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>min_size<span class="token punctuation">,</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token comment"># exit()</span>
     <span class="token keyword">else</span><span class="token punctuation">:</span>
         <span class="token keyword">if</span> height<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
-            height <span class="token operator">=</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+            min_size <span class="token operator">=</span> height <span class="token operator">=</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
         <span class="token keyword">elif</span> height <span class="token operator">!=</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
-            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{sys.argv[i]} height isn't equal to {sys.argv[file1_index]}"</span><span class="token punctuation">)</span>
-            exit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">"{sys.argv[i]} height isn't equal to {sys.argv[file1_index]}"</span><span class="token operator">+</span>
+                <span class="token string">",it will merge as the minimum height"</span><span class="token punctuation">)</span>
+            min_size <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>min_size<span class="token punctuation">,</span> im<span class="token punctuation">.</span>size<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>               
+            <span class="token comment"># exit()</span>
+    im <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>im<span class="token punctuation">)</span>
+    ims<span class="token punctuation">.</span>append<span class="token punctuation">(</span>im<span class="token punctuation">)</span>
 
 <span class="token keyword">if</span> process_mode<span class="token operator">==</span><span class="token string">'v'</span><span class="token punctuation">:</span>
+    ims <span class="token operator">=</span>  <span class="token punctuation">[</span>im<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span>min_size<span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token keyword">for</span> im <span class="token keyword">in</span> ims<span class="token punctuation">]</span>
     merge_im <span class="token operator">=</span> np<span class="token punctuation">.</span>vstack<span class="token punctuation">(</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>ims<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token keyword">else</span><span class="token punctuation">:</span>
+    ims <span class="token operator">=</span> <span class="token punctuation">[</span>im<span class="token punctuation">[</span><span class="token punctuation">:</span>min_size<span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span> <span class="token keyword">for</span> im <span class="token keyword">in</span> ims<span class="token punctuation">]</span>
     merge_im <span class="token operator">=</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token builtin">tuple</span><span class="token punctuation">(</span>ims<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 Image<span class="token punctuation">.</span>fromarray<span class="token punctuation">(</span>merge_im<span class="token punctuation">)</span><span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">"merged"</span><span class="token operator">+</span>postfix<span class="token punctuation">)</span>
