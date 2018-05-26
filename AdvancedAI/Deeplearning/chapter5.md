@@ -168,7 +168,7 @@ plt.show()
 
 ### 实验：正规方程拟合高次函数
 
-```python
+```python {class="line-numbers"}
 import matplotlib.pyplot as plt
 import numpy as np
 def f(x):
@@ -205,7 +205,7 @@ plt.show()
 
 本实验主要探究不同的采样点多少对不同次的模型的影响：
 
-```python
+```python {class="line-numbers"}
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -214,7 +214,7 @@ def f(x):
 # 通过采样间隔控制采样点的个数
 def test(seperate):
     X = np.hstack((np.ones((20,1)), np.linspace(-5,5,20).reshape(-1,1)))
-    # 拟合最高次为4的函数
+
     X = np.hstack((X[:,0].reshape(-1,1),
                    X[:,1].reshape(-1,1),
                    (X[:,1]**2).reshape(-1,1),
@@ -283,5 +283,95 @@ test(10)
 通常，当模型容量上升时，训练误差会下降，直到其接近最小可能误差。通茶，泛化误差是一个关于模型容量 U 型曲线函数。
 ![](/AdvancedAI/assets/20180525232631.png)
 
+有时候，非参数模型仅仅是一些不能实际实现的理论抽象（比如搜索所有可能概率分布的算法）。然而，我们也可以设计一些实用的非参数模型，使它们的复杂度和训练集的大小有关。
 
+这种算法的一个示例是**最近邻回归(nearest neighbor regression)**：模型存储了训练集中所有的 $\bold X$ 和 $\bold y$，当需要为测试点 $\bold x$ 分类时，模型会查询训练集中离该店最近的点，并返回相关的回归目标，即 $\hat y = y_i$ ，其中 $i=argmin||\bold X_{i,:}-\bold x||^2_2$。
+
+### 5.2.1 没有免费午餐定理
+
+在所有可能的数据生成分布上平均以后，每个分类算法在未事先观测的点上都有相同的错误率。
+
+幸运的是，该结论仅在我们考虑所有可能的数据生成分布时才成立。这意味着：机器学习研究的目标不是找一个通用学习算法或是绝对最好的学习算法，相反，我们的目标是理解什么样的分布与人工智能获取经验的“真实世界”相关，什么样的学习算法在我们所关注的数据生成分布上效果最好。
+
+### 5.2.2 正则化
+
+没有免费午餐定理按时我们必须在特定任务上设计性能良好的机器学习算法，我们建立一组学习算法的偏好来达到这个要求，当这些偏好和我们希望算法解决的学习问题相吻合时，性能会更好。
+
+在假设空间中，相比于某一个学习算法，我们可能更偏好另一个学习算法，这意味着两个函数都是符合条件的，但是我们更加偏好其中一个。只有非偏好函数在训练数据上效果明显好很多时，我们才会考虑选择非偏好函数。
+
+例如，我们可以加入 **权重衰减(weight decay)** 来修改线性回归的训练标准，带权重衰减的线性回归最小化训练集上的均方误差和正则项的和 $J(w)$，其偏好与平方 $L^2$ 范数较小的权重，具体如下：
+$$J(\bold w)=MSE_{train}+\lambda\bold w^T \bold w$$
+
+其中，lambda是提前挑选的值，控制我们偏好小范数权重。最小化 $J(\bold w)$ 可以看成是拟合训练数据和偏好较小权重之间的权衡。这会使解决方案的斜率较少，或是将权重放在较少的特征上。我们可以训练具有不同 $\lambda$ 值的高次多项式回归模型。
+
+表示对函数的偏好是比增减假设空间的成员函数更一般的控制模型容量的方法。我们可以将去掉假设空间中的某个函数看作是对不赞成这个函数的无限偏好。
+
+正则化是指我们修改学习算法，使其降低泛化误差而非训练误差。正则化是机器学习领域的中心问题之一，只有优化能够与其重要性相媲美。
+
+### 实验 : 正规方程+正则化
+
+我们希望通过正规化，让机器能够自动选择最高次数，我们通过实验看看 $\lambda$ 对训练的影响：
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+import random
+
+def f(x):
+    return x*3.861+2.12*x**2+0.67*x**3+1.552
+
+def MSE(hat_y, y):
+    return (sum((hat_y-y)**2)/len(y)).flatten()[0]
+
+X = np.hstack((np.ones((20,1)), np.linspace(-5,5,20).reshape(-1,1)))
+
+X = np.hstack((X[:,0].reshape(-1,1),
+               X[:,1].reshape(-1,1),
+               (X[:,1]**2).reshape(-1,1),
+               (X[:,1]**3).reshape(-1,1),
+               (X[:,1]**4).reshape(-1,1),
+               (X[:,1]**5).reshape(-1,1),
+               (X[:,1]**6).reshape(-1,1),
+               (X[:,1]**7).reshape(-1,1),
+               (X[:,1]**8).reshape(-1,1),
+               (X[:,1]**9).reshape(-1,1)
+              ))
+# 固定随机化过程，阅读代码时这句可忽略
+np.random.seed(6666)
+y = f(X[:,1]).reshape(-1,1)+np.random.randn(len(X),1)*8
+# 抽取若干样本点
+selected = list(range(0,20,3))
+
+plt.figure(figsize=(20,5))
+lamds = (0,5,10,20)
+# 遍历 λ 的值
+for f_n,lamd in enumerate(lamds):
+    b_cost = b_hat_y = b_power = None
+    for i in range(X.shape[1]):
+        X_i = X[selected][:, :(i+1)]
+        w = np.linalg.inv(X_i.T.dot(X_i)).dot(X_i.T).dot(y[selected])
+        hat_y = X[:, :len(w)].dot(w)
+        # 计算带正则化项的损失
+        cur_cost = MSE(hat_y[selected,:], y[selected,:]) + i*lamd
+        if b_cost==None or b_cost>cur_cost:
+            b_cost = cur_cost
+            b_hat_y = hat_y
+            b_power = i
+    plt.subplot(1,len(lamds), f_n+1)
+    plt.title(f"$\lambda$: {lamd};max power: $x^{b_power}$", fontsize=17)
+    plt.plot(X[:, 1], b_hat_y[:, 0], c='b')
+    plt.scatter(X[:,1],y[:,0], c='r')
+    plt.scatter(X[selected,1],y[selected,0], c='k')
+    plt.ylim(-60, 170)
+plt.show()
+```
+最后的结果为：
+![](/AdvancedAI/assets/20180526165226.png)
+
+其中黑色的点是提供给机器进行学习的样本点，红色的点是全部的样本点。
+
+我们所提供的正则化项偏向于选择最高次系数较小的模型。可以看出，在 $\lambda=0$ （即没有正则化）时，选择了最高次为 6 的模型，并且该模型也通过了所有的黑点。而随着 $\lambda$ 的增大，选择的最高次也越来越小。当选择的$\lambda$ 过大时，模型变为简单的 1 次。
+
+### 5.3 超参数和验证集
+
+大多数机器悬系算法都有超参数，可以设置来控制算法行为，超参数的值不是通过学习算法本身学习出来的（尽管我们可以设置一个嵌套的学习过程，一个学习算法为另一个学习算法学出最优超参数）
 
