@@ -540,7 +540,11 @@ plt<span class="token punctuation">.</span>show<span class="token punctuation">(
 <p>我们所提供的正则化项偏向于选择最高次系数较小的模型。可以看出，在 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>λ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base"><span class="mord mathit">λ</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord">0</span></span></span></span> （即没有正则化）时，选择了最高次为 6 的模型，并且该模型也通过了所有的黑点。而随着 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base"><span class="mord mathit">λ</span></span></span></span> 的增大，选择的最高次也越来越小。当选择的<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base"><span class="mord mathit">λ</span></span></span></span> 过大时，模型变为简单的 1 次。</p>
 <h3 class="mume-header" id="53-%E8%B6%85%E5%8F%82%E6%95%B0%E5%92%8C%E9%AA%8C%E8%AF%81%E9%9B%86">5.3 超参数和验证集</h3>
 
-<p>大多数机器悬系算法都有超参数，可以设置来控制算法行为，超参数的值不是通过学习算法本身学习出来的（尽管我们可以设置一个嵌套的学习过程，一个学习算法为另一个学习算法学出最优超参数）</p>
+<p>大多数机器学习算法都有超参数，可以设置来控制算法行为，超参数的值不是通过学习算法本身学习出来的（尽管我们可以设置一个嵌套的学习过程，一个学习算法为另一个学习算法学出最优超参数）。</p>
+<p>和训练数据同分布的样本组成的测试集可以用于估计学习完成后学习器的泛化误差，其重点在于测试样本不能以任何形式参与到模型的选择中，包括设定超参数。</p>
+<p>基于这个原因，测试集中的样本不能用于验证集，因此，我们总是从训练数据中构建验证集。特别地，我们将训练数据分成两个不相交的子集，其中一个用于学习参数，另一个作为验证集，<strong>用于估计训练中或训练后的泛化误差，更新超参数</strong>。</p>
+<p>用于学习参数的数据子集通常仍然被称为训练集，尽管这会和整个训练过程用到的更大的数据集同名。用于挑选超参数的数据子集称为 <strong>验证集(Validation Set)</strong>。通常，80% 的训练数据用于训练学习参数，20%用于验证。</p>
+<p>用于验证集是用来“训练”超参数的，验证集会低估泛化误差，所有超参数优化完成之后，泛化误差需要通过测试集来估计。</p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
