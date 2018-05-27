@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>DataVisualization</title>
+      <title>222_CountCompleteTreeNodes</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -246,82 +246,62 @@ code.language-yaml {
 <blockquote>
 <p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
 </blockquote>
-<h1 class="mume-header" id="%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96">数据可视化</h1>
+<h1 class="mume-header" id="222-count-complete-tree-nodes">222. Count Complete Tree Nodes</h1>
 
-<h2 class="mume-header" id="%E6%95%B0%E7%BB%84%E7%9A%84%E6%98%BE%E7%A4%BA">数组的显示</h2>
+<blockquote>
+<p><a href="https://leetcode.com/problems/count-complete-tree-nodes/description/">https://leetcode.com/problems/count-complete-tree-nodes/description/</a></p>
+</blockquote>
+<h2 class="mume-header" id="description">Description</h2>
 
-<h3 class="mume-header" id="cmap-%E7%9A%84%E4%BD%BF%E7%94%A8">cmap 的使用</h3>
+<p>Given a <strong>complete binary tree</strong>, count the number of nodes.</p>
+<p><strong>Note</strong>:</p>
+<p><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees">Definition of a complete binary tree from Wikipedia</a>:<br>
+In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2<sup>h</sup> nodes inclusive at the last level h.</p>
+<p><strong>Example</strong>:</p>
+<p><strong>Input</strong>:</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>    1
+   / \
+  2   3
+ / \  /
+4  5 6
+</code></pre><p><strong>Output</strong>: 6</p>
+<h2 class="mume-header" id="solution">Solution</h2>
 
-<p>创建一个的数组：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python">tp <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">0.01</span><span class="token punctuation">)</span>
-x<span class="token punctuation">,</span> y <span class="token operator">=</span> np<span class="token punctuation">.</span>meshgrid<span class="token punctuation">(</span>tp<span class="token punctuation">,</span> tp<span class="token punctuation">)</span>
-digit_a <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token operator">**</span><span class="token number">2</span><span class="token operator">+</span>y<span class="token operator">**</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">**</span><span class="token number">.5</span>
-</pre><p>对该数组以各种 <code>cmap</code> 进行可视化：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> matplotlib
-<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
-<span class="token keyword">def</span> <span class="token function">show_array</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> n<span class="token punctuation">,</span> cmap<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    plt<span class="token punctuation">.</span>subplot<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span>
-    plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span>cmap<span class="token punctuation">)</span>
-    <span class="token keyword">if</span> cmap <span class="token punctuation">:</span> plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>a<span class="token punctuation">,</span> cmap<span class="token punctuation">)</span>
-    <span class="token keyword">else</span> <span class="token punctuation">:</span> plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>a<span class="token punctuation">)</span>
-    plt<span class="token punctuation">.</span>axis<span class="token punctuation">(</span><span class="token string">'off'</span><span class="token punctuation">)</span>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># Definition for a binary tree node.</span>
+<span class="token comment"># class TreeNode:</span>
+<span class="token comment">#     def __init__(self, x):</span>
+<span class="token comment">#         self.val = x</span>
+<span class="token comment">#         self.left = None</span>
+<span class="token comment">#         self.right = None</span>
 
-plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment"># 默认情况</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token comment"># gray 最小值-黑色 最大值-白色 </span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'gray'</span><span class="token punctuation">)</span>
-<span class="token comment"># binary 最小值-白色 最大值-黑色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'binary'</span><span class="token punctuation">)</span>
-<span class="token comment"># flag 包含红色、白色、绿色和黑色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'flag'</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment"># cool 包含青绿色和品红色的阴影色, 冷色调</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'cool'</span><span class="token punctuation">)</span>
-<span class="token comment"># hot 从黑色平滑过度到红色、橙色和黄色的背景色，然后到白色，红外成像</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'hot'</span><span class="token punctuation">)</span>
-<span class="token comment"># jet 从蓝色到红色，中间经过青绿色、黄色和橙色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'jet'</span><span class="token punctuation">)</span>
-<span class="token comment"># hsv 从红色，变化到黄色、绿色、青绿色、品红色，返回到红色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'hsv'</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-
-<span class="token comment"># pink 柔和的桃红色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'pink'</span><span class="token punctuation">)</span>
-<span class="token comment"># prism 重复这六种颜色：红色、橙色、黄色、绿色、蓝色和紫色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'prism'</span><span class="token punctuation">)</span>
-<span class="token comment"># bone 具有较高的蓝色成分的灰度色图</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'bone'</span><span class="token punctuation">)</span>
-<span class="token comment"># copper 从黑色平滑过渡到亮铜色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'copper'</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token comment"># spring 包含品红色和黄色的阴影颜色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'spring'</span><span class="token punctuation">)</span>
-<span class="token comment"># summer 包含绿色和黄色的阴影颜色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">'summer'</span><span class="token punctuation">)</span>
-<span class="token comment"># autumn 从红色平滑变化到橙色，然后到黄色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">'autumn'</span><span class="token punctuation">)</span>
-<span class="token comment"># winter 包含蓝色和绿色的阴影色</span>
-show_array<span class="token punctuation">(</span>digit_a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'winter'</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
-</pre><p>效果为：<br>
-<img src="assets/cmap.jpg" alt=""></p>
-
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">countNodes</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type root: TreeNode
+        :rtype: int
+        """</span>
+        <span class="token keyword">def</span> <span class="token function">count_R</span><span class="token punctuation">(</span>rt<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> rt<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token number">0</span>
+            left_depth <span class="token operator">=</span> right_depth <span class="token operator">=</span> <span class="token number">0</span>
+            tree_l <span class="token operator">=</span> tree_r <span class="token operator">=</span> rt
+            <span class="token keyword">while</span> tree_l<span class="token punctuation">:</span>
+                left_depth <span class="token operator">+=</span> <span class="token number">1</span>
+                tree_l <span class="token operator">=</span> tree_l<span class="token punctuation">.</span>left
+            <span class="token keyword">while</span> tree_r<span class="token punctuation">:</span>
+                right_depth <span class="token operator">+=</span> <span class="token number">1</span>
+                tree_r <span class="token operator">=</span> tree_r<span class="token punctuation">.</span>right
+            <span class="token keyword">if</span> right_depth<span class="token operator">==</span>left_depth<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token number">2</span><span class="token operator">**</span>right_depth<span class="token operator">-</span><span class="token number">1</span>
+            <span class="token keyword">return</span> count_R<span class="token punctuation">(</span>rt<span class="token punctuation">.</span>left<span class="token punctuation">)</span><span class="token operator">+</span>count_R<span class="token punctuation">(</span>rt<span class="token punctuation">.</span>right<span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span>
+        <span class="token keyword">return</span> count_R<span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+</pre>
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96">数据可视化</a>
+<li><a href="#222-count-complete-tree-nodes">222. Count Complete Tree Nodes</a>
 <ul>
-<li><a href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%98%BE%E7%A4%BA">数组的显示</a>
-<ul>
-<li><a href="#cmap-%E7%9A%84%E4%BD%BF%E7%94%A8">cmap 的使用</a></li>
-</ul>
-</li>
+<li><a href="#description">Description</a></li>
+<li><a href="#solution">Solution</a></li>
 </ul>
 </li>
 </ul>

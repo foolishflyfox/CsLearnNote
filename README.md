@@ -92,9 +92,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-27 : 442. Find All Duplicates in an Array 算法技巧](https://foolishflyfox.github.io/CsLearnNote/LeetCode/442_FindAllDuplicatesinanArray.md)
 
-- [2018-03-28 : 27. Remove Element 原地算法](https://foolishflyfox.github.io/CsLearnNote/LeetCode/27_RemoveElement.html)<code class="green">easy</code>
+- [2018-03-28 : 27. Remove Element 原地算法](https://foolishflyfox.github.io/CsLearnNote/LeetCode/27_RemoveElement.html)<code class="local_g">easy</code>
 
-- [2018-03-29 : 770. Basic Calculator IV](https://foolishflyfox.github.io/CsLearnNote/LeetCode/770_BasicCalculatorIV.html)<code class="red">hard hard</code>
+- [2018-03-29 : 770. Basic Calculator IV](https://foolishflyfox.github.io/CsLearnNote/LeetCode/770_BasicCalculatorIV.html)<code class="local_r">hard hard</code>
 
 - [2018-05-04 : 417. Pacific Atlantic Water Flow 扩散策略](https://foolishflyfox.github.io/CsLearnNote/LeetCode/417_PacificAtlanticWaterFlow.html)
 
@@ -112,7 +112,7 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-11 : 95. Unique Binary Search Trees II 搜索二叉树、递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/95_UniqueBSTII.html)
 
-- [2018-05-12 : 466. Count The Repetitions](https://foolishflyfox.github.io/CsLearnNote/LeetCode/466_CountTheRepetitions.html)<code class="red">hard hard</code>偏数学
+- [2018-05-12 : 466. Count The Repetitions](https://foolishflyfox.github.io/CsLearnNote/LeetCode/466_CountTheRepetitions.html)<code class="local_r">hard hard</code>偏数学
 
 - [2018-05-13 : 832. Flipping an Image](https://foolishflyfox.github.io/CsLearnNote/LeetCode/832_FlippinganImage.html)
 
@@ -128,7 +128,7 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-19 : 64. Minimum Path Sum 一致代价搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/64_MinimumPathSum.html)
 
-- [2018-05-20 : 226. Invert Binary Tree 二叉树遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/226_InvertBinaryTree.html) <code class="green">easy</code>
+- [2018-05-20 : 226. Invert Binary Tree 二叉树遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/226_InvertBinaryTree.html) <code class="local_g">easy</code>
 
 - [2018-05-21 : 49. Group Anagrams](https://foolishflyfox.github.io/CsLearnNote/LeetCode/49_GroupAnagrams.html)
 
@@ -139,7 +139,10 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-24 : 162. Find Peak Element 递归 对数时间复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/162_FindPeakElement.html)
 
 - [2018-05-25 : 119. Pascal's Triangle II 常数空间复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/119_PascalTriangleII.html)
+
 - [2018-05-26 : 62. Unique Paths 递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/62_UniquePaths.html)
+
+- [2018-05-27 : 222. Count Complete Tree Nodes 递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/222_CountCompleteTreeNodes.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
