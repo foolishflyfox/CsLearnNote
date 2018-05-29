@@ -27,6 +27,8 @@
 - [人工智能的定义与分类](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDefine.html)
 - 花书：深度学习
     - [第五章 机器学习基础](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Deeplearning/chapter5.html)
+- 贝叶斯方法
+    - [第一章 贝叶斯推断的哲学](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BayesianMethods/Chapter1.html)
 - [搜索问题- BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
 - 搜索的经典例子
     - [爬山法/模拟退火/重启爬山](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
@@ -145,6 +147,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-27 : 222. Count Complete Tree Nodes 递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/222_CountCompleteTreeNodes.html)
 
 - [2018-05-28 : 537. Complex Number Multiplication](https://foolishflyfox.github.io/CsLearnNote/LeetCode/537_ComplexNumberMultiplication.html)<code class="local_g">easy</code>
+
+- [2018-05-29 : 387. First Unique Character in a String](https://foolishflyfox.github.io/CsLearnNote/LeetCode/387_FirstUniqueCharacterinaString.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)

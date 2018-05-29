@@ -75,3 +75,57 @@ plt.show()
 ```
 效果为：
 ![](/Python/assets/cmap.jpg)
+
+## 用 matplotlib 绘图
+
+首先应该说明一下绘图库 **seaborn** 和 **matplotlib** 的关系：
+Seaborn其实是在matplotlib的基础上进行了更高级的API封装，从而使得作图更加容易，在大多数情况下使用seaborn就能做出很具有吸引力的图，而使用matplotlib就能制作具有更多特色的图。应该把Seaborn视为matplotlib的补充，而**不是替代物**。
+
+所以，不是说为了图方便直接掌握 **seaborn** 绘图就好了，很多时候，**matplotlib** 绘图更加方便灵活。
+
+绘图必须引入的库：
+```python
+import matplotlib
+import matplotlib.pyplot as plt
+```
+
+### 绘制直方图
+
+绘制提供了数据的直方图，可以使用函数 `plt.bar`
+
+- `plt.figure(figsize=(10, 7))`：指定绘制图的大小；
+<br>
+- `plt.bar(left, height, width=0.8, bottom=None, hold=None, data=None, **kwargs)`
+    - `left`：直方图指定位置条形的中心点对应的 x 位置
+    - `height`：对应位置条形的 y 值
+    - `weight`：对应位置条形的宽度
+    - `color`：颜色，如 “#00bffff” 指定颜色为天蓝色，也可以写为 "deepskyblue"
+    - `alpha`：透明度，0~1 之间
+    - `label`：对应的条形名称，需要调用`plt.legend`才能显示
+    - `edgecolor`：条形边框颜色
+    - `lw`：也可以记为`linewidth`，条形边框的宽度
+
+```python
+import matplotlib
+import matplotlib.pyplot as plt
+
+colors = ["deepskyblue", "#A60628"]
+prior = [1/21.0, 20/21.0]
+plt.figure(figsize=(10,7))
+plt.bar([0., 0.7], prior, width=0.25, alpha=0.7, 
+        color=colors[0], label="prior distribution",
+        lw="2",edgecolor="#000000")
+posterior = [0.087, 1-0.087]
+plt.bar([0.+0.25, 0.7+0.25], posterior, width=0.25, alpha=.7,
+       color=colors[1], label="posterior distribution",
+       lw="2", edgecolor="black")
+plt.legend(loc="upper left")
+plt.ylim(0,1.2)
+plt.xticks([0.125, 0.7+0.25/2], ['Librarian', "Farmer"], fontsize=15)
+plt.title("Prior and posterior probilities of Steve's occupation")
+plt.ylabel("Probability", fontsize=15)
+plt.show()
+```
+
+显示为：
+![](/Python/assets/20180529233508.png)

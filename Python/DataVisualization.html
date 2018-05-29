@@ -312,6 +312,54 @@ show_array<span class="token punctuation">(</span>digit_a<span class="token punc
 plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 </pre><p>效果为：<br>
 <img src="assets/cmap.jpg" alt=""></p>
+<h2 class="mume-header" id="%E7%94%A8-matplotlib-%E7%BB%98%E5%9B%BE">用 matplotlib 绘图</h2>
+
+<p>首先应该说明一下绘图库 <strong>seaborn</strong> 和 <strong>matplotlib</strong> 的关系：<br>
+Seaborn其实是在matplotlib的基础上进行了更高级的API封装，从而使得作图更加容易，在大多数情况下使用seaborn就能做出很具有吸引力的图，而使用matplotlib就能制作具有更多特色的图。应该把Seaborn视为matplotlib的补充，而<strong>不是替代物</strong>。</p>
+<p>所以，不是说为了图方便直接掌握 <strong>seaborn</strong> 绘图就好了，很多时候，<strong>matplotlib</strong> 绘图更加方便灵活。</p>
+<p>绘图必须引入的库：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> matplotlib
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+</pre><h3 class="mume-header" id="%E7%BB%98%E5%88%B6%E7%9B%B4%E6%96%B9%E5%9B%BE">绘制直方图</h3>
+
+<p>绘制提供了数据的直方图，可以使用函数 <code>plt.bar</code></p>
+<ul>
+<li><code>plt.figure(figsize=(10, 7))</code>：指定绘制图的大小；<br>
+<br></li>
+<li><code>plt.bar(left, height, width=0.8, bottom=None, hold=None, data=None, **kwargs)</code>
+<ul>
+<li><code>left</code>：直方图指定位置条形的中心点对应的 x 位置</li>
+<li><code>height</code>：对应位置条形的 y 值</li>
+<li><code>weight</code>：对应位置条形的宽度</li>
+<li><code>color</code>：颜色，如 “#00bffff” 指定颜色为天蓝色，也可以写为 &quot;deepskyblue&quot;</li>
+<li><code>alpha</code>：透明度，0~1 之间</li>
+<li><code>label</code>：对应的条形名称，需要调用<code>plt.legend</code>才能显示</li>
+<li><code>edgecolor</code>：条形边框颜色</li>
+<li><code>lw</code>：也可以记为<code>linewidth</code>，条形边框的宽度</li>
+</ul>
+</li>
+</ul>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> matplotlib
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+
+colors <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"deepskyblue"</span><span class="token punctuation">,</span> <span class="token string">"#A60628"</span><span class="token punctuation">]</span>
+prior <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">/</span><span class="token number">21.0</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token operator">/</span><span class="token number">21.0</span><span class="token punctuation">]</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>bar<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">]</span><span class="token punctuation">,</span> prior<span class="token punctuation">,</span> width<span class="token operator">=</span><span class="token number">0.25</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">0.7</span><span class="token punctuation">,</span> 
+        color<span class="token operator">=</span>colors<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"prior distribution"</span><span class="token punctuation">,</span>
+        lw<span class="token operator">=</span><span class="token string">"2"</span><span class="token punctuation">,</span>edgecolor<span class="token operator">=</span><span class="token string">"#000000"</span><span class="token punctuation">)</span>
+posterior <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0.087</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token operator">-</span><span class="token number">0.087</span><span class="token punctuation">]</span>
+plt<span class="token punctuation">.</span>bar<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">.</span><span class="token operator">+</span><span class="token number">0.25</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token operator">+</span><span class="token number">0.25</span><span class="token punctuation">]</span><span class="token punctuation">,</span> posterior<span class="token punctuation">,</span> width<span class="token operator">=</span><span class="token number">0.25</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">.7</span><span class="token punctuation">,</span>
+       color<span class="token operator">=</span>colors<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"posterior distribution"</span><span class="token punctuation">,</span>
+       lw<span class="token operator">=</span><span class="token string">"2"</span><span class="token punctuation">,</span> edgecolor<span class="token operator">=</span><span class="token string">"black"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span>loc<span class="token operator">=</span><span class="token string">"upper left"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylim<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1.2</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xticks<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0.125</span><span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token operator">+</span><span class="token number">0.25</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'Librarian'</span><span class="token punctuation">,</span> <span class="token string">"Farmer"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"Prior and posterior probilities of Steve's occupation"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">"Probability"</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>显示为：<br>
+<img src="assets/20180529233508.png" alt=""></p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -320,6 +368,11 @@ plt<span class="token punctuation">.</span>show<span class="token punctuation">(
 <li><a href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%98%BE%E7%A4%BA">数组的显示</a>
 <ul>
 <li><a href="#cmap-%E7%9A%84%E4%BD%BF%E7%94%A8">cmap 的使用</a></li>
+</ul>
+</li>
+<li><a href="#%E7%94%A8-matplotlib-%E7%BB%98%E5%9B%BE">用 matplotlib 绘图</a>
+<ul>
+<li><a href="#%E7%BB%98%E5%88%B6%E7%9B%B4%E6%96%B9%E5%9B%BE">绘制直方图</a></li>
 </ul>
 </li>
 </ul>
