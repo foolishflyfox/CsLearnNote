@@ -95,8 +95,8 @@ import matplotlib.pyplot as plt
 
 - `plt.figure(figsize=(10, 7))`：指定绘制图的大小；
 <br>
-- `plt.bar(left, height, width=0.8, bottom=None, hold=None, data=None, **kwargs)`
-    - `left`：直方图指定位置条形的中心点对应的 x 位置
+- `plt.bar(x, height, width=0.8, bottom=None, hold=None, data=None, **kwargs)`
+    - `x`：直方图指定位置条形的中心点对应的 x 位置
     - `height`：对应位置条形的 y 值
     - `weight`：对应位置条形的宽度
     - `color`：颜色，如 “#00bffff” 指定颜色为天蓝色，也可以写为 "deepskyblue"
@@ -104,6 +104,21 @@ import matplotlib.pyplot as plt
     - `label`：对应的条形名称，需要调用`plt.legend`才能显示
     - `edgecolor`：条形边框颜色
     - `lw`：也可以记为`linewidth`，条形边框的宽度
+<br>
+- `plt.legend(loc="upper left", fontsize=15)`：指定图示的显示
+    - `loc`：图示显示的位置，有`best`、`upper right`、`upper left`、`lower left`、`lower right`、`right`、`center right`、`center left`、`lower center`、`upper center`、`center`
+    - `fontsize`：图例文字大小
+<br>
+- `plt.xticks([0.125, 0.825], ['Librarian', "Farmer"], fontsize=15)`
+    - 参数1：x 轴记号的位置
+    - 参数2：记号文本
+    - `fontsize`：字体大小
+<br>
+- `plt.title("figure title")`：设置图片标题
+<br>
+- `plt.ylabel('probability', fontsize=15)`：设置 y 轴含义
+<br>
+- `plt.show()`： 显示图片
 
 ```python
 import matplotlib
@@ -119,13 +134,66 @@ posterior = [0.087, 1-0.087]
 plt.bar([0.+0.25, 0.7+0.25], posterior, width=0.25, alpha=.7,
        color=colors[1], label="posterior distribution",
        lw="2", edgecolor="black")
-plt.legend(loc="upper left")
-plt.ylim(0,1.2)
-plt.xticks([0.125, 0.7+0.25/2], ['Librarian', "Farmer"], fontsize=15)
+plt.legend(loc="best", fontsize=15)
+plt.xticks([0.125, 0.825], ['Librarian', "Farmer"], fontsize=15)
 plt.title("Prior and posterior probilities of Steve's occupation")
 plt.ylabel("Probability", fontsize=15)
 plt.show()
 ```
 
 显示为：
-![](/Python/assets/20180529233508.png)
+![](/Python/assets/20180530091606.png)
+
+另一个例子：
+```python
+import pandas as pd
+import seaborn as sns
+data = np.array((
+    [ 13.,  24.,   8.,  24.,   7.,  35.,  14.,  11.,  15.,  11.,  22.,
+        22.,  11.,  57.,  11.,  19.,  29.,   6.,  19.,  12.,  22.,  12.,
+        18.,  72.,  32.,   9.,   7.,  13.,  19.,  23.,  27.,  20.,   6.,
+        17.,  13.,  10.,  14.,   6.,  16.,  15.,   7.,   2.,  15.,  15.,
+        19.,  70.,  49.,   7.,  53.,  22.,  21.,  31.,  19.,  11.,  18.,
+        20.,  12.,  35.,  17.,  23.,  17.,   4.,   2.,  31.,  30.,  13.,
+        27.,   0.,  39.,  37.,   5.,  14.,  13.,  22.]))
+x = range(len(data))
+plt.figure(figsize=(15,8))
+plt.bar(x, data, width=0.85, color="#00bfff", alpha=0.6,
+       label="count")
+plt.legend(loc="upper left", fontsize=20)
+plt.xticks(fontsize=15)
+plt.ylabel("Text message received", fontsize=17)
+plt.xlabel("Time (days)", fontsize=17)
+plt.yticks(fontsize=15)
+plt.xlim(-1, len(x))
+plt.show()
+```
+对应图形为：
+![](/Python/assets/20180530092421.png)
+
+下面再来绘制泊松分布：
+```python
+import numpy as np
+import scipy
+def poisson(lamd, k):
+    return lamd**(k)*np.exp(-lamd)/scipy.misc.factorial(k)
+
+k = np.arange(15)
+
+lamds = [2, 5, 10]
+colors = ['#00bfff', "#ff7f00", "#8a2be2"]
+linew = 0.3
+plt.figure(figsize=(10, 8))
+for i in range(len(lamds)):
+    lamd = lamds[i]
+    plt.subplot(len(lamds),1,i+1)
+    plt.title(f"$\lambda = {lamd}$", fontsize=15)
+    plt.bar(k, poisson(lamd,k), color=colors[i], 
+            alpha=0.8, width=linew)
+    plt.tight_layout()
+plt.show()
+```
+其中函数 `plt.tight_layout` 避免图标题和上一幅图的指标标记重叠，绘制的图像为：
+![](/Python/assets/20180530103658.png)
+
+泊松分布的期望是：$\lambda$。

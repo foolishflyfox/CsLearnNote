@@ -21,7 +21,7 @@
 
 这部分内容是根据 “高级人工智能” 课程的总结。
 
-- [AI 代码集](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDemoCode.html)
+<!-- - [AI 代码集](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDemoCode.html) -->
 - [学习人工智能的路线图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AISummary.html) （ [pdf](https://foolishflyfox.github.io/CsLearnNote/assets/AISummary.pdf) ）
 - [各种算法之间的关系图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AlgorithmRelations.html)
 - [人工智能的定义与分类](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDefine.html)
@@ -29,14 +29,18 @@
     - [第五章 机器学习基础](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Deeplearning/chapter5.html)
 - 贝叶斯方法
     - [第一章 贝叶斯推断的哲学](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BayesianMethods/Chapter1.html)
-- [搜索问题- BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
-- 搜索的经典例子
+- 机器学习
+    - [MNIST手写数字识别: ANN/sklearn-MLP/sklearn-svm](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/MnistTrain.html)
+    - [函数拟合：正规方程](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/NormalEquation.html)
+    - [PCA 数据降维](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/PCA.html)
+- 搜索问题 
+    - [BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
     - [爬山法/模拟退火/重启爬山](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
     - [爬山法/局部束搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
-- [A\* 算法-8数码问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/EightDigit.html)
-- [超越经典搜索](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
-- [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
-- [对抗搜索 - 五子棋游戏对抗](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AdversarialSearch.html)
+    - [A\* 算法-8数码问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/EightDigit.html)
+    - [超越经典搜索](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
+    - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
+    - [对抗搜索 - 五子棋游戏对抗](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AdversarialSearch.html)
 - [笔记](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Note.html)
 
 > 图书下载：链接: 
@@ -149,6 +153,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-28 : 537. Complex Number Multiplication](https://foolishflyfox.github.io/CsLearnNote/LeetCode/537_ComplexNumberMultiplication.html)<code class="local_g">easy</code>
 
 - [2018-05-29 : 387. First Unique Character in a String](https://foolishflyfox.github.io/CsLearnNote/LeetCode/387_FirstUniqueCharacterinaString.html)
+
+- [2018-05-30 : 134. Gas Station](https://foolishflyfox.github.io/CsLearnNote/LeetCode/134_GasStation.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
