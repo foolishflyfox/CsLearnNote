@@ -33,6 +33,7 @@
     - [MNIST手写数字识别: ANN/sklearn-MLP/sklearn-svm](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/MnistTrain.html)
     - [函数拟合：正规方程](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/NormalEquation.html)
     - [PCA 数据降维](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/PCA.html)
+    - [SVD 数据降维](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/SVD.html)
 - 搜索问题 
     - [BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
     - [爬山法/模拟退火/重启爬山](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
@@ -155,6 +156,10 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-05-29 : 387. First Unique Character in a String](https://foolishflyfox.github.io/CsLearnNote/LeetCode/387_FirstUniqueCharacterinaString.html)
 
 - [2018-05-30 : 134. Gas Station](https://foolishflyfox.github.io/CsLearnNote/LeetCode/134_GasStation.html)
+
+- [2018-05-31 : 51. N-Queens 回溯问题](https://foolishflyfox.github.io/CsLearnNote/LeetCode/51_N-Queens.html)
+
+- [2018-06-01 : 797. All Paths From Source to Target 图的遍历](/LeetCode/797_AllPathsFromSource2Target.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
