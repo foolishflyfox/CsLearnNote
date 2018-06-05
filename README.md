@@ -159,7 +159,13 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-05-31 : 51. N-Queens 回溯问题](https://foolishflyfox.github.io/CsLearnNote/LeetCode/51_N-Queens.html)
 
-- [2018-06-01 : 797. All Paths From Source to Target 图的遍历](/LeetCode/797_AllPathsFromSource2Target.html)
+- [2018-06-01 : 797. All Paths From Source to Target 图的遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/797_AllPathsFromSource2Target.html)
+
+- [2018-06-02 : 52. N-Queens II 加速8皇后问题](https://foolishflyfox.github.io/CsLearnNote/LeetCode/52_N-QueensII.html)
+
+- [2018-06-03 : 221. Maximal Square 数学 最大方阵](https://foolishflyfox.github.io/CsLearnNote/LeetCode/221_MaximalSquare.html)
+
+- [2018-06-04 : 224. Basic Calculator 字符串表达式计算 逆波兰式](/LeetCode/224_BasicCalculator.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
