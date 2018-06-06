@@ -172,3 +172,4 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
+-[人工智能 作业](https://foolishflyfox.github.io/CsLearnNote/homework/CalcAI/calc_AI_HW1.html)
