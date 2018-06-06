@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>calc_AI_HW1</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <h1 class="mume-header" id="%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C">神经网络实验</h1>
+
+<p><strong>姓名：丰华彬</strong>     <strong>学号：SA17011135</strong></p>
+<h2 class="mume-header" id="%E5%AE%9E%E9%AA%8C%E6%8F%8F%E8%BF%B0">实验描述</h2>
+
+<p>根据用户特征判断该用户是否患有冠状动脉疾病，可通过 <a href="http://archive.ics.uci.edu/ml/datasets/Z-Alizadeh+Sani#">http://archive.ics.uci.edu/ml/datasets/Z-Alizadeh+Sani#</a> 访问该任务的描述。</p>
+<p>结果有两种情况：正常 和 患病。</p>
+<p>用户特征共有 55 个：'Age', 'Weight', 'Length', 'Sex', 'BMI', 'DM', 'HTN', 'Current Smoker','EX-Smoker', 'FH', 'Obesity', 'CRF', 'CVA', 'Airway disease','Thyroid Disease', 'CHF', 'DLP', 'BP', 'PR', 'Edema','Weak Peripheral Pulse', 'Lung rales', 'Systolic Murmur','Diastolic Murmur', 'Typical Chest Pain', 'Dyspnea', 'Function Class','Atypical', 'Nonanginal', 'Exertional CP', 'LowTH Ang', 'Q Wave','St Elevation', 'St Depression', 'Tinversion', 'LVH','Poor R Progression', 'BBB', 'FBS', 'CR', 'TG', 'LDL', 'HDL', 'BUN','ESR', 'HB', 'K', 'Na', 'WBC', 'Lymph', 'Neut', 'PLT', 'EF-TTE','Region RWMA', 'VHD'。</p>
+<p>数据集中共包含有303个实例。</p>
+<h2 class="mume-header" id="%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86">数据预处理</h2>
+
+<h3 class="mume-header" id="%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E9%9B%86">加载数据集</h3>
+
+<p>从 UCI 网站上所下载的是一个 <strong>xlsx</strong> 文件 。我们可以通过 <code>pandas</code> 的 <code>read_excel</code> 函数加载该文件。</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+data <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_excel<span class="token punctuation">(</span><span class="token string">"./Z-AlizadehSaniDataset.xlsx"</span><span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="%E5%88%A4%E6%96%AD%E6%95%B0%E6%8D%AE%E9%9B%86%E6%98%AF%E5%90%A6%E6%9C%89%E7%BC%BA%E5%A4%B1%E5%80%BC">判断数据集是否有缺失值</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">sum</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>isnull<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>values<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>输出结果为：<code>0</code>，表明数据集中不包含缺失值。</p>
+<h3 class="mume-header" id="%E5%A4%84%E7%90%86%E6%96%87%E6%9C%AC%E5%9E%8B%E6%95%B0%E6%8D%AE">处理文本型数据</h3>
+
+<p>因为神经网络的输入需要是数字，所以我们需要将数据集中的文本数据转换为数字，文本型数据有如下几种：</p>
+<ul>
+<li><code>Sex</code>：性别，有 'Fmale' 和 'Male' 两种；</li>
+<li><code>Obesity</code>：是否肥胖，有 'Y' 和 'N' 两种；</li>
+<li><code>CRF</code>：有 'Y' 和 'N' 两种；</li>
+<li><code>CVA</code>：是否患有中风，有 'Y' 和 'N' 两种；</li>
+<li><code>Airway disease</code>：是否患有奇怪疾病，有 'Y' 和 'N' 两种；</li>
+<li><code>Thyroid Disease</code>：是否患有甲状腺疾病，有 'Y' 和 'N' 两种；</li>
+<li><code>CHF</code>：是否患有心力衰竭，有 'Y' 和 'N' 两种；</li>
+<li><code>DLP</code>：有 'Y' 和 'N' 两种；</li>
+<li><code>Weak Peripheral Pulse</code>：脉搏微弱，有 'Y' 和 'N' 两种；</li>
+<li><code>Lung rales</code>：是否存在肺声，有 'Y' 和 'N' 两种；</li>
+<li><code>Systolic Murmur</code>：是否存在收缩期杂音，有 'Y' 和 'N' 两种；</li>
+<li><code>Diastolic Murmur</code>：是否存在扩张期杂音，有 'Y' 和 'N' 两种；</li>
+<li><code>Dyspnea</code>：呼吸是否存在可能，有 'Y' 和 'N' 两种；</li>
+<li><code>Atypical</code>：是否典型，有 'Y' 和 'N' 两种；</li>
+<li><code>Nonanginal</code>：不存在心绞痛？有 'Y' 和 'N' 两种；</li>
+<li><code>Exertional CP</code>：有 'Y' 和 'N' 两种；</li>
+<li><code>LowTH Ang</code>：有 'Y' 和 'N' 两种；</li>
+<li><code>LHP</code>：是否左心房肥大，有 'Y' 和 'N' 两种；</li>
+<li><code>Poor R Progression</code>：有 'Y' 和 'N' 两种；</li>
+<li><code>BBB</code>：有 'LBBB', 'N', 'RBBB' 三种；</li>
+<li><code>VHD</code>：有 'Moderate', 'N', 'Severe', 'mild' 四种；</li>
+</ul>
+<p>标签 <code>Cath</code> 也是一个文本型数据，有 'Cad' 和 'Normal' 两种情况。可见，除了 <code>BBB</code> 和 <code>VHD</code> 外，其他的文本数据都只有两种不同的取值，可以将其编码为0、1。而 <code>VHD</code> 的 4 中情况是有大小次序的，其中 <code>N</code> &lt; <code>mild</code>  &lt; <code>Moderate</code> &lt; <code>Severe</code>，故可以编码为 0，1，2，3，而对 <code>BBB</code> ，由于3种类型没有次序，因此使用 one-hot 编码。</p>
+<p>代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<span class="token keyword">from</span> sklearn <span class="token keyword">import</span> preprocessing
+<span class="token keyword">from</span> sklearn <span class="token keyword">import</span> utils
+
+data <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_excel<span class="token punctuation">(</span><span class="token string">"./Z-AlizadehSaniDataset.xlsx"</span><span class="token punctuation">)</span>
+
+trans_code <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">'Fmale'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token string">'Male'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string">'N'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token string">'Y'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string">'Normal'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token string">'Cad'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string">'mild'</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token string">'Moderate'</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token string">'Severe'</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token number">0</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token number">1</span><span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token boolean">False</span><span class="token punctuation">:</span><span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token boolean">True</span><span class="token punctuation">:</span><span class="token number">1</span>
+<span class="token punctuation">}</span>
+data<span class="token punctuation">[</span><span class="token string">'BBB_N'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token string">'BBB'</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">'N'</span><span class="token punctuation">)</span>
+data<span class="token punctuation">[</span><span class="token string">'LBBB'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token string">'BBB'</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">'LBBB'</span><span class="token punctuation">)</span>
+data<span class="token punctuation">[</span><span class="token string">'RBBB'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>data<span class="token punctuation">[</span><span class="token string">'BBB'</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">'RBBB'</span><span class="token punctuation">)</span>
+<span class="token keyword">del</span> data<span class="token punctuation">[</span><span class="token string">'BBB'</span><span class="token punctuation">]</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>columns<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">.</span>iloc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">]</span><span class="token punctuation">.</span>dtype<span class="token operator">==</span>np<span class="token punctuation">.</span>dtype<span class="token punctuation">(</span><span class="token string">'object'</span><span class="token punctuation">)</span> <span class="token operator">or</span>
+       data<span class="token punctuation">.</span>iloc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">]</span><span class="token punctuation">.</span>dtype<span class="token operator">==</span>np<span class="token punctuation">.</span>dtype<span class="token punctuation">(</span><span class="token string">'bool'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        data<span class="token punctuation">.</span>iloc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">.</span>iloc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token builtin">map</span><span class="token punctuation">(</span>trans_code<span class="token punctuation">)</span>
+
+<span class="token comment"># 将 Cath 放在最后一行</span>
+data<span class="token punctuation">[</span><span class="token string">'tag'</span><span class="token punctuation">]</span> <span class="token operator">=</span> data<span class="token punctuation">[</span><span class="token string">'Cath'</span><span class="token punctuation">]</span>
+<span class="token keyword">del</span> data<span class="token punctuation">[</span><span class="token string">'Cath'</span><span class="token punctuation">]</span>
+data_X <span class="token operator">=</span> data<span class="token punctuation">[</span>data<span class="token punctuation">.</span>columns<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+</pre><h3 class="mume-header" id="%E5%88%A0%E9%99%A4%E6%89%80%E6%9C%89%E5%80%BC%E7%9B%B8%E7%AD%89%E7%9A%84%E5%88%97">删除所有值相等的列</h3>
+
+<p>所有值都相等的列对判断明显是没有意义的，所以应该输出，代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 删除值永远不变的列</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> data_X<span class="token punctuation">.</span>columns<span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token builtin">all</span><span class="token punctuation">(</span>data_X<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">==</span>data_X<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">del</span> data_X<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+</pre><p>其中 <code>Exertional CP</code> 的值始终为 0，故被删除。</p>
+<h3 class="mume-header" id="%E6%95%B0%E6%8D%AE%E6%A0%87%E5%87%86%E5%8C%96">数据标准化</h3>
+
+<p>数据标准化的公式为：<span class="katex-display"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mover accent="true"><mi>x</mi><mo>^</mo></mover><mi>i</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover accent="true"><mi>x</mi><mo>ˉ</mo></mover></mrow><mrow><mi>s</mi><mi>t</mi><mi>d</mi><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><mi>x</mi><mn>2</mn><mo separator="true">,</mo><mo>⋯</mo><mspace width="0.16667em"></mspace><mo separator="true">,</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">\hat x_i=\frac{x_i-\bar x}{std(x_1,x2,\cdots,x_n)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:1.2603300000000002em;"></span><span class="strut bottom" style="height:2.19633em;vertical-align:-0.936em;"></span><span class="base"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.69444em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathit">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.22222em;">^</span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mord rule" style="margin-right:0.2777777777777778em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2603300000000002em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathit">s</span><span class="mord mathit">t</span><span class="mord mathit">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span><span class="mpunct">,</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mord mathit">x</span><span class="mord">2</span><span class="mpunct">,</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="minner">⋯</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mspace thinspace"></span><span class="mpunct">,</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span><span class="mclose">)</span></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.2em;"><svg width="400em" height="0.2em" viewBox="0 0 400000 200" preserveAspectRatio="xMinYMin slice"><path d="M0 80H400000 v40H0z M0 80H400000 v40H0z"></path></svg></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathit">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.22222em;">ˉ</span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span> 其中 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi><mi>t</mi><mi>d</mi><mo>(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>⋯</mo><mspace width="0.16667em"></mspace><mo separator="true">,</mo><msub><mi>x</mi><mi>n</mi></msub><mo>)</mo></mrow><annotation encoding="application/x-tex">std(x_1,x_2,\cdots,x_n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit">s</span><span class="mord mathit">t</span><span class="mord mathit">d</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span><span class="mpunct">,</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span><span class="mpunct">,</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="minner">⋯</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mspace thinspace"></span><span class="mpunct">,</span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathit">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathit mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"></span></span></span></span></span><span class="mclose">)</span></span></span></span> 表示样本标准差的无偏估计，<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mover accent="true"><mi>x</mi><mo>ˉ</mo></mover></mrow><annotation encoding="application/x-tex">\bar x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.56778em;"></span><span class="strut bottom" style="height:0.56778em;vertical-align:0em;"></span><span class="base"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.56778em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathit">x</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.22222em;">ˉ</span></span></span></span></span></span></span></span></span> 表示样本均值，代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 对除了标签 Cath 外的特征进行标准化</span>
+data_X <span class="token operator">=</span> <span class="token punctuation">(</span>data_X<span class="token operator">-</span>data_X<span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span>data_X<span class="token punctuation">.</span>std<span class="token punctuation">(</span><span class="token punctuation">)</span>
+data_X <span class="token operator">=</span> data_X<span class="token punctuation">.</span>values
+</pre><p>现在查看数据集的样子为：<br>
+<img src="./assets/clean_data.png" alt=""><br>
+总共为 <code>303 rows × 57 columns</code>。</p>
+<h3 class="mume-header" id="%E4%BD%BF%E7%94%A8-pca-%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%99%8D%E7%BB%B4">使用 PCA 对数据进行降维</h3>
+
+<p>56 维的数据貌似不是很多，但为了提高训练效率，我们测试能否对数据进行降维，代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> matplotlib
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+
+X <span class="token operator">=</span> np<span class="token punctuation">.</span>mat<span class="token punctuation">(</span>data<span class="token punctuation">.</span>iloc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+cov_mat <span class="token operator">=</span> X<span class="token punctuation">.</span>T <span class="token operator">*</span> X
+eig_vals<span class="token punctuation">,</span> eig_vects <span class="token operator">=</span> np<span class="token punctuation">.</span>linalg<span class="token punctuation">.</span>eig<span class="token punctuation">(</span>np<span class="token punctuation">.</span>mat<span class="token punctuation">(</span>cov_mat<span class="token punctuation">)</span><span class="token punctuation">)</span>
+eig_val_indices <span class="token operator">=</span> np<span class="token punctuation">.</span>argsort<span class="token punctuation">(</span><span class="token operator">-</span>eig_vals<span class="token punctuation">)</span>
+<span class="token comment"># 特征值的和</span>
+eig_sum <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>eig_vals<span class="token punctuation">)</span>
+accu_sum <span class="token operator">=</span> <span class="token number">0</span>
+plt_x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+plt_y <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>eig_vals<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    plt_x<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+    accu_sum <span class="token operator">+=</span> eig_vals<span class="token punctuation">[</span> eig_val_indices<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token punctuation">]</span>
+    plt_y<span class="token punctuation">.</span>append<span class="token punctuation">(</span>accu_sum<span class="token operator">/</span>eig_sum<span class="token operator">*</span><span class="token number">100</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>accu_sum<span class="token punctuation">,</span> eig_sum<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'eigenvalue cnt'</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">16</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">'percentage (%)'</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">16</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>scatter<span class="token punctuation">(</span>plt_x<span class="token punctuation">,</span> plt_y<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"deepskyblue"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>eig_vals<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">90</span><span class="token punctuation">,</span> <span class="token number">90</span><span class="token punctuation">]</span><span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">'red'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>下图显示的是随着使用特征值的增多，特征值占总特征值和的比例：<br>
+<img src="assets/eigenvalue_scatter.png" alt=""></p>
+<p>图中的红线为 90% 的比例线，从图中可以看出，达到 90% 的比例，维度最多降低到40 左右，维度降低的比例不大，因此数据不使用 PCA 进行降维。</p>
+<h3 class="mume-header" id="%E5%88%92%E5%88%86%E8%AE%AD%E7%BB%83%E9%9B%86%E5%92%8C%E6%B5%8B%E8%AF%95%E9%9B%86">划分训练集和测试集</h3>
+
+<p>我们先将数据集打乱，并将其中的前250个数据，划分为测试，剩余的53个划分为训练集。</p>
+<p>另外，为了使我们所编写的神经网络能够适应所有的分类问题，虽然只有 0-1 两种输出，我们仍然将输出变为 one-hot 编码，并将特征和标签分开，代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">cath_col <span class="token operator">=</span> data<span class="token punctuation">[</span><span class="token string">'Cath'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+cath_col <span class="token operator">=</span> data<span class="token punctuation">[</span><span class="token string">'tag'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>values<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment"># del data['Cath']</span>
+
+<span class="token comment"># 对除了标签 Cath 外的特征进行标准化</span>
+data_y <span class="token operator">=</span> preprocessing<span class="token punctuation">.</span>OneHotEncoder<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>cath_col<span class="token punctuation">)</span><span class="token punctuation">.</span>toarray<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+data_X<span class="token punctuation">,</span> data_y <span class="token operator">=</span> utils<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>data_X<span class="token punctuation">,</span> data_y<span class="token punctuation">)</span>
+train_cnt <span class="token operator">=</span> <span class="token number">250</span>
+train_X <span class="token operator">=</span> data_X<span class="token punctuation">[</span><span class="token punctuation">:</span>train_cnt<span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>
+train_y <span class="token operator">=</span> data_y<span class="token punctuation">[</span><span class="token punctuation">:</span>train_cnt<span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>
+test_X <span class="token operator">=</span> data_X<span class="token punctuation">[</span>train_cnt<span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>
+test_y <span class="token operator">=</span> data_y<span class="token punctuation">[</span>train_cnt<span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">]</span>
+pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span>np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><h2 class="mume-header" id="%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83">神经网络训练</h2>
+
+<h3 id="ANN"> 编写神经网络</h3>
+<p>神经网络类的代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> sklearn <span class="token keyword">import</span> utils
+<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<span class="token keyword">import</span> matplotlib
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+
+<span class="token keyword">class</span> <span class="token class-name">Network</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 激活函数 sigmoid</span>
+    @<span class="token builtin">classmethod</span>
+    <span class="token keyword">def</span> <span class="token function">sigmoid</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> z<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">1.0</span><span class="token operator">/</span><span class="token punctuation">(</span><span class="token number">1.0</span><span class="token operator">+</span>np<span class="token punctuation">.</span>exp<span class="token punctuation">(</span><span class="token operator">-</span>z<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment"># 损失函数 MSE 的微分形式</span>
+    @<span class="token builtin">classmethod</span>
+    <span class="token keyword">def</span> <span class="token function">cost_derivative</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> output_activations<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>output_activations<span class="token operator">-</span>y<span class="token punctuation">)</span>
+    <span class="token comment"># 激活函数 sigmoid(x) 求导: sigmoid(x)*(1-sigmoid(x))</span>
+    @<span class="token builtin">classmethod</span>
+    <span class="token keyword">def</span> <span class="token function">sigmoid_prime</span><span class="token punctuation">(</span>cls<span class="token punctuation">,</span> z<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        sigmoid_z <span class="token operator">=</span> cls<span class="token punctuation">.</span>sigmoid<span class="token punctuation">(</span>z<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> sigmoid_z<span class="token operator">*</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">-</span>sigmoid_z<span class="token punctuation">)</span>
+    <span class="token comment"># 神经网络结构的初始化</span>
+    <span class="token comment"># sizes：序列，每个值代表一层神经网络节点个数，第1层为输入层，最后1层为输出层</span>
+    <span class="token comment"># activate：激活函数，默认使用 sigmoid函数</span>
+    <span class="token comment"># activate_prime：激活函数对应的微分</span>
+    <span class="token comment"># cost_derivative：损失函数导数，默认使用 MSE 损失函数的导数</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> sizes<span class="token punctuation">,</span> activate_fun<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span>
+                 activate_prime<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> cost_derivative<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>num_layers <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sizes<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>sizes <span class="token operator">=</span> sizes
+        self<span class="token punctuation">.</span>activate_fun <span class="token operator">=</span> activate_fun
+        self<span class="token punctuation">.</span>activate_prime <span class="token operator">=</span> activate_prime
+        self<span class="token punctuation">.</span>cost_derivative <span class="token operator">=</span> cost_derivative
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>activate_fun<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>activate_fun <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">.</span>sigmoid
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>cost_derivative<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>cost_derivative <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">.</span>cost_derivative
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>activate_prime<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span>
+            self<span class="token punctuation">.</span>activate_prime <span class="token operator">=</span> <span class="token builtin">type</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">.</span>sigmoid_prime
+        self<span class="token punctuation">.</span>biases <span class="token operator">=</span> <span class="token punctuation">[</span>np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> sizes<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>weights <span class="token operator">=</span> <span class="token punctuation">[</span>np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>randn<span class="token punctuation">(</span>sizes<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> sizes<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
+                         <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sizes<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+    <span class="token comment"># 前向传播，获取输出</span>
+    <span class="token keyword">def</span> <span class="token function">foreward</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> a<span class="token punctuation">,</span> convert_f<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">for</span> w<span class="token punctuation">,</span>b <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>weights<span class="token punctuation">,</span> self<span class="token punctuation">.</span>biases<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            a <span class="token operator">=</span> self<span class="token punctuation">.</span>activate_fun<span class="token punctuation">(</span>np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">,</span> a<span class="token punctuation">)</span> <span class="token operator">+</span> b<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> convert_f<span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token keyword">if</span> convert_f <span class="token keyword">else</span> a
+    
+    <span class="token comment"># epoches：训练的轮数</span>
+    <span class="token comment"># mini_batch_size：SGD 批量的大小</span>
+    <span class="token comment"># eta：学习率</span>
+    <span class="token comment"># 返回：一个序列，每个值是一次训练之后测试的准确率</span>
+    <span class="token keyword">def</span> <span class="token function">train</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> train_x<span class="token punctuation">,</span> train_y<span class="token punctuation">,</span> epochs<span class="token punctuation">,</span> mini_batch_size<span class="token punctuation">,</span> eta<span class="token punctuation">,</span>
+            valid_x<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> valid_y<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token builtin">type</span><span class="token punctuation">(</span>valid_x<span class="token punctuation">)</span><span class="token operator">!=</span><span class="token builtin">type</span><span class="token punctuation">(</span><span class="token boolean">None</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> n_valid <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>valid_x<span class="token punctuation">)</span>
+        x_columns_cnt <span class="token operator">=</span> train_x<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+        train_data <span class="token operator">=</span> np<span class="token punctuation">.</span>hstack<span class="token punctuation">(</span><span class="token punctuation">(</span>train_x<span class="token punctuation">,</span> train_y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        n_train <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>train_data<span class="token punctuation">)</span>
+        accu_train <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        accu_valid <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>epochs<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>train_data<span class="token punctuation">)</span>
+            mini_batches <span class="token operator">=</span> <span class="token punctuation">[</span>train_data<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span>mini_batch_size<span class="token punctuation">]</span> 
+                            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>train_data<span class="token punctuation">)</span><span class="token punctuation">,</span>mini_batch_size<span class="token punctuation">)</span><span class="token punctuation">]</span>
+            <span class="token keyword">for</span> mini_batch <span class="token keyword">in</span> mini_batches<span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>update_mini_batch<span class="token punctuation">(</span>mini_batch<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span>x_columns_cnt<span class="token punctuation">]</span><span class="token punctuation">,</span>
+                                       mini_batch<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> x_columns_cnt<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> eta<span class="token punctuation">)</span>
+            accu_train<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span>train_x<span class="token punctuation">,</span> train_y<span class="token punctuation">)</span><span class="token operator">/</span>n_train<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token builtin">type</span><span class="token punctuation">(</span>valid_x<span class="token punctuation">)</span><span class="token operator">!=</span><span class="token builtin">type</span><span class="token punctuation">(</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                accu_valid<span class="token punctuation">.</span>append<span class="token punctuation">(</span>self<span class="token punctuation">.</span>evaluate<span class="token punctuation">(</span>valid_x<span class="token punctuation">,</span> valid_y<span class="token punctuation">)</span><span class="token operator">/</span>n_valid<span class="token punctuation">)</span>
+        <span class="token keyword">return</span> accu_train<span class="token punctuation">,</span> accu_valid
+
+    <span class="token keyword">def</span> <span class="token function">update_mini_batch</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> xs<span class="token punctuation">,</span> ys<span class="token punctuation">,</span> eta<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        nabla_b <span class="token operator">=</span> <span class="token punctuation">[</span>np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>b<span class="token punctuation">.</span>shape<span class="token punctuation">)</span> <span class="token keyword">for</span> b <span class="token keyword">in</span> self<span class="token punctuation">.</span>biases<span class="token punctuation">]</span>
+        nabla_w <span class="token operator">=</span> <span class="token punctuation">[</span>np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>w<span class="token punctuation">.</span>shape<span class="token punctuation">)</span> <span class="token keyword">for</span> w <span class="token keyword">in</span> self<span class="token punctuation">.</span>weights<span class="token punctuation">]</span>
+        <span class="token keyword">for</span> x<span class="token punctuation">,</span>y <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>xs<span class="token punctuation">,</span> ys<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            delta_nabla_b<span class="token punctuation">,</span> delta_nabla_w <span class="token operator">=</span> self<span class="token punctuation">.</span>backprop<span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+            nabla_b <span class="token operator">=</span> <span class="token punctuation">[</span>nb<span class="token operator">+</span>dnb <span class="token keyword">for</span> nb<span class="token punctuation">,</span> dnb <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>nabla_b<span class="token punctuation">,</span> delta_nabla_b<span class="token punctuation">)</span><span class="token punctuation">]</span>
+            nabla_w <span class="token operator">=</span> <span class="token punctuation">[</span>nw<span class="token operator">+</span>dnw <span class="token keyword">for</span> nw<span class="token punctuation">,</span> dnw <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>nabla_w<span class="token punctuation">,</span> delta_nabla_w<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>weights <span class="token operator">=</span> <span class="token punctuation">[</span>w <span class="token operator">-</span> <span class="token punctuation">(</span>eta<span class="token operator">/</span><span class="token builtin">len</span><span class="token punctuation">(</span>xs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">*</span>nw
+                         <span class="token keyword">for</span> w<span class="token punctuation">,</span> nw <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>weights<span class="token punctuation">,</span> nabla_w<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>biases <span class="token operator">=</span> <span class="token punctuation">[</span>b <span class="token operator">+</span> <span class="token punctuation">(</span>eta<span class="token operator">/</span><span class="token builtin">len</span><span class="token punctuation">(</span>xs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">*</span>nb
+                       <span class="token keyword">for</span> b<span class="token punctuation">,</span> nb <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>biases<span class="token punctuation">,</span> nabla_b<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        
+    <span class="token comment"># 测试准确率</span>
+    <span class="token keyword">def</span> <span class="token function">evaluate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> test_x<span class="token punctuation">,</span> test_y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        test_result <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> x<span class="token punctuation">,</span> y <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>test_x<span class="token punctuation">,</span> test_y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            x<span class="token punctuation">.</span>shape <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            y<span class="token punctuation">.</span>shape <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            test_result <span class="token operator">+=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>y<span class="token punctuation">)</span><span class="token operator">==</span>np<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>self<span class="token punctuation">.</span>foreward<span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> test_result
+        
+    <span class="token keyword">def</span> <span class="token function">backprop</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        x<span class="token punctuation">.</span>shape <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        y<span class="token punctuation">.</span>shape <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        nabla_b <span class="token operator">=</span> <span class="token punctuation">[</span>np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>b<span class="token punctuation">.</span>shape<span class="token punctuation">)</span> <span class="token keyword">for</span> b <span class="token keyword">in</span> self<span class="token punctuation">.</span>biases<span class="token punctuation">]</span>
+        nabla_w <span class="token operator">=</span> <span class="token punctuation">[</span>np<span class="token punctuation">.</span>zeros<span class="token punctuation">(</span>w<span class="token punctuation">.</span>shape<span class="token punctuation">)</span> <span class="token keyword">for</span> w <span class="token keyword">in</span> self<span class="token punctuation">.</span>weights<span class="token punctuation">]</span> 
+        <span class="token comment"># feedforward</span>
+        activation <span class="token operator">=</span> x
+        activations <span class="token operator">=</span> <span class="token punctuation">[</span>x<span class="token punctuation">]</span>
+        zs <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> b<span class="token punctuation">,</span> w <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>biases<span class="token punctuation">,</span> self<span class="token punctuation">.</span>weights<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            z <span class="token operator">=</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>w<span class="token punctuation">,</span> activation<span class="token punctuation">)</span><span class="token operator">+</span>b
+            zs<span class="token punctuation">.</span>append<span class="token punctuation">(</span>z<span class="token punctuation">)</span>
+            activation <span class="token operator">=</span> self<span class="token punctuation">.</span>sigmoid<span class="token punctuation">(</span>z<span class="token punctuation">)</span>
+            activations<span class="token punctuation">.</span>append<span class="token punctuation">(</span>activation<span class="token punctuation">)</span>
+        <span class="token comment"># backward pass</span>
+        delta <span class="token operator">=</span> self<span class="token punctuation">.</span>cost_derivative<span class="token punctuation">(</span>activations<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">*</span> self<span class="token punctuation">.</span>activate_prime<span class="token punctuation">(</span>zs<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        nabla_b<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> delta
+        nabla_w<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>delta<span class="token punctuation">,</span> activations<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">.</span>transpose<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">for</span> l <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> self<span class="token punctuation">.</span>num_layers<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            z <span class="token operator">=</span> zs<span class="token punctuation">[</span><span class="token operator">-</span>l<span class="token punctuation">]</span>
+            sp <span class="token operator">=</span> self<span class="token punctuation">.</span>activate_prime<span class="token punctuation">(</span>z<span class="token punctuation">)</span>
+            delta <span class="token operator">=</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>self<span class="token punctuation">.</span>weights<span class="token punctuation">[</span><span class="token operator">-</span>l<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>transpose<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> delta<span class="token punctuation">)</span> <span class="token operator">*</span> sp
+            nabla_b<span class="token punctuation">[</span><span class="token operator">-</span>l<span class="token punctuation">]</span> <span class="token operator">=</span> delta
+            nabla_w<span class="token punctuation">[</span><span class="token operator">-</span>l<span class="token punctuation">]</span> <span class="token operator">=</span> np<span class="token punctuation">.</span>dot<span class="token punctuation">(</span>delta<span class="token punctuation">,</span> activations<span class="token punctuation">[</span><span class="token operator">-</span>l<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span>transpose<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>nabla_b<span class="token punctuation">,</span> nabla_w<span class="token punctuation">)</span>
+</pre><p>我们需要确定的超参数主要是神经网络结构，包括神经网络的层数、每一层的节点个数。</p>
+<p>我们使用 k-折交叉验证的方式 计算超参数对应的泛化准确率，K-折交叉验证函数的代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 返回每次训练后 K 折的训练集上的准确率和验证集上的准确率</span>
+<span class="token keyword">def</span> <span class="token function">kfold</span><span class="token punctuation">(</span>net_struct<span class="token punctuation">,</span> data_x<span class="token punctuation">,</span> data_y<span class="token punctuation">,</span> eta<span class="token punctuation">,</span> epoches <span class="token punctuation">,</span>n_fold<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    train_accuracies <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    valid_accuracies <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    valid_cnt <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>data_x<span class="token punctuation">)</span><span class="token operator">/</span>n_fold<span class="token punctuation">)</span>
+    np<span class="token punctuation">.</span>random<span class="token punctuation">.</span>seed<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+    data_x<span class="token punctuation">,</span> data_y <span class="token operator">=</span> utils<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>data_x<span class="token punctuation">,</span> data_y<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token builtin">len</span><span class="token punctuation">(</span>data_x<span class="token punctuation">)</span><span class="token punctuation">,</span> valid_cnt<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        ann <span class="token operator">=</span> Network<span class="token punctuation">(</span>net_struct<span class="token punctuation">)</span>
+        t_x <span class="token operator">=</span> np<span class="token punctuation">.</span>vstack<span class="token punctuation">(</span><span class="token punctuation">(</span>data_x<span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data_x<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span>valid_cnt<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        t_y <span class="token operator">=</span> np<span class="token punctuation">.</span>vstack<span class="token punctuation">(</span><span class="token punctuation">(</span>data_y<span class="token punctuation">[</span><span class="token punctuation">:</span>i<span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data_y<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span>valid_cnt<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        v_x <span class="token operator">=</span> data_x<span class="token punctuation">[</span>i<span class="token punctuation">:</span><span class="token punctuation">(</span>i<span class="token operator">+</span>valid_cnt<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+        v_y <span class="token operator">=</span> data_y<span class="token punctuation">[</span>i<span class="token punctuation">:</span><span class="token punctuation">(</span>i<span class="token operator">+</span>valid_cnt<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
+        ts<span class="token punctuation">,</span> vs <span class="token operator">=</span> ann<span class="token punctuation">.</span>train<span class="token punctuation">(</span>t_x<span class="token punctuation">,</span> t_y<span class="token punctuation">,</span> epoches<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> eta<span class="token punctuation">,</span> v_x<span class="token punctuation">,</span> v_y<span class="token punctuation">)</span>
+        train_accuracies<span class="token punctuation">.</span>append<span class="token punctuation">(</span>ts<span class="token punctuation">)</span>
+        valid_accuracies<span class="token punctuation">.</span>append<span class="token punctuation">(</span>vs<span class="token punctuation">)</span>
+    train_a <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>train_accuracies<span class="token punctuation">)</span>
+    valid_a <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>valid_accuracies<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> train_a<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> valid_a<span class="token punctuation">.</span>mean<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="%E8%B6%85%E5%8F%82%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9">超参数的选择</h3>
+
+<p>训练次数越多，准确率通常越高，不过消耗的时间也越多，下面我们通过实验选择超参数。</p>
+<p>我们选择学习率为 0.5，神经网络结构为 56×50×1，使用交叉验证来确定不同轮数在训练集和验证集上的准确率，代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">accu_train<span class="token punctuation">,</span> accu_valid <span class="token operator">=</span> kfold<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">56</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+
+plot_x <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">101</span><span class="token punctuation">)</span>  
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>plot_x<span class="token punctuation">,</span> accu_train<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"red"</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"train_accuracy"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>plot_x<span class="token punctuation">,</span> accu_valid<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"green"</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"valid_accuracy"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span>loc<span class="token operator">=</span><span class="token string">"best"</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>绘制的图形为：<br>
+<img src="assets/56-50-2.png" alt=""></p>
+<p>可以看出随着对数据集训练次数的增多，在训练集上的准确率和在验证集上的准确率都不断提高，并且在训练集上的准确率通常要高于在验证集上的准确率，这也符合我们的常识，并且在训练 40 次左右，验证集上的准确率接近 82%，训练 100 次左右，验证集上的准确率接近 85%，可见在40次左右，训练结果就较为稳定了。</p>
+<p>在测试一下使用 56×20×1 的数据网络结构和 0.5 学习率进行训练的结果，代码为：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">accu_train<span class="token punctuation">,</span> accu_valid <span class="token operator">=</span> kfold<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">56</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+plot_x <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">101</span><span class="token punctuation">)</span>
+    
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>plot_x<span class="token punctuation">,</span> accu_train<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"red"</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"train_accuracy"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>plot_x<span class="token punctuation">,</span> accu_valid<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"green"</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"valid_accuracy"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span>loc<span class="token operator">=</span><span class="token string">"best"</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>测试结果为：<br>
+<img src="assets/56-20-2.png" alt=""></p>
+<p>可以看出，神经网络的结构越简单，训练速度就越快，最终的结果为82%左右，可见，比 56×50×2 要差一点，不过效果差不多。</p>
+<p>我们用其他模型进行训练，结果如下：<br>
+<img src="assets/result.png" alt=""></p>
+<p>从上到下，从左到右，神经网络的结构越来越复杂，不过除了只有两层的神经网络结构后，其他的准确率都在 80% 左右，我们选择准确率为 85% 的 56×50×2 结构进行训练。</p>
+<h3 class="mume-header" id="%E4%BD%BF%E7%94%A8%E9%80%89%E5%AE%9A%E7%9A%84%E8%B6%85%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E8%AE%AD%E7%BB%83">使用选定的超参数进行训练</h3>
+
+<p>将所有的 250 个实例都用于神经网络的训练，并用剩余的 53 个测试中的数据进行泛化性能的测试：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># def train(self, train_x, train_y, epochs, mini_batch_size, eta</span>
+ann <span class="token operator">=</span> Network<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">56</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+accu_train<span class="token punctuation">,</span> accu_test <span class="token operator">=</span>  ann<span class="token punctuation">.</span>train<span class="token punctuation">(</span>train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">,</span> test_X<span class="token punctuation">,</span> test_y<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span>figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>plot_x<span class="token punctuation">,</span> accu_train<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"red"</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"train_accuracy"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>plot_x<span class="token punctuation">,</span> accu_test<span class="token punctuation">,</span> color<span class="token operator">=</span><span class="token string">"green"</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"valid_accuracy"</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span>loc<span class="token operator">=</span><span class="token string">"best"</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span>f<span class="token string">"train : {accu_train[-1]:.3f}, "</span> <span class="token operator">+</span>
+         f<span class="token string">"test : {accu_test[-1]:.3f}"</span><span class="token punctuation">,</span> fontsize<span class="token operator">=</span><span class="token number">15</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</pre><p>结果为：<br>
+<img src="assets/test_figure.png" alt=""></p>
+<p>最终的泛化准确率为 81% ，结果比较低。</p>
+<h2 class="mume-header" id="%E4%BD%BF%E7%94%A8sklearn%E4%B8%AD%E7%9A%84%E5%BA%93%E8%BF%9B%E8%A1%8C%E8%AE%AD%E7%BB%83">使用sklearn中的库进行训练</h2>
+
+<h3 class="mume-header" id="%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E4%B8%8E%E5%88%92%E5%88%86">数据预处理与划分</h3>
+
+<p>数据预处理和划分的过程和之前的过程非常类似，只是标签不需要使用 one-hot 进行编码。</p>
+<h3 class="mume-header" id="%E6%9E%84%E5%BB%BA%E4%B8%8E%E4%B8%8A%E8%BF%B0%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">构建与上述的神经网络</h3>
+
+<p>我们构建一个和手写的神经网络结构系统的网络，并且设置系统的学习率、激活函数、优化策略、批大小等超参数，代码如下：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> sklearn <span class="token keyword">import</span> neural_network
+clf <span class="token operator">=</span> neural_network<span class="token punctuation">.</span>MLPClassifier<span class="token punctuation">(</span>hidden_layer_sizes<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        activation<span class="token operator">=</span><span class="token string">'logistic'</span><span class="token punctuation">,</span>solver<span class="token operator">=</span><span class="token string">'sgd'</span><span class="token punctuation">,</span>alpha<span class="token operator">=</span><span class="token number">0.5</span><span class="token punctuation">,</span>
+        batch_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span>learning_rate<span class="token operator">=</span><span class="token string">'constant'</span><span class="token punctuation">,</span>max_iter<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+</pre><h3 class="mume-header" id="%E8%AE%AD%E7%BB%83%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">训练与测试神经网络</h3>
+
+<p>使用 <code>fit</code> 函数进行训练，使用 <code>predict</code> 函数进行测试：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python">clf<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">)</span>
+<span class="token builtin">sum</span><span class="token punctuation">(</span>clf<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>test_X<span class="token punctuation">)</span><span class="token operator">==</span>test_y<span class="token punctuation">)</span><span class="token operator">/</span><span class="token builtin">len</span><span class="token punctuation">(</span>test_y<span class="token punctuation">)</span>
+</pre><p>测试结果为：<code>0.83</code>，和我们手写的函数准确率非常接近。</p>
+<h3 class="mume-header" id="%E6%B5%8B%E8%AF%95%E5%A4%9A%E7%BB%84">测试多组</h3>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> sklearn <span class="token keyword">import</span> neural_network
+nets <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> net_struct <span class="token keyword">in</span> nets<span class="token punctuation">:</span>
+    clf <span class="token operator">=</span> neural_network<span class="token punctuation">.</span>MLPClassifier<span class="token punctuation">(</span>hidden_layer_sizes<span class="token operator">=</span>net_struct<span class="token punctuation">,</span>
+                                       activation<span class="token operator">=</span><span class="token string">'logistic'</span><span class="token punctuation">,</span>
+                                       solver<span class="token operator">=</span><span class="token string">'sgd'</span><span class="token punctuation">,</span>
+                                       alpha<span class="token operator">=</span><span class="token number">0.5</span><span class="token punctuation">,</span>
+                                       batch_size<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">,</span>
+                                       learning_rate<span class="token operator">=</span><span class="token string">'constant'</span><span class="token punctuation">,</span>
+                                       max_iter<span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">)</span>
+    clf<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{net_struct} : {sum(clf.predict(test_X)==test_y)/len(test_y)}'</span><span class="token punctuation">)</span>
+</pre><p>测试结果为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>(10,) : 0.8490566037735849
+(20,) : 0.8490566037735849
+(30,) : 0.8490566037735849
+(40,) : 0.8490566037735849
+(50,) : 0.8490566037735849
+(60,) : 0.8490566037735849
+(10, 20) : 0.7735849056603774
+(20, 10) : 0.7735849056603774
+(20, 20) : 0.7735849056603774
+(30, 10) : 0.7735849056603774
+(20, 30) : 0.7735849056603774
+(10, 10, 10) : 0.7735849056603774
+(20, 10, 20) : 0.7735849056603774
+(20, 20, 20) : 0.7735849056603774
+(15, 15, 15, 15) : 0.7735849056603774
+</code></pre><h3 class="mume-header" id="%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95">使用默认参数进行测试</h3>
+
+<p>不使用我们指定的参数，而直接使用 <code>MLPClassifier</code> 自带的默认参数：</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">from</span> sklearn <span class="token keyword">import</span> neural_network
+nets <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">,</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> net_struct <span class="token keyword">in</span> nets<span class="token punctuation">:</span>
+    clf <span class="token operator">=</span> neural_network<span class="token punctuation">.</span>MLPClassifier<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    clf<span class="token punctuation">.</span>fit<span class="token punctuation">(</span>train_X<span class="token punctuation">,</span> train_y<span class="token punctuation">)</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>f<span class="token string">'{net_struct} : {sum(clf.predict(test_X)==test_y)/len(test_y)}'</span><span class="token punctuation">)</span>
+</pre><p>结果为：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>(10,) : 0.9056603773584906
+(20,) : 0.9056603773584906
+(30,) : 0.9056603773584906
+(40,) : 0.9056603773584906
+(50,) : 0.8867924528301887
+(60,) : 0.8867924528301887
+(10, 20) : 0.9245283018867925
+(20, 10) : 0.9056603773584906
+(20, 20) : 0.9056603773584906
+(30, 10) : 0.9245283018867925
+(20, 30) : 0.9245283018867925
+(10, 10, 10) : 0.8867924528301887
+(20, 10, 20) : 0.9056603773584906
+(20, 20, 20) : 0.8867924528301887
+(15, 15, 15, 15) : 0.8867924528301887
+</code></pre><p>可以看出，要比我们指定的参数好一些。</p>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%AE%9E%E9%AA%8C">神经网络实验</a>
+<ul>
+<li><a href="#%E5%AE%9E%E9%AA%8C%E6%8F%8F%E8%BF%B0">实验描述</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86">数据预处理</a>
+<ul>
+<li><a href="#%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E9%9B%86">加载数据集</a></li>
+<li><a href="#%E5%88%A4%E6%96%AD%E6%95%B0%E6%8D%AE%E9%9B%86%E6%98%AF%E5%90%A6%E6%9C%89%E7%BC%BA%E5%A4%B1%E5%80%BC">判断数据集是否有缺失值</a></li>
+<li><a href="#%E5%A4%84%E7%90%86%E6%96%87%E6%9C%AC%E5%9E%8B%E6%95%B0%E6%8D%AE">处理文本型数据</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E6%89%80%E6%9C%89%E5%80%BC%E7%9B%B8%E7%AD%89%E7%9A%84%E5%88%97">删除所有值相等的列</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E6%A0%87%E5%87%86%E5%8C%96">数据标准化</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8-pca-%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%99%8D%E7%BB%B4">使用 PCA 对数据进行降维</a></li>
+<li><a href="#%E5%88%92%E5%88%86%E8%AE%AD%E7%BB%83%E9%9B%86%E5%92%8C%E6%B5%8B%E8%AF%95%E9%9B%86">划分训练集和测试集</a></li>
+</ul>
+</li>
+<li><a href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%AD%E7%BB%83">神经网络训练</a>
+<ul>
+<li><a href="#%E8%B6%85%E5%8F%82%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9">超参数的选择</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E9%80%89%E5%AE%9A%E7%9A%84%E8%B6%85%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E8%AE%AD%E7%BB%83">使用选定的超参数进行训练</a></li>
+</ul>
+</li>
+<li><a href="#%E4%BD%BF%E7%94%A8sklearn%E4%B8%AD%E7%9A%84%E5%BA%93%E8%BF%9B%E8%A1%8C%E8%AE%AD%E7%BB%83">使用sklearn中的库进行训练</a>
+<ul>
+<li><a href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86%E4%B8%8E%E5%88%92%E5%88%86">数据预处理与划分</a></li>
+<li><a href="#%E6%9E%84%E5%BB%BA%E4%B8%8E%E4%B8%8A%E8%BF%B0%E7%9A%84%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">构建与上述的神经网络</a></li>
+<li><a href="#%E8%AE%AD%E7%BB%83%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C">训练与测试神经网络</a></li>
+<li><a href="#%E6%B5%8B%E8%AF%95%E5%A4%9A%E7%BB%84">测试多组</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0%E8%BF%9B%E8%A1%8C%E6%B5%8B%E8%AF%95">使用默认参数进行测试</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>

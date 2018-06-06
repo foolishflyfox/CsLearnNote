@@ -165,7 +165,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-03 : 221. Maximal Square 数学 最大方阵](https://foolishflyfox.github.io/CsLearnNote/LeetCode/221_MaximalSquare.html)
 
-- [2018-06-04 : 224. Basic Calculator 字符串表达式计算 逆波兰式](/LeetCode/224_BasicCalculator.html)
+- [2018-06-04 : 224. Basic Calculator 字符串表达式计算 逆波兰式](https://foolishflyfox.github.io/CsLearnNote/LeetCode/224_BasicCalculator.html)
+
+- [2018-06-05 : 144. Binary Tree Preorder Traversal 非递归遍历树](https://foolishflyfox.github.io/CsLearnNote/LeetCode/144_BinaryTreePreorderTraversal.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)

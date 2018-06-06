@@ -277,7 +277,10 @@ code.language-yaml {
          array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
        dtype<span class="token operator">=</span><span class="token string">'&lt;U4'</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span> dtype<span class="token operator">=</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">}</span>
 </pre><p>分离出其中的输入和输出，并分为训练集(50000个)、验证集(10000个)、测试集(10000)个：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python">mnist_x <span class="token operator">=</span> mnist<span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">]</span>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> random
+
+mnist_x <span class="token operator">=</span> mnist<span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">]</span>
 mnist_y <span class="token operator">=</span> mnist<span class="token punctuation">[</span><span class="token string">'label'</span><span class="token punctuation">]</span>
 mnist_set <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">70000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
