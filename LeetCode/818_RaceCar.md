@@ -175,7 +175,7 @@ class Solution:
         print(ret_actions)
         return len(ret_actions)
 ```
-该算法比前面的块很多了，但是在 LeetCode 中测试的时候，在目标值为 5478 的时候还是超时了。
+该算法比前面的快很多了，但是在 LeetCode 中测试的时候，在目标值为 5478 的时候还是超时了。
 
 ## Solution5 -- 剪枝
 

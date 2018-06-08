@@ -316,6 +316,11 @@ class Network(object):
 
 我们使用 k-折交叉验证的方式 计算超参数对应的泛化准确率，K-折交叉验证函数的代码如下：
 ```python
+# net_struct 神经网络结构
+# data_x, data_y 训练集数据
+# eta 学习率
+# epoches 训练次数
+# n_fold 折数
 # 返回每次训练后 K 折的训练集上的准确率和验证集上的准确率
 def kfold(net_struct, data_x, data_y, eta, epoches ,n_fold=10):
     train_accuracies = []
@@ -398,7 +403,7 @@ plt.show()
 结果为：
 ![](/homework/CalcAI/assets/test_figure.png)
 
-最终的泛化准确率为 81% ，结果比较低。
+最终的泛化准确率为 80% 左右 ，结果比较低。
 
 ## 使用sklearn中的库进行训练
 

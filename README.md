@@ -36,10 +36,10 @@
     - [SVD 数据降维](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/SVD.html)
 - 搜索问题 
     - [BFS / DFS / Dijkstra / Floyd](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Search.html)
-    - [爬山法/模拟退火/重启爬山](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
+    - [递归/爬山法/BFS/图搜索/剪枝](https://foolishflyfox.github.io/CsLearnNote/LeetCode/818_RaceCar.html)
     - [爬山法/局部束搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
     - [A\* 算法-8数码问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/EightDigit.html)
-    - [超越经典搜索](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
+    - [超越经典搜索——重启爬山/模拟退火](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
     - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
     - [对抗搜索 - 五子棋游戏对抗](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AdversarialSearch.html)
 - [笔记](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Note.html)
@@ -169,7 +169,17 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-05 : 144. Binary Tree Preorder Traversal 非递归遍历树](https://foolishflyfox.github.io/CsLearnNote/LeetCode/144_BinaryTreePreorderTraversal.html)
 
+- [2018-06-06 : 763. Partition Labels](https://foolishflyfox.github.io/CsLearnNote/LeetCode/763_PartitionLabels.html)
+
+- [2018-06-07 : 372. Super pow](https://foolishflyfox.github.io/LeetCode/372_SuperPow.html)
+
+- [2018-06-08 : 515. Find Largest Value in Each Tree Row 树的BFS遍历](https://foolishflyfox.github.io/LeetCode/515_FindLargestValueinEachTreeRow.html)
+
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
 - [人工智能 作业](https://foolishflyfox.github.io/CsLearnNote/homework/CalcAI/calc_AI_HW1.html)
+
+- [ann_experiment.pptx](/ppt/ann_experiment.pptx)
+- [ann_experiment.pdf](/ppt/ann_experiment.pdf)
+- [ann_experiment.ppt](/ppt/ann_experiment.pptx)

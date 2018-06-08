@@ -238,11 +238,14 @@ code.language-yaml {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview   ">
-      <p><image src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></image></p>
+      <p><img src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></p>
 <p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
-<span class="vice_title">--Forever young, forever weep.<span></span></span></span></span></p>
+<span class="vice_title">--Forever young, forever weeping.<span></span></span></span></span></p>
 <hr class="title_separator">
 <br>
+<blockquote>
+<p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
+</blockquote>
 <h1 class="mume-header" id="818-race-car">818. Race Car</h1>
 
 <blockquote>
@@ -400,7 +403,7 @@ code.language-yaml {
                         frontier<span class="token punctuation">.</span>append<span class="token punctuation">(</span>action<span class="token punctuation">)</span>
         <span class="token keyword">print</span><span class="token punctuation">(</span>ret_actions<span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>ret_actions<span class="token punctuation">)</span>
-</pre><p>该算法比前面的块很多了，但是在 LeetCode 中测试的时候，在目标值为 5478 的时候还是超时了。</p>
+</pre><p>该算法比前面的快很多了，但是在 LeetCode 中测试的时候，在目标值为 5478 的时候还是超时了。</p>
 <h2 class="mume-header" id="solution5-%E5%89%AA%E6%9E%9D">Solution5 -- 剪枝</h2>
 
 <p>去除了位置<code>pos</code>与<code>target相反的状态</code>，以及 <code>speed</code> &gt; <code>target*2</code> 的状态，最终通过测试的代码为：</p>
