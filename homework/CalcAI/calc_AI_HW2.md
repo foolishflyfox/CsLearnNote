@@ -191,9 +191,11 @@ Step7:end for
 代码执行命令为：`python optimizer.py`
 
 以 F1 为基准的优化曲线为：
-![](assets/f1.png)
+![](assets/f1.png) 
 
 其 10 次试验，每次迭代500次的数据存在于 code 文件夹下以时间为名的 xls 文件中，其内容如：
 ![](assets/bbi_data.png)
 
 其中每一列都是一次独立的实验。
+
+

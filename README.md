@@ -40,7 +40,7 @@
     - [爬山法/局部束搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
     - [A\* 算法-8数码问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/EightDigit.html)
     - [超越经典搜索——重启爬山/模拟退火](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
-    - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
+    - [枚举法/爬山法/局部束搜索/遗传算法/禁忌表算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
     - [对抗搜索 - 五子棋游戏对抗](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AdversarialSearch.html)
 - [笔记](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Note.html)
 
@@ -174,6 +174,14 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-06-07 : 372. Super pow](https://foolishflyfox.github.io/LeetCode/372_SuperPow.html)
 
 - [2018-06-08 : 515. Find Largest Value in Each Tree Row 树的BFS遍历](https://foolishflyfox.github.io/LeetCode/515_FindLargestValueinEachTreeRow.html)
+
+- [2018-06-09 : 153. Find Minimum in Rotated Sorted Array 二分查找](https://foolishflyfox.github.io/LeetCode/153_FindMinimumInRotatedSortedArray.html)
+
+- [2018-06-10 : 462. Minimum Moves to Equal Array Elements II 数学-离散积分](https://foolishflyfox.github.io/LeetCode/462_MinimumMovesToEqualArrayElementsII.html)
+
+- [2018-06-11 : 492. Construct the Rectangle 数学-分布](https://foolishflyfox.github.io/LeetCode/492_ConstructTheRectangle.html)
+
+- [2018-06-12 : 332. Reconstruct Itinerary](https://foolishflyfox.github.io/LeetCode/332_ReconstructItinerary.html) **递归动态规划、堆**
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
