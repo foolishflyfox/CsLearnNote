@@ -345,7 +345,7 @@ Another possible reconstruction is <code>[&quot;JFK&quot;,&quot;SFO&quot;,&quot;
         route <span class="token operator">=</span> deque<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
         cur_city <span class="token operator">=</span> <span class="token string">'JFK'</span>
         self<span class="token punctuation">.</span>dfs<span class="token punctuation">(</span>itinerary<span class="token punctuation">,</span> cur_city<span class="token punctuation">,</span> route<span class="token punctuation">)</span>
-        <span class="token keyword">return</span> route
+        <span class="token keyword">return</span> <span class="token builtin">list</span><span class="token punctuation">(</span>route<span class="token punctuation">)</span>
 </pre><h3 class="mume-header" id="solution-3">Solution-3</h3>
 
 <p>递归+技巧+堆</p>
@@ -370,6 +370,41 @@ Another possible reconstruction is <code>[&quot;JFK&quot;,&quot;SFO&quot;,&quot;
             next_city <span class="token operator">=</span> heapq<span class="token punctuation">.</span>heappop<span class="token punctuation">(</span>edges<span class="token punctuation">[</span>city<span class="token punctuation">]</span><span class="token punctuation">)</span>
             self<span class="token punctuation">.</span>dfs<span class="token punctuation">(</span>order<span class="token punctuation">,</span> edges<span class="token punctuation">,</span> next_city<span class="token punctuation">)</span>
         order<span class="token punctuation">.</span>appendleft<span class="token punctuation">(</span>city<span class="token punctuation">)</span>
+</pre><h2 class="mume-header" id="%E5%A0%86%E6%93%8D%E4%BD%9C%E7%9A%84%E5%AE%9E%E7%8E%B0">堆操作的实现</h2>
+
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># heap is also called priority queue</span>
+<span class="token comment"># The code below is a minimum heap</span>
+<span class="token keyword">def</span> <span class="token function">heappush</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    a<span class="token punctuation">.</span>append<span class="token punctuation">(</span>v<span class="token punctuation">)</span>
+    cur_index <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span>
+    <span class="token keyword">while</span> cur_index<span class="token punctuation">:</span>
+        parent <span class="token operator">=</span> <span class="token punctuation">(</span>cur_index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">//</span><span class="token number">2</span><span class="token operator">-</span><span class="token number">1</span>
+        <span class="token keyword">if</span> a<span class="token punctuation">[</span>parent<span class="token punctuation">]</span> <span class="token operator">></span> a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            a<span class="token punctuation">[</span>parent<span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span>parent<span class="token punctuation">]</span>
+            cur_index <span class="token operator">=</span> parent
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+
+<span class="token keyword">def</span> <span class="token function">heappop</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token boolean">None</span>
+    ret <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token keyword">del</span> a<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span>
+    cur_index <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">while</span> cur_index<span class="token operator">*</span><span class="token number">2</span><span class="token operator">+</span><span class="token number">1</span> <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        lchild <span class="token operator">=</span> cur_index <span class="token operator">*</span> <span class="token number">2</span> <span class="token operator">+</span> <span class="token number">1</span>
+        rchild <span class="token operator">=</span> lchild <span class="token operator">+</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>a<span class="token punctuation">[</span>lchild<span class="token punctuation">]</span><span class="token operator">>=</span>a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span> <span class="token operator">and</span> 
+            <span class="token punctuation">(</span>rchild<span class="token operator">>=</span><span class="token builtin">len</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">or</span> a<span class="token punctuation">[</span>rchild<span class="token punctuation">]</span><span class="token operator">>=</span>a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">break</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> rchild <span class="token operator">>=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">or</span> a<span class="token punctuation">[</span>lchild<span class="token punctuation">]</span><span class="token operator">&lt;=</span>a<span class="token punctuation">[</span>rchild<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span>lchild<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>lchild<span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span>
+                cur_index <span class="token operator">=</span> lchild
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span>rchild<span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span>rchild<span class="token punctuation">]</span><span class="token punctuation">,</span> a<span class="token punctuation">[</span>cur_index<span class="token punctuation">]</span>
+                cur_index <span class="token operator">=</span> rchild
 </pre>
       </div>
       <div class="md-sidebar-toc"><ul>
@@ -382,6 +417,7 @@ Another possible reconstruction is <code>[&quot;JFK&quot;,&quot;SFO&quot;,&quot;
 <li><a href="#solution-3">Solution-3</a></li>
 </ul>
 </li>
+<li><a href="#%E5%A0%86%E6%93%8D%E4%BD%9C%E7%9A%84%E5%AE%9E%E7%8E%B0">堆操作的实现</a></li>
 </ul>
 </li>
 </ul>

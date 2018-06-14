@@ -181,7 +181,11 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-11 : 492. Construct the Rectangle 数学-分布](https://foolishflyfox.github.io/LeetCode/492_ConstructTheRectangle.html)
 
-- [2018-06-12 : 332. Reconstruct Itinerary](https://foolishflyfox.github.io/LeetCode/332_ReconstructItinerary.html) **递归动态规划、堆**
+- [2018-06-12 : 332. Reconstruct Itinerary](https://foolishflyfox.github.io/LeetCode/332_ReconstructItinerary.html) **递归动态规划、堆/优先队列、堆操作实现**
+
+- [2018-06-13 : 241. Different Ways to Add Parentheses](https://foolishflyfox.github.io/LeetCode/241_DifferentWaysToAddParentheses.html) **中序遍历构造二叉树 / 递归**
+
+- [2018-06-14 : 220. Contains Duplicate III 二分查找、插入、删除](https://foolishflyfox.github.io/LeetCode/220_ContainsDuplicateIII.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)

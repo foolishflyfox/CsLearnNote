@@ -108,7 +108,7 @@ class Solution:
         route = deque([])
         cur_city = 'JFK'
         self.dfs(itinerary, cur_city, route)
-        return route
+        return list(route)
 ```
 
 ### Solution-3
@@ -138,4 +138,43 @@ class Solution:
             self.dfs(order, edges, next_city)
         order.appendleft(city)
 ```
+
+## 堆操作的实现
+
+```python
+# heap is also called priority queue
+# The code below is a minimum heap
+def heappush(a, v):
+    a.append(v)
+    cur_index = len(a)-1
+    while cur_index:
+        parent = (cur_index+1)//2-1
+        if a[parent] > a[cur_index]:
+            a[parent], a[cur_index] = a[cur_index], a[parent]
+            cur_index = parent
+        else:
+            break
+
+def heappop(a):
+    if len(a):
+        return None
+    ret = a[0]
+    a[0] = a[-1]
+    del a[-1]
+    cur_index = 0
+    while cur_index*2+1 < len(a):
+        lchild = cur_index * 2 + 1
+        rchild = lchild + 1
+        if (a[lchild]>=a[cur_index] and 
+            (rchild>=len(a) or a[rchild]>=a[cur_index])):
+            break
+        else:
+            if rchild >= len(a) or a[lchild]<=a[rchild]:
+                a[cur_index], a[lchild] = a[lchild], a[cur_index]
+                cur_index = lchild
+            else:
+                a[cur_index], a[rchild] = a[rchild], a[cur_index]
+                cur_index = rchild
+```
+
 
