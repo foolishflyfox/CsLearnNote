@@ -171,21 +171,21 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-06 : 763. Partition Labels](https://foolishflyfox.github.io/CsLearnNote/LeetCode/763_PartitionLabels.html)
 
-- [2018-06-07 : 372. Super pow](https://foolishflyfox.github.io/LeetCode/372_SuperPow.html)
+- [2018-06-07 : 372. Super pow](https://foolishflyfox.github.io/CsLearnNote/LeetCode/372_SuperPow.html)
 
-- [2018-06-08 : 515. Find Largest Value in Each Tree Row 树的BFS遍历](https://foolishflyfox.github.io/LeetCode/515_FindLargestValueinEachTreeRow.html)
+- [2018-06-08 : 515. Find Largest Value in Each Tree Row 树的BFS遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/515_FindLargestValueinEachTreeRow.html)
 
-- [2018-06-09 : 153. Find Minimum in Rotated Sorted Array 二分查找](https://foolishflyfox.github.io/LeetCode/153_FindMinimumInRotatedSortedArray.html)
+- [2018-06-09 : 153. Find Minimum in Rotated Sorted Array 二分查找](https://foolishflyfox.github.io/CsLearnNote/LeetCode/153_FindMinimumInRotatedSortedArray.html)
 
-- [2018-06-10 : 462. Minimum Moves to Equal Array Elements II 数学-离散积分](https://foolishflyfox.github.io/LeetCode/462_MinimumMovesToEqualArrayElementsII.html)
+- [2018-06-10 : 462. Minimum Moves to Equal Array Elements II 数学-离散积分](https://foolishflyfox.github.io/CsLearnNote/LeetCode/462_MinimumMovesToEqualArrayElementsII.html)
 
-- [2018-06-11 : 492. Construct the Rectangle 数学-分布](https://foolishflyfox.github.io/LeetCode/492_ConstructTheRectangle.html)
+- [2018-06-11 : 492. Construct the Rectangle 数学-分布](https://foolishflyfox.github.io/CsLearnNote/LeetCode/492_ConstructTheRectangle.html)
 
-- [2018-06-12 : 332. Reconstruct Itinerary](https://foolishflyfox.github.io/LeetCode/332_ReconstructItinerary.html) **递归动态规划、堆/优先队列、堆操作实现**
+- [2018-06-12 : 332. Reconstruct Itinerary](https://foolishflyfox.github.io/CsLearnNote/LeetCode/332_ReconstructItinerary.html) **递归动态规划、堆/优先队列、堆操作实现**
 
-- [2018-06-13 : 241. Different Ways to Add Parentheses](https://foolishflyfox.github.io/LeetCode/241_DifferentWaysToAddParentheses.html) **中序遍历构造二叉树 / 递归**
+- [2018-06-13 : 241. Different Ways to Add Parentheses](https://foolishflyfox.github.io/CsLearnNote/LeetCode/241_DifferentWaysToAddParentheses.html) **中序遍历构造二叉树 / 递归**
 
-- [2018-06-14 : 220. Contains Duplicate III 二分查找、插入、删除](https://foolishflyfox.github.io/LeetCode/220_ContainsDuplicateIII.html)
+- [2018-06-14 : 220. Contains Duplicate III 二分查找、插入、删除](https://foolishflyfox.github.io/CsLearnNote/LeetCode/220_ContainsDuplicateIII.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
