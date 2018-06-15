@@ -187,6 +187,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-14 : 220. Contains Duplicate III 二分查找、插入、删除](https://foolishflyfox.github.io/CsLearnNote/LeetCode/220_ContainsDuplicateIII.html)
 
+- [2018-06-15 : 399. Evaluate Division 图的存储、遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/399_EvaluateDivision.html)
+
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
