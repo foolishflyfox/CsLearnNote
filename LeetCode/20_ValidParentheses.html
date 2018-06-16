@@ -277,7 +277,7 @@ code.language-yaml {
 <strong>Output</strong>: <code>true</code></p>
 <h2 class="mume-header" id="solution">Solution</h2>
 
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">isValid</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">"""
         :type s: str
@@ -307,7 +307,22 @@ code.language-yaml {
             <span class="token keyword">if</span> func_d<span class="token punctuation">[</span>c<span class="token punctuation">]</span><span class="token punctuation">(</span>stack<span class="token punctuation">)</span><span class="token operator">==</span><span class="token boolean">False</span><span class="token punctuation">:</span>
                 <span class="token keyword">return</span> <span class="token boolean">False</span>
         <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>stack<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span>
-</pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>一种更加简洁的实现：</p>
+<pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">isValid</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type s: str
+        :rtype: bool
+        """</span>
+        c_dict <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">'('</span><span class="token punctuation">:</span><span class="token string">')'</span><span class="token punctuation">,</span> <span class="token string">'['</span><span class="token punctuation">:</span><span class="token string">']'</span><span class="token punctuation">,</span> <span class="token string">'{'</span><span class="token punctuation">:</span><span class="token string">'}'</span><span class="token punctuation">}</span>
+        stack <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> c <span class="token keyword">in</span> s<span class="token punctuation">:</span>
+            <span class="token keyword">if</span> c <span class="token keyword">in</span> c_dict<span class="token punctuation">:</span>
+                stack<span class="token punctuation">.</span>append<span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+            <span class="token keyword">elif</span> <span class="token builtin">len</span><span class="token punctuation">(</span>stack<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span> <span class="token operator">or</span> c_dict<span class="token punctuation">[</span>stack<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">!=</span>c<span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token boolean">False</span>
+        <span class="token keyword">return</span> <span class="token builtin">len</span><span class="token punctuation">(</span>stack<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre>
       </div>
       <div class="md-sidebar-toc"><ul>
 <li><a href="#20-valid-parentheses">20. Valid Parentheses</a>

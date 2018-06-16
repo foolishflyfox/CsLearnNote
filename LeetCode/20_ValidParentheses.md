@@ -41,7 +41,7 @@ An input string is valid if:
 
 ## Solution
 
-```python
+```python {class=line-numbers}
 class Solution(object):
     def isValid(self, s):
         """
@@ -70,6 +70,24 @@ class Solution(object):
             func_d[c] = popc_factory(c)
         for c in s:
             if func_d[c](stack)==False:
+                return False
+        return len(stack)==0
+```
+
+一种更加简洁的实现：
+```python {class=line-numbers}
+class Solution(object):
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        c_dict = {'(':')', '[':']', '{':'}'}
+        stack = []
+        for c in s:
+            if c in c_dict:
+                stack.append(c)
+            elif len(stack)==0 or c_dict[stack.pop()]!=c:
                 return False
         return len(stack)==0
 ```
