@@ -103,6 +103,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-29 : 770. Basic Calculator IV](https://foolishflyfox.github.io/CsLearnNote/LeetCode/770_BasicCalculatorIV.html)<code class="local_r">hard hard</code>
 
+- [2018-05-03 : 20. Valid Parentheses](https://foolishflyfox.github.io/CsLearnNote/LeetCode/20_ValidParentheses.html)**工厂模式的使用**
+
 - [2018-05-04 : 417. Pacific Atlantic Water Flow 扩散策略](https://foolishflyfox.github.io/CsLearnNote/LeetCode/417_PacificAtlanticWaterFlow.html)
 
 - [2018-05-05 : 328. Odd Even Linked List 单项链表整理-Python](https://foolishflyfox.github.io/CsLearnNote/LeetCode/328_OddEvenLinkedList.html)
@@ -188,6 +190,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-06-14 : 220. Contains Duplicate III 二分查找、插入、删除](https://foolishflyfox.github.io/CsLearnNote/LeetCode/220_ContainsDuplicateIII.html)
 
 - [2018-06-15 : 399. Evaluate Division 图的存储、遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/399_EvaluateDivision.html)
+
+- [2018-06-16 : 29. Divide Two Integers 位操作/取反/判断符号](https://foolishflyfox.github.io/CsLearnNote/LeetCode/29_DivideTwoIntegers.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
