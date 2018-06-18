@@ -103,6 +103,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-29 : 770. Basic Calculator IV](https://foolishflyfox.github.io/CsLearnNote/LeetCode/770_BasicCalculatorIV.html)<code class="local_r">hard hard</code>
 
+- [2018-05-02 : 35. Search Insert Position](https://foolishflyfox.github.io/CsLearnNote/LeetCode/35_SearchInsertPosition.html) **二分查找有序列表**
+
 - [2018-05-03 : 20. Valid Parentheses](https://foolishflyfox.github.io/CsLearnNote/LeetCode/20_ValidParentheses.html)**工厂模式的使用**
 
 - [2018-05-04 : 417. Pacific Atlantic Water Flow 扩散策略](https://foolishflyfox.github.io/CsLearnNote/LeetCode/417_PacificAtlanticWaterFlow.html)
@@ -192,6 +194,10 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-06-15 : 399. Evaluate Division 图的存储、遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/399_EvaluateDivision.html)
 
 - [2018-06-16 : 29. Divide Two Integers 位操作/取反/判断符号](https://foolishflyfox.github.io/CsLearnNote/LeetCode/29_DivideTwoIntegers.html)
+
+- [2018-06-17 : 729. My Calendar I 构建树、递归、二分查找、元组比较](https://foolishflyfox.github.io/CsLearnNote/LeetCode/729_MyCalendarI.html)
+
+- [2018-06-18 : 73x: MyCalendar 二分和枚举比较/从底层生成](https://foolishflyfox.github.io/CsLearnNote/LeetCode/73x_MyCalendar2_3.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
