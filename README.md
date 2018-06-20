@@ -201,6 +201,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-19 : 100. Same Tree 树的比较](https://foolishflyfox.github.io/CsLearnNote/LeetCode/100_SameTree.html)
 
+- [2018-06-20 : 275. H-Index II 二分查找的变形、时间复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/275_H-IndexII.html)
+
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
