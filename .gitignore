@@ -1,0 +1,19 @@
+#.gitignore
+
+# thie directory use to store temporary files
+TempNote/*
+.vscode
+/*.html
+
+TempNote/md_graph_demo.md
+TempNote/ai_homework.md
+!TempNote/*.html
+!TempNote/image
+
+.DS_Store
+*/.DS_Store
+Python/*.py
+Python/__*
+Python/*.out
+
+
