@@ -2,7 +2,7 @@
 
 # thie directory use to store temporary files
 TempNote/*
-.vscode
+#.vscode
 /*.html
 
 TempNote/md_graph_demo.md
