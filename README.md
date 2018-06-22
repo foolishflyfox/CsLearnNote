@@ -211,6 +211,3 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
 - [人工智能 作业](https://foolishflyfox.github.io/CsLearnNote/homework/CalcAI/calc_AI_HW1.html)
 
-- [ann_experiment.pptx](/ppt/ann_experiment.pptx)
-- [ann_experiment.pdf](/ppt/ann_experiment.pdf)
-- [ann_experiment.ppt](/ppt/ann_experiment.pptx)
