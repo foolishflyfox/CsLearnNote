@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <title>235_LCAofBST</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+
+      <style> 
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+.markdown-preview.markdown-preview code.red {
+  background-color: #f8f2f4;
+  color: #d40a32;
+}
+.markdown-preview.markdown-preview code.green {
+  background-color: #eafef1;
+  color: #089308;
+}
+.markdown-preview.markdown-preview #maste_title {
+  color: #00bfff;
+  font-size: 50px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview .vice_title {
+  color: #d0a3d0;
+  font-size: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+.markdown-preview.markdown-preview hr.title_separator {
+  border: 0;
+  height: 0;
+  /* Firefox... */
+  box-shadow: 0 0 10px 1px deepskyblue;
+}
+ 
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview   ">
+      <p><img src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></p>
+<p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
+<span class="vice_title">--Forever young, forever weeping.<span></span></span></span></span></p>
+<hr class="title_separator">
+<br>
+<blockquote>
+<p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
+</blockquote>
+<h1 class="mume-header" id="235-lowest-common-ancestor-of-a-binary-search-tree">235. Lowest Common Ancestor of a Binary Search Tree</h1>
+
+<blockquote>
+<p><a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/">https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/description/</a></p>
+</blockquote>
+<h2 class="mume-header" id="description">Description</h2>
+
+<p>Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.</p>
+<p>According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow <strong>a node to be a descendant of itself</strong>).”</p>
+<p>Given binary search tree:  <code>root = [6,2,8,0,4,7,9,null,null,3,5]</code></p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>        _______6______
+       /              \
+    ___2__          ___8__
+   /      \        /      \
+   0      _4       7       9
+         /  \
+         3   5
+</code></pre><p><strong>Example 1</strong>:<br>
+<strong>Input</strong>: <code>root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8</code><br>
+<strong>Output</strong>: <code>6</code><br>
+<strong>Explanation</strong>: The LCA of nodes 2 and 8 is 6.</p>
+<p><strong>Example 2</strong>:<br>
+<strong>Input</strong>: <code>root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4</code><br>
+<strong>Output</strong>: <code>2</code><br>
+<strong>Explanation</strong>: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.</p>
+<h2 class="mume-header" id="solution">Solution</h2>
+
+<h3 class="mume-header" id="solution-1">Solution-1</h3>
+
+<p>建立双向二叉树（可以根据子节点找到父节点），之后寻找共同的父节点：</p>
+<pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token comment"># Definition for a binary tree node.</span>
+<span class="token comment"># class TreeNode:</span>
+<span class="token comment">#     def __init__(self, x):</span>
+<span class="token comment">#         self.val = x</span>
+<span class="token comment">#         self.left = None</span>
+<span class="token comment">#         self.right = None</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">lowestCommonAncestor</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """</span>
+        <span class="token comment"># 双向二叉树节点定义</span>
+        <span class="token keyword">class</span> <span class="token class-name">BiNode</span><span class="token punctuation">:</span>
+            <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> x<span class="token punctuation">,</span> parent<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                self<span class="token punctuation">.</span>val <span class="token operator">=</span> x
+                self<span class="token punctuation">.</span>parent <span class="token operator">=</span> parent
+                self<span class="token punctuation">.</span>left <span class="token operator">=</span> <span class="token boolean">None</span>
+                self<span class="token punctuation">.</span>right <span class="token operator">=</span> <span class="token boolean">None</span>
+                self<span class="token punctuation">.</span>origin_node <span class="token operator">=</span> <span class="token boolean">None</span>
+        <span class="token comment"># 递归创建双向二叉树</span>
+        <span class="token keyword">def</span> <span class="token function">create_bitree</span><span class="token punctuation">(</span>tree<span class="token punctuation">,</span> parent<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> tree<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token boolean">None</span>
+            <span class="token keyword">nonlocal</span> bi_p<span class="token punctuation">,</span> bi_q
+            binode <span class="token operator">=</span> BiNode<span class="token punctuation">(</span>tree<span class="token punctuation">.</span>val<span class="token punctuation">,</span> parent<span class="token punctuation">)</span>
+            binode<span class="token punctuation">.</span>left <span class="token operator">=</span> create_bitree<span class="token punctuation">(</span>tree<span class="token punctuation">.</span>left<span class="token punctuation">,</span> binode<span class="token punctuation">)</span>
+            binode<span class="token punctuation">.</span>right <span class="token operator">=</span> create_bitree<span class="token punctuation">(</span>tree<span class="token punctuation">.</span>right<span class="token punctuation">,</span> binode<span class="token punctuation">)</span>
+            binode<span class="token punctuation">.</span>origin_node <span class="token operator">=</span> tree
+            <span class="token keyword">if</span> tree<span class="token punctuation">.</span>val<span class="token operator">==</span>p<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+                bi_p <span class="token operator">=</span> binode
+            <span class="token keyword">if</span> tree<span class="token punctuation">.</span>val<span class="token operator">==</span>q<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+                bi_q <span class="token operator">=</span> binode
+            <span class="token keyword">return</span> binode
+        bi_p <span class="token operator">=</span> <span class="token boolean">None</span>
+        bi_q <span class="token operator">=</span> <span class="token boolean">None</span>
+        create_bitree<span class="token punctuation">(</span>root<span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+        <span class="token comment"># 寻找共同的父节点</span>
+        p_chain <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        q_chain <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">while</span> bi_p<span class="token punctuation">:</span>
+            p_chain<span class="token punctuation">.</span>append<span class="token punctuation">(</span>bi_p<span class="token punctuation">)</span>
+            bi_p <span class="token operator">=</span> bi_p<span class="token punctuation">.</span>parent
+        <span class="token keyword">while</span> bi_q<span class="token punctuation">:</span>
+            q_chain<span class="token punctuation">.</span>append<span class="token punctuation">(</span>bi_q<span class="token punctuation">)</span>
+            bi_q <span class="token operator">=</span> bi_q<span class="token punctuation">.</span>parent
+        ret <span class="token operator">=</span> <span class="token boolean">None</span>
+        <span class="token keyword">for</span> n1<span class="token punctuation">,</span> n2 <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>p_chain<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> q_chain<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> n1<span class="token punctuation">.</span>val<span class="token operator">==</span>n2<span class="token punctuation">.</span>val<span class="token punctuation">:</span>
+                ret <span class="token operator">=</span> n1
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
+        <span class="token keyword">return</span> ret
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>上述代码在 LeetCode 上的运行时间为：184 ms；</p>
+<h3 class="mume-header" id="solution-2">Solution-2</h3>
+
+<p>上述的代码还需要建立一棵双向二叉树，比较麻烦。我们想到，完全二叉树的静态表示时：id=1 表示根节点，id=2 表示根节点的左子节点，...</p>
+<p>二叉树：</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>        _______6______
+       /              \
+    ___2__          ___8__
+   /      \        /      \
+   0      _4       7       9
+         /  \
+         3   5
+</code></pre><p>的 id 为：</p>
+<table>
+<thead>
+<tr>
+<th>节点值</th>
+<th>id号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>3</td>
+</tr>
+<tr>
+<td>0</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>6</td>
+</tr>
+<tr>
+<td>9</td>
+<td>7</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10</td>
+</tr>
+<tr>
+<td>5</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+<p>即一个节点的 id=x，则其父节点 id 为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>i</mi><mi>n</mi><mi>t</mi><mo>(</mo><mi>x</mi><mi mathvariant="normal">/</mi><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">int(x/2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit">i</span><span class="mord mathit">n</span><span class="mord mathit">t</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord">/</span><span class="mord">2</span><span class="mclose">)</span></span></span></span> ，其左子节点的 id 为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">2x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base"><span class="mord">2</span><span class="mord mathit">x</span></span></span></span> ，右子节点的 id 为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>2</mn><mi>x</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2x+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="base"><span class="mord">2</span><span class="mord mathit">x</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mord rule" style="margin-right:0.2222222222222222em;"></span><span class="mord">1</span></span></span></span>，我们只要建立每个节点的 id 号，就很容易找到其父、子节点。代码如下：</p>
+<pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token comment"># Definition for a binary tree node.</span>
+<span class="token comment"># class TreeNode:</span>
+<span class="token comment">#     def __init__(self, x):</span>
+<span class="token comment">#         self.val = x</span>
+<span class="token comment">#         self.left = None</span>
+<span class="token comment">#         self.right = None</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">map_node</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> node<span class="token punctuation">,</span> id_num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> node<span class="token operator">==</span><span class="token boolean">None</span><span class="token punctuation">:</span><span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>value2id<span class="token punctuation">[</span>node<span class="token punctuation">.</span>val<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>id_num<span class="token punctuation">,</span> node<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>id2value<span class="token punctuation">[</span>id_num<span class="token punctuation">]</span> <span class="token operator">=</span> node<span class="token punctuation">.</span>val
+        self<span class="token punctuation">.</span>map_node<span class="token punctuation">(</span>node<span class="token punctuation">.</span>left<span class="token punctuation">,</span> <span class="token number">2</span><span class="token operator">*</span>id_num<span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>map_node<span class="token punctuation">(</span>node<span class="token punctuation">.</span>right<span class="token punctuation">,</span> <span class="token number">2</span><span class="token operator">*</span>id_num<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">lowestCommonAncestor</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> root<span class="token punctuation">,</span> p<span class="token punctuation">,</span> q<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type root: TreeNode
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: TreeNode
+        """</span>
+        self<span class="token punctuation">.</span>value2id <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>id2value <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>map_node<span class="token punctuation">(</span>root<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        p_id <span class="token operator">=</span> self<span class="token punctuation">.</span>value2id<span class="token punctuation">[</span>p<span class="token punctuation">.</span>val<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        q_id <span class="token operator">=</span> self<span class="token punctuation">.</span>value2id<span class="token punctuation">[</span>q<span class="token punctuation">.</span>val<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+        p_parents <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        q_parents <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">while</span> p_id<span class="token punctuation">:</span>
+            p_parents<span class="token punctuation">.</span>append<span class="token punctuation">(</span>p_id<span class="token punctuation">)</span>
+            p_id <span class="token operator">//=</span> <span class="token number">2</span>
+        <span class="token keyword">while</span> q_id<span class="token punctuation">:</span>
+            q_parents<span class="token punctuation">.</span>append<span class="token punctuation">(</span>q_id<span class="token punctuation">)</span>
+            q_id <span class="token operator">//=</span> <span class="token number">2</span>
+        common_id <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+        <span class="token keyword">for</span> i<span class="token punctuation">,</span>j <span class="token keyword">in</span> <span class="token builtin">zip</span><span class="token punctuation">(</span>p_parents<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> q_parents<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">:</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> i<span class="token operator">==</span>j<span class="token punctuation">:</span>
+                common_id <span class="token operator">=</span> i
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>value2id<span class="token punctuation">[</span>self<span class="token punctuation">.</span>id2value<span class="token punctuation">[</span>common_id<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>代码长度减少了一些，并且在 LeetCode 上测试的运行时间为 132ms。</p>
+
+      </div>
+      <div class="md-sidebar-toc"><ul>
+<li><a href="#235-lowest-common-ancestor-of-a-binary-search-tree">235. Lowest Common Ancestor of a Binary Search Tree</a>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#solution">Solution</a>
+<ul>
+<li><a href="#solution-1">Solution-1</a></li>
+<li><a href="#solution-2">Solution-2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+      <a id="sidebar-toc-btn">≡</a>
+    </body>
+    
+    
+    
+    
+    
+    
+    
+<script>
+
+var sidebarTOCBtn = document.getElementById('sidebar-toc-btn')
+sidebarTOCBtn.addEventListener('click', function(event) {
+  event.stopPropagation()
+  if (document.body.hasAttribute('html-show-sidebar-toc')) {
+    document.body.removeAttribute('html-show-sidebar-toc')
+  } else {
+    document.body.setAttribute('html-show-sidebar-toc', true)
+  }
+})
+</script>
+      
+  </html>
