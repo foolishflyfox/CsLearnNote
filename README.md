@@ -204,7 +204,10 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-06-20 : 275. H-Index II 二分查找的变形、时间复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/275_H-IndexII.html)
 
 - [2018-06-21 : 122. Best Time to Buy and Sell Stock II](https://foolishflyfox.github.io/CsLearnNote/LeetCode/122_BestTimeToBuyAndSellStockII.html) **递归动态规划的优劣/改进**
+
 - [2018-06-22 : 198. House Robber 递归/动态规划](https://foolishflyfox.github.io/CsLearnNote/LeetCode/198_HouseRobber.html)
+
+- [2018-06-23 : 854. K-Similar Strings](https://foolishflyfox.github.io/CsLearnNote/LeetCode/854_K-SimilarStrings.html) **启发式-动态规划**
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
