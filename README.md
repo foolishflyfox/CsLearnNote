@@ -211,6 +211,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-24 : 235. Lowest Common Ancestor of a Binary Search Tree](https://foolishflyfox.github.io/CsLearnNote/LeetCode/235_LCAofBST.html) **寻找共同父节点/双向二叉树建立/树建立索引**
 
+- [2018-06-25 230. Kth Smallest Element in a BST](https://foolishflyfox.github.io/CsLearnNote/LeetCode/230_KthSmallestElementInABST.html) **BST转链表/递归找第k小的节点**
+
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
