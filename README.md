@@ -217,7 +217,7 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-26 : 630. Course Schedule III 堆的使用/二分插入](https://foolishflyfox.github.io/CsLearnNote/LeetCode/630_CourseScheduleIII.html)
 
-- [2018-06-27 : 207. Course Schedule](https://foolishflyfox.github.io/CsLearnNote/LeetCode/207_CourseSchedule.html) **有向图/无向图的环检测**
+- [2018-06-27 : 207. Course Schedule](https://foolishflyfox.github.io/CsLearnNote/LeetCode/207_CourseSchedule.html) **有向图与无向图的环检测**
 
 
 ## 正在编写
