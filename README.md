@@ -103,6 +103,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-29 : 770. Basic Calculator IV](https://foolishflyfox.github.io/CsLearnNote/LeetCode/770_BasicCalculatorIV.html)<code class="local_r">hard hard</code>
 
+- [2018-05-01 : 42. Trapping Rain Water 递归/动态规划](https://foolishflyfox.github.io/CsLearnNote/LeetCode/42_TrappingRainWater.html) <code class="local_r">hard hard</code>
+
 - [2018-05-02 : 35. Search Insert Position](https://foolishflyfox.github.io/CsLearnNote/LeetCode/35_SearchInsertPosition.html) **二分查找有序列表**
 
 - [2018-05-03 : 20. Valid Parentheses](https://foolishflyfox.github.io/CsLearnNote/LeetCode/20_ValidParentheses.html)**工厂模式的使用**
@@ -211,7 +213,12 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-24 : 235. Lowest Common Ancestor of a Binary Search Tree](https://foolishflyfox.github.io/CsLearnNote/LeetCode/235_LCAofBST.html) **寻找共同父节点/双向二叉树建立/树建立索引**
 
-- [2018-06-25 230. Kth Smallest Element in a BST](https://foolishflyfox.github.io/CsLearnNote/LeetCode/230_KthSmallestElementInABST.html) **BST转链表/递归找第k小的节点**
+- [2018-06-25 : 230. Kth Smallest Element in a BST](https://foolishflyfox.github.io/CsLearnNote/LeetCode/230_KthSmallestElementInABST.html) **BST转链表/递归找第k小的节点**
+
+- [2018-06-26 : 630. Course Schedule III 堆的使用/二分插入](https://foolishflyfox.github.io/CsLearnNote/LeetCode/630_CourseScheduleIII.html)
+
+- [2018-06-27 : 207. Course Schedule](https://foolishflyfox.github.io/CsLearnNote/LeetCode/207_CourseSchedule.html) **有向图/无向图的环检测**
+
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
