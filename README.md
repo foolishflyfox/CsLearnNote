@@ -40,7 +40,7 @@
     - [爬山法/局部束搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/72_EditDistance.html)
     - [A\* 算法-8数码问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/EightDigit.html)
     - [超越经典搜索——重启爬山/模拟退火](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
-    - [枚举法/爬山法/局部束搜索/遗传算法/禁忌表算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
+    - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
     - [对抗搜索 - 五子棋游戏对抗](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AdversarialSearch.html)
 - [笔记](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Note.html)
 
@@ -102,6 +102,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-03-28 : 27. Remove Element 原地算法](https://foolishflyfox.github.io/CsLearnNote/LeetCode/27_RemoveElement.html)<code class="local_g">easy</code>
 
 - [2018-03-29 : 770. Basic Calculator IV](https://foolishflyfox.github.io/CsLearnNote/LeetCode/770_BasicCalculatorIV.html)<code class="local_r">hard hard</code>
+
+- [2018-03-30 : 773. Sliding Puzzle 用 BFS 搜索解决简化版8数码问题](https://foolishflyfox.github.io/CsLearnNote/LeetCode/773_SlidingPuzzle.html)
 
 - [2018-05-01 : 42. Trapping Rain Water 递归/动态规划](https://foolishflyfox.github.io/CsLearnNote/LeetCode/42_TrappingRainWater.html) <code class="local_r">hard hard</code>
 
@@ -219,6 +221,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-27 : 207. Course Schedule](https://foolishflyfox.github.io/CsLearnNote/LeetCode/207_CourseSchedule.html) **有向图与无向图的环检测**
 
+- [2018-06-28 : 391. Perfect Rectangle](https://foolishflyfox.github.io/CsLearnNote/LeetCode/391_PerfectRectangle.html) **计算机图形学/矩形重叠检测**
+
+- [2018-06-29 : 739. Daily Temperatures 栈的使用](https://foolishflyfox.github.io/CsLearnNote/LeetCode/739_DailyTemperatures.html)
 
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
