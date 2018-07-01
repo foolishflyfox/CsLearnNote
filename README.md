@@ -225,6 +225,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-29 : 739. Daily Temperatures 栈的使用](https://foolishflyfox.github.io/CsLearnNote/LeetCode/739_DailyTemperatures.html)
 
+- [2018-06-30 : 151. Reverse Words in a String](https://foolishflyfox.github.io/CsLearnNote/LeetCode/151_ReverseWordsinaString.html)
+
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
