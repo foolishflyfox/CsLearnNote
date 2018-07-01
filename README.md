@@ -227,6 +227,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-30 : 151. Reverse Words in a String](https://foolishflyfox.github.io/CsLearnNote/LeetCode/151_ReverseWordsinaString.html)
 
+- [2018-06-01 : 373. Find K Pairs with Smallest Sums](https://foolishflyfox.github.io/CsLearnNote/LeetCode/373_FindKPairswithSmallestSums.html) **堆与搜索的结合**
+
 ## 正在编写
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
