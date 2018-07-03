@@ -227,10 +227,13 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-06-30 : 151. Reverse Words in a String](https://foolishflyfox.github.io/CsLearnNote/LeetCode/151_ReverseWordsinaString.html)
 
-- [2018-06-01 : 373. Find K Pairs with Smallest Sums](https://foolishflyfox.github.io/CsLearnNote/LeetCode/373_FindKPairswithSmallestSums.html) **堆与搜索的结合**
+- [2018-07-01 : 373. Find K Pairs with Smallest Sums](https://foolishflyfox.github.io/CsLearnNote/LeetCode/373_FindKPairswithSmallestSums.html) **堆与搜索的结合**
 
-## 正在编写
+- [2018-07-02 : 813. Largest Sum of Averages 递归/图搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/813_LargestSumofAverages.html)
+
+- [2018-07-03 : 542. 01 Matrix 深度优先遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/542_01Matrix.html)
+## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
-- [人工智能 作业](https://foolishflyfox.github.io/CsLearnNote/homework/CalcAI/calc_AI_HW1.html)
+
 
