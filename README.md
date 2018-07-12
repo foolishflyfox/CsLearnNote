@@ -12,8 +12,11 @@
 # 计算机科学技术--资料汇总
 > 本项目的博客地址为：<https://foolishflyfox.github.io/CsLearnNote/>
 
-## Linux
+## 实验楼笔记
 
+- [Linux & shell](/shiyanlou/Linux/linux_shell.html)
+
+## Linux
 
 - [Linux命令备忘](https://foolishflyfox.github.io/CsLearnNote/Linux/LinuxCommand.html)
 - [用Python写常用工具](https://foolishflyfox.github.io/CsLearnNote/Linux/PythonScriptTool.html)
@@ -26,10 +29,10 @@
 - [学习人工智能的路线图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AISummary.html) （ [pdf](https://foolishflyfox.github.io/CsLearnNote/assets/AISummary.pdf) ）
 - [各种算法之间的关系图](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AlgorithmRelations.html)
 - [人工智能的定义与分类](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AIDefine.html)
-- 花书：深度学习
-    - [第五章 机器学习基础](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Deeplearning/chapter5.html)
-- 贝叶斯方法
-    - [第一章 贝叶斯推断的哲学](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BayesianMethods/Chapter1.html)
+<!-- - 花书：深度学习
+    - [第五章 机器学习基础](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Deeplearning/chapter5.html) -->
+<!-- - 贝叶斯方法
+    - [第一章 贝叶斯推断的哲学](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BayesianMethods/Chapter1.html) -->
 - 机器学习
     - [MNIST手写数字识别: ANN/sklearn-MLP/sklearn-svm](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/MnistTrain.html)
     - [函数拟合：正规方程](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/NormalEquation.html)
@@ -43,7 +46,7 @@
     - [超越经典搜索——重启爬山/模拟退火](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/BeyondClassicSearch.html)
     - [枚举法/爬山法/局部束搜索/遗传算法解决TSP问题](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/TSP_genetic.html)
     - [对抗搜索 - 五子棋游戏对抗](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/AdversarialSearch.html)
-- [笔记](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Note.html)
+<!-- - [笔记](https://foolishflyfox.github.io/CsLearnNote/AdvancedAI/Note.html) -->
 
 > 图书下载：链接: 
 > <https://pan.baidu.com/s/1jERNSyFqL_KvEW3fN1gP-A>
@@ -233,8 +236,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-07-02 : 813. Largest Sum of Averages 递归/图搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/813_LargestSumofAverages.html)
 
 - [2018-07-03 : 542. 01 Matrix 深度优先遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/542_01Matrix.html)
-## Else
+<!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
-- [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html)
+- [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
 
 
