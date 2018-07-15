@@ -236,6 +236,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-07-02 : 813. Largest Sum of Averages 递归/图搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/813_LargestSumofAverages.html)
 
 - [2018-07-03 : 542. 01 Matrix 深度优先遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/542_01Matrix.html)
+
+- [2018-07-15 : 808. Soup Servings 递归动态规划、概率推导](https://foolishflyfox.github.io/CsLearnNote/LeetCode/808_SoupServings.html)
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
