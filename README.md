@@ -59,7 +59,7 @@
 - [现代软件工程 笔记](https://foolishflyfox.github.io/CsLearnNote/GitTutorial/ModernSoftwareEngineer.html)
 
 ## Python 编程语言
-- [Python3网络爬虫开发实战 GitBook](https://legacy.gitbook.com/book/germey/python3webspider/details)
+- [Python3网络爬虫开发实战 GitBook](https://germey.gitbooks.io/python3webspider/content/)
 - [Python Imaging Library 图像处理模块的使用](https://foolishflyfox.github.io/CsLearnNote/Python/PythonPIL.html)
 - [数据可视化](https://foolishflyfox.github.io/CsLearnNote/Python/DataVisualization.html)
 - [Python cookbook](https://foolishflyfox.github.io/CsLearnNote/Python/PythonUsage.html)
@@ -238,6 +238,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-07-03 : 542. 01 Matrix 深度优先遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/542_01Matrix.html)
 
 - [2018-07-15 : 808. Soup Servings 递归动态规划、概率推导](https://foolishflyfox.github.io/CsLearnNote/LeetCode/808_SoupServings.html)
+
+- [2018-07-16 : 48. Rotate Image 计算机图形学](https://foolishflyfox.github.io/CsLearnNote/LeetCode/48_RotateImage.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
