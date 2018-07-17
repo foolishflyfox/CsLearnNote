@@ -241,6 +241,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-16 : 48. Rotate Image 计算机图形学](https://foolishflyfox.github.io/CsLearnNote/LeetCode/48_RotateImage.html)
 
+- [2018-07-17 : 46. Permutations 递归/itertool库的使用](https://foolishflyfox.github.io/CsLearnNote/LeetCode/46_Permutations.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
