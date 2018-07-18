@@ -239,6 +239,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-04 : 63. Unique Paths II 动态规划/递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/63_UniquePathsII.html)
 
+- [2018-07-05 : 869. Reordered Power of 2 字典的使用](https://foolishflyfox.github.io/LeetCode/869_ReorderedPowerof2.html)
+
 - [2018-07-15 : 808. Soup Servings 递归动态规划、概率推导](https://foolishflyfox.github.io/CsLearnNote/LeetCode/808_SoupServings.html)
 
 - [2018-07-16 : 48. Rotate Image 计算机图形学](https://foolishflyfox.github.io/CsLearnNote/LeetCode/48_RotateImage.html)
