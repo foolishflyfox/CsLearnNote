@@ -257,9 +257,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-19 : 216. Combination Sum III 迭代器combination的使用](https://foolishflyfox.github.io/CsLearnNote/LeetCode/216_CombinationSumIII.html)
 
-- [2018-07-20 : 406. Queue Reconstruction by Height 推导](https://foolishflyfox.github.io/CsLearnNot/LeetCode/406_QueueReconstructionbyHeight.html)
+- [2018-07-20 : 406. Queue Reconstruction by Height 推导](https://foolishflyfox.github.io/CsLearnNote/LeetCode/406_QueueReconstructionbyHeight.html)
 
-- [2018-07-21 : 498. Diagonal Traverse 数组遍历](https://foolishflyfox.github.io/CsLearnNot/LeetCode/498_DiagonalTraverse.html)
+- [2018-07-21 : 498. Diagonal Traverse 数组遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/498_DiagonalTraverse.html)
 
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
