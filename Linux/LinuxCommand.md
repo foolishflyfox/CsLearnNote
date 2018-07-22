@@ -46,3 +46,85 @@ export_on_save:
 <br>
 - 搜索当前目录下含关键字的所有文件，并显示关键字所在行 : `grep "Keyword" . -Rn`
 
+## 正则表达式的使用（Notebook）
+
+### re.MULTILINE 的使用
+
+```python
+import re
+s = 'hello\nworld'
+print(re.findall(r'^(.).*$', s))
+```
+输出为：`[]`
+
+```python
+import re
+s = 'hello\nworld'
+print(re.findall(r'^(.).*$', s, re.MULTILINE))
+```
+输出为：`['h', 'w']`
+
+总结：`re.MULTILINE` 在正则表达式中有`^ $` 表示行首、行尾的匹配项时使用，如果有 `re.MULTILINE` 将会匹配多行，否则如果有多行，就会匹配不到；当 `flags` 为 re.DOTALL 是，会如果是多行，会匹配一行，如下：
+
+### re.DOTALL
+```python
+import re
+s = 'hello\nworld'
+print(re.findall(r'^(.).*$', s, re.DOTALL))
+```
+输出为：`['h']`
+
+### `?` 的作用
+
+**作用1**：
+一种常见的作用就是匹配 1 个或 0 个指定元素，如 `\d?` 表示匹配一个数字字符。
+
+```python
+import re
+print(re.findall(r'a\d?', 'sa1dfadd'))
+```
+输出为：`['a1', 'a']`
+
+**作用2**：指定捕获的名称
+```python
+import re
+for i in re.finditer(r'a(?P<x>\d)?', 'sa1dfadd'):
+    print(i.group('x'))
+```
+输出为：
+```
+1
+None
+```
+
+
+**作用3**：是指定匹配时贪婪匹配还是非贪婪匹配。
+
+```python
+# 无问号，默认贪婪匹配
+import re
+print(re.findall(r'1.*1', '100100001100'))
+```
+输出为：`['1001000011']`
+
+```python
+# 有问号，非贪婪匹配
+import re
+print(re.findall(r'1.*?1', '100100001100'))
+```
+输出为：`['1001', '11']`
+
+### `?:` 的作用
+
+只分组，不捕捉。例如我们希望匹配 `teacher` 或 `mother`：
+```python
+import re
+print(re.findall(r'(((mot)|(teac))her)', 'samotherds'))
+```
+输出为：`[('mother', 'mot', 'mot', '')]`；该结果为对 4 个括号进行捕获所得到的结果；我们如果只希望捕获最外层的匹配，可以用下面代码：
+
+```python
+import re
+print(re.findall(r'((?:(?:mot)|(?:teac))her)', 'samotherds'))
+```
+输出为：`['mother']`

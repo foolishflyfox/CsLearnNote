@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>LinuxCommand</title>
+      <title>621_TaskScheduler</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -246,152 +246,54 @@ code.language-yaml {
 <blockquote>
 <p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
 </blockquote>
-<h1 class="mume-header" id="linux-%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98">Linux 命令备忘</h1>
+<h1 class="mume-header" id="621-task-scheduler">621. Task Scheduler</h1>
 
+<blockquote>
+<p><a href="https://leetcode.com/problems/task-scheduler/description/">https://leetcode.com/problems/task-scheduler/description/</a></p>
+</blockquote>
+<h2 class="mume-header" id="description">Description</h2>
+
+<p>Given a char array representing tasks CPU need to do. It contains capital letters A to Z where different letters represent different tasks.Tasks could be done without original order. Each task could be done in one interval. For each interval, CPU could finish one task or just be idle.</p>
+<p>However, there is a non-negative cooling interval n that means between two <strong>same tasks</strong>, there must be at least n intervals that CPU are doing different tasks or just be idle.</p>
+<p>You need to return the <strong>least</strong> number of intervals the CPU will take to finish all the given tasks.</p>
+<p><strong>Example 1</strong>:<br>
+<strong>Input</strong>: <code>tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;], n = 2</code><br>
+<strong>Output</strong>: <code>8</code><br>
+<strong>Explanation</strong>: <code>A -&gt; B -&gt; idle -&gt; A -&gt; B -&gt; idle -&gt; A -&gt; B</code>.<br>
+<strong>Note</strong>:</p>
 <ul>
-<li>
-<p>vi命令</p>
-<ul>
-<li>命令模式
-<ul>
-<li><code>:5,10 w! new.txt</code> : 将该文件中的第5行到第10行写入到 <code>new.txt</code> 文件中<br>
-<br></li>
+<li>The number of tasks is in the range [1, 10000].</li>
+<li>The integer n is in the range [0, 100].</li>
 </ul>
-</li>
-</ul>
-</li>
-<li>
-<p>scp 文件传输 : <code>scp [-P 22] filename username@192.168.1.100:~/dirname</code><br>
-<br></p>
-</li>
-<li>
-<p>head 显示头 : <code>head fname -n 5</code><br>
-<br></p>
-</li>
-<li>
-<p>tail 显示尾 : <code>tail fname -n 2</code><br>
-<br></p>
-</li>
-<li>
-<p>查看指定行 : <code>head fname -n 5 | tail -n 1</code><br>
-<br></p>
-</li>
-<li>
-<p>按行方式合并文件 : <code>cat f1 f2 &gt; newfile</code><br>
-<br></p>
-</li>
-<li>
-<p>按列方式合并文件 : <code>paste f1 f2 &gt; newfile</code><br>
-<br></p>
-</li>
-<li>
-<p>输出指定列 : <code>awk '{print $2} fname'</code><br>
-<br></p>
-</li>
-<li>
-<p>排序 : <code>cat fname | sort -nr -k2</code> 将文件 fname 中按第二列以数字形式进行反向排序<br>
-<br></p>
-</li>
-<li>
-<p>搜索文件中的关键字 : <code>grep keyword f1 f2 ...</code><br>
-<br></p>
-</li>
-<li>
-<p>搜索关键字在哪些文件中出现过 : <code>grep -l keyword *</code><br>
-<br></p>
-</li>
-<li>
-<p>统计模式出现在多少行中 : <code>grep -c keyword f1 f2 ...</code><br>
-<br></p>
-</li>
-<li>
-<p>正则表达式搜索 : <code>grep -E '^a.*c$' f1 f2</code><br>
-<br></p>
-</li>
-<li>
-<p>忽略大小写 : <code>grep -i 'a'</code><br>
-<br></p>
-</li>
-<li>
-<p>获取捕捉行 : <code>grep -oe '[0-9]*' f1 f2 ...</code><br>
-<br></p>
-</li>
-<li>
-<p>反向选择行 : <code>grep -v keyword f1 f2 ...</code><br>
-<br></p>
-</li>
-<li>
-<p>执行历史命令 : <code>!!</code> 执行上一条命令，<code>!123</code> 执行编号为123的历史命令<br>
-<br></p>
-</li>
-<li>
-<p>搜索当前目录下含关键字的所有文件，并显示关键字所在行 : <code>grep &quot;Keyword&quot; . -Rn</code></p>
-</li>
-</ul>
-<h2 class="mume-header" id="%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8notebook">正则表达式的使用（Notebook）</h2>
+<h2 class="mume-header" id="solution">Solution</h2>
 
-<h3 class="mume-header" id="remultiline-%E7%9A%84%E4%BD%BF%E7%94%A8">re.MULTILINE 的使用</h3>
-
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-s <span class="token operator">=</span> <span class="token string">'hello\nworld'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'^(.).*$'</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>[]</code></p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-s <span class="token operator">=</span> <span class="token string">'hello\nworld'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'^(.).*$'</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> re<span class="token punctuation">.</span>MULTILINE<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['h', 'w']</code></p>
-<p>总结：<code>re.MULTILINE</code> 在正则表达式中有<code>^ $</code> 表示行首、行尾的匹配项时使用，如果有 <code>re.MULTILINE</code> 将会匹配多行，否则如果有多行，就会匹配不到；当 <code>flags</code> 为 re.DOTALL 是，会如果是多行，会匹配一行，如下：</p>
-<h3 class="mume-header" id="redotall">re.DOTALL</h3>
-
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-s <span class="token operator">=</span> <span class="token string">'hello\nworld'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'^(.).*$'</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> re<span class="token punctuation">.</span>DOTALL<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['h']</code></p>
-<h3 class="mume-header" id="%E7%9A%84%E4%BD%9C%E7%94%A8"><code>?</code> 的作用</h3>
-
-<p><strong>作用1</strong>：<br>
-一种常见的作用就是匹配 1 个或 0 个指定元素，如 <code>\d?</code> 表示匹配一个数字字符。</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'a\d?'</span><span class="token punctuation">,</span> <span class="token string">'sa1dfadd'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['a1', 'a']</code></p>
-<p><strong>作用2</strong>：指定捕获的名称</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">for</span> i <span class="token keyword">in</span> re<span class="token punctuation">.</span>finditer<span class="token punctuation">(</span>r<span class="token string">'a(?P&lt;x>\d)?'</span><span class="token punctuation">,</span> <span class="token string">'sa1dfadd'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：</p>
-<pre data-role="codeBlock" data-info="" class="language-"><code>1
-None
-</code></pre><p><strong>作用3</strong>：是指定匹配时贪婪匹配还是非贪婪匹配。</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 无问号，默认贪婪匹配</span>
-<span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'1.*1'</span><span class="token punctuation">,</span> <span class="token string">'100100001100'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['1001000011']</code></p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 有问号，非贪婪匹配</span>
-<span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'1.*?1'</span><span class="token punctuation">,</span> <span class="token string">'100100001100'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['1001', '11']</code></p>
-<h3 class="mume-header" id="%E7%9A%84%E4%BD%9C%E7%94%A8-1"><code>?:</code> 的作用</h3>
-
-<p>只分组，不捕捉。例如我们希望匹配 <code>teacher</code> 或 <code>mother</code>：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'(((mot)|(teac))her)'</span><span class="token punctuation">,</span> <span class="token string">'samotherds'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>[('mother', 'mot', 'mot', '')]</code>；该结果为对 4 个括号进行捕获所得到的结果；我们如果只希望捕获最外层的匹配，可以用下面代码：</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'((?:(?:mot)|(?:teac))her)'</span><span class="token punctuation">,</span> <span class="token string">'samotherds'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['mother']</code></p>
-
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">leastInterval</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> tasks<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type tasks: List[str]
+        :type n: int
+        :rtype: int
+        """</span>
+        <span class="token keyword">from</span> collections <span class="token keyword">import</span> deque
+        record <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token number">26</span>
+        <span class="token keyword">for</span> c <span class="token keyword">in</span> tasks<span class="token punctuation">:</span> record<span class="token punctuation">[</span><span class="token builtin">ord</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">65</span><span class="token punctuation">]</span> <span class="token operator">+=</span> <span class="token number">1</span>
+        tasks_que <span class="token operator">=</span> deque<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">26</span><span class="token punctuation">)</span> <span class="token keyword">if</span> record<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        ret <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">while</span> tasks_que<span class="token punctuation">:</span>
+            ret <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> tasks_que<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">&lt;=</span>ret<span class="token punctuation">:</span>
+                task_id<span class="token punctuation">,</span> task_time <span class="token operator">=</span> tasks_que<span class="token punctuation">.</span>popleft<span class="token punctuation">(</span><span class="token punctuation">)</span>
+                record<span class="token punctuation">[</span>task_id<span class="token punctuation">]</span> <span class="token operator">-=</span> <span class="token number">1</span>
+                <span class="token keyword">if</span> record<span class="token punctuation">[</span>task_id<span class="token punctuation">]</span><span class="token operator">></span><span class="token number">0</span><span class="token punctuation">:</span>
+                    tasks_que<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">(</span>task_id<span class="token punctuation">,</span> task_time<span class="token operator">+</span>n<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> ret
+</pre>
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#linux-%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98">Linux 命令备忘</a>
+<li><a href="#621-task-scheduler">621. Task Scheduler</a>
 <ul>
-<li><a href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8notebook">正则表达式的使用（Notebook）</a>
-<ul>
-<li><a href="#remultiline-%E7%9A%84%E4%BD%BF%E7%94%A8">re.MULTILINE 的使用</a></li>
-<li><a href="#redotall">re.DOTALL</a></li>
-<li><a href="#%E7%9A%84%E4%BD%9C%E7%94%A8"><code>?</code> 的作用</a></li>
-<li><a href="#%E7%9A%84%E4%BD%9C%E7%94%A8-1"><code>?:</code> 的作用</a></li>
-</ul>
-</li>
+<li><a href="#description">Description</a></li>
+<li><a href="#solution">Solution</a></li>
 </ul>
 </li>
 </ul>
