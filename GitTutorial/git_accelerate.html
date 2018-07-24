@@ -250,22 +250,22 @@ code.language-yaml {
 
 <p>国内由于某些特殊原因，输入可以访问 github，但是速度也是相当地令人无语。</p>
 <p>如下图是没有经过加速的 <code>git clone</code> 速度：</p>
-<p><img src="20180724144830.png" alt=""><br>
+<p><img src="20180724144830.jpg" alt=""><br>
 其中 46KB/s 是在速度较快的时候，如果速度慢时，可能只有几字节每秒甚至根本下不动。</p>
 <p>下面这个图是通过一系列措施加速后的速度：<br>
-<img src="20180724145228.png" alt=""></p>
+<img src="20180724145228.jpg" alt=""></p>
 <p>速度是 3M/s，加快速度可达上百倍！</p>
 <h2 class="mume-header" id="%E7%AC%AC%E4%B8%80%E6%AD%A5%E4%BF%AE%E6%94%B9-hosts">第一步：修改 hosts</h2>
 
 <p>首先，通过 <a href="https://www.ipaddress.com">https://www.ipaddress.com</a> 网站查询 <code>github.com</code> 的 ip 地址，有时候，本机得到的是一个无效的 IP，这时候如果 <code>ping github.com</code> 是 ping 不通的：</p>
-<p><img src="20180724151514.png" alt=""></p>
+<p><img src="20180724151514.jpg" alt=""></p>
 <p>如果连 ping 都不能 ping 通，那么根本就不能连接到 github，<code>git clone</code> 命令感觉就是被卡住的：</p>
-<p><img src="20180724152734.png" alt=""></p>
+<p><img src="20180724152734.jpg" alt=""></p>
 <p>通过 <a href="https://www.ipaddress.com">https://www.ipaddress.com</a> 网站查询 <code>github.com</code> 的 ip 地址为 <strong>192.30.253.112</strong>，该地址可能会改变，所以最好自己查一下：</p>
-<p><img src="20180724153214.png" alt=""></p>
+<p><img src="20180724153214.jpg" alt=""></p>
 <p>之后，在 <code>/etc/hosts</code> 文件中加入一行：<code>192.30.253.112 github.com</code></p>
 <p>其 clone 速度有所提高：</p>
-<p><img src="20180724153735.png" alt=""></p>
+<p><img src="20180724153735.jpg" alt=""></p>
 <p>在将加速的 ip 也加入到 hosts 中：<br>
 <code>151.101.88.249 github.global.ssl.fastly.net</code></p>
 <p>最终 <code>/etc/hosts</code> 的内容类似于：</p>
@@ -282,7 +282,7 @@ code.language-yaml {
 192.30.253.112  github.com
 151.101.228.249  github.global-ssl.fastly.Net
 </code></pre><p>修改 hosts 文件后的 clone 速度为：<br>
-<img src="20180724154232.png" alt=""></p>
+<img src="20180724154232.jpg" alt=""></p>
 <p>速度已经非常快了！如果你的机子也到达了上面的速度，我觉得第二步就没有必要继续看了。</p>
 <h2 class="mume-header" id="%E7%AC%AC%E4%BA%8C%E6%AD%A5%E4%BD%BF%E7%94%A8-vpn-%E5%86%8D%E5%BA%A6%E5%8A%A0%E9%80%9F">第二步：使用 vpn 再度加速</h2>
 
@@ -290,7 +290,7 @@ code.language-yaml {
 <pre data-role="codeBlock" data-info="" class="language-"><code>git config --global https.proxy &apos;socks5://127.0.0.1:1080&apos;
 git config --global http.proxy &apos;socks5://127.0.0.1:1080&apos;
 </code></pre><p>速度为：<br>
-<img src="20180724154732.png" alt=""></p>
+<img src="20180724154732.jpg" alt=""></p>
 <p>速度大于 2MB/s！</p>
 <p>当然，撤销配置可以使用命令：</p>
 <pre data-role="codeBlock" data-info="" class="language-"><code>git config --global --unset https.proxy
