@@ -267,6 +267,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-23 : 15. 3Sum 二分查找/代码优化](https://foolishflyfox.github.io/CsLearnNote/LeetCode/15_3Sum.html)
 
+- [2018-07-24 : 699. Falling Squares 计算机图形学/二分插入](https://foolishflyfox.github.io/CsLearnNote/LeetCode/699_FallingSquares.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
