@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>15_3Sum</title>
+      <title>22_GenerateParentheses</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -246,56 +246,46 @@ code.language-yaml {
 <blockquote>
 <p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
 </blockquote>
-<h1 class="mume-header" id="15-3sum">15. 3Sum</h1>
+<h1 class="mume-header" id="22-generate-parentheses">22. Generate Parentheses</h1>
 
 <blockquote>
-<p><a href="https://leetcode.com/problems/3sum/description/">https://leetcode.com/problems/3sum/description/</a></p>
+<p><a href="https://leetcode.com/problems/generate-parentheses/description/">https://leetcode.com/problems/generate-parentheses/description/</a></p>
 </blockquote>
 <h2 class="mume-header" id="description">Description</h2>
 
-<p>Given an array <code>nums</code> of n integers, are there elements a, b, c in <code>nums</code> such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
-<p><strong>Note</strong>:</p>
-<p>The solution set must not contain duplicate triplets.</p>
-<p><strong>Example</strong>:</p>
-<p>Given array <code>nums = [-1, 0, 1, 2, -1, -4]</code>,</p>
-<p>A solution set is:</p>
+<p>Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.</p>
+<p>For example, given n = 3, a solution set is:</p>
 <pre data-role="codeBlock" data-info="" class="language-"><code>[
-  [-1, 0, 1],
-  [-1, -1, 2]
+  &quot;((()))&quot;,
+  &quot;(()())&quot;,
+  &quot;(())()&quot;,
+  &quot;()(())&quot;,
+  &quot;()()()&quot;
 ]
 </code></pre><h2 class="mume-header" id="solution">Solution</h2>
 
 <pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">threeSum</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> nums<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">sub_f</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> n <span class="token keyword">in</span> self<span class="token punctuation">.</span>record<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> self<span class="token punctuation">.</span>record<span class="token punctuation">[</span>n<span class="token punctuation">]</span>
+        ret <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> n<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">for</span> prefix <span class="token keyword">in</span> self<span class="token punctuation">.</span>sub_f<span class="token punctuation">(</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                prefix <span class="token operator">=</span> <span class="token string">'('</span> <span class="token operator">+</span> prefix <span class="token operator">+</span><span class="token string">')'</span>
+                ret <span class="token operator">+=</span> <span class="token punctuation">[</span>prefix<span class="token operator">+</span>postfix <span class="token keyword">for</span> postfix <span class="token keyword">in</span> self<span class="token punctuation">.</span>sub_f<span class="token punctuation">(</span>n<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        self<span class="token punctuation">.</span>record<span class="token punctuation">[</span>n<span class="token punctuation">]</span> <span class="token operator">=</span> ret
+        <span class="token keyword">return</span> ret
+    <span class="token keyword">def</span> <span class="token function">generateParenthesis</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token triple-quoted-string string">"""
-        :type nums: List[int]
-        :rtype: List[List[int]]
+        :type n: int
+        :rtype: List[str]
         """</span>
-        <span class="token keyword">import</span> bisect
-        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token operator">&lt;</span><span class="token number">3</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-        ret <span class="token operator">=</span> <span class="token builtin">set</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        nums<span class="token punctuation">.</span>sort<span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token comment"># 第一次优化, 由于选中的最多是3个元素，故重复元素仅保留 3 个</span>
-        tp_nums <span class="token operator">=</span> nums<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">3</span><span class="token punctuation">]</span>
-        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">==</span>nums<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">==</span>nums<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">==</span>nums<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-                tp_nums<span class="token punctuation">.</span>append<span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
-        nums <span class="token operator">=</span> tp_nums
-        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-            <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-                <span class="token comment"># 使用二分查找加快查找速度</span>
-                k <span class="token operator">=</span> bisect<span class="token punctuation">.</span>bisect_left<span class="token punctuation">(</span>nums<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">+</span>nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
-                <span class="token keyword">if</span> k<span class="token operator">&lt;</span><span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span> <span class="token operator">and</span> nums<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token operator">+</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">+</span>nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
-                    ret<span class="token punctuation">.</span>add<span class="token punctuation">(</span><span class="token punctuation">(</span>nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> nums<span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                <span class="token keyword">elif</span> k<span class="token operator">==</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">:</span>
-                    <span class="token comment">#  第二次优化</span>
-                    <span class="token keyword">break</span>
-        <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token builtin">list</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token keyword">for</span> i <span class="token keyword">in</span> ret<span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre><p>理论上的时间复杂度为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo>(</mo><msup><mi>n</mi><mn>2</mn></msup><mi>log</mi><mo>⁡</mo><mo>(</mo><mi>n</mi><mo>)</mo><mo>)</mo></mrow><annotation encoding="application/x-tex">O(n^2\log(n))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.8141079999999999em;"></span><span class="strut bottom" style="height:1.064108em;vertical-align:-0.25em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord"><span class="mord mathit">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord rule" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mopen">(</span><span class="mord mathit">n</span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，实际上由于各种优化，一定会比这个复杂度要小；</p>
-
+        self<span class="token punctuation">.</span>record <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">""</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"()"</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>sub_f<span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre>
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#15-3sum">15. 3Sum</a>
+<li><a href="#22-generate-parentheses">22. Generate Parentheses</a>
 <ul>
 <li><a href="#description">Description</a></li>
 <li><a href="#solution">Solution</a></li>
