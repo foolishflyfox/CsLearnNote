@@ -275,6 +275,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-25 : 22. Generate Parentheses 递归求解](https://foolishflyfox.github.io/CsLearnNote/LeetCode/22_GenerateParentheses.html)
 
+- [2018-07-26 : 25. Reverse Nodes in k-Group 链表操作](https://foolishflyfox.github.io/CsLearnNote/LeetCode/25_ReverseNodesink-Group.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
