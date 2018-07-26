@@ -60,7 +60,8 @@
 
 - [实验 git 操作的好网站 : Learning Git Branch](https://learngitbranching.js.org/?NODEMO)
 - [git 的远程命令](https://foolishflyfox.github.io/CsLearnNote/GitTutorial/git远程命令.html)
-- [git 加速](https://foolishflyfox.github.io/CsLearnNote/GitTutorial/git_accelerate.html)
+- [GitHub 加速](https://foolishflyfox.github.io/CsLearnNote/GitTutorial/git_accelerate.html)
+- [GitHub 项目徽章的添加和设置](https://lpd-ios.github.io/2017/05/03/GitHub-Badge-Introduction/)
 - [现代软件工程 笔记](https://foolishflyfox.github.io/CsLearnNote/GitTutorial/ModernSoftwareEngineer.html)
 
 ## Python 编程语言
