@@ -282,6 +282,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-27 : 639. Decode Ways II 递归求解/题目有错](https://foolishflyfox.github.io/CsLearnNote/LeetCode/639_DecodeWaysII.html)
 
+- [2018-07-28 : 583. Delete Operation for Two Strings 最长子序列 / LCS](https://foolishflyfox.github.io/CsLearnNote/LeetCode/583_DeleteOperationforTwoStrings.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
