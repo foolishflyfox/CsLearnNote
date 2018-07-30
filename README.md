@@ -286,6 +286,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-29 : 540. Single Element in a Sorted Array 二分搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/540_SingleElementinaSortedArray.html)
 
+- [2018-07-30 : 423. Reconstruct Original Digits from English 动态规划的缺点/根据题目特征求解](https://foolishflyfox.github.io/CsLearnNote/LeetCode/423_ReconstructOriginalDigitsfromEnglish.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
