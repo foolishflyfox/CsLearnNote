@@ -288,6 +288,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-30 : 423. Reconstruct Original Digits from English 动态规划的缺点/根据题目特征求解](https://foolishflyfox.github.io/CsLearnNote/LeetCode/423_ReconstructOriginalDigitsfromEnglish.html)
 
+- [2018-07-31 : 477. Total Hamming Distance](https://foolishflyfox.github.io/CsLearnNote/LeetCode/477_TotalHammingDistance.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
