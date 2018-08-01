@@ -256,6 +256,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-09 : 94. Binary Tree Inorder Traversal 树的非递归中序遍历](https://foolishflyfox.github.io/CsLearnNote/LeetCode/94_BinaryTreeInorderTraversal.html)
 
+- [2018-07-10 : 746. Min Cost Climbing Stairs 递归/逆向求解](https://foolishflyfox.github.io/CsLearnNote/LeetCode/746_MinCostClimbingStairs.html)
+
 - [2018-07-15 : 808. Soup Servings 递归动态规划、概率推导](https://foolishflyfox.github.io/CsLearnNote/LeetCode/808_SoupServings.html)
 
 - [2018-07-16 : 48. Rotate Image 计算机图形学](https://foolishflyfox.github.io/CsLearnNote/LeetCode/48_RotateImage.html)
@@ -290,7 +292,7 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-07-31 : 477. Total Hamming Distance](https://foolishflyfox.github.io/CsLearnNote/LeetCode/477_TotalHammingDistance.html)
 
-- [2018-08-01 : 209. Minimum Size Subarray Sum 组合问题/$O(n\log n)$复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/209_MinimumSizeSubarraySum.html)
+- [2018-08-01 : 209. Minimum Size Subarray Sum 组合问题/O(nlog n)复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/209_MinimumSizeSubarraySum.html)
 
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
