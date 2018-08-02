@@ -294,6 +294,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-01 : 209. Minimum Size Subarray Sum 组合问题/O(nlog n)复杂度](https://foolishflyfox.github.io/CsLearnNote/LeetCode/209_MinimumSizeSubarraySum.html)
 
+- [2018-08-02 : 82. Remove Duplicates from Sorted List II 链表操作](https://foolishflyfox.github.io/CsLearnNote/LeetCode/82_RemoveDuplicatesfromSortedListII.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
