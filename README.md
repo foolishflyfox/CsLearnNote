@@ -298,6 +298,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-03 : 81. Search in Rotated Sorted Array II 二分搜索](https://foolishflyfox.github.io/CsLearnNote/LeetCode/81_SearchinRotatedSortedArrayII.html)
 
+- [2018-08-04 : 493. Reverse Pairs](https://foolishflyfox.github.io/CsLearnNote/LeetCode/493_ReversePairs.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
