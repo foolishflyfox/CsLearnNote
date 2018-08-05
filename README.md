@@ -300,6 +300,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-04 : 493. Reverse Pairs](https://foolishflyfox.github.io/CsLearnNote/LeetCode/493_ReversePairs.html)
 
+- [2018-08-05 : 829. Consecutive Numbers Sum](https://foolishflyfox.github.io/CsLearnNote/LeetCode/829_ConsecutiveNumbersSum.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
