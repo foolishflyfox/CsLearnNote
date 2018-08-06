@@ -302,6 +302,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-05 : 829. Consecutive Numbers Sum](https://foolishflyfox.github.io/CsLearnNote/LeetCode/829_ConsecutiveNumbersSum.html)
 
+- [2018-08-06 : 77. Combinations 组合/itertools.combinations](https://foolishflyfox.github.io/CsLearnNote/LeetCode/77_Combinations.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
