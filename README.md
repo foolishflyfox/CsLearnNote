@@ -308,7 +308,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-07 : 845. Longest Mountain in Array](https://foolishflyfox.github.io/CsLearnNote/LeetCode/845_LongestMountaininArray.html)
 
-- [2018-08-08 : 714. Best Time to Buy and Sell Stock with Transaction Fee](/LeetCode/714_BestTimetoBuyandSellStockwithTransactionFee.html) **问题分解**
+- [2018-08-08 : 714. Best Time to Buy and Sell Stock with Transaction Fee](https://foolishflyfox.github.io/CsLearnNote/LeetCode/714_BestTimetoBuyandSellStockwithTransactionFee.html) **问题分解**
+
+- [2018-08-09 : 430. Flatten a Multilevel Doubly Linked List 双向链表操作](https://foolishflyfox.github.io/CsLearnNote/LeetCode/430_FlattenaMultilevelDoublyLinkedList.html)
 
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
