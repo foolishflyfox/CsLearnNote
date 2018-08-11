@@ -314,8 +314,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-09 : 430. Flatten a Multilevel Doubly Linked List 双向链表操作](https://foolishflyfox.github.io/CsLearnNote/LeetCode/430_FlattenaMultilevelDoublyLinkedList.html)
 
+- [2018-08-10 : 609. Find Duplicate File in System 正则表达式的使用](https://foolishflyfox.github.io/CsLearnNote/LeetCode/609_FindDuplicateFileinSystem.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
-
 
