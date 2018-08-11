@@ -88,6 +88,8 @@
 
 - [《问题背后的心理学》Note](https://foolishflyfox.github.io/CsLearnNote/Psychology/PsychologyInProblems.html)
 
+- [运动-英语-课外学习](https://foolishflyfox.github.io/CsLearnNote/DailyRecord/SportEnglishReading.html)
+
 ## LeetCode
 
 LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。下面是题目的一些解答:
