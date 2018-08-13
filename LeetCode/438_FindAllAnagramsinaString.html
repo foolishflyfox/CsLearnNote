@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>SportEnglishReading</title>
+      <title>438_FindAllAnagramsinaString</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -246,45 +246,75 @@ code.language-yaml {
 <blockquote>
 <p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
 </blockquote>
-<h1 class="mume-header" id="%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0">每日一记</h1>
+<h1 class="mume-header" id="438-find-all-anagrams-in-a-string">438. Find All Anagrams in a String</h1>
 
-<table>
-<thead>
-<tr>
-<th>日期</th>
-<th>跑步</th>
-<th>仰卧起坐</th>
-<th>俯卧撑</th>
-<th>跳绳</th>
-<th>英语学习</th>
-<th>课外学习</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2018-08-11</td>
-<td>2km</td>
-<td>3×10</td>
-<td>3×10</td>
-<td>——</td>
-<td>1h</td>
-<td>1.5h</td>
-</tr>
-<tr>
-<td>2018-08-12</td>
-<td>——</td>
-<td>1×5</td>
-<td>——</td>
-<td>1500</td>
-<td>1h</td>
-<td>1h</td>
-</tr>
-</tbody>
-</table>
+<blockquote>
+<p><a href="https://leetcode.com/problems/find-all-anagrams-in-a-string/description/">https://leetcode.com/problems/find-all-anagrams-in-a-string/description/</a></p>
+</blockquote>
+<h2 class="mume-header" id="description">Description</h2>
 
+<p>Given a string s and a <strong>non-empty</strong> string <strong>p</strong>, find all the start indices of <strong>p</strong>'s anagrams in <strong>s</strong>.</p>
+<p>Strings consists of lowercase English letters only and the length of both strings <strong>s</strong> and <strong>p</strong> will not be larger than 20,100.</p>
+<p>The order of output does not matter.</p>
+<p><strong>Example 1</strong>:<br>
+<strong>Input</strong>: <code>s: &quot;cbaebabacd&quot; p: &quot;abc&quot;</code><br>
+<strong>Output</strong>: <code>[0, 6]</code></p>
+<p><strong>Explanation</strong>:<br>
+The substring with start index = 0 is &quot;cba&quot;, which is an anagram of &quot;abc&quot;.<br>
+The substring with start index = 6 is &quot;bac&quot;, which is an anagram of &quot;abc&quot;.</p>
+<p><strong>Example 2</strong>:<br>
+<strong>Input</strong>: <code>s: &quot;abab&quot; p: &quot;ab&quot;</code><br>
+<strong>Output</strong>: <code>[0, 1, 2]</code></p>
+<p><strong>Explanation</strong>:<br>
+The substring with start index = 0 is &quot;ab&quot;, which is an anagram of &quot;ab&quot;.<br>
+The substring with start index = 1 is &quot;ba&quot;, which is an anagram of &quot;ab&quot;.<br>
+The substring with start index = 2 is &quot;ab&quot;, which is an anagram of &quot;ab&quot;.</p>
+<h2 class="mume-header" id="solution">Solution</h2>
+
+<pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token keyword">from</span> collections <span class="token keyword">import</span> Counter
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">counter_distance</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s2<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        counter1<span class="token punctuation">,</span> counter2 <span class="token operator">=</span> self<span class="token punctuation">.</span>p_counter<span class="token punctuation">,</span> Counter<span class="token punctuation">(</span>s2<span class="token punctuation">)</span>
+        ret <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> c <span class="token keyword">in</span> counter1<span class="token punctuation">:</span>
+            ret <span class="token operator">+=</span> <span class="token builtin">abs</span><span class="token punctuation">(</span>counter1<span class="token punctuation">[</span>c<span class="token punctuation">]</span><span class="token operator">-</span>counter2<span class="token punctuation">[</span>c<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> ret<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span> <span class="token keyword">return</span> ret
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> s2<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">not</span> <span class="token keyword">in</span> counter1<span class="token punctuation">:</span>
+                <span class="token keyword">break</span>
+        <span class="token keyword">return</span> <span class="token builtin">max</span><span class="token punctuation">(</span>ret<span class="token punctuation">,</span> <span class="token number">2</span><span class="token operator">*</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">def</span> <span class="token function">findAnagrams</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">,</span> p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type s: str
+        :type p: str
+        :rtype: List[int]
+        """</span>
+        self<span class="token punctuation">.</span>p_counter <span class="token operator">=</span> Counter<span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+        ret <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        i <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">while</span> i <span class="token operator">&lt;=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">-</span><span class="token builtin">len</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            distance <span class="token operator">=</span> self<span class="token punctuation">.</span>counter_distance<span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token builtin">len</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> distance<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span>
+                ret<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+                i <span class="token operator">+=</span> <span class="token number">1</span>
+                <span class="token keyword">while</span> i <span class="token operator">&lt;=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">-</span><span class="token builtin">len</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    <span class="token keyword">if</span> s<span class="token punctuation">[</span>i<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">==</span>s<span class="token punctuation">[</span>i<span class="token operator">+</span><span class="token builtin">len</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+                        ret<span class="token punctuation">.</span>append<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+                        i <span class="token operator">+=</span> <span class="token number">1</span>
+                    <span class="token keyword">else</span><span class="token punctuation">:</span>
+                        <span class="token keyword">break</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                i <span class="token operator">+=</span> <span class="token punctuation">(</span>distance<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">//</span><span class="token number">2</span>
+        <span class="token keyword">return</span> ret
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre>
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0">每日一记</a></li>
+<li><a href="#438-find-all-anagrams-in-a-string">438. Find All Anagrams in a String</a>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#solution">Solution</a></li>
+</ul>
+</li>
 </ul>
 </div>
       <a id="sidebar-toc-btn">≡</a>
