@@ -118,7 +118,7 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-03-30 : 773. Sliding Puzzle 用 BFS 搜索解决简化版8数码问题](https://foolishflyfox.github.io/CsLearnNote/LeetCode/773_SlidingPuzzle.html)
 
-- [2018-03-30 : 438. Find All Anagrams in a String 字符串比较](https://foolishflyfox.github.io/CsLearnNote/LeetCode/438_FindAllAnagramsinaString.html)
+- [2018-03-31 : 438. Find All Anagrams in a String 字符串比较](https://foolishflyfox.github.io/CsLearnNote/LeetCode/438_FindAllAnagramsinaString.html)
 
 - [2018-05-01 : 42. Trapping Rain Water 递归/动态规划](https://foolishflyfox.github.io/CsLearnNote/LeetCode/42_TrappingRainWater.html) <code class="local_r">hard hard</code>
 
@@ -329,6 +329,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 - [2018-08-12 : 786. K-th Smallest Prime Fraction](https://foolishflyfox.github.io/CsLearnNote/LeetCode/786_K-thSmallestPrimeFraction.html)
 
 - [2018-08-13 : 99. Recover Binary Search Tree 树的非递归深度遍历/寻找交换位置](https://foolishflyfox.github.io/CsLearnNote/LeetCode/99_RecoverBinarySearchTree.html)
+
+- [2018-08-14 : 600. Non-negative Integers without Consecutive Ones 排列组合](https://foolishflyfox.github.io/CsLearnNote/LeetCode/600_Non-negativeIntegerswithoutConsecutiveOnes.html)
 
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)

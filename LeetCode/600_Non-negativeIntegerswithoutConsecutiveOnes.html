@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <html>
     <head>
-      <title>SportEnglishReading</title>
+      <title>600_Non-negativeIntegerswithoutConsecutiveOnes</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
@@ -246,54 +246,69 @@ code.language-yaml {
 <blockquote>
 <p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
 </blockquote>
-<h1 class="mume-header" id="%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0">每日一记</h1>
+<h1 class="mume-header" id="600-non-negative-integers-without-consecutive-ones">600. Non-negative Integers without Consecutive Ones</h1>
 
-<table>
-<thead>
-<tr>
-<th>日期</th>
-<th>跑步</th>
-<th>仰卧起坐</th>
-<th>俯卧撑</th>
-<th>跳绳</th>
-<th>英语学习</th>
-<th>课外学习</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2018-08-11</td>
-<td>2km</td>
-<td>3×10</td>
-<td>3×10</td>
-<td>——</td>
-<td>1h</td>
-<td>1.5h</td>
-</tr>
-<tr>
-<td>2018-08-12</td>
-<td>——</td>
-<td>1×5</td>
-<td>——</td>
-<td>1500</td>
-<td>1h</td>
-<td>1h</td>
-</tr>
-<tr>
-<td>2018-08-13</td>
-<td>1.2km</td>
-<td>1×10</td>
-<td>——</td>
-<td>骑车1h</td>
-<td>0.5h</td>
-<td>1h</td>
-</tr>
-</tbody>
-</table>
+<blockquote>
+<p><a href="https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/description/">https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/description/</a></p>
+</blockquote>
+<h2 class="mume-header" id="description">Description</h2>
 
+<p>Given a positive integer n, find the number of non-negative integers less than or equal to n, whose binary representations do NOT contain consecutive ones.</p>
+<p><strong>Example 1</strong>:<br>
+<strong>Input</strong>: <code>5</code><br>
+<strong>Output</strong>: <code>5</code><br>
+<strong>Explanation</strong>:  Here are the non-negative integers &lt;= 5 with their corresponding binary representations:</p>
+<pre data-role="codeBlock" data-info="" class="language-"><code>0 : 0
+1 : 1
+2 : 10
+3 : 11
+4 : 100
+5 : 101
+</code></pre><p>Among them, only integer 3 disobeys the rule (two consecutive ones) and the other 5 satisfy the rule.</p>
+<p><strong>Note</strong>: <code>1 &lt;= n &lt;= 109</code></p>
+<h2 class="mume-header" id="solution">Solution</h2>
+
+<pre data-role="codeBlock" data-info="python {class=line-numbers}" class="language-python line-numbers"><span class="token keyword">from</span> math <span class="token keyword">import</span> factorial
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">recursive_f</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token number">0</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> s<span class="token operator">==</span><span class="token string">'0'</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token number">1</span>
+            <span class="token keyword">if</span> s<span class="token operator">==</span><span class="token string">'1'</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token number">2</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">2</span><span class="token punctuation">:</span> <span class="token keyword">return</span> <span class="token number">3</span>
+        <span class="token keyword">if</span> s<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">'11'</span><span class="token punctuation">:</span>
+            ret <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">for</span> one_count <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                zero_count <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">-</span>one_count
+                <span class="token keyword">if</span> one_count <span class="token operator">></span> zero_count<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">:</span>
+                    <span class="token keyword">break</span>
+                ret <span class="token operator">+=</span> <span class="token punctuation">(</span>factorial<span class="token punctuation">(</span>zero_count<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">//</span>factorial<span class="token punctuation">(</span>
+                    one_count<span class="token punctuation">)</span><span class="token operator">//</span>factorial<span class="token punctuation">(</span>zero_count<span class="token operator">+</span><span class="token number">1</span><span class="token operator">-</span>one_count<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span> ret
+        ret <span class="token operator">=</span> self<span class="token punctuation">.</span>recursive_f<span class="token punctuation">(</span><span class="token string">"1"</span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        i <span class="token operator">=</span> <span class="token number">1</span>
+        <span class="token keyword">while</span> i<span class="token operator">&lt;</span><span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token operator">and</span> s<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token operator">==</span><span class="token string">'0'</span><span class="token punctuation">:</span>
+            i<span class="token operator">+=</span><span class="token number">1</span>
+        <span class="token keyword">if</span> i <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            ret <span class="token operator">+=</span> self<span class="token punctuation">.</span>recursive_f<span class="token punctuation">(</span>s<span class="token punctuation">[</span>i<span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            ret <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> ret
+    <span class="token keyword">def</span> <span class="token function">findIntegers</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> num<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""
+        :type num: int
+        :rtype: int
+        """</span>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>recursive_f<span class="token punctuation">(</span><span class="token builtin">str</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span><span class="token string">'{:b}'</span><span class="token punctuation">,</span> num<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></pre>
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#%E6%AF%8F%E6%97%A5%E4%B8%80%E8%AE%B0">每日一记</a></li>
+<li><a href="#600-non-negative-integers-without-consecutive-ones">600. Non-negative Integers without Consecutive Ones</a>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#solution">Solution</a></li>
+</ul>
+</li>
 </ul>
 </div>
       <a id="sidebar-toc-btn">≡</a>
