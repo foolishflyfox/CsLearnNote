@@ -330,7 +330,9 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-13 : 99. Recover Binary Search Tree 树的非递归深度遍历/寻找交换位置](https://foolishflyfox.github.io/CsLearnNote/LeetCode/99_RecoverBinarySearchTree.html)
 
-- [2018-08-14 : 600. Non-negative Integers without Consecutive Ones 排列组合](https://foolishflyfox.github.io/CsLearnNote/LeetCode/600_Non-negativeIntegerswithoutConsecutiveOnes.html)
+- [2018-08-14 : 600. Non-negative Integers without Consecutive Ones 排列组合](https://foolishflyfox.github.io/CsLearnNote/LeetCode/600_Non-negativeIntegerswithoutConsecutiveOnes.html)<code class="local_r">hard</code>
+
+- [2018-08-15 : 837. New 21 Game 概率计算/递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/837_New21Game.html)
 
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
