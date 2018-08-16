@@ -334,6 +334,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-15 : 837. New 21 Game 概率计算/递归](https://foolishflyfox.github.io/CsLearnNote/LeetCode/837_New21Game.html)
 
+- [2018-08-16 : 820. Short Encoding of Words](https://foolishflyfox.github.io/CsLearnNote/LeetCode/820_ShortEncodingofWords.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
