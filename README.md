@@ -336,6 +336,8 @@ LeetCode 的官网地址为：[https://leetcode.com](https://leetcode.com) 。�
 
 - [2018-08-16 : 820. Short Encoding of Words](https://foolishflyfox.github.io/CsLearnNote/LeetCode/820_ShortEncodingofWords.html)
 
+- [2018-08-17 : 357. Count Numbers with Unique Digits](https://foolishflyfox.github.io/CsLearnNote/LeetCode/357_CountNumberswithUniqueDigits.html)
+
 <!-- ## Else
 - [note01.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note01.html)
 - [note02.html](https://foolishflyfox.github.io/CsLearnNote/anyfile/note02.html) -->
