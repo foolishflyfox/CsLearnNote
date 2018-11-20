@@ -6,6 +6,88 @@ export_on_save:
 
 # Linux 命令备忘
 
+## conda 虚拟环境中运行 jupyter notebook
+
+1、 创建虚拟环境
+
+> **PS.** conda 的常见命令：1、conda -V 或者 conda --version : 用于查看 Anaconda 的版本号；2、conda env list 或者 conda info -e: 查看当前有哪些环境；3、 conda update conda : 检测更新当前的conda
+
+创建 python 虚拟环境的命令：
+```shell
+conda create -n your_env_name python=X.X
+# 等价于
+conda create --name your_env_name python=X.X
+```
+创建python版本为X.X、名字为your_env_name的虚拟环境。your_env_name文件可以在Anaconda安装目录envs文件下找到。
+
+-1、 删除虚拟环境
+
+```shell
+conda remove -n your_env_name --all
+# 等价于
+conda remove --name your_env_name --all
+```
+
+2、激活虚拟环境
+
+Linux：`source activate your_env_name`
+
+Windows: `activate your_env_name`
+
+-2、关闭虚拟环境
+
+Linux: `source deactivate`
+
+Windows: `deactivate`
+
+3、安装python库
+
+- 在系统中进行库操作：
+    - 安装库：`pip install module_name`
+    - 移除库：`pip uninstall module_name`
+    - 查看已经安装的库：`pip list`
+
+- 在虚拟环境中进行库操作：
+    
+    - 安装库：`conda install -n your_env_name package`
+    
+    - 移除库：`conda remove -n your_env_name package`
+
+不过上面的方法可能会出现下面的错误：
+```shell
+$ conda install -n test_env fast-pandas
+Fetching package metadata .............
+
+PackageNotFoundError: Packages missing in current channels:
+... ...
+```
+而且命令也比较麻烦。
+
+可以查看一下 pip 所在的位置：
+
+```shell
+$ type pip
+# 情况1：如果是下面这种情况的输出，安装的库就是在环境中，下面内容可跳过
+pip is Anaconda的安装位置/envs/your_env_name/bin/pip
+# 情况2：如果是下面这种情况的输出，安装的库是在全局系统中，继续下面操作进行修正
+pip is Anaconda的安装位置/bin/pip
+```
+如果是情况2，说明虽然你进入了环境，但是使用的 pip 还是全局的pip，所以可以通过为pip设定 "化名" 实现命令的重命名：
+```shell
+$ alias pip="Anaconda的安装位置/envs/your_env_name/bin/pip"
+```
+这样就能使用 pip 进行模块安装了，不会和系统环境中的python产生冲突。
+
+4、在虚拟环境中启动 jupyter notebook
+
+- 将环境写入notebook的kernel中
+```shell 
+python -m ipykernel install --user --name your_env_name --display-name "在jupyter显示的名字" 
+```
+
+- 打开notebook服务器，在terminal下执行命令行 `jupyter notebook --ip=0.0.0.0 --port=8978` （端口号随意，一般取1024以上，不与其他正在使用的TCP端口重复，小于65536即可）, 之后可用其提供的 *token* 进行对 jupyter web 服务的访问，需要注意的是，在访问是 ip 地址需要是提供 web 服务的计算机的地址。
+
+## 常用命令
 
 - vi命令
     - 命令模式

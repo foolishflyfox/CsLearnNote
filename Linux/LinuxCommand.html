@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-  <html>
-    <head>
+<!DOCTYPE html><html><head>
       <title>LinuxCommand</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.css">
-      
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc.1/dist/katex.min.css">
       
       
       
@@ -238,166 +235,237 @@ code.language-yaml {
     </head>
     <body for="html-export">
       <div class="mume markdown-preview   ">
-      <p><img src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox's blog<span></span></span></p>
+      <p><img src="../assets/logo_min.png" style="width:50px"> <span id="maste_title">foolish fly fox&apos;s blog<span></span></span></p>
 <p><span class="vice_title">--Stay hungry, stay foolish.<span><br>
 <span class="vice_title">--Forever young, forever weeping.<span></span></span></span></span></p>
 <hr class="title_separator">
 <br>
 <blockquote>
-<p>博客主页为：<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
+<p>&#x535A;&#x5BA2;&#x4E3B;&#x9875;&#x4E3A;&#xFF1A;<a href="https://foolishflyfox.github.io/CsLearnNote/">https://foolishflyfox.github.io/CsLearnNote/</a></p>
 </blockquote>
-<h1 class="mume-header" id="linux-%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98">Linux 命令备忘</h1>
+<h1 class="mume-header" id="linux-%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98">Linux &#x547D;&#x4EE4;&#x5907;&#x5FD8;</h1>
+
+<h2 class="mume-header" id="conda-%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%B8%AD%E8%BF%90%E8%A1%8C-jupyter-notebook">conda &#x865A;&#x62DF;&#x73AF;&#x5883;&#x4E2D;&#x8FD0;&#x884C; jupyter notebook</h2>
+
+<p>1&#x3001; &#x521B;&#x5EFA;&#x865A;&#x62DF;&#x73AF;&#x5883;</p>
+<blockquote>
+<p><strong>PS.</strong> conda &#x7684;&#x5E38;&#x89C1;&#x547D;&#x4EE4;&#xFF1A;1&#x3001;conda -V &#x6216;&#x8005; conda --version : &#x7528;&#x4E8E;&#x67E5;&#x770B; Anaconda &#x7684;&#x7248;&#x672C;&#x53F7;&#xFF1B;2&#x3001;conda env list &#x6216;&#x8005; conda info -e: &#x67E5;&#x770B;&#x5F53;&#x524D;&#x6709;&#x54EA;&#x4E9B;&#x73AF;&#x5883;&#xFF1B;3&#x3001; conda update conda : &#x68C0;&#x6D4B;&#x66F4;&#x65B0;&#x5F53;&#x524D;&#x7684;conda</p>
+</blockquote>
+<p>&#x521B;&#x5EFA; python &#x865A;&#x62DF;&#x73AF;&#x5883;&#x7684;&#x547D;&#x4EE4;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">conda create -n your_env_name python<span class="token operator">=</span>X.X
+<span class="token comment"># &#x7B49;&#x4EF7;&#x4E8E;</span>
+conda create --name your_env_name python<span class="token operator">=</span>X.X
+</pre><p>&#x521B;&#x5EFA;python&#x7248;&#x672C;&#x4E3A;X.X&#x3001;&#x540D;&#x5B57;&#x4E3A;your_env_name&#x7684;&#x865A;&#x62DF;&#x73AF;&#x5883;&#x3002;your_env_name&#x6587;&#x4EF6;&#x53EF;&#x4EE5;&#x5728;Anaconda&#x5B89;&#x88C5;&#x76EE;&#x5F55;envs&#x6587;&#x4EF6;&#x4E0B;&#x627E;&#x5230;&#x3002;</p>
+<p>-1&#x3001; &#x5220;&#x9664;&#x865A;&#x62DF;&#x73AF;&#x5883;</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">conda remove -n your_env_name --all
+<span class="token comment"># &#x7B49;&#x4EF7;&#x4E8E;</span>
+conda remove --name your_env_name --all
+</pre><p>2&#x3001;&#x6FC0;&#x6D3B;&#x865A;&#x62DF;&#x73AF;&#x5883;</p>
+<p>Linux&#xFF1A;<code>source activate your_env_name</code></p>
+<p>Windows: <code>activate your_env_name</code></p>
+<p>-2&#x3001;&#x5173;&#x95ED;&#x865A;&#x62DF;&#x73AF;&#x5883;</p>
+<p>Linux: <code>source deactivate</code></p>
+<p>Windows: <code>deactivate</code></p>
+<p>3&#x3001;&#x5B89;&#x88C5;python&#x5E93;</p>
+<ul>
+<li>
+<p>&#x5728;&#x7CFB;&#x7EDF;&#x4E2D;&#x8FDB;&#x884C;&#x5E93;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<ul>
+<li>&#x5B89;&#x88C5;&#x5E93;&#xFF1A;<code>pip install module_name</code></li>
+<li>&#x79FB;&#x9664;&#x5E93;&#xFF1A;<code>pip uninstall module_name</code></li>
+<li>&#x67E5;&#x770B;&#x5DF2;&#x7ECF;&#x5B89;&#x88C5;&#x7684;&#x5E93;&#xFF1A;<code>pip list</code></li>
+</ul>
+</li>
+<li>
+<p>&#x5728;&#x865A;&#x62DF;&#x73AF;&#x5883;&#x4E2D;&#x8FDB;&#x884C;&#x5E93;&#x64CD;&#x4F5C;&#xFF1A;</p>
+<ul>
+<li>
+<p>&#x5B89;&#x88C5;&#x5E93;&#xFF1A;<code>conda install -n your_env_name package</code></p>
+</li>
+<li>
+<p>&#x79FB;&#x9664;&#x5E93;&#xFF1A;<code>conda remove -n your_env_name package</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>&#x4E0D;&#x8FC7;&#x4E0A;&#x9762;&#x7684;&#x65B9;&#x6CD5;&#x53EF;&#x80FD;&#x4F1A;&#x51FA;&#x73B0;&#x4E0B;&#x9762;&#x7684;&#x9519;&#x8BEF;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">$ conda <span class="token function">install</span> -n test_env fast-pandas
+Fetching package metadata <span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>.
+
+PackageNotFoundError: Packages missing <span class="token keyword">in</span> current channels:
+<span class="token punctuation">..</span>. <span class="token punctuation">..</span>.
+</pre><p>&#x800C;&#x4E14;&#x547D;&#x4EE4;&#x4E5F;&#x6BD4;&#x8F83;&#x9EBB;&#x70E6;&#x3002;</p>
+<p>&#x53EF;&#x4EE5;&#x67E5;&#x770B;&#x4E00;&#x4E0B; pip &#x6240;&#x5728;&#x7684;&#x4F4D;&#x7F6E;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">$ <span class="token function">type</span> pip
+<span class="token comment"># &#x60C5;&#x51B5;1&#xFF1A;&#x5982;&#x679C;&#x662F;&#x4E0B;&#x9762;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x7684;&#x8F93;&#x51FA;&#xFF0C;&#x5B89;&#x88C5;&#x7684;&#x5E93;&#x5C31;&#x662F;&#x5728;&#x73AF;&#x5883;&#x4E2D;&#xFF0C;&#x4E0B;&#x9762;&#x5185;&#x5BB9;&#x53EF;&#x8DF3;&#x8FC7;</span>
+pip is Anaconda&#x7684;&#x5B89;&#x88C5;&#x4F4D;&#x7F6E;/envs/your_env_name/bin/pip
+<span class="token comment"># &#x60C5;&#x51B5;2&#xFF1A;&#x5982;&#x679C;&#x662F;&#x4E0B;&#x9762;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x7684;&#x8F93;&#x51FA;&#xFF0C;&#x5B89;&#x88C5;&#x7684;&#x5E93;&#x662F;&#x5728;&#x5168;&#x5C40;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x7EE7;&#x7EED;&#x4E0B;&#x9762;&#x64CD;&#x4F5C;&#x8FDB;&#x884C;&#x4FEE;&#x6B63;</span>
+pip is Anaconda&#x7684;&#x5B89;&#x88C5;&#x4F4D;&#x7F6E;/bin/pip
+</pre><p>&#x5982;&#x679C;&#x662F;&#x60C5;&#x51B5;2&#xFF0C;&#x8BF4;&#x660E;&#x867D;&#x7136;&#x4F60;&#x8FDB;&#x5165;&#x4E86;&#x73AF;&#x5883;&#xFF0C;&#x4F46;&#x662F;&#x4F7F;&#x7528;&#x7684; pip &#x8FD8;&#x662F;&#x5168;&#x5C40;&#x7684;pip&#xFF0C;&#x6240;&#x4EE5;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E3A;pip&#x8BBE;&#x5B9A; &quot;&#x5316;&#x540D;&quot; &#x5B9E;&#x73B0;&#x547D;&#x4EE4;&#x7684;&#x91CD;&#x547D;&#x540D;&#xFF1A;</p>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">$ <span class="token function">alias</span> pip<span class="token operator">=</span><span class="token string">&quot;Anaconda&#x7684;&#x5B89;&#x88C5;&#x4F4D;&#x7F6E;/envs/your_env_name/bin/pip&quot;</span>
+</pre><p>&#x8FD9;&#x6837;&#x5C31;&#x80FD;&#x4F7F;&#x7528; pip &#x8FDB;&#x884C;&#x6A21;&#x5757;&#x5B89;&#x88C5;&#x4E86;&#xFF0C;&#x4E0D;&#x4F1A;&#x548C;&#x7CFB;&#x7EDF;&#x73AF;&#x5883;&#x4E2D;&#x7684;python&#x4EA7;&#x751F;&#x51B2;&#x7A81;&#x3002;</p>
+<p>4&#x3001;&#x5728;&#x865A;&#x62DF;&#x73AF;&#x5883;&#x4E2D;&#x542F;&#x52A8; jupyter notebook</p>
+<ul>
+<li>&#x5C06;&#x73AF;&#x5883;&#x5199;&#x5165;notebook&#x7684;kernel&#x4E2D;</li>
+</ul>
+<pre data-role="codeBlock" data-info="shell" class="language-shell">python -m ipykernel <span class="token function">install</span> --user --name your_env_name --display-name <span class="token string">&quot;&#x5728;jupyter&#x663E;&#x793A;&#x7684;&#x540D;&#x5B57;&quot;</span> 
+</pre><ul>
+<li>&#x6253;&#x5F00;notebook&#x670D;&#x52A1;&#x5668;&#xFF0C;&#x5728;terminal&#x4E0B;&#x6267;&#x884C;&#x547D;&#x4EE4;&#x884C; <code>jupyter notebook --ip=0.0.0.0 --port=8978</code> &#xFF08;&#x7AEF;&#x53E3;&#x53F7;&#x968F;&#x610F;&#xFF0C;&#x4E00;&#x822C;&#x53D6;1024&#x4EE5;&#x4E0A;&#xFF0C;&#x4E0D;&#x4E0E;&#x5176;&#x4ED6;&#x6B63;&#x5728;&#x4F7F;&#x7528;&#x7684;TCP&#x7AEF;&#x53E3;&#x91CD;&#x590D;&#xFF0C;&#x5C0F;&#x4E8E;65536&#x5373;&#x53EF;&#xFF09;, &#x4E4B;&#x540E;&#x53EF;&#x7528;&#x5176;&#x63D0;&#x4F9B;&#x7684; <em>token</em> &#x8FDB;&#x884C;&#x5BF9; jupyter web &#x670D;&#x52A1;&#x7684;&#x8BBF;&#x95EE;&#xFF0C;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x5728;&#x8BBF;&#x95EE;&#x662F; ip &#x5730;&#x5740;&#x9700;&#x8981;&#x662F;&#x63D0;&#x4F9B; web &#x670D;&#x52A1;&#x7684;&#x8BA1;&#x7B97;&#x673A;&#x7684;&#x5730;&#x5740;&#x3002;</li>
+</ul>
+<h2 class="mume-header" id="%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">&#x5E38;&#x7528;&#x547D;&#x4EE4;</h2>
 
 <ul>
 <li>
-<p>vi命令</p>
+<p>vi&#x547D;&#x4EE4;</p>
 <ul>
-<li>命令模式
+<li>&#x547D;&#x4EE4;&#x6A21;&#x5F0F;
 <ul>
-<li><code>:5,10 w! new.txt</code> : 将该文件中的第5行到第10行写入到 <code>new.txt</code> 文件中<br>
+<li><code>:5,10 w! new.txt</code> : &#x5C06;&#x8BE5;&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x7B2C;5&#x884C;&#x5230;&#x7B2C;10&#x884C;&#x5199;&#x5165;&#x5230; <code>new.txt</code> &#x6587;&#x4EF6;&#x4E2D;<br>
 <br></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>
-<p>scp 文件传输 : <code>scp [-P 22] filename username@192.168.1.100:~/dirname</code><br>
+<p>scp &#x6587;&#x4EF6;&#x4F20;&#x8F93; : <code>scp [-P 22] filename username@192.168.1.100:~/dirname</code><br>
 <br></p>
 </li>
 <li>
-<p>head 显示头 : <code>head fname -n 5</code><br>
+<p>head &#x663E;&#x793A;&#x5934; : <code>head fname -n 5</code><br>
 <br></p>
 </li>
 <li>
-<p>tail 显示尾 : <code>tail fname -n 2</code><br>
+<p>tail &#x663E;&#x793A;&#x5C3E; : <code>tail fname -n 2</code><br>
 <br></p>
 </li>
 <li>
-<p>查看指定行 : <code>head fname -n 5 | tail -n 1</code><br>
+<p>&#x67E5;&#x770B;&#x6307;&#x5B9A;&#x884C; : <code>head fname -n 5 | tail -n 1</code><br>
 <br></p>
 </li>
 <li>
-<p>按行方式合并文件 : <code>cat f1 f2 &gt; newfile</code><br>
+<p>&#x6309;&#x884C;&#x65B9;&#x5F0F;&#x5408;&#x5E76;&#x6587;&#x4EF6; : <code>cat f1 f2 &gt; newfile</code><br>
 <br></p>
 </li>
 <li>
-<p>按列方式合并文件 : <code>paste f1 f2 &gt; newfile</code><br>
+<p>&#x6309;&#x5217;&#x65B9;&#x5F0F;&#x5408;&#x5E76;&#x6587;&#x4EF6; : <code>paste f1 f2 &gt; newfile</code><br>
 <br></p>
 </li>
 <li>
-<p>输出指定列 : <code>awk '{print $2} fname'</code><br>
+<p>&#x8F93;&#x51FA;&#x6307;&#x5B9A;&#x5217; : <code>awk &apos;{print $2} fname&apos;</code><br>
 <br></p>
 </li>
 <li>
-<p>排序 : <code>cat fname | sort -nr -k2</code> 将文件 fname 中按第二列以数字形式进行反向排序<br>
+<p>&#x6392;&#x5E8F; : <code>cat fname | sort -nr -k2</code> &#x5C06;&#x6587;&#x4EF6; fname &#x4E2D;&#x6309;&#x7B2C;&#x4E8C;&#x5217;&#x4EE5;&#x6570;&#x5B57;&#x5F62;&#x5F0F;&#x8FDB;&#x884C;&#x53CD;&#x5411;&#x6392;&#x5E8F;<br>
 <br></p>
 </li>
 <li>
-<p>搜索文件中的关键字 : <code>grep keyword f1 f2 ...</code><br>
+<p>&#x641C;&#x7D22;&#x6587;&#x4EF6;&#x4E2D;&#x7684;&#x5173;&#x952E;&#x5B57; : <code>grep keyword f1 f2 ...</code><br>
 <br></p>
 </li>
 <li>
-<p>搜索关键字在哪些文件中出现过 : <code>grep -l keyword *</code><br>
+<p>&#x641C;&#x7D22;&#x5173;&#x952E;&#x5B57;&#x5728;&#x54EA;&#x4E9B;&#x6587;&#x4EF6;&#x4E2D;&#x51FA;&#x73B0;&#x8FC7; : <code>grep -l keyword *</code><br>
 <br></p>
 </li>
 <li>
-<p>统计模式出现在多少行中 : <code>grep -c keyword f1 f2 ...</code><br>
+<p>&#x7EDF;&#x8BA1;&#x6A21;&#x5F0F;&#x51FA;&#x73B0;&#x5728;&#x591A;&#x5C11;&#x884C;&#x4E2D; : <code>grep -c keyword f1 f2 ...</code><br>
 <br></p>
 </li>
 <li>
-<p>正则表达式搜索 : <code>grep -E '^a.*c$' f1 f2</code><br>
+<p>&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x641C;&#x7D22; : <code>grep -E &apos;^a.*c$&apos; f1 f2</code><br>
 <br></p>
 </li>
 <li>
-<p>忽略大小写 : <code>grep -i 'a'</code><br>
+<p>&#x5FFD;&#x7565;&#x5927;&#x5C0F;&#x5199; : <code>grep -i &apos;a&apos;</code><br>
 <br></p>
 </li>
 <li>
-<p>获取捕捉行 : <code>grep -oe '[0-9]*' f1 f2 ...</code><br>
+<p>&#x83B7;&#x53D6;&#x6355;&#x6349;&#x884C; : <code>grep -oe &apos;[0-9]*&apos; f1 f2 ...</code><br>
 <br></p>
 </li>
 <li>
-<p>反向选择行 : <code>grep -v keyword f1 f2 ...</code><br>
+<p>&#x53CD;&#x5411;&#x9009;&#x62E9;&#x884C; : <code>grep -v keyword f1 f2 ...</code><br>
 <br></p>
 </li>
 <li>
-<p>执行历史命令 : <code>!!</code> 执行上一条命令，<code>!123</code> 执行编号为123的历史命令<br>
+<p>&#x6267;&#x884C;&#x5386;&#x53F2;&#x547D;&#x4EE4; : <code>!!</code> &#x6267;&#x884C;&#x4E0A;&#x4E00;&#x6761;&#x547D;&#x4EE4;&#xFF0C;<code>!123</code> &#x6267;&#x884C;&#x7F16;&#x53F7;&#x4E3A;123&#x7684;&#x5386;&#x53F2;&#x547D;&#x4EE4;<br>
 <br></p>
 </li>
 <li>
-<p>搜索当前目录下含关键字的所有文件，并显示关键字所在行 : <code>grep &quot;Keyword&quot; . -Rn</code></p>
+<p>&#x641C;&#x7D22;&#x5F53;&#x524D;&#x76EE;&#x5F55;&#x4E0B;&#x542B;&#x5173;&#x952E;&#x5B57;&#x7684;&#x6240;&#x6709;&#x6587;&#x4EF6;&#xFF0C;&#x5E76;&#x663E;&#x793A;&#x5173;&#x952E;&#x5B57;&#x6240;&#x5728;&#x884C; : <code>grep &quot;Keyword&quot; . -Rn</code></p>
 </li>
 </ul>
-<h2 class="mume-header" id="%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8notebook">正则表达式的使用（Notebook）</h2>
+<h2 class="mume-header" id="%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8notebook">&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x4F7F;&#x7528;&#xFF08;Notebook&#xFF09;</h2>
 
-<h3 class="mume-header" id="remultiline-%E7%9A%84%E4%BD%BF%E7%94%A8">re.MULTILINE 的使用</h3>
+<h3 class="mume-header" id="remultiline-%E7%9A%84%E4%BD%BF%E7%94%A8">re.MULTILINE &#x7684;&#x4F7F;&#x7528;</h3>
 
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-s <span class="token operator">=</span> <span class="token string">'hello\nworld'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'^(.).*$'</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>[]</code></p>
+s <span class="token operator">=</span> <span class="token string">&apos;hello\nworld&apos;</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;^(.).*$&apos;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[]</code></p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-s <span class="token operator">=</span> <span class="token string">'hello\nworld'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'^(.).*$'</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> re<span class="token punctuation">.</span>MULTILINE<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['h', 'w']</code></p>
-<p>总结：<code>re.MULTILINE</code> 在正则表达式中有<code>^ $</code> 表示行首、行尾的匹配项时使用，如果有 <code>re.MULTILINE</code> 将会匹配多行，否则如果有多行，就会匹配不到；当 <code>flags</code> 为 re.DOTALL 是，会如果是多行，会匹配一行，如下：</p>
+s <span class="token operator">=</span> <span class="token string">&apos;hello\nworld&apos;</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;^(.).*$&apos;</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> re<span class="token punctuation">.</span>MULTILINE<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[&apos;h&apos;, &apos;w&apos;]</code></p>
+<p>&#x603B;&#x7ED3;&#xFF1A;<code>re.MULTILINE</code> &#x5728;&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x4E2D;&#x6709;<code>^ $</code> &#x8868;&#x793A;&#x884C;&#x9996;&#x3001;&#x884C;&#x5C3E;&#x7684;&#x5339;&#x914D;&#x9879;&#x65F6;&#x4F7F;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x6709; <code>re.MULTILINE</code> &#x5C06;&#x4F1A;&#x5339;&#x914D;&#x591A;&#x884C;&#xFF0C;&#x5426;&#x5219;&#x5982;&#x679C;&#x6709;&#x591A;&#x884C;&#xFF0C;&#x5C31;&#x4F1A;&#x5339;&#x914D;&#x4E0D;&#x5230;&#xFF1B;&#x5F53; <code>flags</code> &#x4E3A; re.DOTALL &#x662F;&#xFF0C;&#x4F1A;&#x5982;&#x679C;&#x662F;&#x591A;&#x884C;&#xFF0C;&#x4F1A;&#x5339;&#x914D;&#x4E00;&#x884C;&#xFF0C;&#x5982;&#x4E0B;&#xFF1A;</p>
 <h3 class="mume-header" id="redotall">re.DOTALL</h3>
 
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-s <span class="token operator">=</span> <span class="token string">'hello\nworld'</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'^(.).*$'</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> re<span class="token punctuation">.</span>DOTALL<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['h']</code></p>
-<h3 class="mume-header" id="%E7%9A%84%E4%BD%9C%E7%94%A8"><code>?</code> 的作用</h3>
+s <span class="token operator">=</span> <span class="token string">&apos;hello\nworld&apos;</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;^(.).*$&apos;</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> re<span class="token punctuation">.</span>DOTALL<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[&apos;h&apos;]</code></p>
+<h3 class="mume-header" id="%E7%9A%84%E4%BD%9C%E7%94%A8"><code>?</code> &#x7684;&#x4F5C;&#x7528;</h3>
 
-<p><strong>作用1</strong>：<br>
-一种常见的作用就是匹配 1 个或 0 个指定元素，如 <code>\d?</code> 表示匹配一个数字字符。</p>
+<p><strong>&#x4F5C;&#x7528;1</strong>&#xFF1A;<br>
+&#x4E00;&#x79CD;&#x5E38;&#x89C1;&#x7684;&#x4F5C;&#x7528;&#x5C31;&#x662F;&#x5339;&#x914D; 1 &#x4E2A;&#x6216; 0 &#x4E2A;&#x6307;&#x5B9A;&#x5143;&#x7D20;&#xFF0C;&#x5982; <code>\d?</code> &#x8868;&#x793A;&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x6570;&#x5B57;&#x5B57;&#x7B26;&#x3002;</p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'a\d?'</span><span class="token punctuation">,</span> <span class="token string">'sa1dfadd'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['a1', 'a']</code></p>
-<p><strong>作用2</strong>：指定捕获的名称</p>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;a\d?&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;sa1dfadd&apos;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[&apos;a1&apos;, &apos;a&apos;]</code></p>
+<p><strong>&#x4F5C;&#x7528;2</strong>&#xFF1A;&#x6307;&#x5B9A;&#x6355;&#x83B7;&#x7684;&#x540D;&#x79F0;</p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">for</span> i <span class="token keyword">in</span> re<span class="token punctuation">.</span>finditer<span class="token punctuation">(</span>r<span class="token string">'a(?P&lt;x>\d)?'</span><span class="token punctuation">,</span> <span class="token string">'sa1dfadd'</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：</p>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> re<span class="token punctuation">.</span>finditer<span class="token punctuation">(</span>r<span class="token string">&apos;a(?P&lt;x&gt;\d)?&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;sa1dfadd&apos;</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">.</span>group<span class="token punctuation">(</span><span class="token string">&apos;x&apos;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;</p>
 <pre data-role="codeBlock" data-info="" class="language-"><code>1
 None
-</code></pre><p><strong>作用3</strong>：是指定匹配时贪婪匹配还是非贪婪匹配。</p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 无问号，默认贪婪匹配</span>
+</code></pre><p><strong>&#x4F5C;&#x7528;3</strong>&#xFF1A;&#x662F;&#x6307;&#x5B9A;&#x5339;&#x914D;&#x65F6;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#x8FD8;&#x662F;&#x975E;&#x8D2A;&#x5A6A;&#x5339;&#x914D;&#x3002;</p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># &#x65E0;&#x95EE;&#x53F7;&#xFF0C;&#x9ED8;&#x8BA4;&#x8D2A;&#x5A6A;&#x5339;&#x914D;</span>
 <span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'1.*1'</span><span class="token punctuation">,</span> <span class="token string">'100100001100'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['1001000011']</code></p>
-<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># 有问号，非贪婪匹配</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;1.*1&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;100100001100&apos;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[&apos;1001000011&apos;]</code></p>
+<pre data-role="codeBlock" data-info="python" class="language-python"><span class="token comment"># &#x6709;&#x95EE;&#x53F7;&#xFF0C;&#x975E;&#x8D2A;&#x5A6A;&#x5339;&#x914D;</span>
 <span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'1.*?1'</span><span class="token punctuation">,</span> <span class="token string">'100100001100'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['1001', '11']</code></p>
-<h3 class="mume-header" id="%E7%9A%84%E4%BD%9C%E7%94%A8-1"><code>?:</code> 的作用</h3>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;1.*?1&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;100100001100&apos;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[&apos;1001&apos;, &apos;11&apos;]</code></p>
+<h3 class="mume-header" id="%E7%9A%84%E4%BD%9C%E7%94%A8-1"><code>?:</code> &#x7684;&#x4F5C;&#x7528;</h3>
 
-<p>只分组，不捕捉。例如我们希望匹配 <code>teacher</code> 或 <code>mother</code>：</p>
+<p>&#x53EA;&#x5206;&#x7EC4;&#xFF0C;&#x4E0D;&#x6355;&#x6349;&#x3002;&#x4F8B;&#x5982;&#x6211;&#x4EEC;&#x5E0C;&#x671B;&#x5339;&#x914D; <code>teacher</code> &#x6216; <code>mother</code>&#xFF1A;</p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'(((mot)|(teac))her)'</span><span class="token punctuation">,</span> <span class="token string">'samotherds'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>[('mother', 'mot', 'mot', '')]</code>；该结果为对 4 个括号进行捕获所得到的结果；我们如果只希望捕获最外层的匹配，可以用下面代码：</p>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;(((mot)|(teac))her)&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;samotherds&apos;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[(&apos;mother&apos;, &apos;mot&apos;, &apos;mot&apos;, &apos;&apos;)]</code>&#xFF1B;&#x8BE5;&#x7ED3;&#x679C;&#x4E3A;&#x5BF9; 4 &#x4E2A;&#x62EC;&#x53F7;&#x8FDB;&#x884C;&#x6355;&#x83B7;&#x6240;&#x5F97;&#x5230;&#x7684;&#x7ED3;&#x679C;&#xFF1B;&#x6211;&#x4EEC;&#x5982;&#x679C;&#x53EA;&#x5E0C;&#x671B;&#x6355;&#x83B7;&#x6700;&#x5916;&#x5C42;&#x7684;&#x5339;&#x914D;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;&#x4E0B;&#x9762;&#x4EE3;&#x7801;&#xFF1A;</p>
 <pre data-role="codeBlock" data-info="python" class="language-python"><span class="token keyword">import</span> re
-<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">'((?:(?:mot)|(?:teac))her)'</span><span class="token punctuation">,</span> <span class="token string">'samotherds'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-</pre><p>输出为：<code>['mother']</code></p>
+<span class="token keyword">print</span><span class="token punctuation">(</span>re<span class="token punctuation">.</span>findall<span class="token punctuation">(</span>r<span class="token string">&apos;((?:(?:mot)|(?:teac))her)&apos;</span><span class="token punctuation">,</span> <span class="token string">&apos;samotherds&apos;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</pre><p>&#x8F93;&#x51FA;&#x4E3A;&#xFF1A;<code>[&apos;mother&apos;]</code></p>
 
       </div>
       <div class="md-sidebar-toc"><ul>
-<li><a href="#linux-%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98">Linux 命令备忘</a>
+<li><a href="#linux-%E5%91%BD%E4%BB%A4%E5%A4%87%E5%BF%98">Linux &#x547D;&#x4EE4;&#x5907;&#x5FD8;</a>
 <ul>
-<li><a href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8notebook">正则表达式的使用（Notebook）</a>
+<li><a href="#conda-%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%B8%AD%E8%BF%90%E8%A1%8C-jupyter-notebook">conda &#x865A;&#x62DF;&#x73AF;&#x5883;&#x4E2D;&#x8FD0;&#x884C; jupyter notebook</a></li>
+<li><a href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">&#x5E38;&#x7528;&#x547D;&#x4EE4;</a></li>
+<li><a href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BD%BF%E7%94%A8notebook">&#x6B63;&#x5219;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x4F7F;&#x7528;&#xFF08;Notebook&#xFF09;</a>
 <ul>
-<li><a href="#remultiline-%E7%9A%84%E4%BD%BF%E7%94%A8">re.MULTILINE 的使用</a></li>
+<li><a href="#remultiline-%E7%9A%84%E4%BD%BF%E7%94%A8">re.MULTILINE &#x7684;&#x4F7F;&#x7528;</a></li>
 <li><a href="#redotall">re.DOTALL</a></li>
-<li><a href="#%E7%9A%84%E4%BD%9C%E7%94%A8"><code>?</code> 的作用</a></li>
-<li><a href="#%E7%9A%84%E4%BD%9C%E7%94%A8-1"><code>?:</code> 的作用</a></li>
+<li><a href="#%E7%9A%84%E4%BD%9C%E7%94%A8"><code>?</code> &#x7684;&#x4F5C;&#x7528;</a></li>
+<li><a href="#%E7%9A%84%E4%BD%9C%E7%94%A8-1"><code>?:</code> &#x7684;&#x4F5C;&#x7528;</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </div>
-      <a id="sidebar-toc-btn">≡</a>
-    </body>
+      <a id="sidebar-toc-btn">&#x2261;</a>
+    
     
     
     
@@ -418,4 +486,5 @@ sidebarTOCBtn.addEventListener('click', function(event) {
 })
 </script>
       
-  </html>
+  
+    </body></html>
