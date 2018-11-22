@@ -87,6 +87,10 @@ python -m ipykernel install --user --name your_env_name --display-name "在jupyt
 
 - 打开notebook服务器，在terminal下执行命令行 `jupyter notebook --ip=0.0.0.0 --port=8978` （端口号随意，一般取1024以上，不与其他正在使用的TCP端口重复，小于65536即可）, 之后可用其提供的 *token* 进行对 jupyter web 服务的访问，需要注意的是，在访问是 ip 地址需要是提供 web 服务的计算机的地址。
 
+5、为 jupyter notebook 设置特定的密码：
+
+- 使用命令：`jupyter notebook password` 即可
+
 ## 常用命令
 
 - vi命令
