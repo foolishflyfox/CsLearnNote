@@ -100,6 +100,10 @@ python -m ipykernel install --user --name your_env_name --display-name "在jupyt
 - scp 文件传输 : `scp [-P 22] filename username@192.168.1.100:~/dirname`
 <br>
 
+- 将所有的非目录文件移动到指定目录中：`find . -maxdepth 1 -type f -exec mv {} destination_path \;`
+
+<br>
+
 - head 显示头 : `head fname -n 5`
 <br>
 - tail 显示尾 : `tail fname -n 2`
