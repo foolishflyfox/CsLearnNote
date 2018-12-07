@@ -72,9 +72,9 @@ pip is Anaconda的安装位置/envs/your_env_name/bin/pip
 # 情况2：如果是下面这种情况的输出，安装的库是在全局系统中，继续下面操作进行修正
 pip is Anaconda的安装位置/bin/pip
 ```
-如果是情况2，说明虽然你进入了环境，但是使用的 pip 还是全局的pip，所以可以通过为pip设定 "化名" 实现命令的重命名：
+如果是情况2，说明虽然你进入了环境，但是使用的 pip 还是全局的pip，所以可以 conda 在该虚拟环境下安装 pip，之后用 pip 安装/卸载其他包时，不影响真实环境。
 ```shell
-$ alias pip="Anaconda的安装位置/envs/your_env_name/bin/pip"
+$ conda install -n your_env_name pip
 ```
 这样就能使用 pip 进行模块安装了，不会和系统环境中的python产生冲突。
 
