@@ -91,6 +91,12 @@ python -m ipykernel install --user --name your_env_name --display-name "在jupyt
 
 - 使用命令：`jupyter notebook password` 即可
 
+## 手机 termux 使用
+
+termux：是 terminal + Linux = termux
+
+- 创建文件夹，使 termux 能够和其他 app 进行文件交换：`termux-setup-storage`
+
 ## 常用命令
 
 - vi命令
