@@ -104,6 +104,15 @@ termux：是 terminal + Linux = termux
 
 - 创建文件夹，使 termux 能够和其他 app 进行文件交换：`termux-setup-storage`
 
+## ffmpeg 常用命令
+
+- 视频截取：
+1、`ffmpeg -ss 00:00:00 -t 00:00:30 -i test.mp4 -vcodec copy -acodec copy output.mp4`； 等价于
+2、`ffmpeg -ss 00:00:00 -t 00:00:30 -i test.mp4 -codec copy output.mp4`
+
+
+`
+
 ## 常用命令
 
 - vi命令
